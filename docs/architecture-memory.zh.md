@@ -56,10 +56,11 @@ docs/
   method-bases.md
   safety.md
   evaluation.md
-  improvement-loop.md
-  failure-taxonomy.md
-  eval-schema.md
-  skill-authoring.md
+    improvement-loop.md
+    failure-taxonomy.md
+    eval-schema.md
+    eval-runbook.md
+    skill-authoring.md
   platforms.md
   roadmap.md
 
@@ -390,7 +391,7 @@ skills/
 .opencode/
 ```
 
-Codex 已经通过 Skills CLI discovery 做过本地验证。
+Codex 已经通过 Skills CLI discovery 做过本地验证。当前本地仓库可发现五个 skills，包括 `skill-evaluator`。
 
 Claude Code、Cursor、OpenCode adapters 已存在，但在对应客户端真实测试前，只应视为已实现 metadata/adapters。
 
@@ -422,14 +423,16 @@ Codex discovery 已本地测试。
 
 Claude Code、Cursor、OpenCode 应该在真实 runtime 中测试。
 
-### Roadmap 状态需要区分层级
+### Roadmap 状态现在区分层级
 
-未来状态标签应该区分：
+状态标签：
 
 ```text
 Implemented
 Locally verified
 Client verified
+Regression covered
+Refactor candidate
 ```
 
 ## 下一步建议
@@ -451,4 +454,3 @@ Client verified
 - Skill failure review：`skills/skill-evaluator/SKILL.md`、`docs/failure-taxonomy.md`、`docs/improvement-loop.md`
 - Platform 修改：`docs/platforms.md`、相关平台目录
 - Roadmap 修改：`docs/roadmap.md`、`CHANGELOG.md`
-

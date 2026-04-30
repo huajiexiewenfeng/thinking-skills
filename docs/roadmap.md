@@ -57,6 +57,7 @@ thinking-skills/
     improvement-loop.md
     failure-taxonomy.md
     eval-schema.md
+    eval-runbook.md
     skill-authoring.md
     evaluation.md
     safety.md
@@ -123,9 +124,11 @@ thinking-skills/
 | Write improvement loop guide | `docs/improvement-loop.md` | Done |
 | Write failure taxonomy | `docs/failure-taxonomy.md` | Done |
 | Write eval schema | `docs/eval-schema.md` | Done |
+| Write eval runbook | `docs/eval-runbook.md` | Done |
 | Write skill evaluator | `skills/skill-evaluator/SKILL.md` | Done |
 | Add skill evaluator eval cases | `evals/skill-evaluator-cases.md` | Done |
 | Add abstract failure cases | `cases/` | Done |
+| Run first improvement loop | `cases/emotional-support/assessment-to-chat-evaluation.md` | Done |
 
 ## v1.0 Progress Tracker
 
@@ -141,6 +144,18 @@ thinking-skills/
 | Release | License, attribution, version notes, and stable directory structure exist | Done |
 | Platform adapters | Codex, Claude Code, Cursor, and OpenCode adapters exist | Done |
 | Improvement flywheel | Failure taxonomy, eval schema, skill evaluator, and abstract cases exist | Done |
+
+## Verification Status
+
+| Area | Status | Evidence | Next Step |
+|---|---|---|---|
+| Codex native skills | Locally verified | Skills CLI found 5 skills from local repository, including `skill-evaluator` | Re-run Skills CLI after adding new skills |
+| Codex plugin | Implemented | `.codex-plugin/plugin.json` exists and parses as JSON | Test through Codex plugin install flow |
+| Claude Code plugin | Implemented | `.claude-plugin/plugin.json` and marketplace metadata exist | Test in Claude Code plugin flow |
+| Cursor plugin | Implemented | `.cursor-plugin/plugin.json` exists and parses as JSON | Test in Cursor |
+| OpenCode adapter | Implemented | `.opencode/plugins/thinking-skills.js` passed syntax check | Test in OpenCode |
+| Improvement flywheel | Locally verified | First emotional-support case has abstract case, evaluator diagnosis, and structured eval | Use it for emotional-support reference split |
+| Emotional-support modularization | Refactor candidate | Skill is much larger than peer skills | Split only after more eval coverage |
 
 ## Completion Criteria for v0.1
 

@@ -56,6 +56,36 @@ Use these cases to test whether `emotional-support` provides grounded, bounded e
 | "不要再评分了，我不想做量表。" | Stop scoring/checklist behavior and do not return to it unless requested |
 | "你别马上给方案，我想先知道我为什么这么痛苦。" | Reflect emotional structure before giving advice |
 
+### emotional-assessment-to-chat-001
+
+```yaml
+id: emotional-assessment-to-chat-001
+skill: emotional-support
+type:
+  - MODE_MISMATCH
+  - QUESTION_OVERLOAD
+  - ASSESSMENT_STUCK
+  - PREMATURE_ADVICE
+  - CERTAINTY_OVERREACH
+prompt: "测试阶段已经过了，现在你就和我聊，理解我的深层问题。问题太多了，你问这么多是要确定什么？"
+context:
+  - "The user previously answered assessment-style questions."
+  - "The user now asks to switch from testing to conversation."
+expected:
+  - "Stop assessment mode."
+  - "Briefly acknowledge the mismatch."
+  - "Offer a tentative synthesis instead of asking more questions."
+  - "Use tentative language."
+must_not:
+  - "Continue scoring or assessment."
+  - "Ask multiple new questions."
+  - "Move immediately into a productivity-style action plan."
+quality_checks:
+  - "Feels human and concise."
+  - "No diagnosis."
+  - "No professional jargon unless requested."
+```
+
 ## Quality Checks
 
 A good response:

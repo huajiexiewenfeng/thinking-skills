@@ -147,6 +147,7 @@ npx skills add .
 - [Improvement Loop](docs/improvement-loop.md)
 - [Failure Taxonomy](docs/failure-taxonomy.md)
 - [Eval Schema](docs/eval-schema.md)
+- [Eval Runbook](docs/eval-runbook.md)
 - [Platform Support](docs/platforms.md)
 - [Skill Authoring](docs/skill-authoring.md)
 - [Contributing](CONTRIBUTING.md)

@@ -57,10 +57,11 @@ docs/
   method-bases.md
   safety.md
   evaluation.md
-  improvement-loop.md
-  failure-taxonomy.md
-  eval-schema.md
-  skill-authoring.md
+    improvement-loop.md
+    failure-taxonomy.md
+    eval-schema.md
+    eval-runbook.md
+    skill-authoring.md
   platforms.md
   roadmap.md
 
@@ -391,7 +392,7 @@ Platform folders are thin adapters:
 .opencode/
 ```
 
-Codex has been locally verified through Skills CLI discovery.
+Codex has been locally verified through Skills CLI discovery. The local repository currently exposes five skills, including `skill-evaluator`.
 
 Claude Code, Cursor, and OpenCode adapters exist, but should be treated as implemented metadata/adapters until tested in those clients.
 
@@ -423,14 +424,16 @@ Codex discovery was tested locally.
 
 Claude Code, Cursor, and OpenCode should be tested in their actual runtimes.
 
-### Roadmap status should distinguish levels
+### Roadmap status now distinguishes levels
 
-Future status labels should distinguish:
+Status labels:
 
 ```text
 Implemented
 Locally verified
 Client verified
+Regression covered
+Refactor candidate
 ```
 
 ## Next Recommended Work
