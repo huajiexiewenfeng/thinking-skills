@@ -65,6 +65,44 @@ This repository includes a Codex plugin manifest:
 .codex-plugin/plugin.json
 ```
 
+## Usage
+
+After installing, restart Codex so the skills are discovered.
+
+You can use Thinking Skills naturally:
+
+```text
+I have an idea and want to think it through.
+```
+
+```text
+Help me write an article about AI companionship.
+```
+
+```text
+I feel anxious and keep blaming myself.
+```
+
+```text
+This API design feels wrong. Help me analyze the trade-offs.
+```
+
+To force a specific skill, name it directly:
+
+```text
+Use thinking-router to choose the right thinking mode for this request.
+```
+
+```text
+Use content-creator to help me find the angle and outline.
+```
+
+```text
+Use emotional-support to help me sort out what I am feeling.
+```
+
+In the current Codex session, newly installed skills may not appear until Codex is restarted.
+
 ## Core Principles
 
 - **Domain-neutral by default** - do not assume software development.

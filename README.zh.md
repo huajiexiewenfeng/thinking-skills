@@ -65,6 +65,44 @@ npx skills add .
 .codex-plugin/plugin.json
 ```
 
+## 使用方式
+
+安装后，重启 Codex，让 Codex 重新发现 skills。
+
+你可以自然地提问：
+
+```text
+我有个想法，想把它梳理清楚。
+```
+
+```text
+帮我写一篇关于 AI 陪伴的文章。
+```
+
+```text
+我最近很焦虑，总是在责怪自己。
+```
+
+```text
+这个 API 设计感觉不对，帮我分析一下权衡。
+```
+
+如果想强制使用某个 skill，可以直接点名：
+
+```text
+使用 thinking-router 帮我判断这个请求应该进入哪种思考模式。
+```
+
+```text
+使用 content-creator 帮我找文章角度和大纲。
+```
+
+```text
+使用 emotional-support 帮我梳理现在的感受。
+```
+
+当前 Codex 会话里，新安装的 skills 可能需要重启 Codex 后才会出现在可用列表中。
+
 ## 核心原则
 
 - **默认领域中立** - 不要默认这是软件开发问题。
