@@ -57,7 +57,7 @@ Domain skills own their own method bases. For example, `emotional-support` may u
 |---|---|
 | article, essay, blog, newsletter, title, outline, audience, argument, draft, script, content plan, writing style | `content-creator` |
 | code, repo, architecture, bug, performance, API, tests, deployment, implementation, source code, framework, database, refactor | `technical-deep-dive` |
-| anxious, overwhelmed, sad, self-blame, stress, burnout, relationship pain, emotional pain, confused feelings, shame, fear | `emotional-support` |
+| anxious, overwhelmed, sad, self-blame, stress, burnout, relationship pain, emotional pain, confused feelings, shame, fear, why am I like this, why do I always, help me see the essence, find the main thread, do not just comfort me, stop only asking questions, 看本质, 抓主线, 不要只安慰, 别一直问, 你来判断, 为什么我总是这样, 为什么我反应这么大 | `emotional-support` |
 
 ## Planned Routing Table
 
@@ -80,6 +80,7 @@ Examples:
 | "I am anxious because my project architecture is a mess." | Primary: `emotional-support`; Secondary: `technical-deep-dive` |
 | "Help me decide whether to quit my job and build a startup." | Primary: `life-decision`; Secondary: `business-strategy` |
 | "Help me turn my burnout story into a blog post." | Primary: `content-creator`; Secondary: `emotional-support` |
+| "Do not just comfort me. Tell me what pattern you see in why I keep reacting this way." | Primary: `emotional-support`; Secondary: none |
 
 ## Safety Override
 
@@ -115,6 +116,12 @@ I will use `technical-deep-dive` to analyze the system, constraints, trade-offs,
 I will use `emotional-support` to help sort the feelings, facts, needs, and next gentle step.
 ```
 
+For deep emotional analysis:
+
+```text
+I will use `emotional-support` to give a tentative read of the pattern, then you can calibrate what fits.
+```
+
 ## Internal Routing Record
 
 If useful, keep this internal structure:
@@ -137,4 +144,4 @@ Do not expose the full routing record unless it helps the user understand a rout
 - Asking many questions before routing.
 - Forcing writing, life, or emotional requests into technical specs.
 - Treating reflective models as clinical evidence.
-
+- Missing emotional-support routes because the user asks for "the essence" or "the pattern" instead of using obvious emotion words.
