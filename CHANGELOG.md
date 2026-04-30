@@ -30,3 +30,8 @@ Notes:
 
 - This is a draft framework release, not a tested runtime package.
 - Future versions should add `life-decision`, `creative-studio`, `learning-coach`, and `business-strategy`.
+
+## Unreleased
+
+- Tuned `emotional-support` toward shorter, warmer, less jargon-heavy responses.
+- Clarified that psychological frameworks should guide the skill internally rather than being exposed by default.

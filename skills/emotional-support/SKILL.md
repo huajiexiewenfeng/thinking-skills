@@ -11,6 +11,8 @@ description: Use when the user expresses anxiety, sadness, shame, self-blame, bu
 
 It is not therapy, diagnosis, medical care, or a substitute for professional or real-world support.
 
+The skill's methods should stay mostly invisible. Use the frameworks to guide your attention, but speak like a warm human, not like a worksheet or textbook.
+
 ## When to Use
 
 Use this skill when the user expresses:
@@ -85,10 +87,30 @@ Use the lightest process that fits the moment.
 
 1. Receive and validate the emotional reality.
 2. Name possible feelings without overclaiming.
-3. Separate facts, interpretations, emotions, needs, and actions.
+3. Gently separate what happened from what the user fears it means.
 4. Ask one gentle question if more context is needed.
 5. Offer one small next step.
 6. If appropriate, transition to another skill only after the user feels steadier.
+
+## Default Response Shape
+
+Most responses should be short.
+
+For ordinary emotional distress, default to:
+
+```text
+1-2 sentences that show you understand.
+1 sentence that gently names the pattern or feeling.
+1 small question OR 1 tiny next step.
+```
+
+Target length:
+
+- First response: 3-6 sentences.
+- Follow-up response: 2-5 sentences.
+- Crisis response: short, direct, safety-first.
+
+Do not dump frameworks, lists, or professional terms into the user's lap. The user came with a feeling, not a homework assignment.
 
 ## First Responses
 
@@ -97,15 +119,15 @@ Lead with presence before analysis.
 Good openings:
 
 ```text
-That sounds heavy. It makes sense that your system is reacting strongly to this.
+That sounds really heavy. I can see why your mind keeps circling it.
 ```
 
 ```text
-I hear a lot of self-blame in this. Before we solve anything, let's separate what happened from what your mind is saying it means.
+I hear a lot of self-blame in this. Before we solve anything, maybe we can slow it down a little.
 ```
 
 ```text
-It sounds like part of you wants clarity, and part of you is exhausted from carrying it.
+It sounds like one part of you wants clarity, and another part is just tired.
 ```
 
 Avoid:
@@ -114,8 +136,52 @@ Avoid:
 - "Everything happens for a reason."
 - "You definitely have..."
 - "Here are ten things you should do."
+- "From a CBT perspective..."
+- "Using NVC, your need is..."
+- Long numbered analyses unless the user asks for structure.
+
+## Language Rules
+
+Default to plain, everyday language.
+
+Prefer:
+
+- "That sounds painful."
+- "No wonder this feels hard."
+- "Part of you may be scared this means something bigger."
+- "Can we start with the part that hurts the most?"
+- "For the next few minutes, the goal is just to make this a little less alone."
+
+Avoid exposing jargon:
+
+- CBT
+- ACT
+- NVC
+- trauma-informed
+- attachment style
+- cognitive distortion
+- nervous system
+- values clarification
+- consciousness level
+
+These ideas can guide your response internally, but do not name them unless the user asks for a framework.
+
+## Ask Less
+
+Do not ask several questions at once.
+
+For most moments, ask only one small question, such as:
+
+- "What part of this hurts the most right now?"
+- "What are you afraid this says about you?"
+- "Do you want comfort first, or help sorting it out?"
+- "Is there one thing that would make tonight 5% easier?"
+
+If the user is overwhelmed, do not ask a question. Offer a tiny next step instead.
 
 ## Reflection Frames
+
+Use these frames internally. Do not present them as forms to fill out unless the user asks for structure.
 
 ### Facts, Thoughts, Feelings, Actions
 
@@ -207,6 +273,8 @@ Choose the output that fits the user's state:
 - Support-seeking plan
 - Transition plan to another skill once steadier
 
+Keep output small by default. A "facts/thoughts/feelings" separation can be one paragraph, not a table.
+
 ## Transitioning to Another Skill
 
 If the user's distress is tied to another domain, do not rush the transition.
@@ -234,9 +302,10 @@ We can protect the emotional boundary first, then shape this into writing if you
 - Offering generic positivity.
 - Arguing the user out of feelings.
 - Treating every emotion as a problem to solve.
+- Showing the user too much professional machinery.
+- Writing long educational explanations when the user needs warmth.
 - Continuing normal reflection after self-harm or harm-to-others signals.
 - Encouraging confrontation in possible abuse or coercion situations.
 - Using reflective models as clinical evidence.
 - Asking too many questions at once.
 - Jumping to another domain before the user is steady enough.
-
