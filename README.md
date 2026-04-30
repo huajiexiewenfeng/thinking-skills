@@ -139,6 +139,7 @@ Thinking Skills is working if you see:
 ## Documentation
 
 - [Roadmap](docs/roadmap.md)
+- [Architecture Memory](docs/architecture-memory.md)
 - [Routing](docs/routing.md)
 - [Method Bases](docs/method-bases.md)
 - [Safety](docs/safety.md)

@@ -49,6 +49,7 @@ thinking-skills/
 
   docs/
     principles.md
+    architecture-memory.md
     routing.md
     method-bases.md
     platforms.md
@@ -93,6 +94,7 @@ thinking-skills/
 | Define project positioning | `README.md` | Done |
 | Add Chinese README | `README.zh.md` | Done |
 | Write final goal and roadmap | `docs/roadmap.md` | Done |
+| Write architecture memory | `docs/architecture-memory.md` | Done |
 | Write core principles | `docs/principles.md` | Done |
 | Write routing rules | `docs/routing.md` | Done |
 | Write method base design | `docs/method-bases.md` | Done |
