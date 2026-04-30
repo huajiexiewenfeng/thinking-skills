@@ -35,3 +35,4 @@ Notes:
 
 - Tuned `emotional-support` toward shorter, warmer, less jargon-heavy responses.
 - Clarified that psychological frameworks should guide the skill internally rather than being exposed by default.
+- Added a conditional deep analysis mode for users who want a more active, tentative, and calibratable read.
