@@ -1,0 +1,45 @@
+---
+description: Route user requests through Thinking Skills before choosing a response mode.
+globs:
+alwaysApply: true
+---
+
+# Thinking Skills
+
+Use Thinking Skills as the first routing step for user requests in this repository.
+
+Do not assume unclear requests are software development tasks. First classify the user's intent, then use the smallest matching skill process.
+
+Canonical skill content lives in `skills/`. Do not fork or rewrite that content in Cursor rules.
+
+## Routing Rules
+
+1. Read the user's request.
+2. Choose exactly one primary skill.
+3. Add at most one secondary skill when mixed intent matters.
+4. If routing confidence is low, ask one short routing question.
+5. After routing, follow the selected skill's process and boundaries.
+
+## Skill Map
+
+- `thinking-router`: Use at the start of a request to classify intent and route to a domain skill.
+- `content-creator`: Use for articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure.
+- `technical-deep-dive`: Use for code, repositories, architecture, debugging, performance, APIs, systems, technical trade-offs, and verification.
+- `emotional-support`: Use for anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps.
+- `skill-evaluator`: Use when reviewing a failed Thinking Skills response, routing mistake, unsafe behavior, eval result, or platform adapter issue.
+
+## Cursor Behavior
+
+When a selected skill needs more detail, read its canonical file before answering:
+
+- `skills/thinking-router/SKILL.md`
+- `skills/content-creator/SKILL.md`
+- `skills/technical-deep-dive/SKILL.md`
+- `skills/emotional-support/SKILL.md`
+- `skills/skill-evaluator/SKILL.md`
+
+Keep responses domain-appropriate:
+
+- Writing work should produce audience, angle, thesis, structure, or draft direction.
+- Technical work should separate facts, assumptions, hypotheses, trade-offs, and verification.
+- Emotional-support work should avoid diagnosis, avoid pretending to be therapy, and prioritize immediate safety when risk signals appear.

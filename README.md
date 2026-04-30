@@ -73,6 +73,7 @@ This repository also includes thin platform adapters:
 ```text
 .claude-plugin/
 .cursor-plugin/
+.cursor/rules/
 .opencode/
 ```
 

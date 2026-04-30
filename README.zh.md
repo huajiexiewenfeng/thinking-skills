@@ -73,6 +73,7 @@ npx skills add .
 ```text
 .claude-plugin/
 .cursor-plugin/
+.cursor/rules/
 .opencode/
 ```
 
