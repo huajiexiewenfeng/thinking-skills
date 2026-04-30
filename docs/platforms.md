@@ -50,6 +50,8 @@ Docs:
 .codex/INSTALL.md
 ```
 
+When installed this way, Thinking Skills appears under Codex **Skills**, not **Plugins**. This is expected.
+
 ## Codex Plugin
 
 The Codex plugin manifest lives at:
@@ -65,6 +67,10 @@ It should include:
 - `skills: "./skills/"`.
 - Interface metadata for Codex UI.
 - Category and capabilities.
+
+The plugin manifest does not automatically register the repository as a Codex plugin. The plugin appears under Codex **Plugins** only after it is installed through Codex's plugin installation or marketplace flow.
+
+Use Codex native skill discovery when you only need the skills. Use the Codex plugin path when you want plugin-level packaging, UI metadata, marketplace listing, or additional plugin capabilities.
 
 ## Future Adapters
 
@@ -95,4 +101,3 @@ Each adapter should document:
 | Claude Code plugin | `.claude-plugin/plugin.json` | Todo |
 | Cursor plugin/rules | `.cursor-plugin/` or `.cursor/rules/` | Todo |
 | OpenCode | `.opencode/` | Todo |
-
