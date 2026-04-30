@@ -36,6 +36,8 @@ thinking-skills/
       SKILL.md
     emotional-support/
       SKILL.md
+    skill-evaluator/
+      SKILL.md
     life-decision/
       SKILL.md
     creative-studio/
@@ -50,6 +52,9 @@ thinking-skills/
     routing.md
     method-bases.md
     platforms.md
+    improvement-loop.md
+    failure-taxonomy.md
+    eval-schema.md
     skill-authoring.md
     evaluation.md
     safety.md
@@ -60,7 +65,12 @@ thinking-skills/
     content-creator-cases.md
     technical-deep-dive-cases.md
     emotional-support-cases.md
+    skill-evaluator-cases.md
     life-decision-cases.md
+
+  cases/
+    emotional-support/
+      assessment-to-chat-mode-mismatch.md
 ```
 
 ## Version Plan
@@ -72,7 +82,8 @@ thinking-skills/
 | v0.3 | Add `life-decision` and `creative-studio` | Cover everyday decisions and open-ended creative work |
 | v0.4 | Add eval cases for router and expanded skills | Test whether routing and skill behavior are reliable |
 | v0.5 | Add Claude Code, Cursor, and OpenCode adapters | Broaden platform support without forking skill content |
-| v0.6 | Add method base and safety refinements | Make skill methods explicit and handle high-stakes boundaries more carefully |
+| v0.6 | Add improvement loop, failure taxonomy, eval schema, and `skill-evaluator` | Make skill improvement semi-automatic and reusable |
+| v0.7 | Add method base and safety refinements | Make skill methods explicit and handle high-stakes boundaries more carefully |
 | v1.0 | Stable docs, stable first-party skills, eval set, contribution model | Ready for public use and contribution |
 
 ## MVP Progress Tracker
@@ -105,6 +116,12 @@ thinking-skills/
 | Add content eval cases | `evals/content-creator-cases.md` | Done |
 | Add technical eval cases | `evals/technical-deep-dive-cases.md` | Done |
 | Add emotional support eval cases | `evals/emotional-support-cases.md` | Done |
+| Write improvement loop guide | `docs/improvement-loop.md` | Done |
+| Write failure taxonomy | `docs/failure-taxonomy.md` | Done |
+| Write eval schema | `docs/eval-schema.md` | Done |
+| Write skill evaluator | `skills/skill-evaluator/SKILL.md` | Done |
+| Add skill evaluator eval cases | `evals/skill-evaluator-cases.md` | Done |
+| Add abstract failure cases | `cases/` | Done |
 
 ## v1.0 Progress Tracker
 
@@ -119,6 +136,7 @@ thinking-skills/
 | Contribution model | New skill checklist and contribution criteria are documented | Done |
 | Release | License, attribution, version notes, and stable directory structure exist | Done |
 | Platform adapters | Codex, Claude Code, Cursor, and OpenCode adapters exist | Done |
+| Improvement flywheel | Failure taxonomy, eval schema, skill evaluator, and abstract cases exist | Done |
 
 ## Completion Criteria for v0.1
 

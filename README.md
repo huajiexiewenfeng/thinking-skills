@@ -29,6 +29,7 @@ Thinking Skills separates routing from reasoning:
 | `content-creator` | Articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure |
 | `technical-deep-dive` | Code, architecture, debugging, performance, APIs, systems, technical trade-offs, and verification paths |
 | `emotional-support` | Anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps |
+| `skill-evaluator` | Review failed skill responses, classify failure types, propose evals, and recommend minimal patches |
 
 Planned skills:
 
@@ -142,6 +143,9 @@ Thinking Skills is working if you see:
 - [Method Bases](docs/method-bases.md)
 - [Safety](docs/safety.md)
 - [Evaluation](docs/evaluation.md)
+- [Improvement Loop](docs/improvement-loop.md)
+- [Failure Taxonomy](docs/failure-taxonomy.md)
+- [Eval Schema](docs/eval-schema.md)
 - [Platform Support](docs/platforms.md)
 - [Skill Authoring](docs/skill-authoring.md)
 - [Contributing](CONTRIBUTING.md)

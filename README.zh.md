@@ -29,6 +29,7 @@ Thinking Skills 把“路由”和“推理”分开：
 | `content-creator` | 文章、随笔、脚本、标题、大纲、论点、受众定位和内容结构 |
 | `technical-deep-dive` | 代码、架构、debug、性能、API、系统、技术权衡和验证路径 |
 | `emotional-support` | 焦虑、压力、自责、关系痛苦、情绪困惑、危机信号和温和的下一步 |
+| `skill-evaluator` | 审查失败的 skill 回复，分类失败类型，提出 eval 和最小修改建议 |
 
 规划中的 skills：
 
@@ -142,6 +143,9 @@ npx skills add .
 - [Method Bases](docs/method-bases.md)
 - [Safety](docs/safety.md)
 - [Evaluation](docs/evaluation.md)
+- [Improvement Loop](docs/improvement-loop.md)
+- [Failure Taxonomy](docs/failure-taxonomy.md)
+- [Eval Schema](docs/eval-schema.md)
 - [Platform Support](docs/platforms.md)
 - [Skill Authoring](docs/skill-authoring.md)
 - [Contributing](CONTRIBUTING.md)
