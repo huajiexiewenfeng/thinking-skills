@@ -49,6 +49,7 @@ thinking-skills/
     principles.md
     routing.md
     method-bases.md
+    platforms.md
     skill-authoring.md
     evaluation.md
     safety.md
@@ -67,10 +68,11 @@ thinking-skills/
 | Version | Scope | Goal |
 |---|---|---|
 | v0.1 MVP | `thinking-router`, `content-creator`, `technical-deep-dive`, `emotional-support`, core docs | Prove the framework is domain-neutral and the routing model works |
-| v0.2 | Add `life-decision` and `creative-studio` | Cover everyday decisions and open-ended creative work |
-| v0.3 | Add eval cases for router and MVP skills | Test whether routing and skill behavior are reliable |
-| v0.4 | Add skill authoring standard | Make it possible to add new skills consistently |
-| v0.5 | Add method base and safety docs | Make skill methods explicit and handle high-stakes boundaries more carefully |
+| v0.2 | Codex native install and Codex plugin support | Make Thinking Skills easy to install and discover in Codex |
+| v0.3 | Add `life-decision` and `creative-studio` | Cover everyday decisions and open-ended creative work |
+| v0.4 | Add eval cases for router and expanded skills | Test whether routing and skill behavior are reliable |
+| v0.5 | Add Claude Code, Cursor, and OpenCode adapters | Broaden platform support without forking skill content |
+| v0.6 | Add method base and safety refinements | Make skill methods explicit and handle high-stakes boundaries more carefully |
 | v1.0 | Stable docs, stable first-party skills, eval set, contribution model | Ready for public use and contribution |
 
 ## MVP Progress Tracker
@@ -83,12 +85,15 @@ thinking-skills/
 | Write core principles | `docs/principles.md` | Done |
 | Write routing rules | `docs/routing.md` | Done |
 | Write method base design | `docs/method-bases.md` | Done |
+| Write platform support plan | `docs/platforms.md` | Done |
 | Write skill authoring standard | `docs/skill-authoring.md` | Done |
 | Write attribution note | `ATTRIBUTION.md` | Done |
 | Add license | `LICENSE` | Done |
 | Write evaluation guide | `docs/evaluation.md` | Done |
 | Write contribution guide | `CONTRIBUTING.md` | Done |
 | Add changelog | `CHANGELOG.md` | Done |
+| Add Codex native install guide | `.codex/INSTALL.md` | Done |
+| Add Codex plugin manifest | `.codex-plugin/plugin.json` | Done |
 | Write router skill | `skills/thinking-router/SKILL.md` | Done |
 | Write content skill | `skills/content-creator/SKILL.md` | Done |
 | Write technical skill | `skills/technical-deep-dive/SKILL.md` | Done |
@@ -110,6 +115,7 @@ thinking-skills/
 | Safety | High-stakes domains have explicit boundaries and escalation guidance | Done |
 | Contribution model | New skill checklist and contribution criteria are documented | Done |
 | Release | License, attribution, version notes, and stable directory structure exist | Done |
+| Platform adapters | Codex native and Codex plugin are supported first | In progress |
 
 ## Completion Criteria for v0.1
 

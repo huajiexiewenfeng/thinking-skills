@@ -7,6 +7,7 @@ Initial MVP draft of Thinking Skills.
 Includes:
 
 - Independent project positioning.
+- English and Chinese README files.
 - `thinking-router` entry skill.
 - `content-creator` domain skill.
 - `technical-deep-dive` domain skill.
@@ -16,6 +17,9 @@ Includes:
 - Skill authoring guide.
 - Evaluation guide.
 - Safety guide.
+- Platform support plan.
+- Codex native install guide.
+- Codex plugin manifest.
 - Contribution guide.
 - Routing and domain skill eval cases.
 
@@ -23,4 +27,3 @@ Notes:
 
 - This is a draft framework release, not a tested runtime package.
 - Future versions should add `life-decision`, `creative-studio`, `learning-coach`, and `business-strategy`.
-

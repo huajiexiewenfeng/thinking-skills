@@ -53,6 +53,18 @@ npx skills add .
 
 这会通过 Skills CLI 安装 Thinking Skills 仓库。
 
+### Codex native skill discovery
+
+参见 [`.codex/INSTALL.md`](.codex/INSTALL.md)。
+
+### Codex plugin
+
+本仓库包含 Codex plugin manifest：
+
+```text
+.codex-plugin/plugin.json
+```
+
 ## 核心原则
 
 - **默认领域中立** - 不要默认这是软件开发问题。
@@ -80,6 +92,7 @@ npx skills add .
 - [Method Bases](docs/method-bases.md)
 - [Safety](docs/safety.md)
 - [Evaluation](docs/evaluation.md)
+- [Platform Support](docs/platforms.md)
 - [Skill Authoring](docs/skill-authoring.md)
 - [Contributing](CONTRIBUTING.md)
 

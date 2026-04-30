@@ -53,6 +53,18 @@ npx skills add .
 
 This installs the Thinking Skills repository through the Skills CLI.
 
+### Codex native skill discovery
+
+See [`.codex/INSTALL.md`](.codex/INSTALL.md).
+
+### Codex plugin
+
+This repository includes a Codex plugin manifest:
+
+```text
+.codex-plugin/plugin.json
+```
+
 ## Core Principles
 
 - **Domain-neutral by default** - do not assume software development.
@@ -80,6 +92,7 @@ Thinking Skills is working if you see:
 - [Method Bases](docs/method-bases.md)
 - [Safety](docs/safety.md)
 - [Evaluation](docs/evaluation.md)
+- [Platform Support](docs/platforms.md)
 - [Skill Authoring](docs/skill-authoring.md)
 - [Contributing](CONTRIBUTING.md)
 
