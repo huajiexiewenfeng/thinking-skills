@@ -42,3 +42,4 @@ Notes:
 - Added `docs/architecture-memory.zh.md` Chinese version.
 - Added `docs/eval-runbook.md` and completed the first documented improvement-loop diagnosis.
 - Refactored `emotional-support` into a smaller main `SKILL.md` plus reference modules.
+- Added structural regression report for the `emotional-support` reference split.

@@ -417,6 +417,14 @@ skills/emotional-support/
 
 主 `SKILL.md` 现在指向 reference modules。下一步是用 `evals/emotional-support-cases.md` 和抽象案例做回归测试。
 
+结构回归已记录在：
+
+```text
+cases/emotional-support/reference-split-regression.md
+```
+
+这只能证明 discovery 和 reference 结构正常，不能证明真实输出质量不退化。
+
 ### 平台适配需要真实客户端测试
 
 Codex discovery 已本地测试。

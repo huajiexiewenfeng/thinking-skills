@@ -418,6 +418,14 @@ skills/emotional-support/
 
 The main `SKILL.md` now points to reference modules. Next step is regression testing against `evals/emotional-support-cases.md` and the abstract cases.
 
+Structural regression has been recorded in:
+
+```text
+cases/emotional-support/reference-split-regression.md
+```
+
+This proves discovery and reference structure, not live output quality.
+
 ### Platform adapters need real client tests
 
 Codex discovery was tested locally.
