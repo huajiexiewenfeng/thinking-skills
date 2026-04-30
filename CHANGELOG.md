@@ -20,6 +20,9 @@ Includes:
 - Platform support plan.
 - Codex native install guide.
 - Codex plugin manifest.
+- Claude Code plugin metadata.
+- Cursor plugin metadata.
+- OpenCode plugin adapter and install guide.
 - Contribution guide.
 - Routing and domain skill eval cases.
 

@@ -1,0 +1,24 @@
+{
+  "name": "thinking-skills",
+  "displayName": "Thinking Skills",
+  "description": "Domain-neutral thinking skills for intent routing, content creation, technical analysis, and emotional support",
+  "version": "0.1.0",
+  "author": {
+    "name": "xiewenfeng",
+    "url": "https://github.com/huajiexiewenfeng"
+  },
+  "homepage": "https://github.com/huajiexiewenfeng/thinking-skills",
+  "repository": "https://github.com/huajiexiewenfeng/thinking-skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "thinking",
+    "intent-routing",
+    "content-creation",
+    "technical-analysis",
+    "emotional-support",
+    "method-bases"
+  ],
+  "skills": "./skills/"
+}
+

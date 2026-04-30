@@ -65,6 +65,18 @@ npx skills add .
 .codex-plugin/plugin.json
 ```
 
+### Claude Code、Cursor 和 OpenCode
+
+本仓库也包含这些平台的薄适配层：
+
+```text
+.claude-plugin/
+.cursor-plugin/
+.opencode/
+```
+
+参见 [Platform Support](docs/platforms.md)。
+
 ## 使用方式
 
 安装后，重启 Codex，让 Codex 重新发现 skills。

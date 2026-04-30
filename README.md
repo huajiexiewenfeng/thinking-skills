@@ -65,6 +65,18 @@ This repository includes a Codex plugin manifest:
 .codex-plugin/plugin.json
 ```
 
+### Claude Code, Cursor, and OpenCode
+
+This repository also includes thin platform adapters:
+
+```text
+.claude-plugin/
+.cursor-plugin/
+.opencode/
+```
+
+See [Platform Support](docs/platforms.md).
+
 ## Usage
 
 After installing, restart Codex so the skills are discovered.

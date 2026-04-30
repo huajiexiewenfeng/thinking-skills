@@ -94,6 +94,9 @@ thinking-skills/
 | Add changelog | `CHANGELOG.md` | Done |
 | Add Codex native install guide | `.codex/INSTALL.md` | Done |
 | Add Codex plugin manifest | `.codex-plugin/plugin.json` | Done |
+| Add Claude Code plugin metadata | `.claude-plugin/` | Done |
+| Add Cursor plugin metadata | `.cursor-plugin/` | Done |
+| Add OpenCode plugin adapter | `.opencode/` | Done |
 | Write router skill | `skills/thinking-router/SKILL.md` | Done |
 | Write content skill | `skills/content-creator/SKILL.md` | Done |
 | Write technical skill | `skills/technical-deep-dive/SKILL.md` | Done |
@@ -115,7 +118,7 @@ thinking-skills/
 | Safety | High-stakes domains have explicit boundaries and escalation guidance | Done |
 | Contribution model | New skill checklist and contribution criteria are documented | Done |
 | Release | License, attribution, version notes, and stable directory structure exist | Done |
-| Platform adapters | Codex native and Codex plugin are supported first | In progress |
+| Platform adapters | Codex, Claude Code, Cursor, and OpenCode adapters exist | Done |
 
 ## Completion Criteria for v0.1
 

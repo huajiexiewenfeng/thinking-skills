@@ -1,0 +1,21 @@
+{
+  "name": "thinking-skills",
+  "description": "Development marketplace entry for Thinking Skills",
+  "owner": {
+    "name": "xiewenfeng",
+    "url": "https://github.com/huajiexiewenfeng"
+  },
+  "plugins": [
+    {
+      "name": "thinking-skills",
+      "description": "Domain-neutral thinking skills for intent routing, content creation, technical analysis, and emotional support",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {
+        "name": "xiewenfeng",
+        "url": "https://github.com/huajiexiewenfeng"
+      }
+    }
+  ]
+}
+

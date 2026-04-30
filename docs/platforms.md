@@ -12,9 +12,9 @@ The framework should keep its core skill content platform-neutral, then provide 
 |---|---|---|
 | P0 | Codex native skills | Clone or install the repository and expose `skills/` through Codex skill discovery |
 | P0 | Codex plugin | Provide `.codex-plugin/plugin.json` for Codex plugin installation and UI metadata |
-| P1 | Claude Code plugin | Provide `.claude-plugin/plugin.json` and marketplace/install docs |
-| P1 | Cursor plugin/rules | Provide Cursor plugin metadata or project rules |
-| P2 | OpenCode | Provide OpenCode adapter docs and metadata |
+| P1 | Claude Code plugin | Provide `.claude-plugin/plugin.json` and marketplace metadata |
+| P1 | Cursor plugin/rules | Provide Cursor plugin metadata |
+| P1 | OpenCode | Provide OpenCode plugin adapter and install docs |
 | P2 | Generic Skills CLI | Keep `npx skills add huajiexiewenfeng/thinking-skills` working |
 
 ## Design Rule
@@ -98,6 +98,42 @@ Each adapter should document:
 |---|---|---|
 | Codex native skills | `.codex/INSTALL.md` | Done |
 | Codex plugin | `.codex-plugin/plugin.json` | Done |
-| Claude Code plugin | `.claude-plugin/plugin.json` | Todo |
-| Cursor plugin/rules | `.cursor-plugin/` or `.cursor/rules/` | Todo |
-| OpenCode | `.opencode/` | Todo |
+| Claude Code plugin | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | Done |
+| Cursor plugin/rules | `.cursor-plugin/plugin.json` | Done |
+| OpenCode | `.opencode/INSTALL.md`, `.opencode/plugins/thinking-skills.js` | Done |
+
+## Claude Code Plugin
+
+Claude plugin metadata lives at:
+
+```text
+.claude-plugin/plugin.json
+.claude-plugin/marketplace.json
+```
+
+The adapter provides metadata for plugin discovery while keeping canonical skill content in `skills/`.
+
+## Cursor Plugin
+
+Cursor plugin metadata lives at:
+
+```text
+.cursor-plugin/plugin.json
+```
+
+The manifest points to:
+
+```text
+skills: "./skills/"
+```
+
+## OpenCode
+
+OpenCode support lives at:
+
+```text
+.opencode/INSTALL.md
+.opencode/plugins/thinking-skills.js
+```
+
+The plugin registers the shared `skills/` directory and injects a small bootstrap around `thinking-router`.
