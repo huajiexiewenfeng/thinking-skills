@@ -139,7 +139,7 @@ npx skills add .
 ## 文档
 
 - [Roadmap](docs/roadmap.md)
-- [Architecture Memory](docs/architecture-memory.md)
+- [Architecture Memory](docs/architecture-memory.md) / [中文](docs/architecture-memory.zh.md)
 - [Routing](docs/routing.md)
 - [Method Bases](docs/method-bases.md)
 - [Safety](docs/safety.md)

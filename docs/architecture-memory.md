@@ -1,5 +1,7 @@
 # Thinking Skills Architecture Memory
 
+English | [简体中文](./architecture-memory.zh.md)
+
 This document is a compact architecture record for humans and AI agents.
 
 Use it to learn the project quickly, recover context in a new session, or decide where a future change belongs.
@@ -450,4 +452,3 @@ Then read only the files needed for the task:
 - Skill failure review: `skills/skill-evaluator/SKILL.md`, `docs/failure-taxonomy.md`, `docs/improvement-loop.md`
 - Platform change: `docs/platforms.md`, relevant platform folder
 - Roadmap change: `docs/roadmap.md`, `CHANGELOG.md`
-

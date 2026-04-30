@@ -39,3 +39,4 @@ Notes:
 - Added mode switching, assessment boundaries, question budget, action advice boundaries, and user-pushback handling to `emotional-support`.
 - Added improvement-loop docs, failure taxonomy, eval schema, `skill-evaluator`, and the first abstract failure case.
 - Added `docs/architecture-memory.md` for human learning and AI context recovery.
+- Added `docs/architecture-memory.zh.md` Chinese version.
