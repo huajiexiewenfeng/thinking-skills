@@ -99,7 +99,7 @@ Each adapter should document:
 | Codex native skills | `.codex/INSTALL.md` | Done |
 | Codex plugin | `.codex-plugin/plugin.json` | Done |
 | Claude Code plugin | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | Done |
-| Cursor plugin/rules | `.cursor-plugin/plugin.json` | Done |
+| Cursor plugin/rules | `.cursor-plugin/plugin.json`, `.cursor/rules/thinking-skills.mdc` | Done |
 | OpenCode | `.opencode/INSTALL.md`, `.opencode/plugins/thinking-skills.js` | Done |
 
 ## Claude Code Plugin
@@ -126,6 +126,14 @@ The manifest points to:
 ```text
 skills: "./skills/"
 ```
+
+Cursor project rules live at:
+
+```text
+.cursor/rules/thinking-skills.mdc
+```
+
+The rule provides Cursor Agent with the minimal routing adapter for Thinking Skills while keeping canonical skill content in `skills/`.
 
 ## OpenCode
 
