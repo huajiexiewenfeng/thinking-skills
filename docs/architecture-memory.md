@@ -400,9 +400,9 @@ Claude Code, Cursor, and OpenCode adapters exist, but should be treated as imple
 
 ### `emotional-support` is too large
 
-Current size is much larger than peer skills.
+Status: initial modularization done.
 
-It should eventually be split into:
+`emotional-support` has been split into:
 
 ```text
 skills/emotional-support/
@@ -412,11 +412,11 @@ skills/emotional-support/
     deep-analysis-mode.md
     assessment-boundary.md
     safety-boundary.md
-    question-budget.md
-    action-advice-boundary.md
+    mode-boundaries.md
+    reflection-frames.md
 ```
 
-Do not split it blindly. Use the improvement flywheel and eval cases to decide the split.
+The main `SKILL.md` now points to reference modules. Next step is regression testing against `evals/emotional-support-cases.md` and the abstract cases.
 
 ### Platform adapters need real client tests
 

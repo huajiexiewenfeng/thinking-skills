@@ -399,9 +399,9 @@ Claude Code、Cursor、OpenCode adapters 已存在，但在对应客户端真实
 
 ### `emotional-support` 过大
 
-它明显比其他 skill 大。
+状态：已完成初步模块化。
 
-未来应考虑拆成：
+`emotional-support` 已拆成：
 
 ```text
 skills/emotional-support/
@@ -411,11 +411,11 @@ skills/emotional-support/
     deep-analysis-mode.md
     assessment-boundary.md
     safety-boundary.md
-    question-budget.md
-    action-advice-boundary.md
+    mode-boundaries.md
+    reflection-frames.md
 ```
 
-不要盲目拆分。应该用 improvement flywheel 和 eval cases 来决定怎么拆。
+主 `SKILL.md` 现在指向 reference modules。下一步是用 `evals/emotional-support-cases.md` 和抽象案例做回归测试。
 
 ### 平台适配需要真实客户端测试
 

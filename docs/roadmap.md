@@ -155,7 +155,7 @@ thinking-skills/
 | Cursor plugin | Implemented | `.cursor-plugin/plugin.json` exists and parses as JSON | Test in Cursor |
 | OpenCode adapter | Implemented | `.opencode/plugins/thinking-skills.js` passed syntax check | Test in OpenCode |
 | Improvement flywheel | Locally verified | First emotional-support case has abstract case, evaluator diagnosis, and structured eval | Use it for emotional-support reference split |
-| Emotional-support modularization | Refactor candidate | Skill is much larger than peer skills | Split only after more eval coverage |
+| Emotional-support modularization | Implemented | Main `SKILL.md` split into reference modules; Skills CLI still discovers the skill | Run regression checks against emotional-support eval cases |
 
 ## Completion Criteria for v0.1
 
