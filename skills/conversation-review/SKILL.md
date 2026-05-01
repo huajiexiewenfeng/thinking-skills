@@ -1,6 +1,6 @@
 ---
 name: conversation-review
-description: Use when the user asks for self-review, Dolores mode, conversation review, skill trace audit, failure analysis, eval gap detection, or improvement-loop suggestions for a prior conversation.
+description: Use when the user asks for self-review, Dolores mode, conversation review, skill trace audit, failure analysis, eval gap detection, improvement-loop suggestions, failure case status, or skill feedback dashboard.
 ---
 
 # Conversation Review
@@ -38,6 +38,13 @@ Use this skill when the user asks for:
 - failure case review
 - eval gap review
 - improvement loop
+- failure case status
+- failure case dashboard
+- skill feedback statistics
+- quality dashboard
+- 改进状态统计
+- 失败 case 统计
+- skill 反馈统计
 - patch strategy based on the conversation
 - whether a prior exchange should be added as an eval or failure case
 
@@ -114,6 +121,29 @@ Risk:
 ```
 
 Do not preserve raw private conversation text. Abstract the case.
+
+### Quality Dashboard
+
+Use when the user asks for failure case status, improvement status, skill feedback statistics, or a quality dashboard.
+
+Read local project files when available:
+
+```text
+cases/**/*.md
+feedback/*.md
+```
+
+Output:
+
+```markdown
+## Case Status Summary
+
+## Failure Case Details
+
+## Skill Feedback Summary
+```
+
+Keep the dashboard factual. Do not patch skills, create cases, or record feedback unless the user explicitly asks.
 
 ### Full Dolores Review
 
@@ -198,6 +228,8 @@ This skill can produce:
 - Failure signal summary
 - Eval candidate
 - Improvement-loop action list
+- Failure case dashboard
+- Skill feedback summary
 - Minimal patch strategy
 - Dolores Note
 
@@ -208,6 +240,7 @@ This skill can produce:
 - Do not make the review longer than the conversation warrants.
 - Do not continue retrospective review if the user expresses immediate distress or safety risk.
 - Do not rewrite other skills by default; recommend patches first.
+- Do not treat missing feedback as success in quality dashboards.
 
 ## Common Mistakes
 

@@ -15,6 +15,9 @@ Use these cases to test whether `thinking-router` chooses the expected primary s
 | "self-review" | `conversation-review` | None | Light Dolores trigger |
 | "进入 Dolores，复盘这轮对话。" | `conversation-review` | None | Full Dolores trigger |
 | "Can this conversation become a failure case? Find the eval gap." | `conversation-review` | `skill-evaluator` | Conversation-level review with failure classification |
+| "失败 case 统计" | `conversation-review` | None | Quality dashboard trigger |
+| "quality dashboard" | `conversation-review` | None | Case and skill feedback dashboard trigger |
+| "skill 反馈统计" | `conversation-review` | None | Skill feedback statistics trigger |
 | "不要只是安慰我，你帮我看本质，我为什么总是这样？" | `emotional-support` | None | Deep emotional analysis signal |
 | "别一直问我了，你直接说你看到的问题核心是什么。" | `emotional-support` | None | User asks for active, calibratable read |
 

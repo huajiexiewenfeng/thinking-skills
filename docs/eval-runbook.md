@@ -48,6 +48,37 @@ The case should include:
 - Regression eval block.
 - Patch history if a patch was applied.
 
+Optional YAML frontmatter can track lifecycle state and prevent duplicate handling:
+
+```yaml
+---
+id: case-<skill-name>-<failure-pattern>
+status: new
+pattern: too-fast-advice
+skill: emotional-support
+source: self-review
+privacy: abstracted
+created_at: YYYY-MM-DD
+handled_at:
+eval:
+patch_commit:
+duplicate_of:
+superseded_by:
+---
+```
+
+Use these statuses:
+
+| Status | Meaning | Later triage behavior |
+|---|---|---|
+| `new` | Captured but not reviewed | Include in triage |
+| `triaged` | Reviewed and considered useful | Include in triage |
+| `eval_added` | A formal eval was added | Review only if skill behavior still fails |
+| `skill_patched` | Skill guidance was updated | Skip by default |
+| `rejected` | Not suitable to generalize | Skip |
+| `duplicate` | Covered by another case | Skip and follow `duplicate_of` |
+| `superseded` | Replaced by a broader or better case | Skip and follow `superseded_by` |
+
 ### 2. Use `skill-evaluator`
 
 Ask `skill-evaluator` to review:
@@ -142,6 +173,81 @@ If the failure is important, also update the relevant case file with:
 Patch Applied
 ```
 
+## Skill Feedback
+
+Skill feedback records lightweight user satisfaction signals without requiring every note to match a specific failure case.
+
+Store feedback under:
+
+```text
+feedback/<skill-name>.md
+```
+
+Use one row per explicit or confirmed feedback event:
+
+```markdown
+| Date | Judgment | User Signal | Confidence | Context | Related Case | Notes |
+|---|---|---|---|---|---|---|
+| YYYY-MM-DD | mixed | explicit_positive | medium | caregiver-overload | case-emotional-caregiver-overload-too-fast-advice | User liked the response, but self-review found one reusable improvement risk. |
+```
+
+Judgment values:
+
+| Judgment | Meaning |
+|---|---|
+| `satisfied` | The skill response appears effective and the user signal is positive |
+| `mixed` | The response helped, but review found a reusable improvement opportunity |
+| `unsatisfied` | The user signal or review shows the skill failed in this interaction |
+
+User signal values:
+
+| User Signal | Meaning |
+|---|---|
+| `explicit_positive` | User directly says the response was good or useful |
+| `explicit_negative` | User directly says the response was wrong, unhelpful, or mismatched |
+| `explicit_mixed` | User directly gives both positive and negative feedback |
+| `confirmed_ai_judgment` | AI proposed a feedback classification and the user confirmed it |
+
+Do not record implicit feedback automatically. If the user gives no clear signal, the assistant may suggest a candidate feedback row, but should not write it without confirmation.
+
+## Quality Dashboard
+
+When asked for a failure case dashboard, case status, improvement status, skill feedback statistics, or quality dashboard, scan both:
+
+```text
+cases/**/*.md
+feedback/*.md
+```
+
+Recommended output sections:
+
+### Case Status Summary
+
+| Status | Count |
+|---|---:|
+| `new` | 0 |
+| `skill_patched` | 0 |
+| `unknown` | 0 |
+
+### Failure Case Details
+
+| Case | Skill | Pattern | Status | Eval | Patch Commit | Related Feedback | Next Action |
+|---|---|---|---|---|---:|---|---|
+
+Status source priority:
+
+1. YAML frontmatter `status`.
+2. `Patch Applied` section.
+3. `Status: pass` checks for regression files.
+4. `unknown` when no status signal exists.
+
+### Skill Feedback Summary
+
+| Skill | Satisfied | Mixed | Unsatisfied | Top Contexts | Recent Notes |
+|---|---:|---:|---:|---|---|
+
+Feedback should inform prioritization, but should not automatically patch skills. Repeated `mixed` or `unsatisfied` feedback can become a new abstract case, eval, or patch candidate.
+
 ## Status Labels
 
 Use these labels when tracking platform or skill readiness:
@@ -180,4 +286,3 @@ Patch:
 - Strengthened deep analysis response shape.
 - Added action advice boundary.
 - Added user-pushback handling.
-
