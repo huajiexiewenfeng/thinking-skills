@@ -36,6 +36,8 @@ thinking-skills/
       SKILL.md
     emotional-support/
       SKILL.md
+    conversation-review/
+      SKILL.md
     skill-evaluator/
       SKILL.md
     life-decision/
@@ -68,6 +70,7 @@ thinking-skills/
     content-creator-cases.md
     technical-deep-dive-cases.md
     emotional-support-cases.md
+    conversation-review-cases.md
     skill-evaluator-cases.md
     life-decision-cases.md
 
@@ -86,7 +89,7 @@ thinking-skills/
 | v0.4 | Add eval cases for router and expanded skills | Test whether routing and skill behavior are reliable |
 | v0.5 | Add Claude Code, Cursor, and OpenCode adapters | Broaden platform support without forking skill content |
 | v0.6 | Add improvement loop, failure taxonomy, eval schema, and `skill-evaluator` | Make skill improvement semi-automatic and reusable |
-| v0.7 | Add method base and safety refinements | Make skill methods explicit and handle high-stakes boundaries more carefully |
+| v0.7 | Add method base, safety refinements, and `conversation-review` / Dolores mode | Make skill methods explicit, handle high-stakes boundaries carefully, and review conversation-level skill traces |
 | v1.0 | Stable docs, stable first-party skills, eval set, contribution model | Ready for public use and contribution |
 
 ## MVP Progress Tracker
@@ -117,10 +120,12 @@ thinking-skills/
 | Write content skill | `skills/content-creator/SKILL.md` | Done |
 | Write technical skill | `skills/technical-deep-dive/SKILL.md` | Done |
 | Write emotional support skill | `skills/emotional-support/SKILL.md` | Done |
+| Write conversation review skill | `skills/conversation-review/SKILL.md` | Done |
 | Add routing eval cases | `evals/routing-cases.md` | Done |
 | Add content eval cases | `evals/content-creator-cases.md` | Done |
 | Add technical eval cases | `evals/technical-deep-dive-cases.md` | Done |
 | Add emotional support eval cases | `evals/emotional-support-cases.md` | Done |
+| Add conversation review eval cases | `evals/conversation-review-cases.md` | Done |
 | Write improvement loop guide | `docs/improvement-loop.md` | Done |
 | Write failure taxonomy | `docs/failure-taxonomy.md` | Done |
 | Write eval schema | `docs/eval-schema.md` | Done |
@@ -136,7 +141,7 @@ thinking-skills/
 |---|---|---|
 | Framework docs | README, principles, routing, method bases, authoring, evaluation, safety, roadmap are complete | Done |
 | Router | Handles domain classification, uncertainty, and conflicts | Done |
-| MVP skills | Four first-party skills are written and tested with examples | Done |
+| MVP skills | First-party skills are written and tested with examples | Done |
 | Expanded skills | `life-decision`, `creative-studio`, `learning-coach`, `business-strategy` exist | Todo |
 | Evaluations | Each first-party skill has at least five realistic test cases | Done |
 | Safety | High-stakes domains have explicit boundaries and escalation guidance | Done |
@@ -144,12 +149,13 @@ thinking-skills/
 | Release | License, attribution, version notes, and stable directory structure exist | Done |
 | Platform adapters | Codex, Claude Code, Cursor, and OpenCode adapters exist | Done |
 | Improvement flywheel | Failure taxonomy, eval schema, skill evaluator, and abstract cases exist | Done |
+| Conversation review | Dolores mode can review skill traces, failure signals, eval gaps, and improvement-loop actions | Done |
 
 ## Verification Status
 
 | Area | Status | Evidence | Next Step |
 |---|---|---|---|
-| Codex native skills | Locally verified | Skills CLI found 5 skills from local repository, including `skill-evaluator` | Re-run Skills CLI after adding new skills |
+| Codex native skills | Locally verified | Skills CLI found 6 skills from local repository, including `conversation-review` | Re-run Skills CLI after adding new skills |
 | Codex plugin | Implemented | `.codex-plugin/plugin.json` exists and parses as JSON | Test through Codex plugin install flow |
 | Claude Code plugin | Implemented | `.claude-plugin/plugin.json` and marketplace metadata exist | Test in Claude Code plugin flow |
 | Cursor plugin | Implemented | `.cursor-plugin/plugin.json` exists and parses as JSON | Test in Cursor |

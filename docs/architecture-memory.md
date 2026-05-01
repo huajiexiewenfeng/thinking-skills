@@ -28,6 +28,7 @@ User request
   -> domain skill
   -> method bases
   -> response
+  -> optional conversation-review / Dolores
   -> feedback/failure case
   -> improvement loop
 ```
@@ -39,6 +40,7 @@ The framework has four major layers:
 | Router | Classify intent and select a skill |
 | Domain Skills | Perform domain-specific thinking |
 | Method Bases | Make the underlying methods explicit |
+| Conversation Review | Review skill traces, mode shifts, failure signals, and eval gaps across a prior conversation |
 | Improvement Flywheel | Turn failures into evals and patches |
 
 ## Directory Map
@@ -49,6 +51,7 @@ skills/
   content-creator/
   technical-deep-dive/
   emotional-support/
+  conversation-review/
   skill-evaluator/
 
 docs/
@@ -70,6 +73,7 @@ evals/
   content-creator-cases.md
   technical-deep-dive-cases.md
   emotional-support-cases.md
+  conversation-review-cases.md
   skill-evaluator-cases.md
 
 cases/
@@ -106,6 +110,7 @@ Important routing distinction:
 - A request to write about technology usually routes to `content-creator`, with `technical-deep-dive` as secondary.
 - A request expressing distress about technology usually routes to `emotional-support`, with `technical-deep-dive` as secondary.
 - A request for actual technical diagnosis routes to `technical-deep-dive`.
+- A request for self-review, Dolores mode, conversation review, skill trace audit, or eval gap review routes to `conversation-review`, with `skill-evaluator` as secondary when failure classification is requested.
 
 ## Domain Skills
 
@@ -263,6 +268,39 @@ Expected outputs:
 - Minimal patch plan.
 - Overfitting risk.
 
+### `conversation-review`
+
+Use for:
+
+- `self-review`
+- Dolores mode
+- Conversation review
+- Skill trace audits
+- Failure signal review
+- Eval gap review
+- Improvement-loop suggestions
+
+Worldview:
+
+```text
+A conversation is not only an answer stream. It is an observable thinking trace.
+```
+
+Expected outputs:
+
+- Skill trace
+- Mode shift analysis
+- Failure signals
+- Eval candidates
+- Patch strategy
+- Dolores Note
+
+Main risk:
+
+```text
+Do not turn ordinary summaries into long audits, and do not store raw private conversations as cases.
+```
+
 ## Method Bases
 
 Method bases are explicit frameworks behind each skill.
@@ -323,6 +361,7 @@ They test:
 
 - Router accuracy.
 - Domain fit.
+- Conversation-review trigger boundaries.
 - Safety boundaries.
 - Output shape.
 - Negative and mixed cases.
@@ -337,6 +376,7 @@ The project uses a semi-automatic improvement loop.
 
 ```text
 Failure signal
+  -> optional conversation-review / Dolores
   -> abstract failure case
   -> classify failure
   -> add/update eval
@@ -392,7 +432,7 @@ Platform folders are thin adapters:
 .opencode/
 ```
 
-Codex has been locally verified through Skills CLI discovery. The local repository currently exposes five skills, including `skill-evaluator`.
+Codex has been locally verified through Skills CLI discovery. The local repository currently exposes six first-party skills, including `conversation-review`.
 
 Claude Code, Cursor, and OpenCode adapters exist, but should be treated as implemented metadata/adapters until tested in those clients.
 
@@ -449,8 +489,9 @@ Refactor candidate
 1. Use `skill-evaluator` on recent `emotional-support` failures.
 2. Convert the first abstract failure case into structured eval blocks.
 3. Refactor `emotional-support` into references only after eval coverage is good enough.
-4. Add `life-decision` after the improvement flywheel feels stable.
-5. Test Claude Code, Cursor, and OpenCode adapters in real clients.
+4. Run live Dolores reviews against `evals/conversation-review-cases.md`.
+5. Add `life-decision` after the improvement flywheel feels stable.
+6. Test Claude Code, Cursor, and OpenCode adapters in real clients.
 
 ## AI Session Bootstrap
 
@@ -461,5 +502,6 @@ Then read only the files needed for the task:
 - Router change: `skills/thinking-router/SKILL.md`, `evals/routing-cases.md`
 - Emotional support change: `skills/emotional-support/SKILL.md`, `evals/emotional-support-cases.md`, relevant `cases/`
 - Skill failure review: `skills/skill-evaluator/SKILL.md`, `docs/failure-taxonomy.md`, `docs/improvement-loop.md`
+- Conversation review change: `skills/conversation-review/SKILL.md`, `evals/conversation-review-cases.md`, `docs/improvement-loop.md`
 - Platform change: `docs/platforms.md`, relevant platform folder
 - Roadmap change: `docs/roadmap.md`, `CHANGELOG.md`

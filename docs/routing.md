@@ -33,6 +33,7 @@ User request
 | article, essay, blog, newsletter, title, outline, audience, argument, draft, script, content structure | `content-creator` |
 | code, repo, architecture, bug, performance, API, tests, deployment, implementation, source, framework, database | `technical-deep-dive` |
 | anxious, overwhelmed, sad, self-blame, relationship pain, stress, burnout, confused feelings, emotional pain | `emotional-support` |
+| self-review, Dolores, conversation review, skill trace, failure case, eval gap, improvement loop, 自我检查, 自我复盘, 对话复盘 | `conversation-review` |
 
 ## Planned Routing Table
 
@@ -50,6 +51,8 @@ User request
 | "I want to write an article about why this API design is confusing." | Primary: `content-creator`; Secondary: `technical-deep-dive` |
 | "I am anxious because my project architecture is a mess." | Primary: `emotional-support`; Secondary: `technical-deep-dive` |
 | "Help me decide whether to quit my job and build a startup." | Primary: `life-decision`; Secondary: `business-strategy` |
+| "Do a self-review of this conversation and find any eval gaps." | Primary: `conversation-review`; Secondary: `skill-evaluator` |
+| "Summarize what we discussed." | Primary: no Dolores trigger; provide a normal summary unless the user asks for review |
 
 ## Low-Confidence Question
 
@@ -66,4 +69,3 @@ Do you want to approach this mainly as writing, technical analysis, life decisio
 - Do not route to multiple skills just because several keywords appear.
 - Do not ask a long intake questionnaire before routing.
 - Do not force non-technical domains into implementation plans.
-

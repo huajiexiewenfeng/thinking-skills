@@ -1,6 +1,6 @@
 {
   "name": "thinking-skills",
-  "description": "Domain-neutral thinking skills for intent routing, content creation, technical analysis, and emotional support",
+  "description": "Domain-neutral thinking skills for intent routing, content creation, technical analysis, emotional support, and conversation review",
   "version": "0.1.0",
   "author": {
     "name": "xiewenfeng",
@@ -16,7 +16,8 @@
     "content-creation",
     "technical-analysis",
     "emotional-support",
+    "conversation-review",
+    "self-review",
     "method-bases"
   ]
 }
-

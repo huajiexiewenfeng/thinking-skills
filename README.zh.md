@@ -29,6 +29,7 @@ Thinking Skills 把“路由”和“推理”分开：
 | `content-creator` | 文章、随笔、脚本、标题、大纲、论点、受众定位和内容结构 |
 | `technical-deep-dive` | 代码、架构、debug、性能、API、系统、技术权衡和验证路径 |
 | `emotional-support` | 焦虑、压力、自责、关系痛苦、情绪困惑、危机信号和温和的下一步 |
+| `conversation-review` | Dolores 模式，用于 self-review、skill 触发轨迹、失败信号、eval 缺口和改进飞轮 |
 | `skill-evaluator` | 审查失败的 skill 回复，分类失败类型，提出 eval 和最小修改建议 |
 
 规划中的 skills：
@@ -101,6 +102,14 @@ npx skills add .
 这个 API 设计感觉不对，帮我分析一下权衡。
 ```
 
+```text
+self-review
+```
+
+```text
+进入 Dolores，复盘这轮对话。
+```
+
 如果想强制使用某个 skill，可以直接点名：
 
 ```text
@@ -113,6 +122,10 @@ npx skills add .
 
 ```text
 使用 emotional-support 帮我梳理现在的感受。
+```
+
+```text
+使用 conversation-review 复盘这轮对话的 skill 触发轨迹和改进机会。
 ```
 
 当前 Codex 会话里，新安装的 skills 可能需要重启 Codex 后才会出现在可用列表中。
@@ -135,6 +148,7 @@ npx skills add .
 - 写作任务会产出受众、角度、论点和结构，而不是 implementation plan。
 - 技术任务会区分事实、假设、推测、权衡和验证路径。
 - 情绪支持任务会接住情绪、避免诊断，并在必要时优先处理安全问题。
+- 对话复盘任务会识别 skill 触发轨迹、失败信号、eval 缺口和最小改进补丁。
 - 模糊请求只触发一个简短的路由问题，而不是一长串问卷。
 
 ## 文档

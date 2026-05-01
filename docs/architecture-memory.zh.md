@@ -25,6 +25,7 @@ Thinking Skills 是一个独立的、领域中立的思考技能框架。
   -> domain skill
   -> method bases
   -> response
+  -> optional conversation-review / Dolores
   -> feedback/failure case
   -> improvement loop
 ```
@@ -36,6 +37,7 @@ Thinking Skills 是一个独立的、领域中立的思考技能框架。
 | Router | 判断意图并选择 skill |
 | Domain Skills | 执行领域专属思考 |
 | Method Bases | 显式声明底层方法 |
+| Conversation Review | 复盘一段对话里的 skill 触发轨迹、模式切换、失败信号和 eval 缺口 |
 | Improvement Flywheel | 把失败转化为 eval 和 patch |
 
 ## 目录地图
@@ -46,6 +48,7 @@ skills/
   content-creator/
   technical-deep-dive/
   emotional-support/
+  conversation-review/
   skill-evaluator/
 
 docs/
@@ -69,6 +72,7 @@ evals/
   content-creator-cases.md
   technical-deep-dive-cases.md
   emotional-support-cases.md
+  conversation-review-cases.md
   skill-evaluator-cases.md
 
 cases/
@@ -105,6 +109,7 @@ cases/
 - 写技术主题的文章，通常 primary 是 `content-creator`，secondary 是 `technical-deep-dive`。
 - 因技术问题表达痛苦，通常 primary 是 `emotional-support`，secondary 是 `technical-deep-dive`。
 - 真正的技术诊断，路由到 `technical-deep-dive`。
+- self-review、Dolores、对话复盘、skill 使用复盘、eval gap review 通常路由到 `conversation-review`；如果需要失败分类，`skill-evaluator` 可作为 secondary。
 
 ## Domain Skills
 
@@ -262,6 +267,39 @@ Question -> question -> question -> conclusion
 - Minimal patch plan。
 - Overfitting risk。
 
+### `conversation-review`
+
+适用于：
+
+- `self-review`
+- Dolores mode
+- 对话复盘
+- skill 触发轨迹审计
+- 失败信号复盘
+- eval 缺口分析
+- improvement-loop 建议
+
+世界观：
+
+```text
+对话不只是回答流，也是一条可以被观察的思考轨迹。
+```
+
+预期输出：
+
+- Skill trace。
+- Mode shift analysis。
+- Failure signals。
+- Eval candidates。
+- Patch strategy。
+- Dolores Note。
+
+主要风险：
+
+```text
+不要把普通总结变成长篇审计，也不要把原始私密对话存成 case。
+```
+
 ## Method Bases
 
 Method bases 是每个 skill 背后的显式方法框架。
@@ -322,6 +360,7 @@ Skills 不能：
 
 - Router 准确性。
 - Domain fit。
+- Conversation-review 触发边界。
 - Safety boundaries。
 - Output shape。
 - Negative and mixed cases。
@@ -336,6 +375,7 @@ Skills 不能：
 
 ```text
 Failure signal
+  -> optional conversation-review / Dolores
   -> abstract failure case
   -> classify failure
   -> add/update eval
@@ -391,7 +431,7 @@ skills/
 .opencode/
 ```
 
-Codex 已经通过 Skills CLI discovery 做过本地验证。当前本地仓库可发现五个 skills，包括 `skill-evaluator`。
+Codex 已经通过 Skills CLI discovery 做过本地验证。当前本地仓库包含六个 first-party skills，包括 `conversation-review`。
 
 Claude Code、Cursor、OpenCode adapters 已存在，但在对应客户端真实测试前，只应视为已实现 metadata/adapters。
 
@@ -448,8 +488,9 @@ Refactor candidate
 1. 用 `skill-evaluator` 审查近期 `emotional-support` 失败。
 2. 把第一个抽象失败案例转成结构化 eval blocks。
 3. eval 覆盖足够后，再把 `emotional-support` 拆成 references。
-4. improvement flywheel 稳定后，再加 `life-decision`。
-5. 在真实客户端测试 Claude Code、Cursor、OpenCode adapters。
+4. 用 `evals/conversation-review-cases.md` 做 Dolores live review 检查。
+5. improvement flywheel 稳定后，再加 `life-decision`。
+6. 在真实客户端测试 Claude Code、Cursor、OpenCode adapters。
 
 ## AI Session Bootstrap
 
@@ -460,5 +501,6 @@ Refactor candidate
 - Router 修改：`skills/thinking-router/SKILL.md`、`evals/routing-cases.md`
 - Emotional support 修改：`skills/emotional-support/SKILL.md`、`evals/emotional-support-cases.md`、相关 `cases/`
 - Skill failure review：`skills/skill-evaluator/SKILL.md`、`docs/failure-taxonomy.md`、`docs/improvement-loop.md`
+- Conversation review 修改：`skills/conversation-review/SKILL.md`、`evals/conversation-review-cases.md`、`docs/improvement-loop.md`
 - Platform 修改：`docs/platforms.md`、相关平台目录
 - Roadmap 修改：`docs/roadmap.md`、`CHANGELOG.md`

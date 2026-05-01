@@ -8,10 +8,13 @@ The improvement loop turns user feedback and failed conversations into reusable 
 
 This project currently targets a semi-automatic loop: humans provide judgment and real examples; AI helps classify failures, draft evals, and propose small skill changes.
 
+`conversation-review` / Dolores mode can be used before this loop when the useful unit of analysis is a whole conversation rather than one failed response.
+
 ## Loop
 
 ```text
 Failure signal
+  -> optional conversation-review / Dolores
   -> abstract failure case
   -> classify failure
   -> add or update eval
@@ -37,6 +40,7 @@ Failure signal
 | Role | Responsibility |
 |---|---|
 | Human reviewer | Provides feedback, decides whether the behavior is acceptable |
+| `conversation-review` | Reviews a prior conversation as a skill trace and identifies reusable failure signals or eval gaps |
 | `skill-evaluator` | Classifies failure type and recommends a minimal patch |
 | Domain skill | Receives the smallest useful behavior update |
 | Evals | Preserve the failure as a reusable regression case |
@@ -117,4 +121,3 @@ The assistant moved into deep analysis, but kept asking many assessment-style qu
 ```
 
 The first goal is not to split the skill immediately. The first goal is to make the failure reusable as cases and evals.
-

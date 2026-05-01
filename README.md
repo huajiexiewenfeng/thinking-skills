@@ -29,6 +29,7 @@ Thinking Skills separates routing from reasoning:
 | `content-creator` | Articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure |
 | `technical-deep-dive` | Code, architecture, debugging, performance, APIs, systems, technical trade-offs, and verification paths |
 | `emotional-support` | Anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps |
+| `conversation-review` | Dolores mode for self-review, skill trace audits, failure signals, eval gaps, and improvement-loop actions |
 | `skill-evaluator` | Review failed skill responses, classify failure types, propose evals, and recommend minimal patches |
 
 Planned skills:
@@ -101,6 +102,14 @@ I feel anxious and keep blaming myself.
 This API design feels wrong. Help me analyze the trade-offs.
 ```
 
+```text
+self-review
+```
+
+```text
+Enter Dolores mode and review this conversation.
+```
+
 To force a specific skill, name it directly:
 
 ```text
@@ -113,6 +122,10 @@ Use content-creator to help me find the angle and outline.
 
 ```text
 Use emotional-support to help me sort out what I am feeling.
+```
+
+```text
+Use conversation-review to audit the skill trace and improvement-loop opportunities in this conversation.
 ```
 
 In the current Codex session, newly installed skills may not appear until Codex is restarted.
@@ -135,6 +148,7 @@ Thinking Skills is working if you see:
 - Writing tasks produce audience, angle, thesis, and structure instead of implementation plans.
 - Technical tasks separate facts, assumptions, hypotheses, trade-offs, and verification.
 - Emotional-support tasks validate feelings, avoid diagnosis, and prioritize safety when needed.
+- Conversation-review tasks identify skill traces, failure signals, eval gaps, and small improvement patches.
 - Ambiguous requests trigger one short routing question instead of a long intake form.
 
 ## Documentation

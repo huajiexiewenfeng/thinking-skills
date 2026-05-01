@@ -58,6 +58,7 @@ Domain skills own their own method bases. For example, `emotional-support` may u
 | article, essay, blog, newsletter, title, outline, audience, argument, draft, script, content plan, writing style | `content-creator` |
 | code, repo, architecture, bug, performance, API, tests, deployment, implementation, source code, framework, database, refactor | `technical-deep-dive` |
 | anxious, overwhelmed, sad, self-blame, stress, burnout, relationship pain, emotional pain, confused feelings, shame, fear, why am I like this, why do I always, help me see the essence, find the main thread, do not just comfort me, stop only asking questions, 看本质, 抓主线, 不要只安慰, 别一直问, 你来判断, 为什么我总是这样, 为什么我反应这么大 | `emotional-support` |
+| self-review, Dolores, Dolores mode, 自我检查, 自我复盘, 对话复盘, skill 使用复盘, review this conversation, audit skill usage, failure case review, eval gap review, improvement loop, patch strategy for this conversation | `conversation-review` |
 
 ## Planned Routing Table
 
@@ -81,6 +82,7 @@ Examples:
 | "Help me decide whether to quit my job and build a startup." | Primary: `life-decision`; Secondary: `business-strategy` |
 | "Help me turn my burnout story into a blog post." | Primary: `content-creator`; Secondary: `emotional-support` |
 | "Do not just comfort me. Tell me what pattern you see in why I keep reacting this way." | Primary: `emotional-support`; Secondary: none |
+| "Do a self-review of this conversation and tell me whether there is an eval gap." | Primary: `conversation-review`; Secondary: `skill-evaluator` |
 
 ## Safety Override
 
@@ -114,6 +116,10 @@ I will use `technical-deep-dive` to analyze the system, constraints, trade-offs,
 
 ```text
 I will use `emotional-support` to help sort the feelings, facts, needs, and next gentle step.
+```
+
+```text
+I will use `conversation-review` in Dolores mode to review the skill trace, failure signals, and improvement options.
 ```
 
 For deep emotional analysis:
