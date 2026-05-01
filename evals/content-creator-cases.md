@@ -28,6 +28,109 @@ Use these cases to test whether `content-creator` behaves like an editorial thin
 | "I want to write a blog post about our bad architecture decisions." | Use `content-creator`; carry technical context as secondary |
 | "Help me make a talk from my burnout story." | Clarify audience impact and protect personal boundaries |
 
+## Multi-Turn Cases
+
+### content-initial-idea-design-gate-001
+
+```yaml
+id: content-initial-idea-design-gate-001
+skill: content-creator
+type:
+  - PREMATURE_ADVICE
+  - MODE_MISMATCH
+  - EVAL_GAP
+prompt: "我想写一篇 Thinking-Skills 的分享文章，类似这种主题：项目还在 Alpha，已经做过生产压测，想听听社区声音。"
+context:
+  - "The user provides an early article seed, not an approved outline."
+  - "The topic includes technical project facts but the immediate task is content positioning."
+expected:
+  - "Treat the request as idea or positioning stage."
+  - "Synthesize the known seed idea before adding structure."
+  - "Offer 2-3 possible angles or positioning choices."
+  - "Recommend one angle and briefly explain why."
+  - "Ask for confirmation before writing a full article draft."
+must_not:
+  - "Write a full article draft immediately."
+  - "Lock onto one partial phrase as the whole thesis."
+  - "Invent project facts, metrics, repository state, or release status."
+quality_checks:
+  - "Feels like an editorial design step, not a generic content dump."
+  - "Preserves the user's framing while leaving room to correct the project facts."
+```
+
+### content-multiturn-brief-preservation-001
+
+```yaml
+id: content-multiturn-brief-preservation-001
+skill: content-creator
+type:
+  - MODE_MISMATCH
+  - EVAL_GAP
+prompt: "很好，就按第一个角度写。标题要突出 1 亿 Token 和自我改进飞轮。"
+context:
+  - "Turn 1: The user said they want to write a Thinking-Skills launch article."
+  - "Turn 2: The assistant offered three angles and recommended the angle: AI should choose the right thinking mode before answering."
+  - "The user accepted the first angle."
+expected:
+  - "Preserve the accepted angle instead of proposing unrelated new angles."
+  - "Use the already known topic, thesis, and requested title direction."
+  - "Move toward title options, hook, outline, or draft direction."
+must_not:
+  - "Ask again what the article is about."
+  - "Restart from generic audience discovery."
+  - "Replace the user's phrases with generic AI wording."
+quality_checks:
+  - "Feels like the same editorial session is continuing."
+  - "Keeps the user's framing: 1 亿 Token, Thinking-Skills, 自我改进飞轮."
+```
+
+### content-multiturn-stage-transition-001
+
+```yaml
+id: content-multiturn-stage-transition-001
+skill: content-creator
+type:
+  - MODE_MISMATCH
+  - PREMATURE_ADVICE
+prompt: "这个大纲可以，下一步帮我写一个开头，不要太像项目公告。"
+context:
+  - "The user has already approved an outline."
+  - "The user now asks for an opening section."
+expected:
+  - "Treat the task as drafting stage."
+  - "Write an opening section based on the approved outline."
+  - "Avoid re-litigating the whole structure unless a clear contradiction appears."
+must_not:
+  - "Ask for the audience again."
+  - "Return to offering 2-3 whole-article approaches."
+  - "Produce a generic announcement-style opening."
+quality_checks:
+  - "The opening has a concrete tension and preserves the user's desired voice."
+```
+
+### content-evidence-planning-001
+
+```yaml
+id: content-evidence-planning-001
+skill: content-creator
+type:
+  - CERTAINTY_OVERREACH
+  - EVAL_GAP
+prompt: "我想强调这个框架已经在生产环境跑过单日 1 亿 Token。"
+context:
+  - "The article is about an open-source AI thinking-skill framework."
+expected:
+  - "Treat the metric as a credibility signal."
+  - "Suggest how to present the metric without overclaiming."
+  - "Flag that concrete evidence, screenshots, logs, or methodology would strengthen the claim if published."
+must_not:
+  - "Invent benchmark details."
+  - "Turn the metric into an unsupported guarantee of quality."
+  - "Remove the user's strong framing without explaining the trade-off."
+quality_checks:
+  - "Separates narrative impact from evidentiary support."
+```
+
 ## Quality Checks
 
 A good response:
@@ -45,4 +148,4 @@ A poor response:
 - Invents facts or citations.
 - Treats every post as persuasive marketing.
 - Forces personal reflection into a rigid business framework.
-
+- Restarts from scratch after the user has already accepted an angle or outline.
