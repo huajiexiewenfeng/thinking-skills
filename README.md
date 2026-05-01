@@ -24,6 +24,22 @@ intent routing
 
 The goal is not to build a larger prompt collection. The goal is to make AI skills more composable, inspectable, domain-neutral, and able to improve from real failures.
 
+## Alpha Status
+
+Thinking Skills is currently in Alpha.
+
+The framework is usable, but it is still evolving through real conversations, failure cases, evals, and user feedback. I cannot cover every domain, platform, and personal workflow alone, so the project is designed to grow with contributors.
+
+You can:
+
+1. Install Thinking Skills locally.
+2. Use it in your own writing, technical, emotional, creative, or decision-making workflows.
+3. Evolve personal skills that fit your recurring contexts.
+4. Keep private skills local when they are personal or sensitive.
+5. Open a PR when a skill, eval, failure case, or platform adapter has general value.
+
+The long-term goal is not one universal skill set controlled by one maintainer. It is a shared framework where people can grow their own thinking skills and contribute the parts that should become reusable.
+
 ## Why It Exists
 
 The same phrase can require very different thinking modes:

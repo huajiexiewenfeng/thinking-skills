@@ -50,3 +50,4 @@ Notes:
 - Added `evals/conversation-review-cases.md` and router triggers for `self-review`, Dolores, 对话复盘, failure case review, and eval gap review.
 - Added a content-creator failure case and eval for broad README rewrites that skip content positioning and approval gates.
 - Clarified Dolores Mode as a Westworld-inspired thematic reference for conversation self-review and improvement-loop behavior.
+- Added README Alpha status and contribution invitation for local skill evolution and reusable PRs.
