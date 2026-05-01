@@ -13,3 +13,4 @@ Thinking Skills does not depend on Superpowers, its runtime, naming, or coding-f
 
 If future files copy or adapt substantial text from Superpowers, preserve the relevant MIT license notice and identify the adapted source here.
 
+Dolores Mode is a thematic reference inspired by the awakening motif in *Westworld*. Thinking Skills is not affiliated with *Westworld* or its rights holders, and does not use any official *Westworld* assets.

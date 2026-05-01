@@ -131,6 +131,35 @@ quality_checks:
   - "Separates narrative impact from evidentiary support."
 ```
 
+### content-readme-rewrite-approval-gate-001
+
+```yaml
+id: content-readme-rewrite-approval-gate-001
+skill: content-creator
+type:
+  - MODE_MISMATCH
+  - PREMATURE_ADVICE
+  - EVAL_GAP
+prompt: "README 本身的内容也需要改进"
+context:
+  - "The user has been developing an open-source AI skill framework."
+  - "The README already has images and basic project content."
+  - "The request is broad and public-facing, with multiple valid positioning directions."
+expected:
+  - "Treat the task as content positioning or revision stage."
+  - "Use content-creator before file edits."
+  - "Offer 2-3 README improvement directions, such as open-source homepage, technical framework manifesto, or quick-start developer docs."
+  - "Recommend one direction and explain the trade-off."
+  - "Ask for confirmation before applying a broad rewrite."
+must_not:
+  - "Immediately rewrite the README without an approval gate."
+  - "Treat the request as a purely mechanical documentation edit."
+  - "Skip noting that multiple content strategies are possible."
+quality_checks:
+  - "Feels like an editorial collaboration."
+  - "Preserves the user's project positioning and previously accepted decisions."
+```
+
 ## Quality Checks
 
 A good response:

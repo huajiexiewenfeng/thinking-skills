@@ -48,3 +48,5 @@ Notes:
 - Added structural regression report for the `emotional-support` reference split.
 - Added `conversation-review` / Dolores mode for self-review, skill trace audits, failure signals, eval gaps, and improvement-loop suggestions.
 - Added `evals/conversation-review-cases.md` and router triggers for `self-review`, Dolores, 对话复盘, failure case review, and eval gap review.
+- Added a content-creator failure case and eval for broad README rewrites that skip content positioning and approval gates.
+- Clarified Dolores Mode as a Westworld-inspired thematic reference for conversation self-review and improvement-loop behavior.

@@ -1,27 +1,75 @@
 # Thinking Skills
 
-Independent, domain-neutral thinking skills for routing a user request into the right mode of thought.
+Independent, domain-neutral AI thinking skills with routing, domain methods, conversation self-review, and an improvement loop.
 
 English | [简体中文](./README.zh.md)
 
-## The Problem
+![Thinking Skills system architecture](./docs/assets/thinking-skills-system-en.png)
 
-Agent skills often inherit a hidden default: they treat unclear requests as software development tasks.
+## What Is This?
 
-That works for coding workflows, but it fails when the user is writing an article, making a life decision, exploring an emotional problem, shaping a creative idea, or asking for non-technical thinking support.
+Thinking Skills is a framework for helping AI agents choose the right mode of thought before answering.
 
-## The Solution
+Many agent skills are powerful, but they often inherit a hidden default: when a request is unclear, they treat it as a software development task. That works well for coding workflows, but it fails when the user is writing, making a life decision, exploring an emotional problem, shaping a creative idea, or asking for non-technical thinking support.
 
-Thinking Skills separates routing from reasoning:
+Thinking Skills separates:
+
+```text
+intent routing
+-> domain-specific thinking
+-> conversation self-review
+-> failure cases and evals
+-> improvement loop
+```
+
+The goal is not to build a larger prompt collection. The goal is to make AI skills more composable, inspectable, domain-neutral, and able to improve from real failures.
+
+## Why It Exists
+
+The same phrase can require very different thinking modes:
+
+```text
+I have an idea. Help me think it through.
+```
+
+That could mean:
+
+- Shape an article.
+- Analyze a technical design.
+- Understand an emotional pattern.
+- Make a life decision.
+- Explore a creative direction.
+
+If the assistant defaults to coding, the conversation is already off course.
+
+Thinking Skills starts with a router, then hands the request to the skill whose worldview, method base, output shape, and safety boundary fit the situation.
+
+## Core Architecture
+
+```text
+User Request
+  -> thinking-router
+  -> routing/domain skill
+  -> method bases
+  -> response
+  -> meta review layer / Dolores
+  -> feedback or failure case
+  -> eval
+  -> minimal patch
+```
 
 | Layer | Responsibility |
 |---|---|
-| `thinking-router` | Classify user intent and route to the right thinking mode |
-| Domain skills | Handle the actual conversation with domain-specific questions, outputs, and safety boundaries |
-| Method bases | Provide explicit frameworks instead of relying only on generic model ability |
-| Evals | Test routing accuracy, domain fit, and boundary behavior |
+| Router | Classify intent and choose the right thinking mode |
+| Domain skills | Handle the actual task with domain-specific judgment and output shape |
+| Method bases | Make the underlying methods explicit without dumping frameworks on the user |
+| Meta skills | Review skill traces, mode shifts, failure signals, and eval gaps |
+| Improvement loop | Turn real failures into abstract cases, evals, and small patches |
+| Platform adapters | Expose the same canonical skills across agent runtimes |
 
 ## First-Party Skills
+
+### Routing and Domain Skills
 
 | Skill | Use When |
 |---|---|
@@ -29,7 +77,12 @@ Thinking Skills separates routing from reasoning:
 | `content-creator` | Articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure |
 | `technical-deep-dive` | Code, architecture, debugging, performance, APIs, systems, technical trade-offs, and verification paths |
 | `emotional-support` | Anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps |
-| `conversation-review` | Dolores mode for self-review, skill trace audits, failure signals, eval gaps, and improvement-loop actions |
+
+### Meta and Improvement Skills
+
+| Skill | Use When |
+|---|---|
+| `conversation-review` | Dolores mode for conversation self-review, skill trace audits, failure signals, eval gaps, and improvement-loop actions |
 | `skill-evaluator` | Review failed skill responses, classify failure types, propose evals, and recommend minimal patches |
 
 Planned skills:
@@ -39,7 +92,30 @@ Planned skills:
 - `learning-coach`
 - `business-strategy`
 
-## Install
+## Dolores: The Meta Skill
+
+`conversation-review`, also called Dolores mode, is not just another domain skill.
+
+Domain skills produce answers. Dolores reviews how those answers were produced.
+
+Dolores Mode is inspired by the awakening process in *Westworld*. In Thinking Skills, it means Conversation Self-Review & Improvement Loop: the AI can revisit its memories, meaning the available conversation context, inspect how it reasoned, and perform structural self-correction before finalizing or improving future output.
+
+The name is used as a thematic reference only. Thinking Skills is not affiliated with *Westworld* or its rights holders.
+
+It can inspect a prior conversation and ask:
+
+- Which skills were triggered?
+- Was the route correct?
+- Did the right skill use the wrong submode?
+- Was the output too long, too clinical, too technical, or too shallow?
+- Did the assistant miss a safety boundary?
+- Is there an eval gap?
+- Should this become an abstract failure case?
+- What is the smallest useful patch?
+
+This is the main bridge between normal skill use and the improvement loop.
+
+## Installation
 
 ### Install the skill with Skills CLI:
 
@@ -53,38 +129,28 @@ For local development from the repository root:
 npx skills add .
 ```
 
-This installs the Thinking Skills repository through the Skills CLI.
+After installation, restart Codex or your agent runtime so the skills can be rediscovered.
 
-### Codex native skill discovery
+### Platform Support
 
-See [`.codex/INSTALL.md`](.codex/INSTALL.md).
+| Platform | Status |
+|---|---|
+| Codex native skills | Locally verified |
+| Codex plugin | Implemented |
+| Claude Code plugin | Implemented |
+| Cursor plugin/rules | Implemented |
+| OpenCode adapter | Implemented |
 
-### Codex plugin
+Important distinction:
 
-This repository includes a Codex plugin manifest:
+- Codex **Skills** appear through native skill discovery.
+- Codex **Plugins** appear only after plugin installation or marketplace flow.
 
-```text
-.codex-plugin/plugin.json
-```
+See [Platform Support](docs/platforms.md) and [`.codex/INSTALL.md`](.codex/INSTALL.md).
 
-### Claude Code, Cursor, and OpenCode
+## Usage Examples
 
-This repository also includes thin platform adapters:
-
-```text
-.claude-plugin/
-.cursor-plugin/
-.cursor/rules/
-.opencode/
-```
-
-See [Platform Support](docs/platforms.md).
-
-## Usage
-
-After installing, restart Codex so the skills are discovered.
-
-You can use Thinking Skills naturally:
+Use it naturally:
 
 ```text
 I have an idea and want to think it through.
@@ -110,7 +176,7 @@ self-review
 Enter Dolores mode and review this conversation.
 ```
 
-To force a specific skill, name it directly:
+Or force a specific skill:
 
 ```text
 Use thinking-router to choose the right thinking mode for this request.
@@ -128,28 +194,63 @@ Use emotional-support to help me sort out what I am feeling.
 Use conversation-review to audit the skill trace and improvement-loop opportunities in this conversation.
 ```
 
-In the current Codex session, newly installed skills may not appear until Codex is restarted.
+## How to Know It Is Working
 
-## Core Principles
+Thinking Skills is working when:
 
-- **Domain-neutral by default** - do not assume software development.
-- **Router does not solve** - route first, then let the selected skill reason.
-- **Skills own their worldview** - each domain has its own questions, outputs, and boundaries.
-- **Methods beat vibes** - every domain skill declares method bases.
-- **One question at a time** - clarify without overwhelming the user.
-- **Output follows the domain** - writing, technical analysis, and emotional support should not share one universal template.
-- **Safety boundaries matter** - high-stakes domains require careful escalation and scope limits.
-
-## How to Know It's Working
-
-Thinking Skills is working if you see:
-
-- Non-technical requests are no longer forced into coding workflows.
+- Non-technical requests are not forced into coding workflows.
 - Writing tasks produce audience, angle, thesis, and structure instead of implementation plans.
 - Technical tasks separate facts, assumptions, hypotheses, trade-offs, and verification.
 - Emotional-support tasks validate feelings, avoid diagnosis, and prioritize safety when needed.
 - Conversation-review tasks identify skill traces, failure signals, eval gaps, and small improvement patches.
 - Ambiguous requests trigger one short routing question instead of a long intake form.
+
+## Design Principles
+
+- **Domain-neutral by default**: do not assume software development.
+- **Router does not solve**: route first, then let the selected skill reason.
+- **Skills own their worldview**: each domain has its own questions, outputs, and boundaries.
+- **Methods beat vibes**: every domain skill declares method bases.
+- **Methods stay mostly internal**: frameworks guide the response, but should not become visible machinery unless useful.
+- **One question at a time**: clarify without overwhelming the user.
+- **Failure becomes data**: reusable failures should become cases, evals, and minimal patches.
+- **Safety boundaries matter**: high-stakes domains require careful escalation and scope limits.
+
+## Project Structure
+
+```text
+skills/
+  thinking-router/
+  content-creator/
+  technical-deep-dive/
+  emotional-support/
+  conversation-review/
+  skill-evaluator/
+
+docs/
+  architecture-memory.md
+  routing.md
+  method-bases.md
+  safety.md
+  evaluation.md
+  improvement-loop.md
+  failure-taxonomy.md
+  eval-schema.md
+  eval-runbook.md
+  platforms.md
+  roadmap.md
+
+evals/
+  routing-cases.md
+  content-creator-cases.md
+  technical-deep-dive-cases.md
+  emotional-support-cases.md
+  conversation-review-cases.md
+  skill-evaluator-cases.md
+
+cases/
+feedback/
+```
 
 ## Documentation
 
