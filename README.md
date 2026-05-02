@@ -101,6 +101,7 @@ Dolores belongs to the Reflection plane. It is not required to run after every a
 |---|---|
 | `conversation-review` | Dolores mode for conversation self-review, skill trace audits, failure signals, eval gaps, and improvement-loop actions |
 | `skill-evaluator` | Review failed skill responses, classify failure types, propose evals, and recommend minimal patches |
+| `benchmark-assistant` | Run benchmark commands, generate prompts, score saved responses, interpret failures, and suggest benchmark-driven next actions |
 
 Planned skills:
 
@@ -266,6 +267,7 @@ skills/
   emotional-support/
   conversation-review/
   skill-evaluator/
+  benchmark-assistant/
 
 docs/
   architecture-memory.md
@@ -289,6 +291,7 @@ evals/
   emotional-support-cases.md
   conversation-review-cases.md
   skill-evaluator-cases.md
+  benchmark-assistant-cases.md
 
 benchmarks/
   routing/

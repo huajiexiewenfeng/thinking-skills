@@ -42,6 +42,8 @@ thinking-skills/
       SKILL.md
     skill-evaluator/
       SKILL.md
+    benchmark-assistant/
+      SKILL.md
     life-decision/
       SKILL.md
     creative-studio/
@@ -73,6 +75,7 @@ thinking-skills/
     emotional-support-cases.md
     conversation-review-cases.md
     skill-evaluator-cases.md
+    benchmark-assistant-cases.md
     life-decision-cases.md
 
   benchmarks/
@@ -146,6 +149,8 @@ thinking-skills/
 | Add benchmark case library | `benchmarks/` | Done |
 | Write skill evaluator | `skills/skill-evaluator/SKILL.md` | Done |
 | Add skill evaluator eval cases | `evals/skill-evaluator-cases.md` | Done |
+| Write benchmark assistant | `skills/benchmark-assistant/SKILL.md` | Done |
+| Add benchmark assistant eval cases | `evals/benchmark-assistant-cases.md` | Done |
 | Add abstract failure cases | `cases/` | Done |
 | Run first improvement loop | `cases/emotional-support/assessment-to-chat-evaluation.md` | Done |
 
@@ -159,6 +164,7 @@ thinking-skills/
 | Expanded skills | `life-decision`, `creative-studio`, `business-strategy` exist | Todo |
 | Evaluations | Each first-party skill has at least five realistic test cases | Done |
 | Benchmark runner | Fixed scenario benchmark cases can be listed, prompted, and scored | Done |
+| Benchmark assistant | Benchmark workflows can be triggered and interpreted through a meta skill | Done |
 | Safety | High-stakes domains have explicit boundaries and escalation guidance | Done |
 | Contribution model | New skill checklist and contribution criteria are documented | Done |
 | Release | License, attribution, version notes, and stable directory structure exist | Done |

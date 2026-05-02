@@ -64,6 +64,7 @@ skills/
   emotional-support/
   conversation-review/
   skill-evaluator/
+  benchmark-assistant/
 
 docs/
   principles.md
@@ -90,6 +91,7 @@ evals/
   emotional-support-cases.md
   conversation-review-cases.md
   skill-evaluator-cases.md
+  benchmark-assistant-cases.md
 
 benchmarks/
   routing/
@@ -563,5 +565,6 @@ Refactor candidate
 - Skill failure review：`skills/skill-evaluator/SKILL.md`、`docs/failure-taxonomy.md`、`docs/improvement-loop.md`
 - Conversation review 修改：`skills/conversation-review/SKILL.md`、`evals/conversation-review-cases.md`、`docs/improvement-loop.md`
 - Benchmark 修改：`benchmarks/`、`scripts/run-benchmark.js`、`docs/benchmark.md`
+- Benchmark assistant 修改：`skills/benchmark-assistant/SKILL.md`、`docs/benchmark.md`、`benchmarks/`
 - Platform 修改：`docs/platforms.md`、相关平台目录
 - Roadmap 修改：`docs/roadmap.md`、`CHANGELOG.md`

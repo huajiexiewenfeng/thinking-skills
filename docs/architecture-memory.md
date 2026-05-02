@@ -67,6 +67,7 @@ skills/
   emotional-support/
   conversation-review/
   skill-evaluator/
+  benchmark-assistant/
 
 docs/
   principles.md
@@ -91,6 +92,7 @@ evals/
   emotional-support-cases.md
   conversation-review-cases.md
   skill-evaluator-cases.md
+  benchmark-assistant-cases.md
 
 benchmarks/
   routing/
@@ -564,5 +566,6 @@ Then read only the files needed for the task:
 - Skill failure review: `skills/skill-evaluator/SKILL.md`, `docs/failure-taxonomy.md`, `docs/improvement-loop.md`
 - Conversation review change: `skills/conversation-review/SKILL.md`, `evals/conversation-review-cases.md`, `docs/improvement-loop.md`
 - Benchmark change: `benchmarks/`, `scripts/run-benchmark.js`, `docs/benchmark.md`
+- Benchmark assistant change: `skills/benchmark-assistant/SKILL.md`, `docs/benchmark.md`, `benchmarks/`
 - Platform change: `docs/platforms.md`, relevant platform folder
 - Roadmap change: `docs/roadmap.md`, `CHANGELOG.md`

@@ -101,6 +101,7 @@ Dolores 属于 Reflection plane，不需要每次回答后都运行。
 |---|---|
 | `conversation-review` | Dolores 模式，用于 conversation self-review、skill 轨迹审计、失败信号、eval 缺口和改进飞轮 |
 | `skill-evaluator` | 审查失败的 skill 回复，分类失败类型，提出 eval 和最小修改建议 |
+| `benchmark-assistant` | 运行 benchmark 命令、生成测试提示、评分保存的回答、解释失败并建议下一步 |
 
 规划中的 skills：
 
@@ -266,6 +267,7 @@ skills/
   emotional-support/
   conversation-review/
   skill-evaluator/
+  benchmark-assistant/
 
 docs/
   architecture-memory.md
@@ -289,6 +291,7 @@ evals/
   emotional-support-cases.md
   conversation-review-cases.md
   skill-evaluator-cases.md
+  benchmark-assistant-cases.md
 
 benchmarks/
   routing/

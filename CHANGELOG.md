@@ -57,3 +57,4 @@ Notes:
 - Added learning eval cases and moved learning routes from planned to active routing.
 - Added a lightweight benchmark runner, initial fixed scenario benchmark cases, and benchmark documentation.
 - Added `content-creator` technical blog mode guidance, content anti-patterns, and balanced content benchmark cases.
+- Added `benchmark-assistant` as a meta skill for running, prompting, scoring, and interpreting benchmark workflows.
