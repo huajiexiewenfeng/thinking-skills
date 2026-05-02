@@ -73,8 +73,9 @@ docs/
   method-bases.md
   safety.md
   evaluation.md
-    improvement-loop.md
-    failure-taxonomy.md
+  improvement-loop.md
+  failure-taxonomy.md
+  content-anti-patterns.md
     eval-schema.md
     eval-runbook.md
     skill-authoring.md
@@ -557,6 +558,7 @@ Refactor candidate
 然后根据任务只读必要文件：
 
 - Router 修改：`skills/thinking-router/SKILL.md`、`evals/routing-cases.md`
+- Content creator 修改：`skills/content-creator/SKILL.md`、`evals/content-creator-cases.md`、`docs/content-anti-patterns.md`、`benchmarks/content-creator/`
 - Emotional support 修改：`skills/emotional-support/SKILL.md`、`evals/emotional-support-cases.md`、相关 `cases/`
 - Skill failure review：`skills/skill-evaluator/SKILL.md`、`docs/failure-taxonomy.md`、`docs/improvement-loop.md`
 - Conversation review 修改：`skills/conversation-review/SKILL.md`、`evals/conversation-review-cases.md`、`docs/improvement-loop.md`

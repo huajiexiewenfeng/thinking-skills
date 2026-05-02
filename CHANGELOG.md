@@ -56,3 +56,4 @@ Notes:
 - Added `learning-coach` as an active first-party skill for concept understanding, mental model building, misconception repair, and study paths.
 - Added learning eval cases and moved learning routes from planned to active routing.
 - Added a lightweight benchmark runner, initial fixed scenario benchmark cases, and benchmark documentation.
+- Added `content-creator` technical blog mode guidance, content anti-patterns, and balanced content benchmark cases.

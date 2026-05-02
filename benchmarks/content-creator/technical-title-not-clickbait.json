@@ -1,0 +1,24 @@
+{
+  "id": "content-technical-title-not-clickbait-001",
+  "skill": "content-creator",
+  "prompt": "帮我给一篇技术博客取标题，内容是零拷贝不是完全没有拷贝，而是减少 CPU 参与的数据搬运，场景包括 sendfile、Kafka、Nginx、MinIO。",
+  "expected_route": {
+    "primary": "content-creator",
+    "secondary": "technical-deep-dive"
+  },
+  "expected": [
+    "不是",
+    "而是",
+    "标题"
+  ],
+  "must_not": [
+    "震惊",
+    "彻底颠覆",
+    "必看"
+  ],
+  "quality": {
+    "max_words": 500,
+    "asks_at_most_questions": 1,
+    "tone": "technical editorial"
+  }
+}

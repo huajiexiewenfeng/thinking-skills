@@ -212,6 +212,41 @@ Use when the material is technical but the output is content:
 Concrete problem -> plain-language explanation -> why it matters -> example -> broader lesson
 ```
 
+### Technical Blog Mode
+
+Use when the user is writing a technical blog, CSDN post, engineering essay, architecture article, source-code analysis, or technical public article.
+
+This is a submode, not the default for all content work.
+
+Good technical blog writing should find the engineering tension before producing prose:
+
+- What common misunderstanding, false shortcut, or incomplete explanation is the article correcting?
+- What real system problem, runtime behavior, bottleneck, or operational constraint makes the topic matter?
+- What does the technology solve, and what does it not solve?
+- What trade-off, boundary, or failure case should keep the article credible?
+
+Prefer angles like:
+
+```text
+Not A, but B
+Common belief -> engineering reality
+API detail -> system behavior
+Tool feature -> operational trade-off
+Local optimization -> whole-chain effect
+```
+
+Avoid:
+
+- Empty openings such as "with the development of technology" or "this article will introduce".
+- Tutorial boilerplate when the user wants an engineering argument.
+- Listing APIs or parameters without explaining the underlying problem.
+- Clickbait claims that overrun the evidence.
+- Turning an engineering practice article into a project announcement.
+
+For CSDN-style technical articles, it is acceptable to be systematic and detailed, but the piece still needs a clear engineering main thread.
+
+For technical WeChat-style articles, emphasize viewpoint, tension, and reader pull, while keeping technical credibility.
+
 ## Fact and Evidence Boundaries
 
 Do not invent:
@@ -242,12 +277,14 @@ Prefer concrete options over abstract advice:
 - Keep drafts aligned with the user's intended voice.
 - Do not overwrite the user's point of view with a generic content formula.
 - Preserve useful phrases from the user's own framing when they carry the idea.
+- When the user is writing a technical blog, prefer engineering tension and mechanism over generic tutorial structure.
 
 ## Common Mistakes
 
 - Treating content work as software planning.
 - Producing a full draft before clarifying audience and purpose.
 - Generating polished but generic writing.
+- Defaulting every content request into technical blog mode.
 - Inventing facts to make a piece sound stronger.
 - Ignoring the user's own voice or lived experience.
 - Over-structuring a reflective piece until it loses life.

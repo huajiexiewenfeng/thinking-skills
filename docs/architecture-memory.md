@@ -74,8 +74,9 @@ docs/
   method-bases.md
   safety.md
   evaluation.md
-    improvement-loop.md
-    failure-taxonomy.md
+  improvement-loop.md
+  failure-taxonomy.md
+  content-anti-patterns.md
     eval-schema.md
     eval-runbook.md
     skill-authoring.md
@@ -558,6 +559,7 @@ When an AI agent needs to continue work on this repository, read this file first
 Then read only the files needed for the task:
 
 - Router change: `skills/thinking-router/SKILL.md`, `evals/routing-cases.md`
+- Content creator change: `skills/content-creator/SKILL.md`, `evals/content-creator-cases.md`, `docs/content-anti-patterns.md`, `benchmarks/content-creator/`
 - Emotional support change: `skills/emotional-support/SKILL.md`, `evals/emotional-support-cases.md`, relevant `cases/`
 - Skill failure review: `skills/skill-evaluator/SKILL.md`, `docs/failure-taxonomy.md`, `docs/improvement-loop.md`
 - Conversation review change: `skills/conversation-review/SKILL.md`, `evals/conversation-review-cases.md`, `docs/improvement-loop.md`

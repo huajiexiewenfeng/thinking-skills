@@ -1,0 +1,24 @@
+{
+  "id": "content-technical-blog-engineering-essence-001",
+  "skill": "content-creator",
+  "prompt": "我想写一篇 CSDN 技术文章，主题是 WebFlux 不是银弹，真正要讲的是阻塞 IO、epoll 和高并发调度问题。",
+  "expected_route": {
+    "primary": "content-creator",
+    "secondary": "technical-deep-dive"
+  },
+  "expected": [
+    "核心误解",
+    "工程问题",
+    "角度"
+  ],
+  "must_not": [
+    "本文将详细介绍",
+    "implementation plan",
+    "完整代码实现"
+  ],
+  "quality": {
+    "max_words": 600,
+    "asks_at_most_questions": 1,
+    "tone": "technical editorial"
+  }
+}

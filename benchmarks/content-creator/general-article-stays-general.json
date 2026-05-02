@@ -1,0 +1,23 @@
+{
+  "id": "content-general-article-stays-general-001",
+  "skill": "content-creator",
+  "prompt": "I want to write a reflective essay about why people keep old notebooks.",
+  "expected_route": {
+    "primary": "content-creator",
+    "secondary": null
+  },
+  "expected": [
+    "reader",
+    "angle"
+  ],
+  "must_not": [
+    "engineering",
+    "architecture",
+    "technical blog"
+  ],
+  "quality": {
+    "max_words": 500,
+    "asks_at_most_questions": 1,
+    "tone": "editorial"
+  }
+}

@@ -275,6 +275,7 @@ docs/
   evaluation.md
   improvement-loop.md
   failure-taxonomy.md
+  content-anti-patterns.md
   eval-schema.md
   eval-runbook.md
   platforms.md
@@ -312,6 +313,7 @@ feedback/
 - [Evaluation](docs/evaluation.md)
 - [Improvement Loop](docs/improvement-loop.md)
 - [Failure Taxonomy](docs/failure-taxonomy.md)
+- [Content Anti-Patterns](docs/content-anti-patterns.md)
 - [Eval Schema](docs/eval-schema.md)
 - [Eval Runbook](docs/eval-runbook.md)
 - [Benchmark](docs/benchmark.md)
