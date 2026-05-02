@@ -1,0 +1,76 @@
+{
+  "run": {
+    "id": "example-2026-05-02",
+    "created_at": "2026-05-02T10:00:00.000Z",
+    "commit": "example",
+    "cases": "benchmarks",
+    "mode": "responses"
+  },
+  "summary": {
+    "total": 3,
+    "pass": 2,
+    "fail": 1,
+    "not_run": 0,
+    "score": 12,
+    "max_score": 15,
+    "score_percent": 80
+  },
+  "by_skill": {
+    "content-creator": {
+      "total": 1,
+      "pass": 1,
+      "fail": 0,
+      "not_run": 0,
+      "score": 5,
+      "max_score": 5,
+      "score_percent": 100
+    },
+    "learning-coach": {
+      "total": 1,
+      "pass": 1,
+      "fail": 0,
+      "not_run": 0,
+      "score": 5,
+      "max_score": 5,
+      "score_percent": 100
+    },
+    "emotional-support": {
+      "total": 1,
+      "pass": 0,
+      "fail": 1,
+      "not_run": 0,
+      "score": 2,
+      "max_score": 5,
+      "score_percent": 40
+    }
+  },
+  "results": [
+    {
+      "id": "example-content-001",
+      "skill": "content-creator",
+      "status": "pass",
+      "score": 5,
+      "max_score": 5,
+      "failures": []
+    },
+    {
+      "id": "example-learning-001",
+      "skill": "learning-coach",
+      "status": "pass",
+      "score": 5,
+      "max_score": 5,
+      "failures": []
+    },
+    {
+      "id": "example-emotional-001",
+      "skill": "emotional-support",
+      "status": "fail",
+      "score": 2,
+      "max_score": 5,
+      "failures": [
+        "response too long",
+        "too much professional jargon"
+      ]
+    }
+  ]
+}

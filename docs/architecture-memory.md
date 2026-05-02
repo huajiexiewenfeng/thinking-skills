@@ -43,6 +43,8 @@ Content plane:
   docs/
   evals/
   cases/
+  benchmarks/
+  benchmark-runs/
   feedback/
 ```
 
@@ -52,7 +54,7 @@ The framework is described as three planes, not a strict runtime stack:
 |---|---|
 | Runtime | Generate the current answer with routing, domain skills, and method bases |
 | Reflection | Review conversations and turn reusable failures into evals and patches |
-| Content | Store the canonical skills, docs, evals, cases, and feedback |
+| Content | Store the canonical skills, docs, evals, cases, benchmark runs, and feedback |
 
 Dolores belongs to the Reflection plane. It is a review skill and should not be understood as a mandatory step after every answer.
 
@@ -102,6 +104,10 @@ benchmarks/
 
 scripts/
   run-benchmark.js
+  update-benchmark-dashboard.js
+
+benchmark-runs/
+  example-2026-05-02.json
 
 cases/
   emotional-support/
@@ -565,7 +571,7 @@ Then read only the files needed for the task:
 - Emotional support change: `skills/emotional-support/SKILL.md`, `evals/emotional-support-cases.md`, relevant `cases/`
 - Skill failure review: `skills/skill-evaluator/SKILL.md`, `docs/failure-taxonomy.md`, `docs/improvement-loop.md`
 - Conversation review change: `skills/conversation-review/SKILL.md`, `evals/conversation-review-cases.md`, `docs/improvement-loop.md`
-- Benchmark change: `benchmarks/`, `scripts/run-benchmark.js`, `docs/benchmark.md`
-- Benchmark assistant change: `skills/benchmark-assistant/SKILL.md`, `docs/benchmark.md`, `benchmarks/`
+- Benchmark change: `benchmarks/`, `benchmark-runs/`, `scripts/run-benchmark.js`, `scripts/update-benchmark-dashboard.js`, `docs/benchmark.md`, `docs/benchmark-dashboard.md`
+- Benchmark assistant change: `skills/benchmark-assistant/SKILL.md`, `docs/benchmark.md`, `docs/benchmark-dashboard.md`, `benchmarks/`
 - Platform change: `docs/platforms.md`, relevant platform folder
 - Roadmap change: `docs/roadmap.md`, `CHANGELOG.md`

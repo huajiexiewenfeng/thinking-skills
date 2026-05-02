@@ -130,13 +130,77 @@ function buildAgentPrompt(benchmarkCase) {
   ].join("\n");
 }
 
-function loadResponses(filePath) {
+function loadResponses(filePath, responsesData = null) {
+  if (responsesData) return responsesData;
   if (!filePath) return {};
   const parsed = JSON.parse(fs.readFileSync(filePath, "utf8"));
   if (Array.isArray(parsed)) {
     return Object.fromEntries(parsed.map((item) => [item.id, item.response || ""]));
   }
   return parsed;
+}
+
+function detectMode(options) {
+  if (options.list) return "list";
+  if (options.prompts) return "prompts";
+  if (options.responses || options.responsesData) return "responses";
+  if (options.command) return "command";
+  return "not_run";
+}
+
+function getGitCommit() {
+  try {
+    const result = spawnSync("git", ["rev-parse", "--short", "HEAD"], {
+      encoding: "utf8",
+      shell: false,
+    });
+    if (result.status === 0) return result.stdout.trim();
+  } catch (_error) {
+    return "unknown";
+  }
+  return "unknown";
+}
+
+function createRunInfo(options) {
+  const createdAt = options.createdAt || new Date().toISOString();
+  const compactTimestamp = createdAt.replace(/[-:.TZ]/g, "").slice(0, 14);
+  return {
+    id: options.runId || `run-${compactTimestamp}`,
+    created_at: createdAt,
+    commit: options.commit || getGitCommit(),
+    cases: options.cases || "benchmarks",
+    mode: detectMode(options),
+  };
+}
+
+function summarizeResults(results) {
+  const score = results.reduce((total, item) => total + (item.score || 0), 0);
+  const maxScore = results.reduce((total, item) => total + (item.max_score || 0), 0);
+  return {
+    total: results.length,
+    pass: results.filter((item) => item.status === "pass").length,
+    fail: results.filter((item) => item.status === "fail").length,
+    not_run: results.filter((item) => item.status === "not_run").length,
+    score,
+    max_score: maxScore,
+    score_percent: maxScore ? Math.round((score / maxScore) * 1000) / 10 : 0,
+  };
+}
+
+function summarizeBySkill(results) {
+  const grouped = new Map();
+  for (const result of results) {
+    const skill = result.skill || "unknown";
+    const current = grouped.get(skill) || [];
+    current.push(result);
+    grouped.set(skill, current);
+  }
+
+  return Object.fromEntries(
+    [...grouped.entries()]
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([skill, items]) => [skill, summarizeResults(items)])
+  );
 }
 
 function parseArgs(argv) {
@@ -182,7 +246,7 @@ function runCommand(command, prompt) {
 
 function runBenchmark(options) {
   const cases = loadBenchmarkCases(options.cases);
-  const responses = loadResponses(options.responses);
+  const responses = loadResponses(options.responses, options.responsesData);
   const results = [];
 
   for (const item of cases) {
@@ -214,14 +278,12 @@ function runBenchmark(options) {
     results.push(scoreResponse(item, response));
   }
 
-  const summary = {
-    total: results.length,
-    pass: results.filter((item) => item.status === "pass").length,
-    fail: results.filter((item) => item.status === "fail").length,
-    not_run: results.filter((item) => item.status === "not_run").length,
+  return {
+    run: createRunInfo(options),
+    summary: summarizeResults(results),
+    by_skill: summarizeBySkill(results),
+    results,
   };
-
-  return { summary, results };
 }
 
 function printHelp() {
@@ -265,4 +327,6 @@ module.exports = {
   loadBenchmarkCases,
   runBenchmark,
   scoreResponse,
+  summarizeBySkill,
+  summarizeResults,
 };

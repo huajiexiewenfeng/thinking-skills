@@ -101,7 +101,7 @@ Dolores belongs to the Reflection plane. It is not required to run after every a
 |---|---|
 | `conversation-review` | Dolores mode for conversation self-review, skill trace audits, failure signals, eval gaps, and improvement-loop actions |
 | `skill-evaluator` | Review failed skill responses, classify failure types, propose evals, and recommend minimal patches |
-| `benchmark-assistant` | Run benchmark commands, generate prompts, score saved responses, interpret failures, and suggest benchmark-driven next actions |
+| `benchmark-assistant` | Run benchmark commands, generate prompts, score saved responses, update the dashboard, interpret failures, and suggest benchmark-driven next actions |
 
 Planned skills:
 
@@ -239,11 +239,12 @@ Thinking Skills includes a lightweight benchmark runner for fixed scenario testi
 node scripts/run-benchmark.js --list
 node scripts/run-benchmark.js --prompts
 node scripts/run-benchmark.js --responses benchmark-responses.json
+node scripts/update-benchmark-dashboard.js
 ```
 
-Benchmark cases live under `benchmarks/`. The runner can generate fresh agent prompts, score saved responses, or run a configurable agent command per case.
+Benchmark cases live under `benchmarks/`. The runner can generate fresh agent prompts, score saved responses, or run a configurable agent command per case. Run reports can be saved under `benchmark-runs/`, then summarized into [Benchmark Dashboard](docs/benchmark-dashboard.md) for before/after comparison.
 
-See [Benchmark](docs/benchmark.md).
+See [Benchmark](docs/benchmark.md) and [Benchmark Dashboard](docs/benchmark-dashboard.md).
 
 ## Design Principles
 
@@ -301,6 +302,10 @@ benchmarks/
 
 scripts/
   run-benchmark.js
+  update-benchmark-dashboard.js
+
+benchmark-runs/
+  example-2026-05-02.json
 
 cases/
 feedback/
@@ -320,6 +325,7 @@ feedback/
 - [Eval Schema](docs/eval-schema.md)
 - [Eval Runbook](docs/eval-runbook.md)
 - [Benchmark](docs/benchmark.md)
+- [Benchmark Dashboard](docs/benchmark-dashboard.md)
 - [Platform Support](docs/platforms.md)
 - [Skill Authoring](docs/skill-authoring.md)
 - [Contributing](CONTRIBUTING.md)

@@ -58,3 +58,4 @@ Notes:
 - Added a lightweight benchmark runner, initial fixed scenario benchmark cases, and benchmark documentation.
 - Added `content-creator` technical blog mode guidance, content anti-patterns, and balanced content benchmark cases.
 - Added `benchmark-assistant` as a meta skill for running, prompting, scoring, and interpreting benchmark workflows.
+- Added benchmark run metadata and a Markdown benchmark dashboard for comparing scores, per-skill deltas, and latest failures across runs.

@@ -64,6 +64,8 @@ thinking-skills/
     eval-runbook.md
     skill-authoring.md
     evaluation.md
+    benchmark.md
+    benchmark-dashboard.md
     safety.md
     roadmap.md
 
@@ -86,6 +88,10 @@ thinking-skills/
 
   scripts/
     run-benchmark.js
+    update-benchmark-dashboard.js
+
+  benchmark-runs/
+    example-2026-05-02.json
 
   cases/
     emotional-support/
@@ -147,6 +153,7 @@ thinking-skills/
 | Write eval runbook | `docs/eval-runbook.md` | Done |
 | Add benchmark runner | `scripts/run-benchmark.js` | Done |
 | Add benchmark case library | `benchmarks/` | Done |
+| Add benchmark dashboard | `scripts/update-benchmark-dashboard.js`, `docs/benchmark-dashboard.md` | Done |
 | Write skill evaluator | `skills/skill-evaluator/SKILL.md` | Done |
 | Add skill evaluator eval cases | `evals/skill-evaluator-cases.md` | Done |
 | Write benchmark assistant | `skills/benchmark-assistant/SKILL.md` | Done |
@@ -163,8 +170,9 @@ thinking-skills/
 | MVP skills | First-party skills are written and tested with examples | Done |
 | Expanded skills | `life-decision`, `creative-studio`, `business-strategy` exist | Todo |
 | Evaluations | Each first-party skill has at least five realistic test cases | Done |
-| Benchmark runner | Fixed scenario benchmark cases can be listed, prompted, and scored | Done |
-| Benchmark assistant | Benchmark workflows can be triggered and interpreted through a meta skill | Done |
+| Benchmark runner | Fixed scenario benchmark cases can be listed, prompted, scored, and saved as run reports | Done |
+| Benchmark dashboard | Multiple run reports can be compared by total score, per-skill score, deltas, and latest failures | Done |
+| Benchmark assistant | Benchmark workflows and dashboard updates can be triggered and interpreted through a meta skill | Done |
 | Safety | High-stakes domains have explicit boundaries and escalation guidance | Done |
 | Contribution model | New skill checklist and contribution criteria are documented | Done |
 | Release | License, attribution, version notes, and stable directory structure exist | Done |

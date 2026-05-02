@@ -1,6 +1,6 @@
 ---
 name: benchmark-assistant
-description: Use when the user wants to run Thinking Skills benchmarks, test a skill, check regressions, generate benchmark prompts, score saved benchmark responses, add a benchmark case, interpret benchmark results, or decide what to patch after a benchmark failure.
+description: Use when the user wants to run Thinking Skills benchmarks, test a skill, check regressions, generate benchmark prompts, score saved benchmark responses, update or compare the benchmark dashboard, add a benchmark case, interpret benchmark results, or decide what to patch after a benchmark failure.
 ---
 
 # Benchmark Assistant
@@ -20,6 +20,8 @@ Use this skill when the user says things like:
 - "Check learning-coach regression."
 - "Generate benchmark prompts."
 - "Score these benchmark responses."
+- "Update benchmark dashboard."
+- "Compare the latest benchmark runs."
 - "Add this failure to benchmark."
 - "What failed in benchmark?"
 - "I changed a skill, help me test it."
@@ -37,7 +39,10 @@ Use this skill when the user says things like:
 Read these files when needed:
 
 - `docs/benchmark.md`
+- `docs/benchmark-dashboard.md` when comparing runs
 - `scripts/run-benchmark.js`
+- `scripts/update-benchmark-dashboard.js`
+- `benchmark-runs/` when the user asks for historical comparison
 - Relevant `benchmarks/<skill>/` cases
 - Relevant `evals/<skill>-cases.md`
 - `skills/skill-evaluator/SKILL.md` when failures need diagnosis
@@ -51,14 +56,15 @@ Read these files when needed:
 2. Choose the lightest useful command.
 3. Run the command if it does not require external credentials or unknown agent setup.
 4. If no external agent command is configured, generate prompts or ask for saved responses instead of pretending the benchmark was run.
-5. Summarize results in plain language.
-6. If failures appear, classify whether the likely source is:
+5. If the user wants trend comparison, update `docs/benchmark-dashboard.md` from `benchmark-runs/`.
+6. Summarize results in plain language.
+7. If failures appear, classify whether the likely source is:
    - Router
    - Domain skill
    - Eval or benchmark wording
    - Missing response data
    - External agent setup
-7. Recommend the smallest next action.
+8. Recommend the smallest next action.
 
 ## Common Commands
 
@@ -89,13 +95,19 @@ node scripts/run-benchmark.js --cases benchmarks/content-creator --prompts
 Score saved responses:
 
 ```bash
-node scripts/run-benchmark.js --responses benchmark-responses.json
+node scripts/run-benchmark.js --responses benchmark-responses.json --out benchmark-runs/my-run.json
 ```
 
 Run an external agent command:
 
 ```bash
 node scripts/run-benchmark.js --command "your-agent-command"
+```
+
+Update dashboard:
+
+```bash
+node scripts/update-benchmark-dashboard.js
 ```
 
 ## Output Format
@@ -140,6 +152,22 @@ Existing coverage:
 Smallest useful patch:
 
 Should this become a failure case?
+```
+
+For dashboard updates, respond with:
+
+```markdown
+## Benchmark Dashboard
+
+Command:
+
+Updated file:
+
+Latest score:
+
+Largest changes:
+
+Next action:
 ```
 
 ## Safety and Scope

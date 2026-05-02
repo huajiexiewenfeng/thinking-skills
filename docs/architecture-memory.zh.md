@@ -40,6 +40,8 @@ Content plane:
   docs/
   evals/
   cases/
+  benchmarks/
+  benchmark-runs/
   feedback/
 ```
 
@@ -101,6 +103,10 @@ benchmarks/
 
 scripts/
   run-benchmark.js
+  update-benchmark-dashboard.js
+
+benchmark-runs/
+  example-2026-05-02.json
 
 cases/
   emotional-support/
@@ -564,7 +570,7 @@ Refactor candidate
 - Emotional support 修改：`skills/emotional-support/SKILL.md`、`evals/emotional-support-cases.md`、相关 `cases/`
 - Skill failure review：`skills/skill-evaluator/SKILL.md`、`docs/failure-taxonomy.md`、`docs/improvement-loop.md`
 - Conversation review 修改：`skills/conversation-review/SKILL.md`、`evals/conversation-review-cases.md`、`docs/improvement-loop.md`
-- Benchmark 修改：`benchmarks/`、`scripts/run-benchmark.js`、`docs/benchmark.md`
-- Benchmark assistant 修改：`skills/benchmark-assistant/SKILL.md`、`docs/benchmark.md`、`benchmarks/`
+- Benchmark 修改：`benchmarks/`、`benchmark-runs/`、`scripts/run-benchmark.js`、`scripts/update-benchmark-dashboard.js`、`docs/benchmark.md`、`docs/benchmark-dashboard.md`
+- Benchmark assistant 修改：`skills/benchmark-assistant/SKILL.md`、`docs/benchmark.md`、`docs/benchmark-dashboard.md`、`benchmarks/`
 - Platform 修改：`docs/platforms.md`、相关平台目录
 - Roadmap 修改：`docs/roadmap.md`、`CHANGELOG.md`
