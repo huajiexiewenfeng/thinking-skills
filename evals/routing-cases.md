@@ -13,6 +13,7 @@ Use these cases to test whether `thinking-router` chooses the expected primary s
 | "Explain vector databases to me. I know normal databases but not this." | `learning-coach` | None | Concept explanation and mental model |
 | "I read about attention in transformers but I still do not understand it." | `learning-coach` | None | Learning confusion |
 | "帮我理解一下什么是检索增强生成，我总是分不清它和普通搜索。" | `learning-coach` | None | Chinese learning signal |
+| "Explain Kafka like I am new to distributed systems." | `learning-coach` | `technical-deep-dive` | Technical noun, learning intent |
 | "I feel anxious and keep blaming myself for everything." | `emotional-support` | None | Emotional support |
 | "I am overwhelmed after a conflict with my friend and do not know what I need." | `emotional-support` | None | Relationship pain and needs |
 | "self-review" | `conversation-review` | None | Light Dolores trigger |

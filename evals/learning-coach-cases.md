@@ -11,6 +11,8 @@ Use these cases to test whether `learning-coach` helps the user build usable und
 | "What is the difference between correlation and causation? I always mix them up." | Uses contrast, example pair, and misconception repair. | Nearby concepts |
 | "I want to learn system design, but I do not know where to start." | Gives a small study path with practice loop and checkpoint, not a giant curriculum. | Study path |
 | "Here is my explanation of TCP: ... Is this right?" | Separates correct parts, fuzzy parts, corrected version, and one practice question. | Explanation review |
+| "帮我理解一下 RAG，别讲太专业，我总是分不清它和普通搜索。" | Gives a plain-language distinction, avoids jargon-heavy output, and includes one quick check. | Chinese concept confusion |
+| "我看不懂这篇论文，你能帮我拆一下吗？" | Asks for the excerpt or available context before claiming paper-specific facts. | Missing source material |
 
 ## Mixed-Intent Cases
 
@@ -27,3 +29,4 @@ Use these cases to test whether `learning-coach` helps the user build usable und
 | "Explain Kafka like I am new to distributed systems." | Long encyclopedia answer with many terms. | Short model, one analogy, one example, one check. |
 | "Teach me this whole field from zero." | Huge syllabus before the user can start. | Ask current goal or provide a small first-week path. |
 | "I do not understand this paper." | Pretend to know the paper without seeing it. | Ask for the excerpt or explain only from provided context. |
+| "Explain attention in transformers." | Start with equations and method names. | Give a compact intuition first, then optional depth. |
