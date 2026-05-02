@@ -34,6 +34,8 @@ thinking-skills/
       SKILL.md
     technical-deep-dive/
       SKILL.md
+    learning-coach/
+      SKILL.md
     emotional-support/
       SKILL.md
     conversation-review/
@@ -43,8 +45,6 @@ thinking-skills/
     life-decision/
       SKILL.md
     creative-studio/
-      SKILL.md
-    learning-coach/
       SKILL.md
     business-strategy/
       SKILL.md
@@ -69,6 +69,7 @@ thinking-skills/
     routing-cases.md
     content-creator-cases.md
     technical-deep-dive-cases.md
+    learning-coach-cases.md
     emotional-support-cases.md
     conversation-review-cases.md
     skill-evaluator-cases.md
@@ -83,7 +84,7 @@ thinking-skills/
 
 | Version | Scope | Goal |
 |---|---|---|
-| v0.1 MVP | `thinking-router`, `content-creator`, `technical-deep-dive`, `emotional-support`, core docs | Prove the framework is domain-neutral and the routing model works |
+| v0.1 MVP | `thinking-router`, `content-creator`, `technical-deep-dive`, `learning-coach`, `emotional-support`, core docs | Prove the framework is domain-neutral and the routing model works |
 | v0.2 | Codex native install and Codex plugin support | Make Thinking Skills easy to install and discover in Codex |
 | v0.3 | Add `life-decision` and `creative-studio` | Cover everyday decisions and open-ended creative work |
 | v0.4 | Add eval cases for router and expanded skills | Test whether routing and skill behavior are reliable |
@@ -119,11 +120,13 @@ thinking-skills/
 | Write router skill | `skills/thinking-router/SKILL.md` | Done |
 | Write content skill | `skills/content-creator/SKILL.md` | Done |
 | Write technical skill | `skills/technical-deep-dive/SKILL.md` | Done |
+| Write learning skill | `skills/learning-coach/SKILL.md` | Done |
 | Write emotional support skill | `skills/emotional-support/SKILL.md` | Done |
 | Write conversation review skill | `skills/conversation-review/SKILL.md` | Done |
 | Add routing eval cases | `evals/routing-cases.md` | Done |
 | Add content eval cases | `evals/content-creator-cases.md` | Done |
 | Add technical eval cases | `evals/technical-deep-dive-cases.md` | Done |
+| Add learning eval cases | `evals/learning-coach-cases.md` | Done |
 | Add emotional support eval cases | `evals/emotional-support-cases.md` | Done |
 | Add conversation review eval cases | `evals/conversation-review-cases.md` | Done |
 | Write improvement loop guide | `docs/improvement-loop.md` | Done |
@@ -142,7 +145,7 @@ thinking-skills/
 | Framework docs | README, principles, routing, method bases, authoring, evaluation, safety, roadmap are complete | Done |
 | Router | Handles domain classification, uncertainty, and conflicts | Done |
 | MVP skills | First-party skills are written and tested with examples | Done |
-| Expanded skills | `life-decision`, `creative-studio`, `learning-coach`, `business-strategy` exist | Todo |
+| Expanded skills | `life-decision`, `creative-studio`, `business-strategy` exist | Todo |
 | Evaluations | Each first-party skill has at least five realistic test cases | Done |
 | Safety | High-stakes domains have explicit boundaries and escalation guidance | Done |
 | Contribution model | New skill checklist and contribution criteria are documented | Done |
@@ -167,7 +170,7 @@ thinking-skills/
 
 v0.1 is complete when:
 
-- The router can classify at least the three MVP domains: content, technical, and emotional support.
+- The router can classify at least the four MVP domains: content, technical, learning, and emotional support.
 - Each MVP skill has a distinct worldview and output shape.
 - Each MVP skill declares method bases with clear evidence and safety boundaries.
 - The framework docs clearly state that Thinking Skills is independent and domain-neutral.

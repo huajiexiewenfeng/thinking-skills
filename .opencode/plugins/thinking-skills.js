@@ -32,6 +32,7 @@ The thinking-router skill is included below as bootstrap context. Use it at the 
 When you need a domain skill, use OpenCode's native skill tool to load it:
 - thinking-skills/content-creator
 - thinking-skills/technical-deep-dive
+- thinking-skills/learning-coach
 - thinking-skills/emotional-support
 - thinking-skills/conversation-review
 - thinking-skills/skill-evaluator

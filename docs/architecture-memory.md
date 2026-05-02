@@ -23,25 +23,38 @@ method bases, output shape, and safety boundaries.
 ## Core Architecture
 
 ```text
-User request
-  -> thinking-router
-  -> domain skill
-  -> method bases
-  -> response
-  -> optional conversation-review / Dolores
-  -> feedback/failure case
-  -> improvement loop
+Runtime plane:
+  user request
+    -> thinking-router
+    -> domain skill
+    -> method bases
+    -> response
+
+Reflection plane:
+  conversation trace or user feedback
+    -> optional conversation-review / Dolores
+    -> skill-evaluator when failure classification is useful
+    -> abstract failure case
+    -> eval
+    -> minimal patch
+
+Content plane:
+  skills/
+  docs/
+  evals/
+  cases/
+  feedback/
 ```
 
-The framework has four major layers:
+The framework is described as three planes, not a strict runtime stack:
 
-| Layer | Purpose |
+| Plane | Purpose |
 |---|---|
-| Router | Classify intent and select a skill |
-| Domain Skills | Perform domain-specific thinking |
-| Method Bases | Make the underlying methods explicit |
-| Conversation Review | Review skill traces, mode shifts, failure signals, and eval gaps across a prior conversation |
-| Improvement Flywheel | Turn failures into evals and patches |
+| Runtime | Generate the current answer with routing, domain skills, and method bases |
+| Reflection | Review conversations and turn reusable failures into evals and patches |
+| Content | Store the canonical skills, docs, evals, cases, and feedback |
+
+Dolores belongs to the Reflection plane. It is a review skill and should not be understood as a mandatory step after every answer.
 
 ## Directory Map
 
@@ -50,6 +63,7 @@ skills/
   thinking-router/
   content-creator/
   technical-deep-dive/
+  learning-coach/
   emotional-support/
   conversation-review/
   skill-evaluator/
@@ -72,6 +86,7 @@ evals/
   routing-cases.md
   content-creator-cases.md
   technical-deep-dive-cases.md
+  learning-coach-cases.md
   emotional-support-cases.md
   conversation-review-cases.md
   skill-evaluator-cases.md
@@ -110,6 +125,7 @@ Important routing distinction:
 - A request to write about technology usually routes to `content-creator`, with `technical-deep-dive` as secondary.
 - A request expressing distress about technology usually routes to `emotional-support`, with `technical-deep-dive` as secondary.
 - A request for actual technical diagnosis routes to `technical-deep-dive`.
+- A request to understand a concept, build intuition, find knowledge gaps, or practice recall routes to `learning-coach`.
 - A request for self-review, Dolores mode, conversation review, skill trace audit, or eval gap review routes to `conversation-review`, with `skill-evaluator` as secondary when failure classification is requested.
 
 ## Domain Skills
@@ -184,6 +200,39 @@ Main risk:
 
 ```text
 Do not invent unseen code facts.
+```
+
+### `learning-coach`
+
+Use for:
+
+- Concept explanation
+- Mental model building
+- Knowledge gaps
+- Study paths
+- Practice prompts
+- Misconception repair
+- Explanation review
+
+Worldview:
+
+```text
+Learning is building a model the user can recall, explain, apply, and correct.
+```
+
+Expected outputs:
+
+- Plain-language explanation
+- Mental model
+- Example and counterexample
+- Common misconception
+- Small study path
+- Retrieval prompt
+
+Main risk:
+
+```text
+Do not dump a lecture when the user needs a foothold.
 ```
 
 ### `emotional-support`
@@ -324,7 +373,7 @@ Methods beat vibes, but methods should not become visible machinery unless helpf
 
 For emotional support, frameworks such as CBT, ACT, NVC, and trauma-informed stance should guide attention internally. Do not expose them by default.
 
-Hawkins-style emotion maps are allowed only as reflective, non-clinical lenses.
+Hawkins-style emotion maps are allowed only as reflective, non-clinical heuristics. They must not be presented as measurement, diagnosis, clinical evidence, applied kinesiology, or objective emotional calibration.
 
 ## Safety Layer
 

@@ -30,6 +30,14 @@ skills/<skill-name>/SKILL.md
 evals/<skill-name>-cases.md
 ```
 
+For Alpha-stage contributions, keep the bar simple. A useful skill PR should include:
+
+- A focused `SKILL.md`.
+- Clear "when to use" and "when not to use" boundaries.
+- At least 3 eval cases.
+- Safety boundaries when the domain is high-stakes.
+- A short note explaining why this is a distinct thinking mode rather than a method inside an existing skill.
+
 Also update:
 
 ```text
@@ -38,6 +46,19 @@ docs/roadmap.md
 docs/routing.md
 docs/method-bases.md
 ```
+
+## What Not to Contribute
+
+Some skills may be useful as personal local skills but should not enter the shared repository.
+
+Please do not submit skills that:
+
+- Replace medical, legal, financial, or mental-health professionals.
+- Include raw private conversations or identifying personal details.
+- Depend on unverifiable metaphysical claims as authority.
+- Encode a single company's private workflow without abstraction.
+- Duplicate an existing skill without a clear difference in when to use it.
+- Are only a bundle of prompt preferences rather than a reusable thinking mode.
 
 ## Editing an Existing Skill
 
@@ -65,4 +86,3 @@ When editing a skill:
 Thinking Skills may borrow useful structural ideas from skill-based workflows such as Superpowers, but it is not a Superpowers fork or plugin.
 
 If you copy or adapt substantial text from another project, preserve the appropriate license notice and update `ATTRIBUTION.md`.
-

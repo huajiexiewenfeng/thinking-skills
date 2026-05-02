@@ -20,25 +20,38 @@ Thinking Skills 是一个独立的、领域中立的思考技能框架。
 ## 核心架构
 
 ```text
-用户请求
-  -> thinking-router
-  -> domain skill
-  -> method bases
-  -> response
-  -> optional conversation-review / Dolores
-  -> feedback/failure case
-  -> improvement loop
+Runtime plane:
+  用户请求
+    -> thinking-router
+    -> domain skill
+    -> method bases
+    -> response
+
+Reflection plane:
+  conversation trace 或用户反馈
+    -> optional conversation-review / Dolores
+    -> 需要失败分类时进入 skill-evaluator
+    -> 抽象 failure case
+    -> eval
+    -> minimal patch
+
+Content plane:
+  skills/
+  docs/
+  evals/
+  cases/
+  feedback/
 ```
 
-框架有四个主要层级：
+框架应被理解为三个 plane，而不是严格的 runtime 调用栈：
 
-| 层级 | 目的 |
+| Plane | 目的 |
 |---|---|
-| Router | 判断意图并选择 skill |
-| Domain Skills | 执行领域专属思考 |
-| Method Bases | 显式声明底层方法 |
-| Conversation Review | 复盘一段对话里的 skill 触发轨迹、模式切换、失败信号和 eval 缺口 |
-| Improvement Flywheel | 把失败转化为 eval 和 patch |
+| Runtime | 通过路由、领域 skill 和 method bases 生成当前回答 |
+| Reflection | 复盘对话，把可复用失败转成 eval 和 patch |
+| Content | 存放 canonical skills、docs、evals、cases 和 feedback |
+
+Dolores 属于 Reflection plane。它是 review skill，不应被理解成每次回答后都必须运行的一步。
 
 ## 目录地图
 
@@ -47,6 +60,7 @@ skills/
   thinking-router/
   content-creator/
   technical-deep-dive/
+  learning-coach/
   emotional-support/
   conversation-review/
   skill-evaluator/
@@ -71,6 +85,7 @@ evals/
   routing-cases.md
   content-creator-cases.md
   technical-deep-dive-cases.md
+  learning-coach-cases.md
   emotional-support-cases.md
   conversation-review-cases.md
   skill-evaluator-cases.md
@@ -109,6 +124,7 @@ cases/
 - 写技术主题的文章，通常 primary 是 `content-creator`，secondary 是 `technical-deep-dive`。
 - 因技术问题表达痛苦，通常 primary 是 `emotional-support`，secondary 是 `technical-deep-dive`。
 - 真正的技术诊断，路由到 `technical-deep-dive`。
+- 理解概念、建立直觉、发现知识盲区或练习回忆，路由到 `learning-coach`。
 - self-review、Dolores、对话复盘、skill 使用复盘、eval gap review 通常路由到 `conversation-review`；如果需要失败分类，`skill-evaluator` 可作为 secondary。
 
 ## Domain Skills
@@ -183,6 +199,39 @@ cases/
 
 ```text
 不要编造没看过的代码事实。
+```
+
+### `learning-coach`
+
+适用于：
+
+- 概念解释
+- 心智模型构建
+- 知识盲区
+- 学习路径
+- 练习提示
+- 误解修正
+- 解释校准
+
+世界观：
+
+```text
+学习是建立一个能被回忆、解释、应用和修正的模型。
+```
+
+预期输出：
+
+- 白话解释
+- 心智模型
+- 正反例
+- 常见误解
+- 小学习路径
+- 回忆练习
+
+主要风险：
+
+```text
+用户需要抓手时，不要倒一整篇讲义。
 ```
 
 ### `emotional-support`
@@ -323,7 +372,7 @@ Method bases 是每个 skill 背后的显式方法框架。
 
 对于 emotional-support，CBT、ACT、NVC、trauma-informed stance 等框架应该在内部指导注意力，不默认展示。
 
-霍金斯式情绪地图只允许作为 reflective、非临床视角。
+霍金斯式情绪地图只允许作为 reflective、非临床启发式视角。不能把它表述为测量、诊断、临床证据、应用肌肉测试，或客观情绪校准。
 
 ## Safety 层
 

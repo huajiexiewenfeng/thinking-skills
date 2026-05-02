@@ -33,7 +33,7 @@ The framework is usable, but it is still evolving through real conversations, fa
 You can:
 
 1. Install Thinking Skills locally.
-2. Use it in your own writing, technical, emotional, creative, or decision-making workflows.
+2. Use it in your own writing, technical, learning, emotional, creative, or decision-making workflows.
 3. Evolve personal skills that fit your recurring contexts.
 4. Keep private skills local when they are personal or sensitive.
 5. Open a PR when a skill, eval, failure case, or platform adapter has general value.
@@ -62,26 +62,26 @@ Thinking Skills starts with a router, then hands the request to the skill whose 
 
 ## Core Architecture
 
+Thinking Skills is easier to understand as three planes, not as a heavy governance system:
+
 ```text
-User Request
-  -> thinking-router
-  -> routing/domain skill
-  -> method bases
-  -> response
-  -> meta review layer / Dolores
-  -> feedback or failure case
-  -> eval
-  -> minimal patch
+Runtime plane:
+  user request -> thinking-router -> domain skill -> response
+
+Reflection plane:
+  conversation trace -> Dolores -> failure case / eval -> small patch
+
+Content plane:
+  skills/ + docs/ + evals/ + cases/
 ```
 
-| Layer | Responsibility |
+| Plane | Responsibility |
 |---|---|
-| Router | Classify intent and choose the right thinking mode |
-| Domain skills | Handle the actual task with domain-specific judgment and output shape |
-| Method bases | Make the underlying methods explicit without dumping frameworks on the user |
-| Meta skills | Review skill traces, mode shifts, failure signals, and eval gaps |
-| Improvement loop | Turn real failures into abstract cases, evals, and small patches |
-| Platform adapters | Expose the same canonical skills across agent runtimes |
+| Runtime | Generate the current answer with routing and domain skills |
+| Reflection | Review conversations and turn reusable failures into evals and patches |
+| Content | Store the canonical skills, docs, evals, and abstract cases |
+
+Dolores belongs to the Reflection plane. It is not required to run after every answer.
 
 ## First-Party Skills
 
@@ -92,6 +92,7 @@ User Request
 | `thinking-router` | A request needs to be routed to the right thinking mode |
 | `content-creator` | Articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure |
 | `technical-deep-dive` | Code, architecture, debugging, performance, APIs, systems, technical trade-offs, and verification paths |
+| `learning-coach` | Concept understanding, mental models, knowledge gaps, study paths, practice, and explanation review |
 | `emotional-support` | Anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps |
 
 ### Meta and Improvement Skills
@@ -105,7 +106,6 @@ Planned skills:
 
 - `life-decision`
 - `creative-studio`
-- `learning-coach`
 - `business-strategy`
 
 ## Dolores: The Meta Skill
@@ -185,6 +185,10 @@ This API design feels wrong. Help me analyze the trade-offs.
 ```
 
 ```text
+Explain vector databases to me. I know normal databases but not this.
+```
+
+```text
 self-review
 ```
 
@@ -203,6 +207,10 @@ Use content-creator to help me find the angle and outline.
 ```
 
 ```text
+Use learning-coach to help me understand this concept.
+```
+
+```text
 Use emotional-support to help me sort out what I am feeling.
 ```
 
@@ -217,6 +225,7 @@ Thinking Skills is working when:
 - Non-technical requests are not forced into coding workflows.
 - Writing tasks produce audience, angle, thesis, and structure instead of implementation plans.
 - Technical tasks separate facts, assumptions, hypotheses, trade-offs, and verification.
+- Learning tasks build compact mental models, surface misconceptions, and suggest small practice steps.
 - Emotional-support tasks validate feelings, avoid diagnosis, and prioritize safety when needed.
 - Conversation-review tasks identify skill traces, failure signals, eval gaps, and small improvement patches.
 - Ambiguous requests trigger one short routing question instead of a long intake form.
@@ -239,6 +248,7 @@ skills/
   thinking-router/
   content-creator/
   technical-deep-dive/
+  learning-coach/
   emotional-support/
   conversation-review/
   skill-evaluator/
@@ -260,6 +270,7 @@ evals/
   routing-cases.md
   content-creator-cases.md
   technical-deep-dive-cases.md
+  learning-coach-cases.md
   emotional-support-cases.md
   conversation-review-cases.md
   skill-evaluator-cases.md
@@ -288,7 +299,9 @@ feedback/
 
 Thinking Skills is independent from Superpowers.
 
-It borrows useful ideas from skill-based workflows, but does not depend on Superpowers, its runtime, naming, or coding-first conventions.
+It builds on the broader `SKILL.md` convention used by projects such as Superpowers and Anthropic Skills, but differs in three ways: it is domain-neutral by default, routes before reasoning, and uses a reflection plane to turn failures into evals and small patches.
+
+Thinking Skills is not a Superpowers replacement. It can be installed alongside coding-first skill workflows.
 
 ## License
 

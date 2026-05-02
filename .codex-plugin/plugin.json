@@ -15,6 +15,7 @@
     "skills",
     "content-creation",
     "technical-analysis",
+    "learning",
     "emotional-support",
     "conversation-review",
     "self-review",
@@ -24,7 +25,7 @@
   "interface": {
     "displayName": "Thinking Skills",
     "shortDescription": "Domain-neutral intent routing and thinking modes",
-    "longDescription": "Use Thinking Skills to route user requests into domain-specific thinking modes for content creation, technical deep dives, emotional support, conversation self-review, and future life decision, creative, learning, and business workflows.",
+    "longDescription": "Use Thinking Skills to route user requests into domain-specific thinking modes for content creation, technical deep dives, learning support, emotional support, conversation self-review, and future life decision, creative, and business workflows.",
     "developerName": "xiewenfeng",
     "category": "Productivity",
     "capabilities": [
@@ -35,7 +36,7 @@
     "defaultPrompt": [
       "I have an idea and want to think it through.",
       "Help me decide what thinking mode this request needs.",
-      "I want to write something, analyze something technical, sort out an emotional issue, or self-review this conversation."
+      "I want to write something, analyze something technical, learn a concept, sort out an emotional issue, or self-review this conversation."
     ],
     "brandColor": "#2563EB",
     "screenshots": []

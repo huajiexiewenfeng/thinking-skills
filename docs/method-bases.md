@@ -100,6 +100,40 @@ Typical outputs:
 - Debugging hypothesis tree
 - Verification checklist
 
+### `learning-coach`
+
+Core:
+
+- Mental model construction
+- Feynman technique
+- Retrieval practice
+- Misconception diagnosis
+- Worked examples
+
+Supporting:
+
+- Deliberate practice
+- Spaced repetition
+- Interleaving
+- Zone of proximal development
+- Error log review
+
+Safety:
+
+- Do not shame the user for not understanding.
+- Avoid overpromising learning outcomes.
+- Adapt to fatigue, constraints, and accessibility needs.
+- Mark uncertainty when the source material or factual context is not available.
+
+Typical outputs:
+
+- Plain-language concept explanation
+- Mental model
+- Example and counterexample
+- Misconception repair
+- Small study path
+- Retrieval or practice prompt
+
 ### `emotional-support`
 
 Core:
@@ -119,6 +153,8 @@ Supporting:
 Reflective:
 
 - Hawkins emotion/consciousness map as a non-clinical self-reflection lens only.
+- Hawkins-style maps must be treated as heuristic only. They are not measurement tools, diagnostic tools, clinical evidence, or applied kinesiology claims.
+- If used, they should only help name a possible adjacent emotional direction; do not present them as objective levels or ask the user to accept them as authority.
 
 Safety:
 
@@ -180,28 +216,6 @@ Safety:
 - Avoid copying living artists' style too closely when creating visual prompts.
 - Avoid plagiarism and uncredited imitation.
 
-### `learning-coach`
-
-Core:
-
-- Deliberate practice
-- Retrieval practice
-- Spaced repetition
-- Feedback loops
-- Zone of proximal development
-
-Supporting:
-
-- Feynman technique
-- Interleaving
-- Worked examples
-- Error log review
-
-Safety:
-
-- Avoid overpromising outcomes.
-- Adapt to constraints, fatigue, and accessibility needs.
-
 ### `business-strategy`
 
 Core:
@@ -233,4 +247,4 @@ Skills should label models honestly:
 - Evidence-informed clinical or professional frameworks should be preferred for high-stakes domains.
 - Popular or spiritual maps can be useful for reflection, but should not be treated as diagnostic or clinical tools.
 - Practical business, writing, and design frameworks should be treated as heuristics, not laws.
-
+- Hawkins-style emotional maps are allowed only as reflective, non-clinical heuristics. Do not associate them with applied kinesiology, numerical calibration, diagnosis, or claims of objective measurement.

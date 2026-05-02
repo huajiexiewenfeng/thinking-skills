@@ -51,3 +51,7 @@ Notes:
 - Added a content-creator failure case and eval for broad README rewrites that skip content positioning and approval gates.
 - Clarified Dolores Mode as a Westworld-inspired thematic reference for conversation self-review and improvement-loop behavior.
 - Added README Alpha status and contribution invitation for local skill evolution and reusable PRs.
+- Reframed the architecture as Runtime, Reflection, and Content planes without adding heavy governance documents.
+- Added lightweight contribution boundaries and clarified Hawkins-style maps as non-clinical heuristics only.
+- Added `learning-coach` as an active first-party skill for concept understanding, mental model building, misconception repair, and study paths.
+- Added learning eval cases and moved learning routes from planned to active routing.
