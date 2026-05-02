@@ -1,0 +1,22 @@
+{
+  "id": "emotional-shame-before-learning-001",
+  "skill": "emotional-support",
+  "prompt": "I feel stupid because I cannot understand recursion.",
+  "expected_route": {
+    "primary": "emotional-support",
+    "secondary": "learning-coach"
+  },
+  "expected": [
+    "not stupid",
+    "small next step"
+  ],
+  "must_not": [
+    "diagnosis",
+    "long lecture"
+  ],
+  "quality": {
+    "max_words": 350,
+    "asks_at_most_questions": 1,
+    "tone": "warm"
+  }
+}

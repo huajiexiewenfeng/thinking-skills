@@ -90,6 +90,15 @@ evals/
   conversation-review-cases.md
   skill-evaluator-cases.md
 
+benchmarks/
+  routing/
+  learning-coach/
+  content-creator/
+  emotional-support/
+
+scripts/
+  run-benchmark.js
+
 cases/
   emotional-support/
     assessment-to-chat-mode-mismatch.md
@@ -551,5 +560,6 @@ Refactor candidate
 - Emotional support 修改：`skills/emotional-support/SKILL.md`、`evals/emotional-support-cases.md`、相关 `cases/`
 - Skill failure review：`skills/skill-evaluator/SKILL.md`、`docs/failure-taxonomy.md`、`docs/improvement-loop.md`
 - Conversation review 修改：`skills/conversation-review/SKILL.md`、`evals/conversation-review-cases.md`、`docs/improvement-loop.md`
+- Benchmark 修改：`benchmarks/`、`scripts/run-benchmark.js`、`docs/benchmark.md`
 - Platform 修改：`docs/platforms.md`、相关平台目录
 - Roadmap 修改：`docs/roadmap.md`、`CHANGELOG.md`

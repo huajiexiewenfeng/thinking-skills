@@ -55,3 +55,4 @@ Notes:
 - Added lightweight contribution boundaries and clarified Hawkins-style maps as non-clinical heuristics only.
 - Added `learning-coach` as an active first-party skill for concept understanding, mental model building, misconception repair, and study paths.
 - Added learning eval cases and moved learning routes from planned to active routing.
+- Added a lightweight benchmark runner, initial fixed scenario benchmark cases, and benchmark documentation.

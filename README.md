@@ -230,6 +230,20 @@ Thinking Skills is working when:
 - Conversation-review tasks identify skill traces, failure signals, eval gaps, and small improvement patches.
 - Ambiguous requests trigger one short routing question instead of a long intake form.
 
+## Benchmark
+
+Thinking Skills includes a lightweight benchmark runner for fixed scenario testing:
+
+```bash
+node scripts/run-benchmark.js --list
+node scripts/run-benchmark.js --prompts
+node scripts/run-benchmark.js --responses benchmark-responses.json
+```
+
+Benchmark cases live under `benchmarks/`. The runner can generate fresh agent prompts, score saved responses, or run a configurable agent command per case.
+
+See [Benchmark](docs/benchmark.md).
+
 ## Design Principles
 
 - **Domain-neutral by default**: do not assume software development.
@@ -275,6 +289,15 @@ evals/
   conversation-review-cases.md
   skill-evaluator-cases.md
 
+benchmarks/
+  routing/
+  learning-coach/
+  content-creator/
+  emotional-support/
+
+scripts/
+  run-benchmark.js
+
 cases/
 feedback/
 ```
@@ -291,6 +314,7 @@ feedback/
 - [Failure Taxonomy](docs/failure-taxonomy.md)
 - [Eval Schema](docs/eval-schema.md)
 - [Eval Runbook](docs/eval-runbook.md)
+- [Benchmark](docs/benchmark.md)
 - [Platform Support](docs/platforms.md)
 - [Skill Authoring](docs/skill-authoring.md)
 - [Contributing](CONTRIBUTING.md)

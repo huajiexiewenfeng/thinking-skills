@@ -230,6 +230,20 @@ self-review
 - 对话复盘任务会识别 skill 触发轨迹、失败信号、eval 缺口和最小改进补丁。
 - 模糊请求只触发一个简短的路由问题，而不是一长串问卷。
 
+## Benchmark
+
+Thinking Skills 包含一个轻量 benchmark runner，用来测试固定场景：
+
+```bash
+node scripts/run-benchmark.js --list
+node scripts/run-benchmark.js --prompts
+node scripts/run-benchmark.js --responses benchmark-responses.json
+```
+
+Benchmark cases 放在 `benchmarks/` 下。runner 可以生成 agent 测试提示词、评分保存好的回答，或者对每个 case 调用一个可配置的 agent command。
+
+参见 [Benchmark](docs/benchmark.md)。
+
 ## 设计原则
 
 - **默认领域中立**：不要默认这是软件开发问题。
@@ -275,6 +289,15 @@ evals/
   conversation-review-cases.md
   skill-evaluator-cases.md
 
+benchmarks/
+  routing/
+  learning-coach/
+  content-creator/
+  emotional-support/
+
+scripts/
+  run-benchmark.js
+
 cases/
 feedback/
 ```
@@ -291,6 +314,7 @@ feedback/
 - [Failure Taxonomy](docs/failure-taxonomy.md)
 - [Eval Schema](docs/eval-schema.md)
 - [Eval Runbook](docs/eval-runbook.md)
+- [Benchmark](docs/benchmark.md)
 - [Platform Support](docs/platforms.md)
 - [Skill Authoring](docs/skill-authoring.md)
 - [Contributing](CONTRIBUTING.md)

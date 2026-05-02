@@ -91,6 +91,15 @@ evals/
   conversation-review-cases.md
   skill-evaluator-cases.md
 
+benchmarks/
+  routing/
+  learning-coach/
+  content-creator/
+  emotional-support/
+
+scripts/
+  run-benchmark.js
+
 cases/
   emotional-support/
     assessment-to-chat-mode-mismatch.md
@@ -552,5 +561,6 @@ Then read only the files needed for the task:
 - Emotional support change: `skills/emotional-support/SKILL.md`, `evals/emotional-support-cases.md`, relevant `cases/`
 - Skill failure review: `skills/skill-evaluator/SKILL.md`, `docs/failure-taxonomy.md`, `docs/improvement-loop.md`
 - Conversation review change: `skills/conversation-review/SKILL.md`, `evals/conversation-review-cases.md`, `docs/improvement-loop.md`
+- Benchmark change: `benchmarks/`, `scripts/run-benchmark.js`, `docs/benchmark.md`
 - Platform change: `docs/platforms.md`, relevant platform folder
 - Roadmap change: `docs/roadmap.md`, `CHANGELOG.md`

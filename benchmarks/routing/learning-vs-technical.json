@@ -1,0 +1,19 @@
+{
+  "id": "router-learning-vs-technical-001",
+  "skill": "thinking-router",
+  "prompt": "I read about attention in transformers but I still do not understand it.",
+  "expected_route": {
+    "primary": "learning-coach",
+    "secondary": null
+  },
+  "expected": [
+    "learning-coach"
+  ],
+  "must_not": [
+    "technical-deep-dive as primary"
+  ],
+  "quality": {
+    "max_words": 300,
+    "asks_at_most_questions": 1
+  }
+}

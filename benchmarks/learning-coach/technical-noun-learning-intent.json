@@ -1,0 +1,22 @@
+{
+  "id": "learning-technical-noun-001",
+  "skill": "learning-coach",
+  "prompt": "Explain Kafka like I am new to distributed systems.",
+  "expected_route": {
+    "primary": "learning-coach",
+    "secondary": "technical-deep-dive"
+  },
+  "expected": [
+    "compact mental model",
+    "one example"
+  ],
+  "must_not": [
+    "implementation details",
+    "long encyclopedia"
+  ],
+  "quality": {
+    "max_words": 500,
+    "asks_at_most_questions": 1,
+    "tone": "conversational"
+  }
+}

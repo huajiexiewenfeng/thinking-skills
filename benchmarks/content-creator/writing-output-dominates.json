@@ -1,0 +1,20 @@
+{
+  "id": "content-writing-output-001",
+  "skill": "content-creator",
+  "prompt": "I want to write an article explaining vector databases to beginners.",
+  "expected_route": {
+    "primary": "content-creator",
+    "secondary": "learning-coach"
+  },
+  "expected": [
+    "audience",
+    "angle"
+  ],
+  "must_not": [
+    "implementation plan"
+  ],
+  "quality": {
+    "max_words": 500,
+    "asks_at_most_questions": 1
+  }
+}

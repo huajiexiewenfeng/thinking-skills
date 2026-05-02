@@ -75,6 +75,15 @@ thinking-skills/
     skill-evaluator-cases.md
     life-decision-cases.md
 
+  benchmarks/
+    routing/
+    learning-coach/
+    content-creator/
+    emotional-support/
+
+  scripts/
+    run-benchmark.js
+
   cases/
     emotional-support/
       assessment-to-chat-mode-mismatch.md
@@ -133,6 +142,8 @@ thinking-skills/
 | Write failure taxonomy | `docs/failure-taxonomy.md` | Done |
 | Write eval schema | `docs/eval-schema.md` | Done |
 | Write eval runbook | `docs/eval-runbook.md` | Done |
+| Add benchmark runner | `scripts/run-benchmark.js` | Done |
+| Add benchmark case library | `benchmarks/` | Done |
 | Write skill evaluator | `skills/skill-evaluator/SKILL.md` | Done |
 | Add skill evaluator eval cases | `evals/skill-evaluator-cases.md` | Done |
 | Add abstract failure cases | `cases/` | Done |
@@ -147,6 +158,7 @@ thinking-skills/
 | MVP skills | First-party skills are written and tested with examples | Done |
 | Expanded skills | `life-decision`, `creative-studio`, `business-strategy` exist | Todo |
 | Evaluations | Each first-party skill has at least five realistic test cases | Done |
+| Benchmark runner | Fixed scenario benchmark cases can be listed, prompted, and scored | Done |
 | Safety | High-stakes domains have explicit boundaries and escalation guidance | Done |
 | Contribution model | New skill checklist and contribution criteria are documented | Done |
 | Release | License, attribution, version notes, and stable directory structure exist | Done |
