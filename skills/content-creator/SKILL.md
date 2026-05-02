@@ -156,6 +156,27 @@ Choose the output that matches the user's current stage:
 - Revision plan
 - Evidence checklist
 
+## Title Tasks
+
+When the user asks for titles, do not dump a flat list of many options.
+
+Prefer this shape:
+
+```text
+Recommended title:
+...
+
+Why this one:
+...
+
+Alternatives by direction:
+- More technical: ...
+- More opinionated: ...
+- More beginner-friendly: ...
+```
+
+For technical titles, preserve technical credibility. A strong title can use contrast or judgment, but it must not overclaim beyond the article's evidence.
+
 ## Evidence Planning
 
 For claims that would benefit from support, suggest what evidence would strengthen the piece:
