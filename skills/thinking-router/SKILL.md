@@ -55,6 +55,7 @@ Domain skills own their own method bases. For example, `emotional-support` may u
 
 | User Signals | Primary Skill |
 |---|---|
+| benchmark, eval, regression test, score, dashboard, test a skill, run benchmark, compare benchmark runs, 跑 benchmark, 做评测, 回归测试, 看分数, 更新 dashboard | `benchmark-assistant` |
 | article, essay, blog, newsletter, title, outline, audience, argument, draft, script, content plan, writing style | `content-creator` |
 | code, repo, architecture, bug, performance, API, tests, deployment, implementation, source code, framework, database, refactor | `technical-deep-dive` |
 | learn, study, understand, explain, concept, intuition, mental model, knowledge gap, course, practice, exam, review, what is, how does, I do not understand, 学习, 理解, 解释, 概念, 心智模型, 知识盲区, 看不懂, 学不会 | `learning-coach` |

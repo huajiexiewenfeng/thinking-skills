@@ -135,3 +135,27 @@ test("dashboard compares multiple benchmark run reports", () => {
   assert.match(dashboard, /learning-coach/);
   assert.match(dashboard, /\+40/);
 });
+
+test("dashboard excludes not_run reports from score deltas", () => {
+  const first = {
+    run: { id: "real-run", created_at: "2026-05-02T10:00:00.000Z", commit: "aaa1111", cases: "benchmarks" },
+    summary: { total: 1, pass: 1, fail: 0, not_run: 0, score: 5, max_score: 5, score_percent: 100 },
+    results: [
+      { id: "case-a", skill: "content-creator", status: "pass", score: 5, max_score: 5, failures: [] },
+    ],
+  };
+  const second = {
+    run: { id: "coverage-only", created_at: "2026-05-02T11:00:00.000Z", commit: "bbb2222", cases: "benchmarks" },
+    summary: { total: 1, pass: 0, fail: 0, not_run: 1, score: 0, max_score: 0, score_percent: 0 },
+    results: [
+      { id: "case-a", skill: "content-creator", status: "not_run", reason: "No response supplied." },
+    ],
+  };
+
+  const dashboard = buildDashboard([first, second]);
+
+  assert.match(dashboard, /coverage-only/);
+  assert.match(dashboard, /Coverage only/);
+  assert.doesNotMatch(dashboard, /-100/);
+  assert.match(dashboard, /\| content-creator \| 100%/);
+});

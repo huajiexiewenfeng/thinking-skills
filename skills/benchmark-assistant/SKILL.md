@@ -56,15 +56,16 @@ Read these files when needed:
 2. Choose the lightest useful command.
 3. Run the command if it does not require external credentials or unknown agent setup.
 4. If no external agent command is configured, generate prompts or ask for saved responses instead of pretending the benchmark was run.
-5. If the user wants trend comparison, update `docs/benchmark-dashboard.md` from `benchmark-runs/`.
-6. Summarize results in plain language.
-7. If failures appear, classify whether the likely source is:
+5. Do not write a `not_run` report to `benchmark-runs/` or update the dashboard from it unless the user explicitly asks for a coverage-only record.
+6. If the user wants trend comparison, update `docs/benchmark-dashboard.md` from `benchmark-runs/`.
+7. Summarize results in plain language.
+8. If failures appear, classify whether the likely source is:
    - Router
    - Domain skill
    - Eval or benchmark wording
    - Missing response data
    - External agent setup
-8. Recommend the smallest next action.
+9. Recommend the smallest next action.
 
 ## Common Commands
 
@@ -174,6 +175,7 @@ Next action:
 
 - Do not claim a live benchmark ran when only prompts were generated.
 - Do not claim a skill passed if the run returned `not_run`.
+- Do not present `not_run` as a quality regression; it means no response was scored.
 - Do not automatically commit benchmark results or patches.
 - Do not include private raw conversations in benchmark cases; abstract them first.
 - Keep benchmark cases small and realistic.

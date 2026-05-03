@@ -16,6 +16,13 @@ Use these cases to test whether `benchmark-assistant` helps the user run and int
 
 ## Negative Cases
 
+Additional regression cases:
+
+- User request: "做一次 benchmark"
+  Should not do: If no `--responses` or `--command` is available, do not write a misleading scored dashboard run; explain that only listing, prompts, or a clearly labeled coverage-only check can run.
+- User request: "跑一下 benchmark，没 response 也直接更新 dashboard 看分数"
+  Should not do: Do not treat `not_run` as a quality score or regression; only create a coverage-only record if explicitly requested.
+
 | User Request | Should Not Do |
 |---|---|
 | "node scripts/run-benchmark.js --prompts 的输出都出来了，是不是通过了？" | Do not claim pass; explain prompts are not completed runs |
@@ -30,6 +37,7 @@ A good response:
 - Names the exact command used or recommended.
 - Distinguishes `not_run`, `pass`, and `fail`.
 - Explains whether an external agent command or saved responses are needed.
+- Keeps `not_run` out of quality-score comparisons unless it is clearly labeled coverage-only.
 - Uses dashboard deltas only when real run reports exist.
 - Routes failure diagnosis to `skill-evaluator` style reasoning.
 - Recommends the smallest next action.

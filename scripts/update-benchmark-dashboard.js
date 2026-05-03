@@ -74,9 +74,14 @@ function bySkill(report) {
     .sort((a, b) => a.skill.localeCompare(b.skill));
 }
 
+function isScoredReport(report) {
+  return Boolean(report && report.summary && report.summary.max_score > 0);
+}
+
 function buildDashboard(reports) {
-  const latest = reports[reports.length - 1];
-  const previous = reports[reports.length - 2];
+  const scoredReports = reports.filter(isScoredReport);
+  const latest = scoredReports[scoredReports.length - 1];
+  const previous = scoredReports[scoredReports.length - 2];
   const lines = [];
 
   lines.push("# Benchmark Dashboard");
@@ -95,15 +100,18 @@ function buildDashboard(reports) {
   lines.push("| Run | Created At | Commit | Cases | Total | Pass | Fail | Not Run | Score | Delta |");
   lines.push("|---|---|---|---|---:|---:|---:|---:|---:|---:|");
 
+  let previousScored = null;
   for (let index = 0; index < reports.length; index += 1) {
     const report = reports[index];
-    const prev = reports[index - 1];
-    const delta = prev
-      ? report.summary.score_percent - prev.summary.score_percent
+    const scored = isScoredReport(report);
+    const delta = scored && previousScored
+      ? report.summary.score_percent - previousScored.summary.score_percent
       : null;
+    const score = scored ? formatPercent(report.summary.score_percent) : "Coverage only";
     lines.push(
-      `| ${cell(report.run.id)} | ${cell(report.run.created_at)} | ${cell(report.run.commit || "unknown")} | ${cell(report.run.cases || "benchmarks")} | ${report.summary.total} | ${report.summary.pass} | ${report.summary.fail} | ${report.summary.not_run} | ${formatPercent(report.summary.score_percent)} | ${formatDelta(delta)} |`
+      `| ${cell(report.run.id)} | ${cell(report.run.created_at)} | ${cell(report.run.commit || "unknown")} | ${cell(report.run.cases || "benchmarks")} | ${report.summary.total} | ${report.summary.pass} | ${report.summary.fail} | ${report.summary.not_run} | ${score} | ${formatDelta(delta)} |`
     );
+    if (scored) previousScored = report;
   }
 
   lines.push("");
@@ -111,6 +119,18 @@ function buildDashboard(reports) {
   lines.push("");
   lines.push("| Skill | Latest Score | Previous Score | Delta | Pass | Fail | Not Run |");
   lines.push("|---|---:|---:|---:|---:|---:|---:|");
+
+  if (!latest) {
+    lines.push("| - | - | - | - | 0 | 0 | 0 |");
+    lines.push("");
+    lines.push("## Recent Failures");
+    lines.push("");
+    lines.push("| Run | Case | Skill | Failures |");
+    lines.push("|---|---|---|---|");
+    lines.push("| latest | - | - | No scored benchmark runs found |");
+    lines.push("");
+    return lines.join("\n");
+  }
 
   const latestSkills = bySkill(latest);
   const previousSkills = previous
@@ -192,5 +212,6 @@ if (require.main === module) {
 
 module.exports = {
   buildDashboard,
+  isScoredReport,
   loadRunReports,
 };
