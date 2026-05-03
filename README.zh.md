@@ -4,7 +4,7 @@
 
 [English](./README.md) | 简体中文
 
-![Thinking Skills 系统架构](./docs/assets/thinking-skills-system-zh.png)
+![Thinking Skills 第二阶段系统架构](./docs/assets/thinking-skills-stage2-zh.png)
 
 ## 这是什么？
 

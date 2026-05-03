@@ -4,7 +4,7 @@ Independent, domain-neutral AI thinking skills with routing, domain methods, con
 
 English | [简体中文](./README.zh.md)
 
-![Thinking Skills system architecture](./docs/assets/thinking-skills-system-en.png)
+![Thinking Skills stage 2 system architecture](./docs/assets/thinking-skills-stage2-en.png)
 
 ## What Is This?
 
