@@ -1,0 +1,9 @@
+# Local drafts and working notes
+articles/
+docs/superpowers/
+
+# Local benchmark run outputs
+benchmark-runs/local-*.json
+
+# Local article assets that should not be published from this repo
+docs/assets/thinking-skills-superpowers-*.png

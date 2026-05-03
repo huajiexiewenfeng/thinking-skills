@@ -51,6 +51,17 @@ docs/method-bases.md
 
 Some skills may be useful as personal local skills but should not enter the shared repository.
 
+Local design drafts, article drafts, and Superpowers-style planning/spec files are intentionally not part of the shared repository. Keep these files local:
+
+```text
+articles/
+docs/superpowers/
+benchmark-runs/local-*.json
+docs/assets/thinking-skills-superpowers-*.png
+```
+
+Do not commit these paths unless the project explicitly decides to publish a cleaned, public-facing version.
+
 Please do not submit skills that:
 
 - Replace medical, legal, financial, or mental-health professionals.
