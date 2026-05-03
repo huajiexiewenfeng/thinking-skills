@@ -2,9 +2,9 @@
 
 ## Purpose
 
-Thinking Skills should improve through real failures, not only through intuition.
+Thinking Skills should improve through real failures and preserve real successes, not only through intuition.
 
-The improvement loop turns user feedback and failed conversations into reusable eval cases, diagnosis, minimal patches, and changelog entries.
+The improvement loop turns user feedback, failed conversations, and rare golden patterns into reusable eval cases, diagnosis, minimal patches, preservation actions, and changelog entries.
 
 This project currently targets a semi-automatic loop: humans provide judgment and real examples; AI helps classify failures, draft evals, and propose small skill changes.
 
@@ -25,6 +25,16 @@ Failure signal
   -> retest
 ```
 
+Positive preservation uses a lighter path:
+
+```text
+Golden signal
+  -> optional conversation-review / Dolores
+  -> golden candidate
+  -> skill-evaluator conflict check
+  -> convert to eval, skill rule, retained golden case, or discard
+```
+
 ## What Counts as a Failure Signal?
 
 - User says the response felt wrong, too long, too clinical, too shallow, too technical, or too solution-oriented.
@@ -35,15 +45,25 @@ Failure signal
 - The response solves a different problem from the one the user wanted.
 - The response works once but is not general enough.
 
+## What Counts as a Golden Signal?
+
+- User says a response worked especially well and should be preserved.
+- A skill proves it can independently handle a core scenario.
+- A reusable collaboration pattern appears.
+- A subtle style or judgment pattern is likely to be broken by future changes.
+
+Ordinary satisfaction is not enough. Do not record praise; record reusable behavior.
+
 ## Roles
 
 | Role | Responsibility |
 |---|---|
 | Human reviewer | Provides feedback, decides whether the behavior is acceptable |
-| `conversation-review` | Reviews a prior conversation as a skill trace and identifies reusable failure signals or eval gaps |
-| `skill-evaluator` | Classifies failure type and recommends a minimal patch |
+| `conversation-review` | Reviews a prior conversation as a skill trace and identifies reusable failure signals, golden signals, or eval gaps |
+| `skill-evaluator` | Classifies failure type, checks golden candidates for conflicts, and recommends a minimal patch or preservation action |
 | Domain skill | Receives the smallest useful behavior update |
-| Evals | Preserve the failure as a reusable regression case |
+| Evals | Preserve failures and golden patterns as reusable regression cases |
+| Golden cases | Preserve rare reusable behavior that is too subtle to fully encode as a rule |
 | Changelog | Records why the behavior changed |
 
 ## Improvement Rule
@@ -57,6 +77,19 @@ First identify:
 - Is this a one-off output issue or a reusable skill gap?
 - What eval case would catch it next time?
 - What is the smallest change that would improve behavior without making the skill heavier than needed?
+
+## Preservation Rule
+
+Do not create a golden case only because a single response felt good.
+
+First identify:
+
+- What reusable behavior worked?
+- When should this behavior apply?
+- When should it not apply?
+- Does an existing eval or skill rule already preserve it?
+- Would recording it create conflict with a failure case?
+- Is this better as an eval, a skill rule, a retained golden case, or no action?
 
 ## Case Privacy
 
@@ -74,12 +107,15 @@ Bad:
 Full private chat transcript with identifying details.
 ```
 
+For golden cases, also avoid storing full articles, drafts, or sensitive personal material.
+
 ## Patch Discipline
 
 Prefer small patches:
 
 - Add one boundary rule.
 - Add one eval case.
+- Add one golden case only for reusable behavior.
 - Clarify one trigger.
 - Move a repeated behavior into a reference module.
 
@@ -88,6 +124,7 @@ Avoid:
 - Adding a long new framework for every failure.
 - Duplicating the same rule in many places.
 - Turning every user preference into a global rule.
+- Turning every liked response into a golden case.
 - Expanding a skill so much that it becomes hard to use.
 
 ## When to Refactor

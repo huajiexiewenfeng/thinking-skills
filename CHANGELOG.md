@@ -59,3 +59,4 @@ Notes:
 - Added `content-creator` technical blog mode guidance, content anti-patterns, and balanced content benchmark cases.
 - Added `benchmark-assistant` as a meta skill for running, prompting, scoring, and interpreting benchmark workflows.
 - Added benchmark run metadata and a Markdown benchmark dashboard for comparing scores, per-skill deltas, and latest failures across runs.
+- Added lightweight golden case guidance for preserving reusable good behavior without creating a success archive.

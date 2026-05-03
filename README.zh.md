@@ -320,6 +320,7 @@ feedback/
 - [Safety](docs/safety.md)
 - [Evaluation](docs/evaluation.md)
 - [Improvement Loop](docs/improvement-loop.md)
+- [Golden Cases](docs/golden-cases.md)
 - [Failure Taxonomy](docs/failure-taxonomy.md)
 - [Content Anti-Patterns](docs/content-anti-patterns.md)
 - [Eval Schema](docs/eval-schema.md)

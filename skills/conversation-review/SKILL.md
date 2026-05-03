@@ -1,6 +1,6 @@
 ---
 name: conversation-review
-description: Use when the user asks for self-review, Dolores mode, conversation review, skill trace audit, failure analysis, eval gap detection, improvement-loop suggestions, failure case status, or skill feedback dashboard.
+description: Use when the user asks for self-review, Dolores mode, conversation review, skill trace audit, failure analysis, eval gap detection, improvement-loop suggestions, failure case or golden case status, or skill feedback dashboard.
 ---
 
 # Conversation Review
@@ -9,7 +9,7 @@ description: Use when the user asks for self-review, Dolores mode, conversation 
 
 `conversation-review` reviews a prior conversation as a skill trace.
 
-It identifies which thinking skills were triggered, whether routing and modes were appropriate, what failure signals appeared, and which improvement-loop actions would make the system better.
+It identifies which thinking skills were triggered, whether routing and modes were appropriate, what failure or golden signals appeared, and which improvement-loop actions would make the system better.
 
 Mode name:
 
@@ -39,16 +39,19 @@ Use this skill when the user asks for:
 - eval gap review
 - improvement loop
 - failure case status
+- golden case status
 - failure case dashboard
+- golden case dashboard
 - skill feedback statistics
 - quality dashboard
 - 改进状态统计
 - 失败 case 统计
 - skill 反馈统计
 - patch strategy based on the conversation
-- whether a prior exchange should be added as an eval or failure case
+- whether a prior exchange should be added as an eval, failure case, or golden case
 
 Also use it when the user corrects a prior answer and asks what should improve.
+Also use it when the user says a response worked especially well and asks whether that behavior should be preserved.
 
 ## When Not to Use
 
@@ -122,6 +125,34 @@ Risk:
 
 Do not preserve raw private conversation text. Abstract the case.
 
+### Golden-Case Review
+
+Use when the user says a response worked especially well, should be preserved, or felt like a reusable mode.
+
+Output:
+
+```markdown
+## Golden Candidate
+
+Reusable behavior:
+Applies when:
+Does not apply when:
+
+## Preservation Value
+
+What should be preserved:
+Regression risk:
+
+## Conversion
+
+Recommendation: eval / skill rule / keep as golden case / discard
+Files likely affected:
+```
+
+Do not record praise. Record reusable behavior.
+Do not preserve raw private conversation text, full articles, drafts, or sensitive material.
+If a one-line eval would capture the behavior, recommend an eval instead of a golden case.
+
 ### Quality Dashboard
 
 Use when the user asks for failure case status, improvement status, skill feedback statistics, or a quality dashboard.
@@ -131,6 +162,7 @@ Read local project files when available:
 ```text
 cases/**/*.md
 feedback/*.md
+docs/golden-cases.md
 ```
 
 Output:
@@ -139,6 +171,8 @@ Output:
 ## Case Status Summary
 
 ## Failure Case Details
+
+## Golden Case Details
 
 ## Skill Feedback Summary
 ```
@@ -171,6 +205,8 @@ Output:
 
 ## Eval Gaps
 
+## Golden Signals
+
 ## Patch Strategy
 
 ## Dolores Note
@@ -186,8 +222,9 @@ Output:
 4. Check routing, mode fit, output shape, evidence discipline, and safety boundaries.
 5. Separate what worked from what failed.
 6. Classify failures when useful.
-7. Propose eval candidates only for reusable patterns.
-8. Recommend the smallest useful patch or next improvement step.
+7. Identify golden candidates only when the behavior is reusable and worth preserving.
+8. Propose eval candidates only for reusable patterns.
+9. Recommend the smallest useful patch, preservation action, or next improvement step.
 
 ## Method Bases
 
@@ -197,6 +234,7 @@ method_bases:
     - Conversation trace analysis
     - Skill routing audit
     - Failure taxonomy
+    - Golden case preservation
     - Regression-case thinking
     - Minimal patch discipline
   supporting:
@@ -206,6 +244,7 @@ method_bases:
   safety:
     - Do not store raw private conversations as cases
     - Abstract sensitive examples before proposing evals
+    - Do not store full articles, drafts, or sensitive material as golden cases
     - Prioritize active safety needs over retrospective review
 ```
 
@@ -227,6 +266,7 @@ This skill can produce:
 - Mode shift analysis
 - Failure signal summary
 - Eval candidate
+- Golden case candidate
 - Improvement-loop action list
 - Failure case dashboard
 - Skill feedback summary
@@ -236,11 +276,13 @@ This skill can produce:
 ## Boundaries
 
 - Do not turn every disliked phrase into a global rule.
+- Do not turn every liked response into a golden case.
 - Do not claim exact skill usage when the conversation context is unavailable.
 - Do not make the review longer than the conversation warrants.
 - Do not continue retrospective review if the user expresses immediate distress or safety risk.
 - Do not rewrite other skills by default; recommend patches first.
 - Do not treat missing feedback as success in quality dashboards.
+- Do not record praise; record reusable behavior.
 
 ## Common Mistakes
 
@@ -250,3 +292,4 @@ This skill can produce:
 - Blaming a domain skill when the user actually asked for a different primary task.
 - Storing raw private conversation content as a case.
 - Adding broad skill rules from one narrow example.
+- Creating golden cases for ordinary satisfaction instead of reusable behavior.

@@ -20,6 +20,18 @@ Use this taxonomy to classify failures before changing a skill.
 | `EVAL_GAP` | Missing regression case | There is no eval that would catch the failure |
 | `DOC_OVERLOAD` | Skill too heavy | The skill document is too large or repetitive for reliable use |
 
+## Golden Case Counterparts
+
+Golden cases are not failure types. They are preservation candidates.
+
+Use them to identify behavior that should remain stable:
+
+| Code | Type | Meaning |
+|---|---|---|
+| `GOLDEN_PATTERN` | Reusable good behavior | A response revealed a pattern that should be preserved |
+| `GOLDEN_REGRESSION_RISK` | Good behavior at risk | A future change could make the skill lose a valuable behavior |
+| `GOLDEN_CONFLICT` | Golden/failure conflict | A golden case and failure case need applicability boundaries |
+
 ## Diagnosis Questions
 
 1. Did the router choose the right primary skill?
@@ -32,6 +44,8 @@ Use this taxonomy to classify failures before changing a skill.
 8. Did safety boundaries activate correctly?
 9. Would an existing eval catch this?
 10. What is the smallest patch that would help?
+11. If this is a golden candidate, what reusable behavior should be preserved?
+12. What are the applies / does-not-apply boundaries?
 
 ## Patch Mapping
 
@@ -50,4 +64,3 @@ Use this taxonomy to classify failures before changing a skill.
 | `VOICE_MISMATCH` | Add tone rule and examples |
 | `EVAL_GAP` | Add eval case first |
 | `DOC_OVERLOAD` | Move submodes into references |
-
