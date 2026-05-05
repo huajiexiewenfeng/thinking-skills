@@ -173,6 +173,8 @@ thinking-skills/
 | Benchmark runner | Fixed scenario benchmark cases can be listed, prompted, scored, and saved as run reports | Done |
 | Benchmark dashboard | Multiple run reports can be compared by total score, per-skill score, deltas, and latest failures | Done |
 | Benchmark assistant | Benchmark workflows and dashboard updates can be triggered and interpreted through a meta skill | Done |
+| Benchmark maturity | Case library is stable first; response collection and Codex-as-judge are planned as later stages | In progress |
+| Codex-as-judge | Future first-pass reviewer that scores responses from explicit rubrics and flags human-review cases | Future |
 | Safety | High-stakes domains have explicit boundaries and escalation guidance | Done |
 | Contribution model | New skill checklist and contribution criteria are documented | Done |
 | Release | License, attribution, version notes, and stable directory structure exist | Done |

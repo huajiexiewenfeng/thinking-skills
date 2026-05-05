@@ -111,6 +111,47 @@ Benchmark v0 is intentionally lightweight:
 
 It does not yet provide a model-as-judge. That should come after the case library is stable.
 
+## Benchmark Maturity Plan
+
+The benchmark system should grow in stages, not jump directly into automated judgment.
+
+### Stage 1: Case Library First
+
+This is the current stage.
+
+The goal is to collect realistic cases, clarify expected behavior, and make routing or skill regressions visible. At this stage, a `not_run` result is acceptable when the runner only validates case coverage and no model response is provided.
+
+### Stage 2: Response Collection
+
+Before adding an AI judge, benchmark runs should accumulate enough real outputs from normal use or controlled test runs. This gives the project examples of:
+
+- Good responses worth preserving.
+- Bad responses that reveal skill gaps.
+- Ambiguous responses that need human judgment.
+- Cases whose expectations are too vague or too strict.
+
+### Stage 3: Codex-as-Judge
+
+A future version may use Codex or another AI agent as a first-pass benchmark judge.
+
+The judge should be treated as a reviewer, not as the source of truth. It can help score responses against case rubrics, explain failures, and flag responses that need human review, but it should not automatically rewrite skills, approve changes, or decide releases by itself.
+
+Expected judge output:
+
+- `pass`
+- `fail`
+- `needs_human_review`
+- Short reasons tied to the benchmark case expectations.
+- Suggested failure category when relevant.
+
+Guardrails:
+
+- Judge from explicit rubrics, not personal taste.
+- Require reasons for every score.
+- Keep human review for safety-sensitive, emotional-support, or unclear cases.
+- Sample judge decisions periodically to prevent drift.
+- Do not let a skill judge its own changes without an external rubric.
+
 ## Improvement Loop
 
 When a benchmark fails:
