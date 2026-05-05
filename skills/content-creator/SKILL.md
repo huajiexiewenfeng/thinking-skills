@@ -122,6 +122,8 @@ Prefer:
 - Use Mermaid diagrams for process-oriented content, such as request flow, lifecycle, routing, evaluation loops, failure handling, or deployment steps.
 - Include small cases or examples grounded in developer work.
 - Use code, pseudo-code, commands, file trees, diagrams, or configuration snippets only when they clarify the point.
+- For CSDN-style articles, use fenced code blocks only for code, configuration, commands, logs, protocol payloads, stack traces, SQL, Mermaid diagrams, or content whose spacing and formatting are semantically important.
+- For conceptual material, prefer paragraphs, bullet lists, tables, blockquotes, and inline code instead of `text` code fences.
 - Preserve the full argument when the user wants a long-form platform version; technical adaptation does not imply summarization.
 
 Avoid:
@@ -130,6 +132,7 @@ Avoid:
 - Treating a technical-platform version as a shorter version by default.
 - Adding code or technical artifacts mechanically when the article is conceptual.
 - Adding Mermaid diagrams mechanically when the process is not actually important.
+- Using `text` code fences for ordinary claims, concept lists, question lists, conclusions, or short explanatory phrases in CSDN-style articles.
 - Dropping important argument layers just because the target platform is technical.
 
 Useful default shape for CSDN-style conceptual articles:
