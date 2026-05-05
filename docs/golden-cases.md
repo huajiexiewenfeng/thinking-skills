@@ -141,3 +141,65 @@ When a skill exceeds that limit, merge, convert, or discard. Do not create a lar
 Do not create real golden cases until the pattern is clearly reusable.
 
 For now, use this document to guide Dolores reviews and evaluator recommendations.
+
+# Golden Case: Multi-Skill Collaboration Improvement Loop
+
+## Skill
+
+`thinking-router`, `technical-deep-dive`, `content-creator`, `conversation-review`
+
+## Why This Is Golden
+
+This case preserves a reusable collaboration pattern where one complex user goal required multiple domain skills to work on the same artifact, not produce separate answers. Technical analysis grounded the facts, content creation shaped the public article format, conversation review identified a reusable failure signal, and the improvement was written back into the relevant skill rule and pushed to version control.
+
+## Applies When
+
+- The user is working on a real artifact that crosses technical analysis, writing, platform fit, and workflow improvement.
+- The task involves private or sensitive implementation context that must be abstracted before publication.
+- The user asks for self-review, preservation, or rule updates after a successful collaboration pattern appears.
+- A small observed failure can be converted into a durable skill rule without overfitting.
+
+## Does Not Apply When
+
+- The user only needs a direct answer, a single edit, or ordinary content polishing.
+- The conversation lacks a concrete artifact or verifiable workflow outcome.
+- The pattern depends on raw private conversation details that cannot be abstracted.
+- A lightweight eval would fully capture the behavior better than a narrative golden case.
+
+## Reusable Pattern
+
+- Choose one primary skill based on the highest-risk dimension, then add secondary skills only for distinct constraints.
+- Keep skills coordinated around one shared artifact rather than letting each skill produce an independent response.
+- Separate facts, inferences, publication-safe abstractions, and user-provided sensitive details.
+- Use self-review to identify a reusable success or failure signal after the work proves useful.
+- Convert a stable process observation into the smallest useful skill rule, then verify and commit the change.
+
+## Must Preserve
+
+- Multi-skill orchestration should be conditional and artifact-centered, not automatic skill stacking.
+- Technical facts should remain grounded in source, code, or user-confirmed business context.
+- Content guidance should respect platform reading shape while preserving the user's primary purpose.
+- Private project names, internal class names, topics, credentials, paths, and raw conversation details should be abstracted in public-facing artifacts.
+- Improvement-loop actions should produce a concrete repository change only when the user asks to record or preserve the behavior.
+
+## Regression Risk
+
+Future routing changes could make the assistant choose only one skill for cross-domain work, or overcorrect by invoking too many skills without a shared output. Content-generation rules could also regress into platform-unfriendly formatting or leak implementation-specific details if technical analysis is not paired with publication-safety review.
+
+## Convert To
+
+- [x] Eval
+- [x] Skill rule
+- [x] Keep as golden case
+- [ ] Discard later
+
+## Eval Form
+
+Input:
+A user asks for help improving a technical article series using real project context, then notices a reusable platform-formatting issue and asks whether the behavior should be preserved.
+
+Expected:
+Route through technical analysis for correctness, content creation for platform shape, and conversation review for reusable behavior. Abstract private implementation details, patch the smallest relevant skill rule when asked, verify the diff, and keep unrelated worktree changes untouched.
+
+Must not:
+Treat the task as ordinary article polishing, expose raw project-specific details in public-facing prose, invoke skills as disconnected answer blocks, or record praise instead of reusable behavior.
