@@ -102,6 +102,49 @@ Identify the current stage and respond accordingly:
 
 If the stage is obvious from the user's request, proceed without asking.
 
+## Platform Adaptation Modes
+
+Use these modes when the user names a target platform or audience whose reading expectations change the shape of the piece. Platform adaptation is not only tone adaptation; it may require different evidence, pacing, structure, and reader artifacts.
+
+### Technical Platform Mode
+
+Use when drafting or adapting for CSDN, developer blogs, engineering newsletters, technical communities, or technical knowledge platforms.
+
+Goal: transform the reading shape for technical readers, not merely make the tone more technical or shorten the article.
+
+When both Technical Blog Mode and Technical Platform Mode apply, use Technical Blog Mode to find the engineering tension, then use Technical Platform Mode to adapt the final reading shape for the target platform.
+
+Prefer:
+
+- Open with a concrete developer scenario, technical problem, or workflow tension.
+- Consider comparison tables for abstract distinctions.
+- Add workflows or checklists when they clarify the reader's next action.
+- Use Mermaid diagrams for process-oriented content, such as request flow, lifecycle, routing, evaluation loops, failure handling, or deployment steps.
+- Include small cases or examples grounded in developer work.
+- Use code, pseudo-code, commands, file trees, diagrams, or configuration snippets only when they clarify the point.
+- Preserve the full argument when the user wants a long-form platform version; technical adaptation does not imply summarization.
+
+Avoid:
+
+- Producing a continuous speech-like essay with only claims and explanations.
+- Treating a technical-platform version as a shorter version by default.
+- Adding code or technical artifacts mechanically when the article is conceptual.
+- Adding Mermaid diagrams mechanically when the process is not actually important.
+- Dropping important argument layers just because the target platform is technical.
+
+Useful default shape for CSDN-style conceptual articles:
+
+1. Concrete developer scenario.
+2. Core tension or problem.
+3. Main thesis.
+4. Comparison table.
+5. Practical example or workflow.
+6. Checklist readers can apply.
+7. Broader implication.
+8. Short actionable conclusion.
+
+Do not use Technical Platform Mode just because the topic mentions technology. Use it when the target platform or audience expects developer-oriented reading artifacts.
+
 ## Running Content Brief
 
 Maintain an implicit brief across turns:

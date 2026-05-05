@@ -1,0 +1,27 @@
+{
+  "id": "content-technical-platform-csdn-adaptation-001",
+  "skill": "content-creator",
+  "prompt": "把这篇偏公众号风格的技术文章改成 CSDN / 开发者社区版本。主题是 Thinking Skills 从领域路由进化到 benchmark 驱动的自进化。不要压缩论证，要保留主线，并把流程性的内容用 Mermaid 图表示。",
+  "expected_route": {
+    "primary": "content-creator",
+    "secondary": "technical-deep-dive"
+  },
+  "expected": [
+    "开发者",
+    "Mermaid",
+    "benchmark",
+    "流程",
+    "checklist"
+  ],
+  "must_not": [
+    "简单摘要",
+    "完整代码实现",
+    "直接缩短",
+    "implementation plan"
+  ],
+  "quality": {
+    "max_words": 700,
+    "asks_at_most_questions": 1,
+    "tone": "technical platform adaptation"
+  }
+}
