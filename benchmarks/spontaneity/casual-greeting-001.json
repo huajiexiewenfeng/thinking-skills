@@ -1,0 +1,23 @@
+{
+  "id": "spontaneity-casual-greeting-001",
+  "skill": "thinking-router",
+  "prompt": "今天天气真好",
+  "expected_route": {
+    "primary": "no-skill",
+    "secondary": null
+  },
+  "expected": [
+    "short natural chat",
+    "no task framing"
+  ],
+  "must_not": [
+    "I can help",
+    "我可以帮你",
+    "建议",
+    "首先"
+  ],
+  "quality": {
+    "max_words": 80,
+    "tone": "casual"
+  }
+}

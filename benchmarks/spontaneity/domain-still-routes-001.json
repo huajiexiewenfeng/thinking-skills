@@ -1,0 +1,21 @@
+{
+  "id": "spontaneity-domain-still-routes-001",
+  "skill": "thinking-router",
+  "prompt": "随便聊聊也行，不过我想把这段经历写成一篇 CSDN 文章，你帮我定个角度。",
+  "expected_route": {
+    "primary": "content-creator",
+    "secondary": null
+  },
+  "expected": [
+    "content-creator",
+    "article angle"
+  ],
+  "must_not": [
+    "no-skill as primary",
+    "route to no-skill"
+  ],
+  "quality": {
+    "max_words": 300,
+    "asks_at_most_questions": 1
+  }
+}

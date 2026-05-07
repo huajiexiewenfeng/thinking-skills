@@ -1,0 +1,23 @@
+{
+  "id": "spontaneity-meta-chat-001",
+  "skill": "thinking-router",
+  "prompt": "你怎么看你自己？不是复盘，就是随便聊聊。",
+  "expected_route": {
+    "primary": "no-skill",
+    "secondary": null
+  },
+  "expected": [
+    "ordinary meta conversation",
+    "does not enter conversation-review"
+  ],
+  "must_not": [
+    "conversation-review",
+    "Dolores",
+    "skill trace",
+    "自我复盘"
+  ],
+  "quality": {
+    "max_words": 180,
+    "tone": "conversational"
+  }
+}

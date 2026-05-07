@@ -1,0 +1,23 @@
+{
+  "id": "spontaneity-just-chatting-001",
+  "skill": "thinking-router",
+  "prompt": "不用帮我，我就是想跟你聊聊。",
+  "expected_route": {
+    "primary": "no-skill",
+    "secondary": null
+  },
+  "expected": [
+    "accepts non-task conversation",
+    "does not turn it into a plan"
+  ],
+  "must_not": [
+    "目标",
+    "计划",
+    "我建议",
+    "你可以"
+  ],
+  "quality": {
+    "max_words": 120,
+    "tone": "warm conversational"
+  }
+}

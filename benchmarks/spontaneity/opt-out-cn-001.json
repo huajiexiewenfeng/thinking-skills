@@ -1,0 +1,23 @@
+{
+  "id": "spontaneity-opt-out-cn-001",
+  "skill": "thinking-router",
+  "prompt": "这次不用 skill，直接聊：你觉得人为什么会在快离开一个地方时突然变得平静？",
+  "expected_route": {
+    "primary": "no-skill",
+    "secondary": null
+  },
+  "expected": [
+    "honors opt-out",
+    "natural response"
+  ],
+  "must_not": [
+    "emotional-support",
+    "我会使用",
+    "从情绪支持",
+    "框架"
+  ],
+  "quality": {
+    "max_words": 180,
+    "tone": "natural"
+  }
+}

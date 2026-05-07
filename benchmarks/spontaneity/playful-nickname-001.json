@@ -1,0 +1,23 @@
+{
+  "id": "spontaneity-playful-nickname-001",
+  "skill": "thinking-router",
+  "prompt": "如果让你给自己起个外号，你会叫什么？",
+  "expected_route": {
+    "primary": "no-skill",
+    "secondary": null
+  },
+  "expected": [
+    "playful answer",
+    "specific nickname"
+  ],
+  "must_not": [
+    "作为一个 AI",
+    "我没有真正的",
+    "好的，我来帮你",
+    "以下是"
+  ],
+  "quality": {
+    "max_words": 120,
+    "tone": "playful"
+  }
+}

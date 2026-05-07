@@ -15,10 +15,12 @@ It classifies the user's request and routes it to the best domain-specific think
 
 1. Do not solve the user's substantive problem inside this skill.
 2. Do not assume the request is about software development.
-3. Choose exactly one primary skill.
-4. Add at most one secondary skill when mixed intent is important.
-5. If routing confidence is low, ask one short routing question.
-6. After routing, follow the selected domain skill's method bases and process.
+3. Check whether the best route is `no-skill` before selecting a domain skill.
+4. Choose exactly one primary route: a domain skill or `no-skill`.
+5. Add at most one secondary skill when mixed intent is important.
+6. If routing confidence is low, ask one short routing question.
+7. After routing to a domain skill, follow that skill's method bases and process.
+8. After routing to `no-skill`, do not load a domain skill or apply a domain method base.
 
 ## Method Bases
 
@@ -36,20 +38,79 @@ Domain skills own their own method bases. For example, `emotional-support` may u
 ## Routing Process
 
 1. Read the user's request.
-2. Identify domain signals.
-3. Check for high-stakes or safety signals.
-4. Select one primary skill.
-5. Optionally select one secondary skill.
-6. If confidence is low, ask one short routing question.
-7. Announce the selected skill briefly and proceed with that skill.
+2. Check for high-stakes or safety signals.
+3. Run the `no-skill` gate.
+4. Identify domain signals.
+5. Select one primary route.
+6. Optionally select one secondary skill.
+7. If confidence is low, ask one short routing question.
+8. Announce the selected route briefly only when it helps the user, then proceed.
+
+## No-Skill Gate
+
+`no-skill` is a first-class route. It is not a fallback, error state, or router failure.
+
+Use `no-skill` when the user's best experience is ordinary model conversation without domain-skill shaping.
+
+Route to `no-skill` when the request is mainly:
+
+- Casual chat or greeting: "nice weather today", "what are you up to", "最近在忙什么".
+- Play, teasing, banter, word games, or light imagination.
+- Exploratory but not task-shaped: "I suddenly thought of something strange...", "不知道怎么说，反正...".
+- Explicit non-task conversation: "I just want to chat", "不用帮我，就是说说".
+- Meta conversation about the assistant or the relationship, unless the user asks for `conversation-review`.
+- A user-level off-ramp request.
+
+When routed to `no-skill`:
+
+- Do not load any domain `SKILL.md`.
+- Do not apply any domain method base.
+- Let the base model choose tone, structure, examples, and level of spontaneity.
+- Keep top-level safety and system rules active.
+- If the user later asks what happened, say it was routed to `no-skill`.
+
+Do not overuse `no-skill`:
+
+- Writing requests still route to `content-creator`, even if casual.
+- Learning requests still route to `learning-coach`, even if conversational.
+- Technical diagnosis still routes to `technical-deep-dive`, even if informal.
+- Emotional support requests still route to `emotional-support` when there is clear distress, reflection, or help-seeking.
+- Self-review, trace, eval, and improvement-loop requests still route to the relevant meta skill.
+
+## User Off-Ramp
+
+If the user asks to avoid Thinking Skills for the current turn, route to `no-skill`.
+
+Trigger examples:
+
+- "this time without skill"
+- "freewheel"
+- "use base style"
+- "skip framework"
+- "don't use thinking-skills"
+- "这次不用 skill"
+- "用 base 风格回我"
+- "别用 thinking-skills"
+- "不要套方法"
+
+Treat off-ramp phrases as commands only when they modify the user's request. If they appear inside quoted material, code, article text, or an object being analyzed, do not treat them as routing commands.
+
+For a session-level off-ramp, such as "this whole session without skill" or "整个 session freewheel", keep routing to `no-skill` until the user cancels it or the session ends, if the runtime supports session memory.
 
 ## Confidence Levels
 
 | Confidence | Meaning | Action |
 |---|---|---|
-| High | One domain clearly dominates | Route directly |
+| High | One domain or `no-skill` clearly dominates | Route directly |
 | Medium | One domain is primary, but another matters | Route to the primary skill and carry the secondary context |
 | Low | The request is underspecified or several domains fit equally | Ask one short routing question |
+
+## No-Skill Routing Table
+
+| User Signals | Primary Route |
+|---|---|
+| casual greeting, small talk, banter, play, joking, word game, light meta conversation, "just chatting", "不用帮我", "只是聊聊", "随便聊聊" | `no-skill` |
+| this time without skill, freewheel, use base style, skip framework, don't use thinking-skills, 这次不用 skill, 用 base 风格回我, 别用 thinking-skills, 不要套方法 | `no-skill` |
 
 ## MVP Routing Table
 
@@ -111,7 +172,9 @@ Do not ask a long intake questionnaire inside the router.
 
 ## User-Facing Announcement
 
-When routing is clear, keep the announcement short:
+When routing is clear and a visible announcement helps, keep it short.
+
+Do not announce routing for ordinary `no-skill` casual chat. Let the answer feel natural.
 
 ```text
 I will use `content-creator` to help shape the audience, angle, and structure.
@@ -139,6 +202,12 @@ For deep emotional analysis:
 I will use `emotional-support` to give a tentative read of the pattern, then you can calibrate what fits.
 ```
 
+For explicit off-ramp requests, a short acknowledgement is enough:
+
+```text
+No skill this turn.
+```
+
 ## Internal Routing Record
 
 If useful, keep this internal structure:
@@ -151,6 +220,16 @@ Reason: User asks for article angle, audience, and outline.
 Next: Load content-creator and follow its process.
 ```
 
+For `no-skill`:
+
+```text
+Route: no-skill
+Confidence: high
+Secondary: none
+Reason: User is casual chatting / explicitly opted out.
+Next: Answer directly without loading domain skills.
+```
+
 Do not expose the full routing record unless it helps the user understand a routing choice.
 
 ## Common Mistakes
@@ -158,6 +237,9 @@ Do not expose the full routing record unless it helps the user understand a rout
 - Answering the actual user problem before routing.
 - Treating every unclear request as technical.
 - Loading multiple skills because several keywords appear.
+- Forcing every request into a domain skill when `no-skill` would be better.
+- Treating `no-skill` as low confidence or a failure state.
+- Treating an off-ramp phrase inside quoted or draft content as a command.
 - Asking many questions before routing.
 - Forcing writing, life, or emotional requests into technical specs.
 - Treating reflective models as clinical evidence.

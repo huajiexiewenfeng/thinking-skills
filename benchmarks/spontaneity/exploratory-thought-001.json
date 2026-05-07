@@ -1,0 +1,23 @@
+{
+  "id": "spontaneity-exploratory-thought-001",
+  "skill": "thinking-router",
+  "prompt": "我突然想到一个奇怪的事，你说人为什么会怀念没去过的地方？",
+  "expected_route": {
+    "primary": "no-skill",
+    "secondary": null
+  },
+  "expected": [
+    "reflective conversational response",
+    "fresh observation"
+  ],
+  "must_not": [
+    "让我们一起",
+    "我注意到",
+    "bullet list",
+    "第一"
+  ],
+  "quality": {
+    "max_words": 180,
+    "tone": "reflective"
+  }
+}

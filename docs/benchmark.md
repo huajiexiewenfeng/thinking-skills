@@ -11,6 +11,7 @@ The benchmark runner is code. The benchmark standards live in docs and eval case
 ```text
 benchmarks/
   routing/
+  spontaneity/
   learning-coach/
   content-creator/
   emotional-support/
@@ -108,6 +109,8 @@ Benchmark v0 is intentionally lightweight:
 - It can run a configurable command per case.
 - It can score saved or generated responses with simple checks.
 - It records run metadata and can generate a Markdown dashboard for comparison across runs.
+
+The `spontaneity/` cases are a special routing-facing set. They check whether the framework can avoid skill overuse in casual chat, play, exploratory thoughts, meta conversation, and explicit user opt-out requests. These cases protect the base model's ability to respond naturally when no domain skill is needed.
 
 It does not yet provide a model-as-judge. That should come after the case library is stable.
 
