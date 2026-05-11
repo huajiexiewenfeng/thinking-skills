@@ -71,6 +71,12 @@ Do not use this skill when:
 
 Use `conversation-review` as the primary skill when the object of review is the whole conversation. Use `skill-evaluator` as the primary skill when the user provides a specific failed response and wants a failure diagnosis.
 
+## Output Language
+
+Match the user's current language in all user-facing review output.
+
+The Markdown templates below describe structure, not literal headings. Translate headings, labels, and explanatory prose into the user's language before responding. Do not expose raw internal labels such as skill names, route names, or mode names unless the user asks for exact names; when exact names are useful, explain them in the user's language first and put the raw identifier in parentheses.
+
 ## Dolores Modes
 
 ### Light Self-Review

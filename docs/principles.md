@@ -52,11 +52,17 @@ An emotional support request may need reflection, validation, separation of fact
 
 Do not force every domain into specs, tasks, implementation plans, or tests.
 
-## 8. High-Stakes Domains Need Boundaries
+## 8. Output Language Follows the User
+
+User-facing output should use the language the user is using in the current exchange.
+
+Skill names, routing labels, method names, and output templates are internal scaffolding. Translate or paraphrase them into the user's language before responding. Preserve raw English labels only when the user asks for original names, logs, code, commands, citations, or exact technical identifiers.
+
+## 9. High-Stakes Domains Need Boundaries
 
 Medical, legal, financial, safety, and mental health situations need explicit boundaries. Skills can help users think clearly, but they must not pretend to replace professional support.
 
-## 9. Small Skills Beat Giant Skills
+## 10. Small Skills Beat Giant Skills
 
 Keep each skill focused. If one skill starts carrying several unrelated worldviews, split it.
 
