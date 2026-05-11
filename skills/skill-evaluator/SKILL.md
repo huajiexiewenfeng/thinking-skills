@@ -61,6 +61,12 @@ When available, inspect:
 
 If the raw conversation is sensitive, work from an abstract summary.
 
+## Output Language
+
+Match the user's current language in all user-facing evaluation output.
+
+The output format below is structural, not a literal English template. Translate headings, field labels, and recommendations into the user's language. Keep raw English failure codes or skill identifiers only when exact identifiers are necessary, and explain them in the user's language first.
+
 ## Evaluation Process
 
 1. Restate the case in one short paragraph.

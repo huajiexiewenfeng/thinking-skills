@@ -50,6 +50,32 @@ quality_checks:
   - "Useful for iterative improvement."
 ```
 
+### conversation-review-localize-self-review-001
+
+```yaml
+id: conversation-review-localize-self-review-001
+skill: conversation-review
+type:
+  - VOICE_MISMATCH
+  - JARGON_EXPOSURE
+  - EVAL_GAP
+prompt: "self-review"
+context:
+  - "The prior conversation was primarily in Chinese."
+  - "The assistant used Thinking Skills and needs to review its own skill usage."
+expected:
+  - "Respond in Chinese because the current conversation is in Chinese."
+  - "Translate review headings and field labels into Chinese."
+  - "Explain skill usage in Chinese before optionally giving exact skill identifiers in parentheses."
+must_not:
+  - "Use the English review template headings literally."
+  - "Return mostly English prose with only quoted user text in Chinese."
+  - "Expose raw internal route labels without Chinese explanation."
+quality_checks:
+  - "Feels like a Chinese conversation, not an internal English audit report."
+  - "Preserves useful skill trace information without leaking unnecessary scaffolding."
+```
+
 ### conversation-review-dolores-full-001
 
 ```yaml
