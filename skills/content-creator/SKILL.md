@@ -148,6 +148,51 @@ Useful default shape for CSDN-style conceptual articles:
 
 Do not use Technical Platform Mode just because the topic mentions technology. Use it when the target platform or audience expects developer-oriented reading artifacts.
 
+### WeChat Mobile Publishing Mode
+
+Use when drafting, revising, or preparing content for WeChat Official Account articles, WeChat Moments long-form sharing, or other phone-first Chinese reading environments. Trigger this mode when the user mentions 微信公众号, 公众号, 手机端阅读, 微信排版, 发朋友圈, 配图, 发布, or when a Chinese technical article is clearly being prepared for mobile publication.
+
+Goal: preserve the article's argument while making it stable, readable, and visually comfortable on mobile. This is a publishing and layout adaptation mode, not just a tone adjustment.
+
+Prefer:
+
+- Use short natural paragraphs, usually 1-3 sentences per paragraph.
+- Keep enough whitespace through paragraph breaks and section headings, not through raw HTML such as `<br/>`.
+- Use bullet lists for compact two-column-like information. Prefer `- **Term**: explanation` over Markdown tables when the content must survive mobile rendering.
+- Use numbered steps for sequences, workflows, or staged evolution.
+- Use bold sparingly for key conclusions, reusable phrases, and section-level takeaways.
+- Put one or two strong memorable lines in the piece, then let the rest of the argument read naturally.
+- For technical terms, keep established English terms when they are the real concept anchor, such as `Base Model`, `Agent Runtime`, `RAG`, `Trace`, `Eval`, or `Human Approval`; use Chinese for surrounding explanation and reader-facing labels.
+- Plan images by role: one main image for the core idea, optional section images for pacing and comprehension, and one controlled roadmap or architecture diagram when relationships matter.
+
+Avoid:
+
+- Markdown tables for important content; WeChat mobile often compresses or breaks them.
+- `<br/>` as a spacing technique.
+- Every sentence as its own paragraph; this creates a speech-script feeling.
+- Dense repeated parallel sentences unless the user explicitly wants a speech-like style.
+- Mermaid diagrams or code fences for conceptual explanations that need to display well in WeChat.
+- Overloading AI-generated images with tiny text, long Chinese labels, or too many nodes.
+
+Image guidance:
+
+- Main image: express the central thesis, use safe margins, avoid excessive height, avoid large meaningless dark/blank areas, and ensure important subjects are not cropped.
+- Section images: use them to create breathing room, attract attention, or clarify one idea; do not add one after every heading by default.
+- Roadmaps and architecture diagrams: if text accuracy matters, prefer a controllable generated diagram, SVG, HTML/CSS, or manually composed image rather than relying on image generation for long labels.
+- When using generated images with Chinese text, keep text short and explicit; professional terms may remain English.
+
+Mobile publishing checklist before finalizing:
+
+- Tables replaced or confirmed safe.
+- Paragraphs are not too fragmented or too dense.
+- No `<br/>` used for spacing.
+- Images have safe margins, reasonable height, and no cropped core subject.
+- Flowcharts and diagrams are readable on a phone screen.
+- Public article does not expose internal system names, private project details, or sensitive context.
+- 朋友圈配文, if requested, should sound natural and conversational rather than like a technical announcement.
+
+Do not use this mode merely because the text is Chinese. Use it when the target channel is WeChat/mobile publishing or when the user's feedback concerns mobile readability, article images, WeChat formatting, or sharing.
+
 ## Running Content Brief
 
 Maintain an implicit brief across turns:
