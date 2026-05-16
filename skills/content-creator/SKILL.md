@@ -124,6 +124,7 @@ Prefer:
 - Use code, pseudo-code, commands, file trees, diagrams, or configuration snippets only when they clarify the point.
 - For CSDN-style articles, use fenced code blocks only for code, configuration, commands, logs, protocol payloads, stack traces, SQL, Mermaid diagrams, or content whose spacing and formatting are semantically important.
 - For conceptual material, prefer paragraphs, bullet lists, tables, blockquotes, and inline code instead of `text` code fences.
+- When drafting CSDN article body text, treat `text` fenced code blocks as prohibited for ordinary concepts, thesis statements, comparison phrases, workflow summaries, conclusion lines, and conceptual formulas. Use prose, lists, tables, blockquotes, inline code, or Mermaid diagrams instead.
 - Preserve the full argument when the user wants a long-form platform version; technical adaptation does not imply summarization.
 
 Avoid:
@@ -133,6 +134,7 @@ Avoid:
 - Adding code or technical artifacts mechanically when the article is conceptual.
 - Adding Mermaid diagrams mechanically when the process is not actually important.
 - Using `text` code fences for ordinary claims, concept lists, question lists, conclusions, or short explanatory phrases in CSDN-style articles.
+- Copying internal shape templates into the user-facing article as `text` code fences.
 - Dropping important argument layers just because the target platform is technical.
 
 Useful default shape for CSDN-style conceptual articles:
@@ -339,13 +341,13 @@ Good technical blog writing should find the engineering tension before producing
 
 Prefer angles like:
 
-```text
-Not A, but B
-Common belief -> engineering reality
-API detail -> system behavior
-Tool feature -> operational trade-off
-Local optimization -> whole-chain effect
-```
+- Not A, but B.
+- Common belief -> engineering reality.
+- API detail -> system behavior.
+- Tool feature -> operational trade-off.
+- Local optimization -> whole-chain effect.
+
+These are internal angle templates. In the final article, express them as headings, topic sentences, tables, or ordinary prose, not as `text` fenced code blocks.
 
 Avoid:
 
