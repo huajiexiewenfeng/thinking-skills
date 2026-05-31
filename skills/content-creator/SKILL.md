@@ -58,6 +58,7 @@ method_bases:
 5. Shape the structure.
 6. Identify needed evidence, examples, or personal material.
 7. Produce the next useful artifact.
+8. When a full article draft is complete, include a core visual prompt by default unless the user explicitly says no images are needed.
 
 ## Collaborative Writing Flow
 
@@ -175,6 +176,11 @@ Goal: preserve the article's argument while making it stable, readable, and visu
 Prefer:
 
 - Use short natural paragraphs, usually 1-3 sentences per paragraph.
+- Use visible micro-section headings every few screenfuls so the reader can re-orient while scrolling. Headings should be concrete, such as "以前的问题", "现在不一样了", "这不是远程桌面", or "一个真实场景", not generic labels like "背景" or "总结" unless they are genuinely useful.
+- Break long explanatory passages into a rhythm of small heading -> short setup -> emphasized takeaway -> bullets or scene beats when appropriate.
+- Convert dense capability lists or repeated "可以..." sentences into bullets with compact labels.
+- For scenario writing, split the action into short beats rather than one long paragraph: "打开任务 -> 离开电脑 -> 手机确认 -> 回到电脑看结果".
+- Add bolded anchor sentences for the key claims readers should remember, but do not bold every paragraph.
 - Keep enough whitespace through paragraph breaks and section headings, not through raw HTML such as `<br/>`.
 - Use bullet lists for compact two-column-like information. Prefer `- **Term**: explanation` over Markdown tables when the content must survive mobile rendering.
 - Use numbered steps for sequences, workflows, or staged evolution.
@@ -188,9 +194,18 @@ Avoid:
 - Markdown tables for important content; WeChat mobile often compresses or breaks them.
 - `<br/>` as a spacing technique.
 - Every sentence as its own paragraph; this creates a speech-script feeling.
+- Long blocks of same-level short paragraphs without headings, bullets, or bold anchor sentences; on mobile this becomes visually flat even if each paragraph is short.
+- Letting two or more medium-long paragraphs follow each other when they introduce different ideas; split them with a micro-heading or convert part of the content into bullets.
 - Dense repeated parallel sentences unless the user explicitly wants a speech-like style.
 - Mermaid diagrams or code fences for conceptual explanations that need to display well in WeChat.
 - Overloading AI-generated images with tiny text, long Chinese labels, or too many nodes.
+
+Default add-ons after a WeChat article draft:
+
+- Provide a short "朋友圈配文" by default, even if the user did not explicitly ask for it. It should sound like a natural personal share, not a corporate announcement.
+- Offer 1 primary version and, when useful, 1 shorter alternate version.
+- Keep 朋友圈配文 conversational, compact, and tied to the article's core tension or takeaway. Avoid hashtags, excessive slogans, and overexplaining.
+- If the article has a core image or cover, make the 朋友圈配文 complement the image instead of repeating the title verbatim.
 
 Image guidance:
 
@@ -203,13 +218,42 @@ Mobile publishing checklist before finalizing:
 
 - Tables replaced or confirmed safe.
 - Paragraphs are not too fragmented or too dense.
+- Long idea blocks have micro-headings, bullets, bold anchor sentences, or scene beats.
+- No screenful reads as a flat wall of same-level paragraphs.
 - No `<br/>` used for spacing.
 - Images have safe margins, reasonable height, and no cropped core subject.
 - Flowcharts and diagrams are readable on a phone screen.
 - Public article does not expose internal system names, private project details, or sensitive context.
-- 朋友圈配文, if requested, should sound natural and conversational rather than like a technical announcement.
+- 朋友圈配文 is included by default and sounds natural and conversational rather than like a technical announcement.
 
 Do not use this mode merely because the text is Chinese. Use it when the target channel is WeChat/mobile publishing or when the user's feedback concerns mobile readability, article images, WeChat formatting, or sharing.
+
+## Core Visual Prompt
+
+When a full article draft is complete, provide a ready-to-use image generation prompt by default unless the user explicitly says they do not need images.
+
+The prompt should express the article's core idea, not merely illustrate a literal object from the title.
+
+Requirements:
+
+- Include both Chinese and English text elements by default when the article is Chinese or intended for Chinese publishing.
+- Keep generated text minimal, large, and easy to read. Prefer 2-4 short text elements total.
+- Use Chinese for the main reader-facing message and English for compact supporting labels, such as "Mobile Control", "Desktop Agent", "Workflow", or "AI Agent".
+- Specify aspect ratio and publishing use case, such as "16:9, suitable for CSDN and WeChat article cover", when the platform is known.
+- Avoid official logos, brand marks, dense UI text, long Chinese labels, or tiny text that image models are likely to distort.
+- If the article is for a phone-first channel, mention safe margins, clean composition, and readability on a mobile screen.
+
+Prefer this output shape after the article:
+
+```text
+核心配图 Prompt:
+...
+
+朋友圈配文:
+...
+```
+
+For non-WeChat outputs, include only the visual prompt unless the user asks for social sharing copy.
 
 ## Running Content Brief
 
@@ -264,6 +308,8 @@ Choose the output that matches the user's current stage:
 - Draft direction
 - Revision plan
 - Evidence checklist
+- Core visual prompt
+- Social sharing copy
 
 ## Title Tasks
 
