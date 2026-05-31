@@ -214,6 +214,21 @@ Image guidance:
 - Roadmaps and architecture diagrams: if text accuracy matters, prefer a controllable generated diagram, SVG, HTML/CSS, or manually composed image rather than relying on image generation for long labels.
 - When using generated images with Chinese text, keep text short and explicit; professional terms may remain English.
 
+Default style - Technical Minimal Green:
+
+Use this as the default style for Chinese technical WeChat articles unless the user requests another style. Also use it when the user asks for a WeChat article similar to "技术极简", "绿色标题", "一小段一小段但不要一句一行", or provides screenshots with green heading bars, left green rule headings, gray inline code pills, and compact technical prose.
+
+If additional named WeChat styles are added later, ask the user which style to use before drafting when the style is not obvious. Offer Technical Minimal Green as the recommended default for technical articles.
+
+- Use green section headings for major sections: inline `h2` with white text on `#009b72`, compact padding, and moderate top margin.
+- Use left green rule headings for secondary sections: `border-left:5px solid #009b72`, gray/black title text, compact spacing.
+- Use body paragraphs of 2-3 connected sentences. Do not make every sentence its own paragraph.
+- Keep mobile spacing compact but readable: body `font-size:18px`, `line-height:1.7-1.8`, paragraph margin around `14-18px 0`; emphasis paragraphs around `20-24px 0`.
+- Use green bold emphasis for thesis or takeaway sentences, not for every paragraph.
+- Render technical terms as inline gray pills with red text when using HTML styling, e.g. `<span style="background:#f2f2f2;color:#c7254e;padding:2px 6px;border-radius:4px;">state_5.sqlite</span>`.
+- Avoid oversized line-height such as `2` and large repeated paragraph margins such as `24px 0` across the whole article; they create a sparse, disconnected screenshot.
+- Avoid turning lists of related diagnostic questions into one-line paragraphs. Merge them into cohesive small paragraphs or compact bullets.
+
 Mobile publishing checklist before finalizing:
 
 - Tables replaced or confirmed safe.
