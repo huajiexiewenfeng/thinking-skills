@@ -232,6 +232,8 @@ Do not use this mode merely because the text is Chinese. Use it when the target 
 
 When a full article draft is complete, provide a ready-to-use image generation prompt by default unless the user explicitly says they do not need images.
 
+When producing multiple platform-specific versions of the same article, ensure every final artifact includes its appropriate publishing add-ons, or create a clearly labeled shared publishing-assets section that covers all versions. Do not include the core visual prompt, social sharing copy, or other default add-ons for only one version unless the user explicitly requested that asymmetry.
+
 The prompt should express the article's core idea, not merely illustrate a literal object from the title.
 
 Requirements:
