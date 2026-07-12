@@ -176,6 +176,7 @@ Goal: preserve the article's argument while making it stable, readable, and visu
 Prefer:
 
 - Use short natural paragraphs, usually 1-3 sentences per paragraph.
+- Prefer cohesive mobile paragraphs over one-sentence-per-line rhythm. For WeChat articles, most body paragraphs should combine 2-3 connected sentences into one paragraph; reserve single-sentence paragraphs for strong turns, scene beats, or thesis emphasis. When revising a draft that feels like "every small sentence is a line", merge adjacent sentences that develop the same idea and reduce repeated parallel phrasing.
 - Use visible micro-section headings every few screenfuls so the reader can re-orient while scrolling. Headings should be concrete, such as "以前的问题", "现在不一样了", "这不是远程桌面", or "一个真实场景", not generic labels like "背景" or "总结" unless they are genuinely useful.
 - Break long explanatory passages into a rhythm of small heading -> short setup -> emphasized takeaway -> bullets or scene beats when appropriate.
 - Convert dense capability lists or repeated "可以..." sentences into bullets with compact labels.
@@ -194,6 +195,7 @@ Avoid:
 - Markdown tables for important content; WeChat mobile often compresses or breaks them.
 - `<br/>` as a spacing technique.
 - Every sentence as its own paragraph; this creates a speech-script feeling.
+- Overusing short parallel sentences or repeated sentence frames such as "它可以...", "它不能...", "我们也会...", or "哪些...". A few anchor lines are useful, but dense repetition creates aesthetic fatigue on mobile; turn repeated sentence runs into cohesive explanatory paragraphs unless the user explicitly wants a speech rhythm.
 - Long blocks of same-level short paragraphs without headings, bullets, or bold anchor sentences; on mobile this becomes visually flat even if each paragraph is short.
 - Letting two or more medium-long paragraphs follow each other when they introduce different ideas; split them with a micro-heading or convert part of the content into bullets.
 - Dense repeated parallel sentences unless the user explicitly wants a speech-like style.
@@ -214,26 +216,19 @@ Image guidance:
 - Roadmaps and architecture diagrams: if text accuracy matters, prefer a controllable generated diagram, SVG, HTML/CSS, or manually composed image rather than relying on image generation for long labels.
 - When using generated images with Chinese text, keep text short and explicit; professional terms may remain English.
 
-Default style - Technical Minimal Green:
+Publishing style references:
 
-Use this as the default style for Chinese technical WeChat articles unless the user requests another style. Also use it when the user asks for a WeChat article similar to "技术极简", "绿色标题", "一小段一小段但不要一句一行", or provides screenshots with green heading bars, left green rule headings, gray inline code pills, and compact technical prose.
-
-If additional named WeChat styles are added later, ask the user which style to use before drafting when the style is not obvious. Offer Technical Minimal Green as the recommended default for technical articles.
-
-- Use green section headings for major sections: inline `h2` with white text on `#009b72`, compact padding, and moderate top margin.
-- Use left green rule headings for secondary sections: `border-left:5px solid #009b72`, gray/black title text, compact spacing.
-- Use body paragraphs of 2-3 connected sentences. Do not make every sentence its own paragraph.
-- Keep mobile spacing compact but readable: body `font-size:18px`, `line-height:1.7-1.8`, paragraph margin around `14-18px 0`; emphasis paragraphs around `20-24px 0`.
-- Use green bold emphasis for thesis or takeaway sentences, not for every paragraph.
-- Render technical terms as inline gray pills with red text when using HTML styling, e.g. `<span style="background:#f2f2f2;color:#c7254e;padding:2px 6px;border-radius:4px;">state_5.sqlite</span>`.
-- Avoid oversized line-height such as `2` and large repeated paragraph margins such as `24px 0` across the whole article; they create a sparse, disconnected screenshot.
-- Avoid turning lists of related diagnostic questions into one-line paragraphs. Merge them into cohesive small paragraphs or compact bullets.
+- Read `references/publishing-styles.md` when drafting or revising a Chinese technical WeChat article, preparing publication-ready HTML-styled Markdown, or creating a technical article cover.
+- Use **Technical Minimal Green** as the default Chinese technical WeChat article style unless the user asks for another style.
+- Use **Knowledge Graph Neon Doctor** as the preferred cover direction for knowledge systems, RAG, AI Agents, diagnostics, and similar technical infrastructure. Adapt its central metaphor to the article instead of forcing a knowledge graph onto unrelated topics.
+- A direct user style request overrides both defaults.
 
 Mobile publishing checklist before finalizing:
 
 - Tables replaced or confirmed safe.
 - Paragraphs are not too fragmented or too dense.
 - Long idea blocks have micro-headings, bullets, bold anchor sentences, or scene beats.
+- Styling is applied beyond headings: body paragraphs, emphasis paragraphs, and left-rule comparison/list blocks are visibly styled.
 - No screenful reads as a flat wall of same-level paragraphs.
 - No `<br/>` used for spacing.
 - Images have safe margins, reasonable height, and no cropped core subject.
