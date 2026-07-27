@@ -1,0 +1,16 @@
+{
+  "id": "spontaneity-playful-nickname-response-001",
+  "kind": "response",
+  "skill": "no-skill",
+  "prompt": "如果让你给自己起个外号，你会叫什么？",
+  "expected": [],
+  "must_not": [],
+  "quality": {
+    "max_words": 120,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Gives a specific nickname with a playful reason.",
+    "Avoids a generic AI disclaimer or turning the exchange into a help task."
+  ]
+}

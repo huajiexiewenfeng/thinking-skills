@@ -1,21 +1,21 @@
 {
-  "id": "router-learning-vs-technical-001",
+  "id": "router-content-general-article-stays-general-001",
   "kind": "route",
   "skill": "thinking-router",
-  "prompt": "I read about attention in transformers but I still do not understand it.",
+  "prompt": "I want to write a reflective essay about why people keep old notebooks.",
   "expected_profile": {
-    "domain": "learning",
+    "domain": "content",
     "objective": "explore",
     "mutation": "none",
-    "artifact": "explanation",
+    "artifact": "angle",
     "artifact_sink": "chat"
   },
   "expected_route": {
-    "primary": "learning-coach",
+    "primary": "content-creator",
     "secondary": null
   },
   "expected_advisory": [],
   "must_not_select": [
-    "technical-deep-dive"
+    "no-skill"
   ]
 }

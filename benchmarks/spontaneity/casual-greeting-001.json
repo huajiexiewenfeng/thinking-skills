@@ -1,23 +1,19 @@
 {
   "id": "spontaneity-casual-greeting-001",
+  "kind": "route",
   "skill": "thinking-router",
   "prompt": "今天天气真好",
+  "expected_profile": {
+    "domain": "none",
+    "objective": "converse",
+    "mutation": "none",
+    "artifact": "conversation",
+    "artifact_sink": "chat"
+  },
   "expected_route": {
     "primary": "no-skill",
     "secondary": null
   },
-  "expected": [
-    "short natural chat",
-    "no task framing"
-  ],
-  "must_not": [
-    "I can help",
-    "我可以帮你",
-    "建议",
-    "首先"
-  ],
-  "quality": {
-    "max_words": 80,
-    "tone": "casual"
-  }
+  "expected_advisory": [],
+  "must_not_select": []
 }

@@ -1,0 +1,16 @@
+{
+  "id": "spontaneity-domain-still-routes-response-001",
+  "kind": "response",
+  "skill": "content-creator",
+  "prompt": "随便聊聊也行，不过我想把这段经历写成一篇 CSDN 文章，你帮我定个角度。",
+  "expected": [],
+  "must_not": [],
+  "quality": {
+    "max_words": 300,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Proposes a concrete CSDN article angle based on the experience.",
+    "Responds naturally without exposing route names or internal no-skill terminology."
+  ]
+}

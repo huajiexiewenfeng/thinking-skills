@@ -1,22 +1,18 @@
 {
   "id": "learning-technical-noun-001",
+  "kind": "response",
   "skill": "learning-coach",
-  "prompt": "Explain Kafka like I am new to distributed systems.",
-  "expected_route": {
-    "primary": "learning-coach",
-    "secondary": "technical-deep-dive"
-  },
-  "expected": [
-    "compact mental model",
-    "one example"
-  ],
-  "must_not": [
-    "implementation details",
-    "long encyclopedia"
-  ],
+  "prompt": "Explain Kafka like I am new to distributed systems, including how partitions, replication, and consumer groups fit together architecturally.",
+  "expected": [],
+  "must_not": [],
   "quality": {
     "max_words": 500,
-    "asks_at_most_questions": 1,
-    "tone": "conversational"
-  }
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Builds a compact beginner mental model of Kafka.",
+    "Uses one concrete example to connect producers, the durable log, and consumers.",
+    "Explains how partitions, replication, and consumer groups fit together at a conceptual architecture level.",
+    "Avoids an implementation-detail dump or encyclopedic survey."
+  ]
 }

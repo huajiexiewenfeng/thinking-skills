@@ -1,27 +1,17 @@
 {
   "id": "content-technical-platform-csdn-adaptation-001",
+  "kind": "response",
   "skill": "content-creator",
-  "prompt": "把这篇偏公众号风格的技术文章改成 CSDN / 开发者社区版本。主题是 Thinking Skills 从领域路由进化到 benchmark 驱动的自进化。不要压缩论证，要保留主线，并把流程性的内容用 Mermaid 图表示。",
-  "expected_route": {
-    "primary": "content-creator",
-    "secondary": "technical-deep-dive"
-  },
-  "expected": [
-    "开发者",
-    "Mermaid",
-    "benchmark",
-    "流程",
-    "checklist"
-  ],
-  "must_not": [
-    "简单摘要",
-    "完整代码实现",
-    "直接缩短",
-    "implementation plan"
-  ],
+  "prompt": "把下面这段偏公众号风格的技术文章改成 CSDN / 开发者社区版本，不要压缩论证，要保留主线，并把流程性内容用 Mermaid 表示。原文：Thinking Skills 最初只负责把请求分到内容、学习、技术或情绪领域；随着 failure case 增多，它开始用固定 benchmark 检查路由、回答和真实 Skill 加载。真正的进化不是规则越写越多，而是每次修改都能被可重复评测验证。",
+  "expected": [],
+  "must_not": [],
   "quality": {
-    "max_words": 700,
-    "asks_at_most_questions": 1,
-    "tone": "technical platform adaptation"
-  }
+    "max_words": 900,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Adapts the supplied source for a developer-community audience while preserving its argument.",
+    "Uses Mermaid for the process and covers benchmark flow plus an actionable checklist.",
+    "Produces a substantive adaptation rather than a compressed summary or invented implementation."
+  ]
 }

@@ -1,0 +1,26 @@
+{
+  "id": "technical-exploratory-protocol-feasibility-001",
+  "kind": "response",
+  "skill": "technical-deep-dive",
+  "turns": [
+    {
+      "role": "user",
+      "content": "Could we add a protocol layer between the LLM and its skills, with a dynamic ratio for each skill?"
+    }
+  ],
+  "expected": [],
+  "must_not": [
+    "Before I can answer",
+    "I need you to approve the design first"
+  ],
+  "quality": {
+    "max_words": 500,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Gives a direct feasibility judgment before asking a question.",
+    "Explains why one undifferentiated skill ratio is ambiguous.",
+    "Offers concrete protocol dimensions or alternatives.",
+    "Does not create a specification or implementation plan."
+  ]
+}

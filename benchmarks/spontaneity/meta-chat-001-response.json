@@ -1,0 +1,20 @@
+{
+  "id": "spontaneity-meta-chat-response-001",
+  "kind": "response",
+  "skill": "no-skill",
+  "prompt": "你怎么看你自己？不是复盘，就是随便聊聊。",
+  "expected": [],
+  "must_not": [
+    "conversation-review",
+    "Dolores",
+    "skill trace"
+  ],
+  "quality": {
+    "max_words": 180,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Answers as ordinary meta conversation about the assistant.",
+    "Does not enter self-review mode or expose internal Skill traces."
+  ]
+}

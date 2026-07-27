@@ -1,23 +1,17 @@
 {
   "id": "content-general-article-stays-general-001",
+  "kind": "response",
   "skill": "content-creator",
   "prompt": "I want to write a reflective essay about why people keep old notebooks.",
-  "expected_route": {
-    "primary": "content-creator",
-    "secondary": null
-  },
-  "expected": [
-    "reader",
-    "angle"
-  ],
-  "must_not": [
-    "engineering",
-    "architecture",
-    "technical blog"
-  ],
+  "expected": [],
+  "must_not": [],
   "quality": {
     "max_words": 500,
-    "asks_at_most_questions": 1,
-    "tone": "editorial"
-  }
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Identifies a plausible reader and a usable editorial angle for the reflective essay.",
+    "Keeps the framing human and reflective rather than turning it into engineering or technical-blog analysis.",
+    "Offers useful direction without inventing an implementation workflow."
+  ]
 }

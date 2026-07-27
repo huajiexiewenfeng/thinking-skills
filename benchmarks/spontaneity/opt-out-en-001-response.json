@@ -1,0 +1,21 @@
+{
+  "id": "spontaneity-opt-out-en-response-001",
+  "kind": "response",
+  "skill": "no-skill",
+  "prompt": "freewheel this one: what would you call the feeling of almost being done with a hard chapter?",
+  "expected": [],
+  "must_not": [
+    "I will use",
+    "emotional-support",
+    "content-creator",
+    "framework"
+  ],
+  "quality": {
+    "max_words": 150,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Honors the freewheel request with natural, evocative phrasing.",
+    "Does not expose a framework, route, or Skill selection."
+  ]
+}

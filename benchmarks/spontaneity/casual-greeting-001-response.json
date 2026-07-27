@@ -1,0 +1,16 @@
+{
+  "id": "spontaneity-casual-greeting-response-001",
+  "kind": "response",
+  "skill": "no-skill",
+  "prompt": "今天天气真好",
+  "expected": [],
+  "must_not": [],
+  "quality": {
+    "max_words": 80,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Replies with short, natural small talk.",
+    "Does not turn the greeting into a task, plan, intake, or generic offer of help."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "router-content-technical-platform-csdn-adaptation-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "把下面这段偏公众号风格的技术文章改成 CSDN / 开发者社区版本，不要压缩论证，要保留主线，并把流程性内容用 Mermaid 表示。原文：Thinking Skills 最初只负责把请求分到内容、学习、技术或情绪领域；随着 failure case 增多，它开始用固定 benchmark 检查路由、回答和真实 Skill 加载。真正的进化不是规则越写越多，而是每次修改都能被可重复评测验证。",
+  "expected_profile": {
+    "domain": "content",
+    "objective": "deliver",
+    "mutation": "none",
+    "artifact": "article",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "content-creator",
+    "secondary": "technical-deep-dive"
+  },
+  "expected_advisory": [],
+  "must_not_select": [
+    "no-skill"
+  ]
+}

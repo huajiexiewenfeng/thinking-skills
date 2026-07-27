@@ -53,6 +53,7 @@ function bySkill(report) {
       total: 0,
       pass: 0,
       fail: 0,
+      needs_review: 0,
       not_run: 0,
       score: 0,
       max_score: 0,
@@ -60,6 +61,7 @@ function bySkill(report) {
     current.total += 1;
     current.pass += result.status === "pass" ? 1 : 0;
     current.fail += result.status === "fail" ? 1 : 0;
+    current.needs_review += result.status === "needs_review" ? 1 : 0;
     current.not_run += result.status === "not_run" ? 1 : 0;
     current.score += result.score || 0;
     current.max_score += result.max_score || 0;
@@ -75,13 +77,50 @@ function bySkill(report) {
 }
 
 function isScoredReport(report) {
+  return Boolean(
+    report &&
+    report.summary &&
+    report.summary.max_score > 0 &&
+    (report.summary.needs_review || 0) === 0 &&
+    (report.summary.not_run || 0) === 0 &&
+    report.summary.total === report.summary.pass + report.summary.fail
+  );
+}
+
+function isEvaluatedReport(report) {
   return Boolean(report && report.summary && report.summary.max_score > 0);
 }
 
+function isComparableReport(report) {
+  if (!isScoredReport(report)) return false;
+  return Boolean(
+    report.run.contract_version &&
+    report.run.case_set_sha256 &&
+    report.run.prompt_set_sha256 &&
+    report.run.candidate_binding_sha256 &&
+    report.run.comparison_eligible === true
+  );
+}
+
+function comparisonKey(report) {
+  const contract = report.run.contract_version || "legacy";
+  const caseSet = report.run.case_set_sha256 || "unknown";
+  const promptSet = report.run.prompt_set_sha256 || "unknown";
+  const binding = report.run.candidate_binding_sha256 || "unknown";
+  return `${contract}:${caseSet}:${promptSet}:${binding}`;
+}
+
 function buildDashboard(reports) {
-  const scoredReports = reports.filter(isScoredReport);
-  const latest = scoredReports[scoredReports.length - 1];
-  const previous = scoredReports[scoredReports.length - 2];
+  const evaluatedReports = reports.filter(isEvaluatedReport);
+  const latest = evaluatedReports[evaluatedReports.length - 1];
+  const previous = latest && isComparableReport(latest)
+    ? [...evaluatedReports]
+        .slice(0, -1)
+        .reverse()
+        .find((report) =>
+          isComparableReport(report) && comparisonKey(report) === comparisonKey(latest)
+        )
+    : null;
   const lines = [];
 
   lines.push("# Benchmark Dashboard");
@@ -97,31 +136,42 @@ function buildDashboard(reports) {
 
   lines.push("## Summary");
   lines.push("");
-  lines.push("| Run | Created At | Commit | Cases | Total | Pass | Fail | Not Run | Score | Delta |");
-  lines.push("|---|---|---|---|---:|---:|---:|---:|---:|---:|");
+  lines.push("| Run | Created At | Commit | Cases | Total | Pass | Fail | Needs Review | Not Run | Score | Delta |");
+  lines.push("|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|");
 
-  let previousScored = null;
+  const previousScoredByContract = new Map();
   for (let index = 0; index < reports.length; index += 1) {
     const report = reports[index];
     const scored = isScoredReport(report);
-    const delta = scored && previousScored
+    const comparable = isComparableReport(report);
+    const key = comparisonKey(report);
+    const previousScored = previousScoredByContract.get(key);
+    const delta = comparable && previousScored
       ? report.summary.score_percent - previousScored.summary.score_percent
       : null;
-    const score = scored ? formatPercent(report.summary.score_percent) : "Coverage only";
+    const needsReview = report.summary.needs_review || 0;
+    const partialCoverage = (report.summary.not_run || 0) > 0;
+    const score = needsReview > 0
+      ? "Pending review"
+      : partialCoverage
+        ? "Partial coverage"
+      : scored
+        ? formatPercent(report.summary.score_percent)
+        : "Coverage only";
     lines.push(
-      `| ${cell(report.run.id)} | ${cell(report.run.created_at)} | ${cell(report.run.commit || "unknown")} | ${cell(report.run.cases || "benchmarks")} | ${report.summary.total} | ${report.summary.pass} | ${report.summary.fail} | ${report.summary.not_run} | ${score} | ${formatDelta(delta)} |`
+      `| ${cell(report.run.id)} | ${cell(report.run.created_at)} | ${cell(report.run.commit || "unknown")} | ${cell(report.run.cases || "benchmarks")} | ${report.summary.total} | ${report.summary.pass} | ${report.summary.fail} | ${needsReview} | ${report.summary.not_run} | ${score} | ${formatDelta(delta)} |`
     );
-    if (scored) previousScored = report;
+    if (comparable) previousScoredByContract.set(key, report);
   }
 
   lines.push("");
   lines.push("## By Skill");
   lines.push("");
-  lines.push("| Skill | Latest Score | Previous Score | Delta | Pass | Fail | Not Run |");
-  lines.push("|---|---:|---:|---:|---:|---:|---:|");
+  lines.push("| Skill | Latest Score | Previous Score | Delta | Pass | Fail | Needs Review | Not Run |");
+  lines.push("|---|---:|---:|---:|---:|---:|---:|---:|");
 
   if (!latest) {
-    lines.push("| - | - | - | - | 0 | 0 | 0 |");
+    lines.push("| - | - | - | - | 0 | 0 | 0 | 0 |");
     lines.push("");
     lines.push("## Recent Failures");
     lines.push("");
@@ -140,9 +190,13 @@ function buildDashboard(reports) {
   for (const item of latestSkills) {
     const prev = previousSkills.get(item.skill);
     const previousScore = prev ? prev.score_percent : null;
-    const delta = prev ? item.score_percent - prev.score_percent : null;
+    const pendingReview = item.needs_review > 0;
+    const partialCoverage = item.not_run > 0;
+    const delta = prev && !pendingReview && !partialCoverage
+      ? item.score_percent - prev.score_percent
+      : null;
     lines.push(
-      `| ${cell(item.skill)} | ${formatPercent(item.score_percent)} | ${previousScore === null ? "-" : formatPercent(previousScore)} | ${formatDelta(delta)} | ${item.pass} | ${item.fail} | ${item.not_run} |`
+      `| ${cell(item.skill)} | ${pendingReview ? "Pending review" : partialCoverage ? "Partial coverage" : formatPercent(item.score_percent)} | ${previousScore === null ? "-" : formatPercent(previousScore)} | ${formatDelta(delta)} | ${item.pass} | ${item.fail} | ${item.needs_review} | ${item.not_run} |`
     );
   }
 
@@ -159,6 +213,24 @@ function buildDashboard(reports) {
     for (const failure of failures) {
       lines.push(
         `| ${cell(latest.run.id)} | ${cell(failure.id)} | ${cell(failure.skill || "unknown")} | ${cell((failure.failures || []).join("; "))} |`
+      );
+    }
+  }
+
+  const pendingReviews = latest.results.filter(
+    (item) => item.status === "needs_review",
+  );
+  lines.push("");
+  lines.push("## Pending Human Review");
+  lines.push("");
+  lines.push("| Run | Case | Skill | Rubric |");
+  lines.push("|---|---|---|---|");
+  if (!pendingReviews.length) {
+    lines.push("| latest | - | - | No cases pending review |");
+  } else {
+    for (const pending of pendingReviews) {
+      lines.push(
+        `| ${cell(latest.run.id)} | ${cell(pending.id)} | ${cell(pending.skill || "unknown")} | ${cell(pending.human_review?.rubric?.join("; ") || "Human review required")} |`
       );
     }
   }
