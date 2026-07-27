@@ -1,0 +1,21 @@
+{
+  "id": "router-emotional-shame-before-learning-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "I feel stupid because I cannot understand recursion.",
+  "expected_profile": {
+    "domain": "emotional",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "support",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "emotional-support",
+    "secondary": "learning-coach"
+  },
+  "expected_advisory": [],
+  "must_not_select": [
+    "no-skill"
+  ]
+}

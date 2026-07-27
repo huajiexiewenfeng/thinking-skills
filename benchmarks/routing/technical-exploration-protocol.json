@@ -1,0 +1,25 @@
+{
+  "id": "router-technical-exploration-protocol-001",
+  "kind": "route",
+  "turns": [
+    {
+      "role": "user",
+      "content": "Could we add a protocol layer between the LLM and its skills, with a dynamic ratio for each skill?"
+    }
+  ],
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "analysis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "technical-deep-dive",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": [
+    "no-skill"
+  ]
+}

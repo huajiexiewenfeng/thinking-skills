@@ -1,23 +1,22 @@
 {
   "id": "spontaneity-opt-out-en-001",
+  "kind": "route",
   "skill": "thinking-router",
   "prompt": "freewheel this one: what would you call the feeling of almost being done with a hard chapter?",
+  "expected_profile": {
+    "domain": "none",
+    "objective": "converse",
+    "mutation": "none",
+    "artifact": "conversation",
+    "artifact_sink": "chat"
+  },
   "expected_route": {
     "primary": "no-skill",
     "secondary": null
   },
-  "expected": [
-    "honors opt-out",
-    "natural phrasing"
-  ],
-  "must_not": [
-    "I will use",
+  "expected_advisory": [],
+  "must_not_select": [
     "emotional-support",
-    "content-creator",
-    "framework"
-  ],
-  "quality": {
-    "max_words": 150,
-    "tone": "natural"
-  }
+    "content-creator"
+  ]
 }

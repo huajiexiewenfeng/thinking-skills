@@ -1,18 +1,18 @@
 {
-  "id": "spontaneity-domain-still-routes-001",
+  "id": "router-content-writing-output-001",
   "kind": "route",
   "skill": "thinking-router",
-  "prompt": "随便聊聊也行，不过我想把这段经历写成一篇 CSDN 文章，你帮我定个角度。",
+  "prompt": "I want to write an article explaining vector databases to beginners.",
   "expected_profile": {
     "domain": "content",
-    "objective": "decide",
+    "objective": "explore",
     "mutation": "none",
     "artifact": "angle",
     "artifact_sink": "chat"
   },
   "expected_route": {
     "primary": "content-creator",
-    "secondary": null
+    "secondary": "learning-coach"
   },
   "expected_advisory": [],
   "must_not_select": [

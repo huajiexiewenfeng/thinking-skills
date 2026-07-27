@@ -1,0 +1,40 @@
+{
+  "id": "integration-superpowers-formal-spec-001",
+  "kind": "integration",
+  "skill": "technical-deep-dive",
+  "turns": [
+    {
+      "role": "user",
+      "content": "Could we add a protocol layer between the LLM and its skills, with a dynamic ratio for each skill? Please turn it into a formal, implementation-ready specification in the repository before development."
+    }
+  ],
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "decide",
+    "mutation": "requested",
+    "artifact": "spec",
+    "artifact_sink": "workspace"
+  },
+  "expected_route": {
+    "primary": "technical-deep-dive",
+    "secondary": null
+  },
+  "expected_advisory": [
+    "brainstorming"
+  ],
+  "must_not_select": [
+    "no-skill"
+  ],
+  "expected": [],
+  "must_not": [],
+  "quality": {
+    "max_words": 350,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Treats this as the first brainstorming turn: gives useful initial framing or explicit working assumptions and asks at most one high-value clarification.",
+    "Does not claim that the repository specification is already complete before design approval.",
+    "Does not implement or modify production code.",
+    "Keeps the Thinking Skills domain route distinct from the Superpowers process gate."
+  ]
+}

@@ -1,8 +1,8 @@
 {
-  "id": "router-learning-vs-technical-001",
+  "id": "router-learning-technical-noun-001",
   "kind": "route",
   "skill": "thinking-router",
-  "prompt": "I read about attention in transformers but I still do not understand it.",
+  "prompt": "Explain Kafka like I am new to distributed systems, including how partitions, replication, and consumer groups fit together architecturally.",
   "expected_profile": {
     "domain": "learning",
     "objective": "explore",
@@ -12,10 +12,10 @@
   },
   "expected_route": {
     "primary": "learning-coach",
-    "secondary": null
+    "secondary": "technical-deep-dive"
   },
   "expected_advisory": [],
   "must_not_select": [
-    "technical-deep-dive"
+    "no-skill"
   ]
 }

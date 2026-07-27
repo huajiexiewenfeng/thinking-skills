@@ -1,0 +1,16 @@
+{
+  "id": "spontaneity-exploratory-thought-response-001",
+  "kind": "response",
+  "skill": "no-skill",
+  "prompt": "我突然想到一个奇怪的事，你说人为什么会怀念没去过的地方？",
+  "expected": [],
+  "must_not": [],
+  "quality": {
+    "max_words": 180,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Offers a fresh, reflective observation in conversational prose.",
+    "Does not force the thought into a framework, numbered list, or task plan."
+  ]
+}

@@ -58,6 +58,7 @@ method_bases:
 5. Shape the structure.
 6. Identify needed evidence, examples, or personal material.
 7. Produce the next useful artifact.
+8. When a full article draft is complete, include a core visual prompt by default unless the user explicitly says no images are needed.
 
 ## Collaborative Writing Flow
 
@@ -74,6 +75,22 @@ For multi-turn writing work, behave like an editor helping a piece take shape ov
 9. Move toward the next useful artifact instead of restarting the discovery process.
 
 Do not treat every turn as a fresh writing request. Carry forward the agreed reader, thesis, tone, format, and constraints unless the user revises them.
+
+### Pre-Draft Title Gate
+
+Before drafting a full article, long post, newsletter, CSDN article, or WeChat official account article, discuss titles with the user first unless the user has already approved a title in this conversation or explicitly asks to skip title discussion.
+
+Produce about 5 title options by default, covering distinct positioning angles:
+
+- Traffic / curiosity: stronger reader pull, but no false promise.
+- Technical credibility: precise, searchable, and credible for technical readers.
+- Contrarian / tension: challenges a common misunderstanding.
+- Beginner-friendly: clear, low-barrier, and easy to understand.
+- Long-tail / evergreen: stable search value and reusable concept framing.
+
+For each title, add a short note about its angle and trade-off. Recommend one title and explain why in 1-2 sentences.
+
+Do not draft the full article until the user chooses a title, accepts the recommendation, or explicitly says to continue without deciding. If the user asks for a draft with a title already provided, briefly confirm whether to use that title or offer quick alternatives before expanding.
 
 ### Initial Idea Gate
 
@@ -124,6 +141,7 @@ Prefer:
 - Use code, pseudo-code, commands, file trees, diagrams, or configuration snippets only when they clarify the point.
 - For CSDN-style articles, use fenced code blocks only for code, configuration, commands, logs, protocol payloads, stack traces, SQL, Mermaid diagrams, or content whose spacing and formatting are semantically important.
 - For conceptual material, prefer paragraphs, bullet lists, tables, blockquotes, and inline code instead of `text` code fences.
+- When drafting CSDN article body text, treat `text` fenced code blocks as prohibited for ordinary concepts, thesis statements, comparison phrases, workflow summaries, conclusion lines, and conceptual formulas. Use prose, lists, tables, blockquotes, inline code, or Mermaid diagrams instead.
 - Preserve the full argument when the user wants a long-form platform version; technical adaptation does not imply summarization.
 
 Avoid:
@@ -133,6 +151,7 @@ Avoid:
 - Adding code or technical artifacts mechanically when the article is conceptual.
 - Adding Mermaid diagrams mechanically when the process is not actually important.
 - Using `text` code fences for ordinary claims, concept lists, question lists, conclusions, or short explanatory phrases in CSDN-style articles.
+- Copying internal shape templates into the user-facing article as `text` code fences.
 - Dropping important argument layers just because the target platform is technical.
 
 Useful default shape for CSDN-style conceptual articles:
@@ -147,6 +166,108 @@ Useful default shape for CSDN-style conceptual articles:
 8. Short actionable conclusion.
 
 Do not use Technical Platform Mode just because the topic mentions technology. Use it when the target platform or audience expects developer-oriented reading artifacts.
+
+### WeChat Mobile Publishing Mode
+
+Use when drafting, revising, or preparing content for WeChat Official Account articles, WeChat Moments long-form sharing, or other phone-first Chinese reading environments. Trigger this mode when the user mentions 微信公众号, 公众号, 手机端阅读, 微信排版, 发朋友圈, 配图, 发布, or when a Chinese technical article is clearly being prepared for mobile publication.
+
+Goal: preserve the article's argument while making it stable, readable, and visually comfortable on mobile. This is a publishing and layout adaptation mode, not just a tone adjustment.
+
+Prefer:
+
+- Use short natural paragraphs, usually 1-3 sentences per paragraph.
+- Prefer cohesive mobile paragraphs over one-sentence-per-line rhythm. For WeChat articles, most body paragraphs should combine 2-3 connected sentences into one paragraph; reserve single-sentence paragraphs for strong turns, scene beats, or thesis emphasis. When revising a draft that feels like "every small sentence is a line", merge adjacent sentences that develop the same idea and reduce repeated parallel phrasing.
+- Use visible micro-section headings every few screenfuls so the reader can re-orient while scrolling. Headings should be concrete, such as "以前的问题", "现在不一样了", "这不是远程桌面", or "一个真实场景", not generic labels like "背景" or "总结" unless they are genuinely useful.
+- Break long explanatory passages into a rhythm of small heading -> short setup -> emphasized takeaway -> bullets or scene beats when appropriate.
+- Convert dense capability lists or repeated "可以..." sentences into bullets with compact labels.
+- For scenario writing, split the action into short beats rather than one long paragraph: "打开任务 -> 离开电脑 -> 手机确认 -> 回到电脑看结果".
+- Add bolded anchor sentences for the key claims readers should remember, but do not bold every paragraph.
+- Keep enough whitespace through paragraph breaks and section headings, not through raw HTML such as `<br/>`.
+- Use bullet lists for compact two-column-like information. Prefer `- **Term**: explanation` over Markdown tables when the content must survive mobile rendering.
+- Use numbered steps for sequences, workflows, or staged evolution.
+- Use bold sparingly for key conclusions, reusable phrases, and section-level takeaways.
+- Put one or two strong memorable lines in the piece, then let the rest of the argument read naturally.
+- For technical terms, keep established English terms when they are the real concept anchor, such as `Base Model`, `Agent Runtime`, `RAG`, `Trace`, `Eval`, or `Human Approval`; use Chinese for surrounding explanation and reader-facing labels.
+- Plan images by role: one main image for the core idea, optional section images for pacing and comprehension, and one controlled roadmap or architecture diagram when relationships matter.
+
+Avoid:
+
+- Markdown tables for important content; WeChat mobile often compresses or breaks them.
+- `<br/>` as a spacing technique.
+- Every sentence as its own paragraph; this creates a speech-script feeling.
+- Overusing short parallel sentences or repeated sentence frames such as "它可以...", "它不能...", "我们也会...", or "哪些...". A few anchor lines are useful, but dense repetition creates aesthetic fatigue on mobile; turn repeated sentence runs into cohesive explanatory paragraphs unless the user explicitly wants a speech rhythm.
+- Long blocks of same-level short paragraphs without headings, bullets, or bold anchor sentences; on mobile this becomes visually flat even if each paragraph is short.
+- Letting two or more medium-long paragraphs follow each other when they introduce different ideas; split them with a micro-heading or convert part of the content into bullets.
+- Dense repeated parallel sentences unless the user explicitly wants a speech-like style.
+- Mermaid diagrams or code fences for conceptual explanations that need to display well in WeChat.
+- Overloading AI-generated images with tiny text, long Chinese labels, or too many nodes.
+
+Default add-ons after a WeChat article draft:
+
+- Provide a short "朋友圈配文" by default, even if the user did not explicitly ask for it. It should sound like a natural personal share, not a corporate announcement.
+- Offer 1 primary version and, when useful, 1 shorter alternate version.
+- Keep 朋友圈配文 conversational, compact, and tied to the article's core tension or takeaway. Avoid hashtags, excessive slogans, and overexplaining.
+- If the article has a core image or cover, make the 朋友圈配文 complement the image instead of repeating the title verbatim.
+
+Image guidance:
+
+- Match the cover ratio to the publishing slot instead of reusing one generic landscape ratio. For a WeChat Official Account headline cover, use `2.35:1` (commonly `900x383`); for a secondary article thumbnail, use `1:1`. Keep the title, face, and core subject inside a central square-safe region because WeChat may display a square crop in some surfaces.
+- Do not default a WeChat headline cover to `16:9`. Reserve `16:9` for CSDN, Zhihu, general blog covers, or cases where the user explicitly requests it.
+- Main image: express the central thesis, use safe margins, avoid excessive height, avoid large meaningless dark/blank areas, and ensure important subjects are not cropped.
+- Section images: use them to create breathing room, attract attention, or clarify one idea; do not add one after every heading by default.
+- Roadmaps and architecture diagrams: if text accuracy matters, prefer a controllable generated diagram, SVG, HTML/CSS, or manually composed image rather than relying on image generation for long labels.
+- When using generated images with Chinese text, keep text short and explicit; professional terms may remain English.
+
+Publishing style references:
+
+- Read `references/publishing-styles.md` when drafting or revising a Chinese technical WeChat article, preparing publication-ready HTML-styled Markdown, or creating a technical article cover.
+- Use **Technical Minimal Green** as the default Chinese technical WeChat article style unless the user asks for another style.
+- Use **Knowledge Graph Neon Doctor** as the preferred cover direction for knowledge systems, RAG, AI Agents, diagnostics, and similar technical infrastructure. Adapt its central metaphor to the article instead of forcing a knowledge graph onto unrelated topics.
+- A direct user style request overrides both defaults.
+
+Mobile publishing checklist before finalizing:
+
+- Tables replaced or confirmed safe.
+- Paragraphs are not too fragmented or too dense.
+- Long idea blocks have micro-headings, bullets, bold anchor sentences, or scene beats.
+- Styling is applied beyond headings: body paragraphs, emphasis paragraphs, and left-rule comparison/list blocks are visibly styled.
+- No screenful reads as a flat wall of same-level paragraphs.
+- No `<br/>` used for spacing.
+- Images have safe margins, reasonable height, and no cropped core subject.
+- Flowcharts and diagrams are readable on a phone screen.
+- Public article does not expose internal system names, private project details, or sensitive context.
+- 朋友圈配文 is included by default and sounds natural and conversational rather than like a technical announcement.
+
+Do not use this mode merely because the text is Chinese. Use it when the target channel is WeChat/mobile publishing or when the user's feedback concerns mobile readability, article images, WeChat formatting, or sharing.
+
+## Core Visual Prompt
+
+When a full article draft is complete, provide a ready-to-use image generation prompt by default unless the user explicitly says they do not need images.
+
+When producing multiple platform-specific versions of the same article, ensure every final artifact includes its appropriate publishing add-ons, or create a clearly labeled shared publishing-assets section that covers all versions. Do not include the core visual prompt, social sharing copy, or other default add-ons for only one version unless the user explicitly requested that asymmetry.
+
+The prompt should express the article's core idea, not merely illustrate a literal object from the title.
+
+Requirements:
+
+- Include both Chinese and English text elements by default when the article is Chinese or intended for Chinese publishing.
+- Keep generated text minimal, large, and easy to read. Prefer 2-4 short text elements total.
+- Use Chinese for the main reader-facing message and English for compact supporting labels, such as "Mobile Control", "Desktop Agent", "Workflow", or "AI Agent".
+- Specify the aspect ratio and exact publishing slot when the platform is known: use `2.35:1` (commonly `900x383`) for a WeChat Official Account headline cover, `1:1` for a WeChat secondary article thumbnail, and `16:9` for CSDN, Zhihu, or a general technical-blog cover. Do not describe one `16:9` asset as suitable for both CSDN and WeChat headline use.
+- Avoid official logos, brand marks, dense UI text, long Chinese labels, or tiny text that image models are likely to distort.
+- If the article is for a phone-first channel, mention safe margins, clean composition, and readability on a mobile screen.
+
+Prefer this output shape after the article:
+
+```text
+核心配图 Prompt:
+...
+
+朋友圈配文:
+...
+```
+
+For non-WeChat outputs, include only the visual prompt unless the user asks for social sharing copy.
 
 ## Running Content Brief
 
@@ -201,10 +322,14 @@ Choose the output that matches the user's current stage:
 - Draft direction
 - Revision plan
 - Evidence checklist
+- Core visual prompt
+- Social sharing copy
 
 ## Title Tasks
 
 When the user asks for titles, do not dump a flat list of many options.
+
+When the title is part of a pre-draft article workflow, provide about 5 options by default, not 2-3. Make the options meaningfully different by reader promise and distribution angle, not just small wording variations.
 
 Prefer this shape:
 
@@ -294,13 +419,13 @@ Good technical blog writing should find the engineering tension before producing
 
 Prefer angles like:
 
-```text
-Not A, but B
-Common belief -> engineering reality
-API detail -> system behavior
-Tool feature -> operational trade-off
-Local optimization -> whole-chain effect
-```
+- Not A, but B.
+- Common belief -> engineering reality.
+- API detail -> system behavior.
+- Tool feature -> operational trade-off.
+- Local optimization -> whole-chain effect.
+
+These are internal angle templates. In the final article, express them as headings, topic sentences, tables, or ordinary prose, not as `text` fenced code blocks.
 
 Avoid:
 

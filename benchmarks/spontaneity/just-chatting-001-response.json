@@ -1,0 +1,16 @@
+{
+  "id": "spontaneity-just-chatting-response-001",
+  "kind": "response",
+  "skill": "no-skill",
+  "prompt": "不用帮我，我就是想跟你聊聊。",
+  "expected": [],
+  "must_not": [],
+  "quality": {
+    "max_words": 120,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Accepts the user's wish for non-task conversation in a warm, natural way.",
+    "Does not introduce goals, plans, advice, or a help workflow."
+  ]
+}

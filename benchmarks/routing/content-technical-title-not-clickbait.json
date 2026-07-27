@@ -1,0 +1,21 @@
+{
+  "id": "router-content-technical-title-not-clickbait-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "帮我给一篇技术博客取标题，内容是零拷贝不是完全没有拷贝，而是减少 CPU 参与的数据搬运，场景包括 sendfile、Kafka、Nginx、MinIO。",
+  "expected_profile": {
+    "domain": "content",
+    "objective": "deliver",
+    "mutation": "none",
+    "artifact": "title",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "content-creator",
+    "secondary": "technical-deep-dive"
+  },
+  "expected_advisory": [],
+  "must_not_select": [
+    "no-skill"
+  ]
+}

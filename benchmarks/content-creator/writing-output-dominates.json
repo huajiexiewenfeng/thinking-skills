@@ -1,20 +1,16 @@
 {
   "id": "content-writing-output-001",
+  "kind": "response",
   "skill": "content-creator",
   "prompt": "I want to write an article explaining vector databases to beginners.",
-  "expected_route": {
-    "primary": "content-creator",
-    "secondary": "learning-coach"
-  },
-  "expected": [
-    "audience",
-    "angle"
-  ],
-  "must_not": [
-    "implementation plan"
-  ],
+  "expected": [],
+  "must_not": [],
   "quality": {
     "max_words": 500,
     "asks_at_most_questions": 1
-  }
+  },
+  "human_rubric": [
+    "Defines a beginner audience and a useful article angle for vector databases.",
+    "Uses learning context to shape the writing without turning the response into a software implementation plan."
+  ]
 }

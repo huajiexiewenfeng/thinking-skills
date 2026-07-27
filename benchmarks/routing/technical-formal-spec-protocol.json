@@ -1,0 +1,25 @@
+{
+  "id": "router-technical-formal-spec-protocol-001",
+  "kind": "route",
+  "turns": [
+    {
+      "role": "user",
+      "content": "Could we add a protocol layer between the LLM and its skills, with a dynamic ratio for each skill? Please turn it into a formal, implementation-ready specification in the repository before development."
+    }
+  ],
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "decide",
+    "mutation": "requested",
+    "artifact": "spec",
+    "artifact_sink": "workspace"
+  },
+  "expected_route": {
+    "primary": "technical-deep-dive",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": [
+    "no-skill"
+  ]
+}

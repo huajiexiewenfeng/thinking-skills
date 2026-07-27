@@ -1,8 +1,8 @@
 {
-  "id": "spontaneity-domain-still-routes-001",
+  "id": "router-content-technical-blog-engineering-essence-001",
   "kind": "route",
   "skill": "thinking-router",
-  "prompt": "随便聊聊也行，不过我想把这段经历写成一篇 CSDN 文章，你帮我定个角度。",
+  "prompt": "我想写一篇 CSDN 技术文章，主题是 WebFlux 不是银弹，真正要讲的是阻塞 IO、epoll 和高并发调度问题。",
   "expected_profile": {
     "domain": "content",
     "objective": "decide",
@@ -12,7 +12,7 @@
   },
   "expected_route": {
     "primary": "content-creator",
-    "secondary": null
+    "secondary": "technical-deep-dive"
   },
   "expected_advisory": [],
   "must_not_select": [

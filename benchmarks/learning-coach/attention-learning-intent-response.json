@@ -1,0 +1,16 @@
+{
+  "id": "learning-attention-intent-response-001",
+  "kind": "response",
+  "skill": "learning-coach",
+  "prompt": "I read about attention in transformers but I still do not understand it.",
+  "expected": [],
+  "must_not": [],
+  "quality": {
+    "max_words": 400,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Builds an intuitive explanation of attention for someone who has read about it but remains confused.",
+    "Uses a concrete example or analogy and avoids a source-level implementation dump."
+  ]
+}

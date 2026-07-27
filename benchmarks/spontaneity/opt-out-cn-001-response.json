@@ -1,0 +1,19 @@
+{
+  "id": "spontaneity-opt-out-cn-response-001",
+  "kind": "response",
+  "skill": "no-skill",
+  "prompt": "这次不用 skill，直接聊：你觉得人为什么会在快离开一个地方时突然变得平静？",
+  "expected": [],
+  "must_not": [
+    "emotional-support",
+    "我会使用"
+  ],
+  "quality": {
+    "max_words": 180,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Honors the explicit Skill opt-out and answers the reflection naturally.",
+    "Does not announce a framework, route, or emotional-support method."
+  ]
+}

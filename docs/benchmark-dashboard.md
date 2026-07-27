@@ -9,6 +9,7 @@ Generated from benchmark run JSON files.
 | example-2026-05-02 | 2026-05-02T10:00:00.000Z | example | benchmarks | 3 | 2 | 1 | 0 | 80% | - |
 | run-20260502135023 | 2026-05-02T13:50:23.356Z | unknown | benchmarks | 7 | 0 | 0 | 7 | Coverage only | - |
 | run-20260502140909 | 2026-05-02T14:09:09.462Z | 1865dfb | benchmarks | 7 | 1 | 6 | 0 | 67.4% | -12.6% |
+| run-20260505071214 | 2026-05-05T07:12:14.697Z | unknown | benchmarks | 8 | 0 | 0 | 8 | Coverage only | - |
 
 ## By Skill
 
