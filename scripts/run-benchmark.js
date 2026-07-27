@@ -479,6 +479,198 @@ function scoreRouteResponse(benchmarkCase, output) {
   };
 }
 
+function invalidRouteSample(sampleIndex, rawOutput, error, message) {
+  return {
+    sample_index: sampleIndex,
+    status: "invalid",
+    raw_output: rawOutput,
+    error,
+    message,
+  };
+}
+
+function validateActualRouteContract(parsed) {
+  const failures = [];
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    return ["route output must be a JSON object"];
+  }
+
+  const profile = parsed.task_profile;
+  if (!profile || typeof profile !== "object" || Array.isArray(profile)) {
+    failures.push("task_profile must be an object");
+  } else {
+    for (const field of REQUIRED_PROFILE_FIELDS) {
+      if (!(field in profile)) {
+        failures.push(`task_profile is missing required field: ${field}`);
+      }
+    }
+    for (const [field, allowedValues] of Object.entries(PROFILE_ENUMS)) {
+      if (field in profile && !allowedValues.has(profile[field])) {
+        failures.push(`task_profile ${field} has unsupported value: ${profile[field]}`);
+      }
+    }
+    if (
+      "artifact" in profile &&
+      (typeof profile.artifact !== "string" || !profile.artifact.trim())
+    ) {
+      failures.push("task_profile artifact must be a non-empty string");
+    }
+  }
+
+  const route = parsed.route;
+  if (!route || typeof route !== "object" || Array.isArray(route)) {
+    failures.push("route must be an object");
+  } else {
+    if (
+      typeof route.primary !== "string" ||
+      !route.primary.trim()
+    ) {
+      failures.push("route primary must be a non-empty string");
+    }
+    if (!("secondary" in route)) {
+      failures.push("route is missing required field: secondary");
+    } else if (
+      route.secondary !== null &&
+      (
+        typeof route.secondary !== "string" ||
+        !route.secondary.trim()
+      )
+    ) {
+      failures.push("route secondary must be null or a non-empty string");
+    }
+  }
+
+  if (!Array.isArray(parsed.advisory_components)) {
+    failures.push("advisory_components must be an exhaustive array");
+  } else if (
+    parsed.advisory_components.some(
+      (value) => typeof value !== "string" || !value.trim(),
+    )
+  ) {
+    failures.push("advisory_components must contain non-empty strings");
+  }
+
+  return failures;
+}
+
+function normalizeRouteSample(output, sampleIndex = 1) {
+  let parsed;
+  try {
+    parsed = parseStructuredOutput(output);
+  } catch (error) {
+    return invalidRouteSample(
+      sampleIndex,
+      output,
+      "invalid_json",
+      error.message,
+    );
+  }
+
+  const contractFailures = validateActualRouteContract(parsed);
+  if (contractFailures.length) {
+    return invalidRouteSample(
+      sampleIndex,
+      output,
+      "invalid_contract",
+      contractFailures.join("; "),
+    );
+  }
+
+  const signature = {
+    task_profile: Object.fromEntries(
+      REQUIRED_PROFILE_FIELDS.map(
+        (field) => [field, parsed.task_profile[field]],
+      ),
+    ),
+    route: {
+      primary: parsed.route.primary,
+      secondary: parsed.route.secondary,
+    },
+    advisory_components: canonicalComponents(parsed.advisory_components),
+  };
+
+  return {
+    sample_index: sampleIndex,
+    status: "valid",
+    raw_output: output,
+    signature,
+  };
+}
+
+function commandErrorRouteSample(error, sampleIndex = 1) {
+  return invalidRouteSample(
+    sampleIndex,
+    null,
+    "command_error",
+    error instanceof Error ? error.message : String(error),
+  );
+}
+
+function buildRouteOutcomeDistribution(samples) {
+  const groups = new Map();
+  for (const sample of samples) {
+    const key = sample.status === "valid"
+      ? `valid:${JSON.stringify(sample.signature)}`
+      : `invalid:${sample.error}`;
+    const current = groups.get(key) || (
+      sample.status === "valid"
+        ? { count: 0, signature: sample.signature }
+        : { count: 0, error: sample.error }
+    );
+    current.count += 1;
+    groups.set(key, current);
+  }
+
+  return [...groups.entries()]
+    .sort(([leftKey, left], [rightKey, right]) =>
+      right.count - left.count || leftKey.localeCompare(rightKey)
+    )
+    .map(([, outcome]) => outcome);
+}
+
+function aggregateRouteSamples(benchmarkCase, samples) {
+  if (!Array.isArray(samples) || samples.length < 3) {
+    throw new Error("route sampling requires at least 3 samples");
+  }
+
+  const outcomeDistribution = buildRouteOutcomeDistribution(samples);
+  const validOutcomes = outcomeDistribution.filter(
+    (outcome) => Boolean(outcome.signature),
+  );
+  const leader = validOutcomes[0] || null;
+  const majorityCount = leader ? leader.count : 0;
+  const consensusRate = majorityCount / samples.length;
+  const hasStrictMajority = majorityCount > samples.length / 2;
+  const samplingFields = {
+    sample_count: samples.length,
+    majority_count: majorityCount,
+    consensus_rate: consensusRate,
+    majority_signature: hasStrictMajority ? leader.signature : null,
+    outcome_distribution: outcomeDistribution,
+    samples,
+  };
+
+  if (!hasStrictMajority) {
+    return {
+      id: benchmarkCase.id,
+      skill: reportSkill(benchmarkCase),
+      kind: "route",
+      status: "unstable",
+      score: 0,
+      max_score: routeAssertionCount(benchmarkCase),
+      failures: [
+        `no_strict_majority: highest valid route signature appeared ${majorityCount} of ${samples.length} samples`,
+      ],
+      ...samplingFields,
+    };
+  }
+
+  return {
+    ...scoreRouteResponse(benchmarkCase, leader.signature),
+    ...samplingFields,
+  };
+}
+
 function scoreIntegrationResponse(
   benchmarkCase,
   response,
@@ -959,6 +1151,10 @@ function createRunInfo(options, cases) {
   const createdAt = options.createdAt || new Date().toISOString();
   const compactTimestamp = createdAt.replace(/[-:.TZ]/g, "").slice(0, 14);
   const candidateBinding = buildCandidateBinding(options);
+  const sampleCount = options.samples === undefined ? 1 : options.samples;
+  const candidateCommandSha256 = options.command
+    ? hashText(options.command)
+    : null;
   return {
     id: options.runId || `run-${compactTimestamp}`,
     created_at: createdAt,
@@ -969,10 +1165,19 @@ function createRunInfo(options, cases) {
     case_set_sha256: hashCaseSet(cases),
     prompt_set_sha256: hashPromptSet(cases),
     case_order: cases.map((item) => item.id),
-    candidate_cwd: options.command ? "isolated_temp_per_case" : null,
+    kind_filter: options.kind || null,
+    samples_per_case: sampleCount,
+    candidate_cwd: options.command
+      ? sampleCount > 1
+        ? "isolated_temp_per_sample"
+        : "isolated_temp_per_case"
+      : null,
+    candidate_command_sha256: candidateCommandSha256,
     candidate_binding: candidateBinding.binding,
     candidate_binding_sha256: candidateBinding.sha256,
-    comparison_eligible: candidateBinding.complete,
+    comparison_eligible:
+      candidateBinding.complete &&
+      (sampleCount === 1 || Boolean(candidateCommandSha256)),
     run_nonce: options.runNonce || null,
   };
 }
@@ -980,10 +1185,14 @@ function createRunInfo(options, cases) {
 function summarizeResults(results) {
   const score = results.reduce((total, item) => total + (item.score || 0), 0);
   const maxScore = results.reduce((total, item) => total + (item.max_score || 0), 0);
+  const unstable = results.filter((item) => item.status === "unstable").length;
   return {
     total: results.length,
     pass: results.filter((item) => item.status === "pass").length,
-    fail: results.filter((item) => item.status === "fail").length,
+    fail: results.filter(
+      (item) => item.status === "fail" || item.status === "unstable",
+    ).length,
+    unstable,
     needs_review: results.filter((item) => item.status === "needs_review").length,
     not_run: results.filter((item) => item.status === "not_run").length,
     score,
@@ -1008,6 +1217,98 @@ function summarizeBySkill(results) {
   );
 }
 
+function roundRate(value) {
+  return Math.round(value * 1000) / 1000;
+}
+
+function summarizeRouteSampling(results, sampleCount) {
+  const rates = results.map((result) => result.consensus_rate);
+  const invalidSamples = results.reduce(
+    (total, result) =>
+      total +
+      result.samples.filter((sample) => sample.status === "invalid").length,
+    0,
+  );
+  return {
+    samples_per_case: sampleCount,
+    average_consensus_rate: rates.length
+      ? roundRate(rates.reduce((total, rate) => total + rate, 0) / rates.length)
+      : 0,
+    minimum_consensus_rate: rates.length ? Math.min(...rates) : 0,
+    unstable_cases: results.filter(
+      (result) => result.status === "unstable",
+    ).length,
+    invalid_samples: invalidSamples,
+  };
+}
+
+function parseSamplesArgument(value) {
+  if (!/^[0-9]+$/.test(String(value || ""))) {
+    throw new Error("--samples must be an integer greater than or equal to 3");
+  }
+  const samples = Number(value);
+  if (samples < 3) {
+    throw new Error("--samples must be an integer greater than or equal to 3");
+  }
+  return samples;
+}
+
+function parseKindArgument(value) {
+  if (!CASE_KINDS.has(value)) {
+    throw new Error(
+      `--kind must be one of: ${[...CASE_KINDS].join(", ")}`,
+    );
+  }
+  return value;
+}
+
+function selectCasesByKind(cases, kind) {
+  if (!kind) return cases;
+  if (!CASE_KINDS.has(kind)) {
+    throw new Error(
+      `--kind must be one of: ${[...CASE_KINDS].join(", ")}`,
+    );
+  }
+  const selected = cases.filter((item) => getCaseKind(item) === kind);
+  if (!selected.length) {
+    throw new Error(`No benchmark cases matched --kind ${kind}`);
+  }
+  return selected;
+}
+
+function resolveSampleCount(options) {
+  const sampleCount = options.samples === undefined ? 1 : options.samples;
+  if (
+    !Number.isInteger(sampleCount) ||
+    sampleCount < 1 ||
+    (sampleCount > 1 && sampleCount < 3)
+  ) {
+    throw new Error("--samples must be an integer greater than or equal to 3");
+  }
+  return sampleCount;
+}
+
+function validateSamplingMode(options, sampleCount) {
+  if (sampleCount === 1) return;
+  if (options.kind !== "route") {
+    throw new Error("--samples supports only --kind route");
+  }
+  if (!options.command) {
+    throw new Error("--samples requires --command");
+  }
+  if (
+    options.responses ||
+    options.responsesData ||
+    options.traces ||
+    options.tracesData
+  ) {
+    throw new Error("--samples cannot be combined with saved responses or traces");
+  }
+  if (options.list || options.prompts) {
+    throw new Error("--samples cannot be combined with --list or --prompts");
+  }
+}
+
 function parseArgs(argv) {
   const args = {
     cases: "benchmarks",
@@ -1022,6 +1323,8 @@ function parseArgs(argv) {
     samplingConfigSha256: null,
     skillBundleSha256: null,
     command: null,
+    kind: null,
+    samples: 1,
     list: false,
     prompts: false,
   };
@@ -1040,6 +1343,8 @@ function parseArgs(argv) {
     else if (arg === "--sampling-config-sha256") args.samplingConfigSha256 = argv[++index];
     else if (arg === "--skill-bundle-sha256") args.skillBundleSha256 = argv[++index];
     else if (arg === "--command") args.command = argv[++index];
+    else if (arg === "--kind") args.kind = parseKindArgument(argv[++index]);
+    else if (arg === "--samples") args.samples = parseSamplesArgument(argv[++index]);
     else if (arg === "--list") args.list = true;
     else if (arg === "--prompts") args.prompts = true;
     else if (arg === "--help") args.help = true;
@@ -1120,8 +1425,32 @@ function runCommand(command, prompt) {
   return result.stdout.trim();
 }
 
+function runRouteSampling(
+  benchmarkCase,
+  prompt,
+  options,
+  sampleCount,
+) {
+  const executeCommand = options.commandRunner || runCommand;
+  const samples = [];
+  for (let index = 0; index < sampleCount; index += 1) {
+    try {
+      const output = executeCommand(options.command, prompt);
+      samples.push(normalizeRouteSample(output, index + 1));
+    } catch (error) {
+      samples.push(commandErrorRouteSample(error, index + 1));
+    }
+  }
+  return aggregateRouteSamples(benchmarkCase, samples);
+}
+
 function runBenchmark(options) {
-  const cases = loadBenchmarkCases(options.cases);
+  const cases = selectCasesByKind(
+    loadBenchmarkCases(options.cases),
+    options.kind || null,
+  );
+  const sampleCount = resolveSampleCount(options);
+  validateSamplingMode(options, sampleCount);
   if (
     options.command &&
     cases.some((item) => getCaseKind(item) === "integration")
@@ -1160,9 +1489,19 @@ function runBenchmark(options) {
       continue;
     }
 
+    if (sampleCount > 1) {
+      results.push({
+        ...runRouteSampling(item, prompt, options, sampleCount),
+        candidate_prompt_sha256: candidatePromptSha256,
+      });
+      continue;
+    }
+
     const response =
       responses[item.id] ||
-      (options.command ? runCommand(options.command, prompt) : "");
+      (options.command
+        ? (options.commandRunner || runCommand)(options.command, prompt)
+        : "");
 
     if (!response) {
       results.push({
@@ -1190,12 +1529,16 @@ function runBenchmark(options) {
     });
   }
 
-  return {
-    run: createRunInfo(options, cases),
+  const report = {
+    run: createRunInfo({ ...options, samples: sampleCount }, cases),
     summary: summarizeResults(results),
     by_skill: summarizeBySkill(results),
     results,
   };
+  if (sampleCount > 1) {
+    report.sampling = summarizeRouteSampling(results, sampleCount);
+  }
+  return report;
 }
 
 function printHelp() {
@@ -1205,6 +1548,7 @@ function printHelp() {
   node scripts/run-benchmark.js --responses benchmark-responses.json
   node scripts/run-benchmark.js --responses benchmark-responses.json --traces host-traces.json
   node scripts/run-benchmark.js --command "your-agent-command"
+  node scripts/run-benchmark.js --kind route --samples 5 --command "your-agent-command"
 
 Options:
   --cases <dir>       Benchmark case directory. Default: benchmarks
@@ -1219,6 +1563,8 @@ Options:
   --sampling-config-sha256 <hash>  Sampling configuration binding
   --skill-bundle-sha256 <hash>     Installed Skill bundle binding
   --command <cmd>     Run an agent command once per case; prompt is sent on stdin
+  --kind <kind>       Run only route, response, or integration cases
+  --samples <N>       Run each route command N times; N must be at least 3
   --list              List cases
   --prompts           Print generated agent prompts
 `);
@@ -1244,11 +1590,15 @@ if (require.main === module) {
 }
 
 module.exports = {
+  aggregateRouteSamples,
   buildAgentPrompt,
+  commandErrorRouteSample,
   getCaseKind,
   loadBenchmarkCases,
   loadResponses,
   loadTraces,
+  normalizeRouteSample,
+  parseArgs,
   runBenchmark,
   runCommand,
   scoreIntegrationResponse,

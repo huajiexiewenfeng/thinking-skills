@@ -279,6 +279,34 @@ node scripts/run-benchmark.js --command "your-agent-command"
 
 The command receives the sanitized candidate prompt on stdin from an isolated temporary working directory. File arguments in `--command` that exist relative to the invocation directory are resolved to absolute paths before the candidate starts, so commands such as `node scripts/my-agent.js` keep working without changing the isolated candidate cwd. Response cases write natural text; route cases write the structured route JSON. Command mode does not install or prove a particular Skill bundle; comparable runs must bind the candidate model, harness version, sampling-config hash, and installed Skill-bundle hash. Use an external adapter for integration cases.
 
+### Route Stability Sampling
+
+Run only route cases five times each:
+
+```bash
+node scripts/run-benchmark.js --kind route --samples 5 --command "your-agent-command" --candidate-model "<model-id>" --harness-version "<harness-version>" --sampling-config-sha256 "<sha256>" --skill-bundle-sha256 "<sha256>" --out benchmark-runs/route-baseline.json
+```
+
+`--samples` is command-mode only, requires `--kind route`, and must be an integer greater than or equal to 3. Five samples are recommended for a baseline. Response and integration cases are not sampled because natural-language outputs do not have a canonical route signature and integration evidence must come from one bound adapter capture.
+
+Each valid sample is normalized from:
+
+- all five required `task_profile` fields;
+- `route.primary` and `route.secondary`;
+- the sorted, exhaustive top-level `advisory_components` array.
+
+JSON field order, advisory order, and optional `confidence` do not change the signature. Invalid JSON, invalid contracts, and command errors remain in the report and count toward the sample denominator, but they cannot form a valid majority.
+
+A signature must occur more than half of all samples:
+
+- `pass`: the strict-majority signature matches the gold route;
+- `fail`: a strict-majority signature exists but is wrong;
+- `unstable`: no valid signature has a strict majority.
+
+`summary.fail` includes both `fail` and `unstable`; `summary.unstable` exposes the unstable subset. The `sampling` report contains `samples_per_case`, average and minimum consensus, unstable case count, and invalid sample count. Each case retains raw `samples` and its `outcome_distribution`.
+
+Comparable route baselines require identical contract, case set, Prompt set, candidate binding, command hash, kind filter, and sample count. The report stores only the command SHA-256, not the raw command.
+
 Update the dashboard:
 
 ```bash
@@ -296,7 +324,7 @@ Use the dashboard when you want to compare skill quality before and after a chan
 3. Open `docs/benchmark-dashboard.md`.
 4. Compare total score, per-skill score, pending human reviews, delta, and latest failures.
 
-Each new report records `contract_version`, case-set and Prompt-set SHA-256 values, exact case order, a candidate-Prompt SHA-256 per case, and candidate/harness/sampling/Skill-bundle bindings. Dashboard deltas require a complete run with no `not_run` or pending review, plus identical contract, case set, Prompt set, and candidate binding. Partial coverage is displayed but never compared.
+Each new report records `contract_version`, case-set and Prompt-set SHA-256 values, exact case order, a candidate-Prompt SHA-256 per case, and candidate/harness/sampling/Skill-bundle bindings. Dashboard deltas require a complete run with no `not_run` or pending review, plus identical contract, case set, Prompt set, candidate binding, command binding for command mode, kind filter, and samples-per-case. Partial coverage and mismatched sampling experiments are displayed but never compared.
 
 The committed `benchmark-runs/example-2026-05-02.json` is synthetic sample data. Real local runs may include private prompts or outputs, so review them before committing.
 
@@ -307,6 +335,7 @@ The benchmark remains intentionally lightweight:
 - It validates case structure.
 - It can generate fresh prompts.
 - It can run a configurable command per case.
+- It can repeat route-only command runs, aggregate normalized route signatures by strict majority, and report consistency separately from accuracy.
 - It can score structured route output, natural responses, and adapter-captured integration envelopes.
 - It records run metadata and can generate a Markdown dashboard for comparison across runs.
 

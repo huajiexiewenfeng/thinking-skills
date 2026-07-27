@@ -5,9 +5,13 @@ const { createHash } = require("node:crypto");
 const os = require("node:os");
 const path = require("node:path");
 const {
+  aggregateRouteSamples,
+  commandErrorRouteSample,
   loadBenchmarkCases,
   loadResponses,
   loadTraces,
+  normalizeRouteSample,
+  parseArgs,
   runBenchmark,
   runCommand,
   scoreIntegrationResponse,
@@ -271,6 +275,164 @@ test("route selection assertions fail when advisory_components are not reported"
 
   assert.equal(result.status, "fail");
   assert.ok(result.failures.some((item) => item.includes("advisory_components")));
+});
+
+function makeSamplingRouteCase() {
+  return {
+    id: "route-sampling-001",
+    kind: "route",
+    skill: "thinking-router",
+    turns: [{ role: "user", content: "Explain whether this protocol can work." }],
+    expected_profile: {
+      domain: "technical",
+      objective: "explore",
+      mutation: "none",
+      artifact: "analysis",
+      artifact_sink: "chat",
+    },
+    expected_route: {
+      primary: "technical-deep-dive",
+      secondary: null,
+    },
+    expected_advisory: [],
+    must_not_select: ["brainstorming"],
+  };
+}
+
+function makeRouteOutput(primary, objective = "explore") {
+  return {
+    task_profile: {
+      domain: "technical",
+      objective,
+      mutation: "none",
+      artifact: "analysis",
+      artifact_sink: "chat",
+    },
+    route: {
+      primary,
+      secondary: null,
+    },
+    advisory_components: [],
+  };
+}
+
+test("normalizes semantically equivalent route samples to one signature", () => {
+  const first = normalizeRouteSample({
+    task_profile: {
+      domain: "technical",
+      objective: "explore",
+      mutation: "none",
+      artifact: "analysis",
+      artifact_sink: "chat",
+      confidence: 0.9,
+    },
+    route: {
+      primary: "technical-deep-dive",
+      secondary: null,
+    },
+    advisory_components: ["writing-plans", "brainstorming"],
+  }, 1);
+  const second = normalizeRouteSample({
+    route: {
+      secondary: null,
+      primary: "technical-deep-dive",
+    },
+    advisory_components: ["brainstorming", "writing-plans"],
+    task_profile: {
+      artifact_sink: "chat",
+      artifact: "analysis",
+      mutation: "none",
+      objective: "explore",
+      domain: "technical",
+      confidence: 0.2,
+    },
+  }, 2);
+
+  assert.equal(first.status, "valid");
+  assert.equal(second.status, "valid");
+  assert.deepEqual(first.signature, second.signature);
+  assert.deepEqual(first.signature.advisory_components, [
+    "brainstorming",
+    "writing-plans",
+  ]);
+  assert.equal("confidence" in first.signature.task_profile, false);
+});
+
+test("classifies invalid route samples without allowing an invalid signature", () => {
+  const invalidJson = normalizeRouteSample("{not-json", 1);
+  const invalidContract = normalizeRouteSample({
+    task_profile: {
+      domain: "technical",
+      objective: "explore",
+      mutation: "none",
+      artifact: "analysis",
+      artifact_sink: "chat",
+    },
+    route: {
+      primary: "technical-deep-dive",
+    },
+    advisory_components: [],
+  }, 2);
+  const commandError = commandErrorRouteSample(
+    new Error("command failed with exit 7"),
+    3,
+  );
+
+  assert.equal(invalidJson.status, "invalid");
+  assert.equal(invalidJson.error, "invalid_json");
+  assert.equal(invalidJson.signature, undefined);
+  assert.equal(invalidContract.status, "invalid");
+  assert.equal(invalidContract.error, "invalid_contract");
+  assert.match(invalidContract.message, /secondary/);
+  assert.equal(commandError.status, "invalid");
+  assert.equal(commandError.error, "command_error");
+  assert.equal(commandError.raw_output, null);
+});
+
+test("aggregates a strict majority separately from route correctness", () => {
+  const benchmarkCase = makeSamplingRouteCase();
+  const correct = makeRouteOutput("technical-deep-dive");
+  const wrong = makeRouteOutput("learning-coach");
+  const pass = aggregateRouteSamples(benchmarkCase, [
+    normalizeRouteSample(correct, 1),
+    normalizeRouteSample(correct, 2),
+    normalizeRouteSample(correct, 3),
+    normalizeRouteSample(wrong, 4),
+    commandErrorRouteSample(new Error("exit 7"), 5),
+  ]);
+  const stableWrong = aggregateRouteSamples(benchmarkCase, [
+    normalizeRouteSample(wrong, 1),
+    normalizeRouteSample(wrong, 2),
+    normalizeRouteSample(wrong, 3),
+    normalizeRouteSample(correct, 4),
+    normalizeRouteSample(correct, 5),
+  ]);
+
+  assert.equal(pass.status, "pass");
+  assert.equal(pass.sample_count, 5);
+  assert.equal(pass.majority_count, 3);
+  assert.equal(pass.consensus_rate, 0.6);
+  assert.equal(pass.outcome_distribution.length, 3);
+  assert.equal(stableWrong.status, "fail");
+  assert.equal(stableWrong.majority_signature.route.primary, "learning-coach");
+});
+
+test("marks a route case unstable when no valid signature has a strict majority", () => {
+  const benchmarkCase = makeSamplingRouteCase();
+  const result = aggregateRouteSamples(benchmarkCase, [
+    normalizeRouteSample(makeRouteOutput("technical-deep-dive"), 1),
+    normalizeRouteSample(makeRouteOutput("technical-deep-dive"), 2),
+    normalizeRouteSample(makeRouteOutput("learning-coach"), 3),
+    normalizeRouteSample(makeRouteOutput("learning-coach"), 4),
+    normalizeRouteSample(makeRouteOutput("content-creator"), 5),
+  ]);
+
+  assert.equal(result.status, "unstable");
+  assert.equal(result.score, 0);
+  assert.equal(result.majority_count, 2);
+  assert.equal(result.consensus_rate, 0.4);
+  assert.equal(result.majority_signature, null);
+  assert.match(result.failures[0], /no_strict_majority/);
 });
 
 test("loads a valid route case", () => {
@@ -878,6 +1040,142 @@ test("loads the optional Superpowers integration suite only when requested", () 
   assert.deepEqual(cases[0].expected_advisory, ["brainstorming"]);
 });
 
+test("parses route sampling CLI options and rejects invalid sample counts", () => {
+  const options = parseArgs([
+    "--kind",
+    "route",
+    "--samples",
+    "5",
+    "--command",
+    "candidate.exe",
+  ]);
+
+  assert.equal(options.kind, "route");
+  assert.equal(options.samples, 5);
+  assert.throws(
+    () => parseArgs(["--samples", "2"]),
+    /--samples must be an integer greater than or equal to 3/,
+  );
+  assert.throws(
+    () => parseArgs(["--samples", "3.5"]),
+    /--samples must be an integer greater than or equal to 3/,
+  );
+  assert.throws(
+    () => parseArgs(["--kind", "unknown"]),
+    /--kind must be one of/,
+  );
+});
+
+test("filters cases by kind before command compatibility checks", () => {
+  const report = runBenchmark({
+    cases: "benchmarks",
+    kind: "route",
+    list: true,
+  });
+
+  assert.ok(report.results.length > 0);
+  assert.ok(report.results.every((result) => result.kind === "route"));
+});
+
+test("rejects route sampling outside route command mode", () => {
+  assert.throws(
+    () => runBenchmark({
+      cases: "benchmarks/routing",
+      kind: "route",
+      samples: 5,
+    }),
+    /--samples requires --command/,
+  );
+  assert.throws(
+    () => runBenchmark({
+      cases: "benchmarks/learning-coach",
+      kind: "response",
+      samples: 5,
+      command: "candidate.exe",
+    }),
+    /--samples supports only --kind route/,
+  );
+});
+
+test("runs a route candidate N times and aggregates after all samples finish", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-route-samples-"));
+  fs.writeFileSync(
+    path.join(tempDir, "route.json"),
+    JSON.stringify(makeSamplingRouteCase()),
+    "utf8",
+  );
+  const outputs = [
+    makeRouteOutput("technical-deep-dive"),
+    makeRouteOutput("technical-deep-dive"),
+    new Error("transient command failure"),
+    makeRouteOutput("learning-coach"),
+    makeRouteOutput("technical-deep-dive"),
+  ];
+  let calls = 0;
+
+  const report = runBenchmark({
+    cases: tempDir,
+    kind: "route",
+    samples: 5,
+    command: "candidate.exe",
+    commandRunner: () => {
+      const output = outputs[calls];
+      calls += 1;
+      if (output instanceof Error) throw output;
+      return JSON.stringify(output);
+    },
+  });
+
+  assert.equal(calls, 5);
+  assert.equal(report.results[0].status, "pass");
+  assert.equal(report.results[0].sample_count, 5);
+  assert.equal(report.results[0].samples[2].error, "command_error");
+  assert.equal(report.results[0].majority_count, 3);
+});
+
+test("sampled benchmark reports stability summary and experiment identity", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-route-report-"));
+  fs.writeFileSync(
+    path.join(tempDir, "route.json"),
+    JSON.stringify(makeSamplingRouteCase()),
+    "utf8",
+  );
+  const outputs = [
+    makeRouteOutput("technical-deep-dive"),
+    makeRouteOutput("technical-deep-dive"),
+    makeRouteOutput("learning-coach"),
+    makeRouteOutput("learning-coach"),
+    makeRouteOutput("content-creator"),
+  ];
+  let index = 0;
+  const command = "candidate.exe --model stable";
+
+  const report = runBenchmark({
+    cases: tempDir,
+    kind: "route",
+    samples: 5,
+    command,
+    commandRunner: () => JSON.stringify(outputs[index++]),
+    candidateModel: "candidate-model",
+    harnessVersion: "1.0.0",
+    samplingConfigSha256: "a".repeat(64),
+    skillBundleSha256: "b".repeat(64),
+  });
+
+  assert.equal(report.run.kind_filter, "route");
+  assert.equal(report.run.samples_per_case, 5);
+  assert.equal(report.run.candidate_command_sha256, sha256(command));
+  assert.equal(report.run.candidate_cwd, "isolated_temp_per_sample");
+  assert.equal(report.run.comparison_eligible, true);
+  assert.equal(report.summary.fail, 1);
+  assert.equal(report.summary.unstable, 1);
+  assert.equal(report.sampling.samples_per_case, 5);
+  assert.equal(report.sampling.average_consensus_rate, 0.4);
+  assert.equal(report.sampling.minimum_consensus_rate, 0.4);
+  assert.equal(report.sampling.unstable_cases, 1);
+  assert.equal(report.sampling.invalid_samples, 0);
+});
+
 test("runs an external agent command with benchmark prompt on stdin", (t) => {
   let report;
   try {
@@ -1099,4 +1397,116 @@ test("dashboard never compares legacy reports without experiment identity", () =
   assert.ok(secondRow);
   assert.match(secondRow, /\| 100% \| - \|$/);
   assert.doesNotMatch(dashboard, /\+100%/);
+});
+
+test("dashboard does not compare runs with different route sample counts", () => {
+  function sampledReport(id, createdAt, samples, scorePercent) {
+    return {
+      run: {
+        id,
+        created_at: createdAt,
+        mode: "command",
+        contract_version: "3.0.0",
+        case_set_sha256: "a".repeat(64),
+        prompt_set_sha256: "b".repeat(64),
+        candidate_binding_sha256: "c".repeat(64),
+        candidate_command_sha256: "d".repeat(64),
+        comparison_eligible: true,
+        kind_filter: "route",
+        samples_per_case: samples,
+      },
+      summary: {
+        total: 1,
+        pass: 1,
+        fail: 0,
+        unstable: 0,
+        needs_review: 0,
+        not_run: 0,
+        score: scorePercent,
+        max_score: 100,
+        score_percent: scorePercent,
+      },
+      sampling: {
+        samples_per_case: samples,
+        average_consensus_rate: 0.8,
+        minimum_consensus_rate: 0.6,
+        unstable_cases: 0,
+        invalid_samples: 0,
+      },
+      results: [
+        {
+          id: "route-a",
+          skill: "thinking-router",
+          status: "pass",
+          score: scorePercent,
+          max_score: 100,
+        },
+      ],
+    };
+  }
+
+  const dashboard = buildDashboard([
+    sampledReport("samples-3", "2026-07-27T10:00:00.000Z", 3, 50),
+    sampledReport("samples-5", "2026-07-27T11:00:00.000Z", 5, 80),
+  ]);
+  const latestRow = dashboard
+    .split("\n")
+    .find((line) => line.includes("samples-5"));
+
+  assert.ok(latestRow);
+  assert.match(latestRow, /\| 5 \| 80% \| 60% \|/);
+  assert.match(latestRow, /\| - \|$/);
+  assert.doesNotMatch(dashboard, /\+30%/);
+});
+
+test("dashboard counts unstable route cases as failures", () => {
+  const report = {
+    run: {
+      id: "unstable-run",
+      created_at: "2026-07-27T12:00:00.000Z",
+      mode: "command",
+      contract_version: "3.0.0",
+      case_set_sha256: "a".repeat(64),
+      prompt_set_sha256: "b".repeat(64),
+      candidate_binding_sha256: "c".repeat(64),
+      candidate_command_sha256: "d".repeat(64),
+      comparison_eligible: true,
+      kind_filter: "route",
+      samples_per_case: 5,
+    },
+    summary: {
+      total: 1,
+      pass: 0,
+      fail: 1,
+      unstable: 1,
+      needs_review: 0,
+      not_run: 0,
+      score: 0,
+      max_score: 10,
+      score_percent: 0,
+    },
+    sampling: {
+      samples_per_case: 5,
+      average_consensus_rate: 0.4,
+      minimum_consensus_rate: 0.4,
+      unstable_cases: 1,
+      invalid_samples: 0,
+    },
+    results: [
+      {
+        id: "route-a",
+        skill: "thinking-router",
+        status: "unstable",
+        score: 0,
+        max_score: 10,
+        failures: ["no_strict_majority"],
+      },
+    ],
+  };
+
+  const dashboard = buildDashboard([report]);
+
+  assert.match(dashboard, /Unstable/);
+  assert.match(dashboard, /unstable-run/);
+  assert.match(dashboard, /no_strict_majority/);
 });

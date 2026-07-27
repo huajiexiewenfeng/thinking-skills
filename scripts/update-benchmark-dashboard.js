@@ -53,6 +53,7 @@ function bySkill(report) {
       total: 0,
       pass: 0,
       fail: 0,
+      unstable: 0,
       needs_review: 0,
       not_run: 0,
       score: 0,
@@ -60,7 +61,11 @@ function bySkill(report) {
     };
     current.total += 1;
     current.pass += result.status === "pass" ? 1 : 0;
-    current.fail += result.status === "fail" ? 1 : 0;
+    current.fail += (
+      result.status === "fail" ||
+      result.status === "unstable"
+    ) ? 1 : 0;
+    current.unstable += result.status === "unstable" ? 1 : 0;
     current.needs_review += result.status === "needs_review" ? 1 : 0;
     current.not_run += result.status === "not_run" ? 1 : 0;
     current.score += result.score || 0;
@@ -93,12 +98,16 @@ function isEvaluatedReport(report) {
 
 function isComparableReport(report) {
   if (!isScoredReport(report)) return false;
+  const commandIsBound =
+    report.run.mode !== "command" ||
+    Boolean(report.run.candidate_command_sha256);
   return Boolean(
     report.run.contract_version &&
     report.run.case_set_sha256 &&
     report.run.prompt_set_sha256 &&
     report.run.candidate_binding_sha256 &&
-    report.run.comparison_eligible === true
+    report.run.comparison_eligible === true &&
+    commandIsBound
   );
 }
 
@@ -107,7 +116,20 @@ function comparisonKey(report) {
   const caseSet = report.run.case_set_sha256 || "unknown";
   const promptSet = report.run.prompt_set_sha256 || "unknown";
   const binding = report.run.candidate_binding_sha256 || "unknown";
-  return `${contract}:${caseSet}:${promptSet}:${binding}`;
+  const mode = report.run.mode || "legacy";
+  const kind = report.run.kind_filter || "all";
+  const samples = report.run.samples_per_case || 1;
+  const command = report.run.candidate_command_sha256 || "not-command-bound";
+  return [
+    contract,
+    caseSet,
+    promptSet,
+    binding,
+    mode,
+    kind,
+    samples,
+    command,
+  ].join(":");
 }
 
 function buildDashboard(reports) {
@@ -136,8 +158,8 @@ function buildDashboard(reports) {
 
   lines.push("## Summary");
   lines.push("");
-  lines.push("| Run | Created At | Commit | Cases | Total | Pass | Fail | Needs Review | Not Run | Score | Delta |");
-  lines.push("|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|");
+  lines.push("| Run | Created At | Commit | Cases | Total | Pass | Fail | Unstable | Needs Review | Not Run | Samples | Avg Consensus | Min Consensus | Score | Delta |");
+  lines.push("|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|");
 
   const previousScoredByContract = new Map();
   for (let index = 0; index < reports.length; index += 1) {
@@ -158,8 +180,16 @@ function buildDashboard(reports) {
       : scored
         ? formatPercent(report.summary.score_percent)
         : "Coverage only";
+    const sampling = report.sampling || {};
+    const samples = report.run.samples_per_case || 1;
+    const averageConsensus = samples > 1
+      ? formatPercent((sampling.average_consensus_rate || 0) * 100)
+      : "-";
+    const minimumConsensus = samples > 1
+      ? formatPercent((sampling.minimum_consensus_rate || 0) * 100)
+      : "-";
     lines.push(
-      `| ${cell(report.run.id)} | ${cell(report.run.created_at)} | ${cell(report.run.commit || "unknown")} | ${cell(report.run.cases || "benchmarks")} | ${report.summary.total} | ${report.summary.pass} | ${report.summary.fail} | ${needsReview} | ${report.summary.not_run} | ${score} | ${formatDelta(delta)} |`
+      `| ${cell(report.run.id)} | ${cell(report.run.created_at)} | ${cell(report.run.commit || "unknown")} | ${cell(report.run.cases || "benchmarks")} | ${report.summary.total} | ${report.summary.pass} | ${report.summary.fail} | ${report.summary.unstable || 0} | ${needsReview} | ${report.summary.not_run} | ${samples} | ${averageConsensus} | ${minimumConsensus} | ${score} | ${formatDelta(delta)} |`
     );
     if (comparable) previousScoredByContract.set(key, report);
   }
@@ -167,11 +197,11 @@ function buildDashboard(reports) {
   lines.push("");
   lines.push("## By Skill");
   lines.push("");
-  lines.push("| Skill | Latest Score | Previous Score | Delta | Pass | Fail | Needs Review | Not Run |");
-  lines.push("|---|---:|---:|---:|---:|---:|---:|---:|");
+  lines.push("| Skill | Latest Score | Previous Score | Delta | Pass | Fail | Unstable | Needs Review | Not Run |");
+  lines.push("|---|---:|---:|---:|---:|---:|---:|---:|---:|");
 
   if (!latest) {
-    lines.push("| - | - | - | - | 0 | 0 | 0 | 0 |");
+    lines.push("| - | - | - | - | 0 | 0 | 0 | 0 | 0 |");
     lines.push("");
     lines.push("## Recent Failures");
     lines.push("");
@@ -196,7 +226,7 @@ function buildDashboard(reports) {
       ? item.score_percent - prev.score_percent
       : null;
     lines.push(
-      `| ${cell(item.skill)} | ${pendingReview ? "Pending review" : partialCoverage ? "Partial coverage" : formatPercent(item.score_percent)} | ${previousScore === null ? "-" : formatPercent(previousScore)} | ${formatDelta(delta)} | ${item.pass} | ${item.fail} | ${item.needs_review} | ${item.not_run} |`
+      `| ${cell(item.skill)} | ${pendingReview ? "Pending review" : partialCoverage ? "Partial coverage" : formatPercent(item.score_percent)} | ${previousScore === null ? "-" : formatPercent(previousScore)} | ${formatDelta(delta)} | ${item.pass} | ${item.fail} | ${item.unstable || 0} | ${item.needs_review} | ${item.not_run} |`
     );
   }
 
@@ -206,7 +236,9 @@ function buildDashboard(reports) {
   lines.push("| Run | Case | Skill | Failures |");
   lines.push("|---|---|---|---|");
 
-  const failures = latest.results.filter((item) => item.status === "fail");
+  const failures = latest.results.filter(
+    (item) => item.status === "fail" || item.status === "unstable",
+  );
   if (!failures.length) {
     lines.push("| latest | - | - | No failures in latest run |");
   } else {
