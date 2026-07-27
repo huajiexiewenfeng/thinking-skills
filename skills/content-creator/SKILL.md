@@ -211,6 +211,8 @@ Default add-ons after a WeChat article draft:
 
 Image guidance:
 
+- Match the cover ratio to the publishing slot instead of reusing one generic landscape ratio. For a WeChat Official Account headline cover, use `2.35:1` (commonly `900x383`); for a secondary article thumbnail, use `1:1`. Keep the title, face, and core subject inside a central square-safe region because WeChat may display a square crop in some surfaces.
+- Do not default a WeChat headline cover to `16:9`. Reserve `16:9` for CSDN, Zhihu, general blog covers, or cases where the user explicitly requests it.
 - Main image: express the central thesis, use safe margins, avoid excessive height, avoid large meaningless dark/blank areas, and ensure important subjects are not cropped.
 - Section images: use them to create breathing room, attract attention, or clarify one idea; do not add one after every heading by default.
 - Roadmaps and architecture diagrams: if text accuracy matters, prefer a controllable generated diagram, SVG, HTML/CSS, or manually composed image rather than relying on image generation for long labels.
@@ -251,7 +253,7 @@ Requirements:
 - Include both Chinese and English text elements by default when the article is Chinese or intended for Chinese publishing.
 - Keep generated text minimal, large, and easy to read. Prefer 2-4 short text elements total.
 - Use Chinese for the main reader-facing message and English for compact supporting labels, such as "Mobile Control", "Desktop Agent", "Workflow", or "AI Agent".
-- Specify aspect ratio and publishing use case, such as "16:9, suitable for CSDN and WeChat article cover", when the platform is known.
+- Specify the aspect ratio and exact publishing slot when the platform is known: use `2.35:1` (commonly `900x383`) for a WeChat Official Account headline cover, `1:1` for a WeChat secondary article thumbnail, and `16:9` for CSDN, Zhihu, or a general technical-blog cover. Do not describe one `16:9` asset as suitable for both CSDN and WeChat headline use.
 - Avoid official logos, brand marks, dense UI text, long Chinese labels, or tiny text that image models are likely to distort.
 - If the article is for a phone-first channel, mention safe margins, clean composition, and readability on a mobile screen.
 
