@@ -1,0 +1,23 @@
+{
+  "id": "router-article-visual-early-draft-stays-content-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "我只有一个技术文章想法，读者和核心观点都还没确定。先帮我找文章角度，配图以后再说。",
+  "expected_profile": {
+    "domain": "content",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "angle",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "content-creator",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": [
+    "article-visual-director",
+    "technical-deep-dive",
+    "no-skill"
+  ]
+}

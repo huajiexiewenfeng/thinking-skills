@@ -1,0 +1,17 @@
+{
+  "id": "article-visual-architecture-deterministic-001",
+  "kind": "response",
+  "skill": "article-visual-director",
+  "prompt": "文章已定稿，其中一节解释 Gateway、Runtime、Policy 和 Tool Registry 的边界，但正文只确认组件名称，没有确认调用方向。请为这一节规划配图。",
+  "expected": [],
+  "must_not": [],
+  "quality": {
+    "max_words": 900,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Chooses a deterministic diagram rather than raster generation for exact labels and relationships.",
+    "Treats the missing call directions as unresolved facts and asks for confirmation instead of inventing arrows.",
+    "May propose visual styling, but keeps presentation choices separate from technical facts."
+  ]
+}

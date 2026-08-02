@@ -1,0 +1,23 @@
+{
+  "id": "router-article-visual-existing-markdown-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "给这篇已经定稿的 Markdown 技术文章规划 CSDN 和公众号封面、小节概念插画与必要的架构图，确认后生成并插入新的 Markdown 副本。",
+  "expected_profile": {
+    "domain": "content",
+    "objective": "deliver",
+    "mutation": "requested",
+    "artifact": "illustrated-markdown",
+    "artifact_sink": "workspace"
+  },
+  "expected_route": {
+    "primary": "article-visual-director",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": [
+    "content-creator",
+    "technical-deep-dive",
+    "no-skill"
+  ]
+}

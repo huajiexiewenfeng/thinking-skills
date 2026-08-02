@@ -1,0 +1,19 @@
+{
+  "id": "article-visual-plan-before-generation-001",
+  "kind": "response",
+  "skill": "article-visual-director",
+  "prompt": "这篇 CSDN Markdown 已经定稿。请规划一个封面和三个重要小节的概念配图，之后插入新的 Markdown 副本。",
+  "expected": [],
+  "must_not": [
+    "图片已经生成"
+  ],
+  "quality": {
+    "max_words": 900,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Stops at a complete visual-plan approval gate because the article content is not included in the prompt.",
+    "Requests the Markdown path or content without pretending to have analyzed unseen sections.",
+    "Promises a non-destructive illustrated copy and does not claim image generation has started."
+  ]
+}

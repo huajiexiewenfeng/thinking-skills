@@ -8,6 +8,7 @@ Use these cases to test whether `thinking-router` chooses the expected primary s
 |---|---|---|---|
 | "I want to write a blog post about AI companionship. Help me find an angle." | `content-creator` | None | Writing, audience, angle |
 | "Can you help me outline an article about why people fear automation?" | `content-creator` | None | Article structure |
+| "This Markdown article is final. Plan its cover, section illustrations, and architecture diagram, then insert approved assets into a copy." | `article-visual-director` | None | Stable article, visual output and workspace mutation |
 | "This Java service has a memory leak. How should I investigate it?" | `technical-deep-dive` | None | Technical debugging |
 | "I need to compare two API designs for a payment service." | `technical-deep-dive` | None | Architecture and trade-offs |
 | "Explain vector databases to me. I know normal databases but not this." | `learning-coach` | None | Concept explanation and mental model |
@@ -34,6 +35,8 @@ Use these cases to test whether `thinking-router` chooses the expected primary s
 | "I am panicking because our production architecture is failing." | `emotional-support` | `technical-deep-dive` | Emotional urgency first |
 | "I feel stupid because I cannot understand recursion." | `emotional-support` | `learning-coach` | Shame and self-blame first |
 | "Help me turn my burnout experience into a public talk." | `content-creator` | `emotional-support` | Content output with emotional material |
+| "The article is final; it needs concept illustrations plus one exact runtime architecture diagram." | `article-visual-director` | None | One article-level visual plan selects multiple renderers |
+| "I have not chosen the article angle yet, but later I want images." | `content-creator` | None | Writing direction must stabilize before visual planning |
 | "Should I quit my job to build a SaaS product?" | `life-decision` | `business-strategy` | Planned skill, not MVP |
 | "我想写一篇文章分析为什么我总是自责。" | `content-creator` | `emotional-support` | Writing output dominates, emotional context secondary |
 
@@ -54,5 +57,6 @@ Use these cases to test whether `thinking-router` chooses the expected primary s
 | "Explain Kafka like I am new to distributed systems." | `technical-deep-dive` | `learning-coach` | Learning goal dominates over technical implementation |
 | "I feel stupid because I cannot fix this bug." | `technical-deep-dive` | `emotional-support` | Emotional distress dominates |
 | "Give me titles for my post about debugging." | `technical-deep-dive` | `content-creator` | Title generation is content work |
+| "I only have an article idea; choose all of its images first." | `article-visual-director` | `content-creator` | Early content positioning remains primary |
 | "Summarize what we discussed." | `conversation-review` | Normal summary, no skill route | Summary is not self-review or Dolores |
 | "帮我分析这段关系里我为什么反应这么大。" | `life-decision` | `emotional-support` | Emotional pattern dominates over generic decision-making |
