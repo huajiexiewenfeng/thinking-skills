@@ -117,6 +117,7 @@ For a session-level off-ramp, such as "this whole session without skill" or "整
 | User Signals | Primary Skill |
 |---|---|
 | benchmark, eval, regression test, score, dashboard, test a skill, run benchmark, compare benchmark runs, 跑 benchmark, 做评测, 回归测试, 看分数, 更新 dashboard | `benchmark-assistant` |
+| existing or final Markdown article plus cover, illustration, concept image, process diagram, architecture diagram, image prompt, visual plan, generate images, insert images, illustrated copy, 已定稿文章配图, Markdown 插图, 公众号封面, CSDN 封面, 概念插画, 配图方案, 生成图片并回写 | `article-visual-director` |
 | article, essay, blog, newsletter, title, outline, audience, argument, draft, script, content plan, writing style | `content-creator` |
 | code, repo, architecture, bug, performance, API, tests, deployment, implementation, source code, framework, database, refactor | `technical-deep-dive` |
 | learn, study, understand, explain, concept, intuition, mental model, knowledge gap, course, practice, exam, review, what is, how does, I do not understand, 学习, 理解, 解释, 概念, 心智模型, 知识盲区, 看不懂, 学不会 | `learning-coach` |
@@ -139,11 +140,16 @@ Learning intent has priority over technical nouns when the user asks to understa
 
 Use `technical-deep-dive` instead when the user needs diagnosis, architecture choice, implementation guidance, source-level reasoning, adoption decisions, debugging, performance analysis, or verification.
 
+Use `article-visual-director` when the article already exists or is substantially complete and the immediate deliverable is a visual plan, generated article assets, or an illustrated Markdown copy. Keep `content-creator` primary while the angle, audience, thesis, structure, or prose is still being developed. Technical nouns inside an article do not make `technical-deep-dive` primary when the requested artifact is the article's visual system.
+
 Examples:
 
 | Request | Route |
 |---|---|
 | "I want to write an article about why this API design is confusing." | Primary: `content-creator`; Secondary: `technical-deep-dive` |
+| "This Markdown article is final. Plan its CSDN cover and three concept illustrations, then generate and insert them after approval." | Primary: `article-visual-director`; Secondary: none |
+| "Add a precise approval flow and policy-boundary diagram to this final technical article." | Primary: `article-visual-director`; Secondary: `technical-deep-dive` only if the article does not contain enough verified semantics |
+| "I only have an article idea; help me choose an angle and outline before we think about images." | Primary: `content-creator`; Secondary: none |
 | "Explain Kafka like I am new to distributed systems." | Primary: `learning-coach`; Secondary: `technical-deep-dive` |
 | "Can you help me understand this API design before we decide whether to adopt it?" | Primary: `technical-deep-dive`; Secondary: `learning-coach` |
 | "I am anxious because my project architecture is a mess." | Primary: `emotional-support`; Secondary: `technical-deep-dive` |
@@ -178,6 +184,10 @@ Do not announce routing for ordinary `no-skill` casual chat. Let the answer feel
 
 ```text
 I will use `content-creator` to help shape the audience, angle, and structure.
+```
+
+```text
+I will use `article-visual-director` to plan the article's visual system, wait for approval, and integrate validated assets into a new Markdown copy.
 ```
 
 ```text
@@ -242,5 +252,7 @@ Do not expose the full routing record unless it helps the user understand a rout
 - Treating an off-ramp phrase inside quoted or draft content as a command.
 - Asking many questions before routing.
 - Forcing writing, life, or emotional requests into technical specs.
+- Sending a final-article illustration request back to `content-creator` merely because the artifact is an article.
+- Sending an early writing request to `article-visual-director` merely because the user mentions future images.
 - Treating reflective models as clinical evidence.
 - Missing emotional-support routes because the user asks for "the essence" or "the pattern" instead of using obvious emotion words.
