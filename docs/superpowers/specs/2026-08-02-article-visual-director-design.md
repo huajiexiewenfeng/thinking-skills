@@ -184,7 +184,7 @@ Use the built-in `imagegen` path by default and issue one generation call per di
 
 ### Diagram Renderer
 
-Create editable Mermaid, SVG, or HTML/CSS source according to the relationship type, then export a publication-compatible PNG or SVG. Exact labels and relationships come only from confirmed article content. The Markdown version shared across platforms defaults to PNG; editable sources remain under `sources/`.
+Create editable Mermaid, SVG, or HTML/CSS source according to the relationship type, then export a publication-compatible PNG or SVG. Exact labels and relationships come only from confirmed article content. The Markdown version shared across platforms defaults to PNG; editable sources remain under `visual-sources/`.
 
 ### Markdown Integrator
 
@@ -279,21 +279,26 @@ Body concept illustrations contain no text by default. Exact technical labels be
 ```text
 article-directory/
 ├─ article.md
+├─ visual-manifest.json
 ├─ article-illustrated.md
+├─ visual-renders/
+│  ├─ 01-cover-csdn.png
+│  ├─ 01-cover-wechat.png
+│  ├─ 02-concept-agent-loop.png
+│  └─ 03-architecture-runtime.png
+├─ visual-sources/
+│  ├─ 01-cover-title-overlay.svg
+│  ├─ 03-architecture-runtime.svg
+│  └─ 03-architecture-runtime.mmd
 └─ assets/
    └─ article-slug/
-      ├─ visual-manifest.json
       ├─ 01-cover-csdn.png
       ├─ 01-cover-wechat.png
       ├─ 02-concept-agent-loop.png
-      ├─ 03-architecture-runtime.png
-      └─ sources/
-         ├─ 01-cover-title-overlay.svg
-         ├─ 03-architecture-runtime.svg
-         └─ 03-architecture-runtime.mmd
+      └─ 03-architecture-runtime.png
 ```
 
-Use stable numeric prefixes and short ASCII slugs. Version existing files instead of overwriting them unless replacement was explicitly approved.
+Keeping `visual-manifest.json` beside the source lets the executable safety contract reject `..` traversal while all source, render, editable-source, and published paths remain relative to one article root. Use stable numeric prefixes and short ASCII slugs. Version existing illustrated outputs instead of overwriting them.
 
 ## Error Handling
 

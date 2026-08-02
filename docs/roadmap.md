@@ -204,7 +204,7 @@ thinking-skills/
 | OpenCode adapter | Implemented | `.opencode/plugins/thinking-skills.js` passed syntax check | Test in OpenCode |
 | Improvement flywheel | Locally verified | First emotional-support case has abstract case, evaluator diagnosis, and structured eval | Use it for emotional-support reference split |
 | Emotional-support modularization | Locally verified | Main `SKILL.md` split into reference modules; Skills CLI discovers the skill; reference links exist | Run live output checks against emotional-support eval cases |
-| Article visual director | Locally verified | Official skill validator passes; 10 Python unit tests cover gates, byte preservation, anchor safety, and idempotency | Run forward scenarios against a real article and generated assets |
+| Article visual director | Locally verified | Official skill validator passes; 22 Python tests cover approval gates, manifest completeness, destination collisions, marker ordering, byte preservation, duplicate anchors, persisted versioning, four-asset integration, and idempotency; the three exact baseline prompts and a style-alternative regression passed with the final skill | Run the workflow on the next real article and generated assets |
 
 ## Completion Criteria for v0.1
 

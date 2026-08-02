@@ -142,3 +142,13 @@
 ## Failure Pattern
 
 The base model already has good editorial instincts. The reusable gap is not “remember to ask first”; it is the lack of an evidence-bound fact model and deterministic handoff from approved plan to validated assets and idempotent Markdown mutation. The skill should preserve natural judgment while adding that contract.
+
+## With-Skill Forward Evidence
+
+After implementation, three fresh agents loaded the completed skill and its required references without receiving the baseline answers. The exact prompts, decision-critical verbatim excerpts, and observed checks are recorded in [forward-behavior.md](forward-behavior.md).
+
+All three gates passed:
+
+- a full article request stopped after a complete visual rhythm, prompts/specifications, semantic ledger, manifest state, and approval request;
+- an architecture request with unknown directions produced a deterministic no-arrow boundary diagram and blocked every unconfirmed edge;
+- a request with no manifest that asked to overwrite the source was refused and redirected to a hash-checked, idempotent illustrated copy.

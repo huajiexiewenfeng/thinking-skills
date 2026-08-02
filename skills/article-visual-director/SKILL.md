@@ -103,7 +103,7 @@ Never send dense technical labels, source code, or a multi-step architecture to 
 
 ### 3. Recommend the visual direction
 
-Read [references/style-catalog.md](references/style-catalog.md). Recommend one primary style and, only when useful, one alternative. Explain the recommendation in terms of audience, article tone, technical density, and platform—not taste alone.
+Read [references/style-catalog.md](references/style-catalog.md). Recommend one primary style and two meaningfully different alternatives unless the user has already narrowed the direction. Explain the recommendation in terms of audience, article tone, technical density, and platform—not taste alone.
 
 Create one reusable style fingerprint containing:
 
@@ -202,12 +202,12 @@ The integration script:
 - copies validated artifacts to their Markdown paths;
 - inserts stable `article-visual` markers;
 - preserves BOM and line endings;
-- refuses to overwrite the source;
-- refuses conflicting existing outputs unless `--replace-output` is explicitly requested;
+- refuses to overwrite the source unless explicit `--source`, `--out`, and `--allow-source-overwrite` arguments acknowledge the risk;
+- creates `-v2`, `-v3`, and later siblings when the requested illustrated output already exists;
 - defaults to `{source-stem}-illustrated.md`;
 - is idempotent on repeated execution.
 
-Use `--replace-output` only after reviewing the conflicting illustrated copy or asset. It never authorizes overwriting the source Markdown.
+The skill workflow must always use a new illustrated copy. The low-level `--allow-source-overwrite` escape hatch exists for explicit operator-controlled recovery and must never be inferred from a general request to insert images.
 
 ### 8. Hand off the result
 
@@ -228,7 +228,7 @@ Stop and explain the blocking evidence when:
 - an exact heading or section context no longer matches;
 - a diagram depends on an unconfirmed relationship;
 - a generated artifact is missing or failed validation;
-- the illustrated output or copied asset conflicts with different existing content;
+- a published asset path conflicts with different existing content or any destination collides with the source, manifest, output, or another asset;
 - the user asks to overwrite the source without explicitly acknowledging that risk.
 
 Do not recover by guessing a new anchor, silently rewriting prompts, or weakening the validation state.

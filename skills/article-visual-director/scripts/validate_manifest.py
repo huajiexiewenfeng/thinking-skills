@@ -27,9 +27,46 @@ VALID_APPROVALS = {"approved", "pending", "rejected", "not_required"}
 VALID_GENERATION_STATES = {"planned", "pending", "complete", "failed"}
 VALID_VALIDATION_STATES = {"planned", "pending", "passed", "failed"}
 VALID_INSERTION_STATES = {"pending", "inserted", "skipped"}
+VALID_INTEGRATION_STATES = {"pending", "complete", "failed"}
+VALID_VERIFICATION_STATES = {"pending", "passed", "failed"}
+VALID_OUTPUT_FORMATS = {"png", "jpg", "jpeg", "svg"}
+ROLE_RENDERER = {
+    "cover": "imagegen",
+    "concept": "imagegen",
+    "process": "deterministic-diagram",
+    "architecture": "deterministic-diagram",
+    "comparison": "deterministic-diagram",
+    "timeline": "deterministic-diagram",
+    "chart": "deterministic-chart",
+}
+WINDOWS_RESERVED_NAMES = {
+    "CON",
+    "PRN",
+    "AUX",
+    "NUL",
+    "COM1",
+    "COM2",
+    "COM3",
+    "COM4",
+    "COM5",
+    "COM6",
+    "COM7",
+    "COM8",
+    "COM9",
+    "LPT1",
+    "LPT2",
+    "LPT3",
+    "LPT4",
+    "LPT5",
+    "LPT6",
+    "LPT7",
+    "LPT8",
+    "LPT9",
+}
 
 SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 SAFE_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+ASPECT_RATIO_RE = re.compile(r"^[1-9]\d*(?:\.\d+)?:[1-9]\d*(?:\.\d+)?$")
 
 
 def load_manifest(path: Path) -> dict[str, Any]:
@@ -59,13 +96,35 @@ def _is_safe_relative_path(value: Any) -> bool:
     if not _is_nonempty_string(value):
         return False
     normalized = value.replace("\\", "/")
+    if any(ord(character) < 32 for character in normalized) or ":" in normalized:
+        return False
     candidate = PurePosixPath(normalized)
-    return (
-        not candidate.is_absolute()
-        and not candidate.parts[0].endswith(":")
-        and ".." not in candidate.parts
-        and "." != normalized
-    )
+    if candidate.is_absolute() or ".." in candidate.parts or normalized == ".":
+        return False
+    for part in candidate.parts:
+        if part in {"", "."} or part.endswith((" ", ".")):
+            return False
+        if part.split(".", 1)[0].upper() in WINDOWS_RESERVED_NAMES:
+            return False
+    return True
+
+
+def _relative_is_under(value: str, directory: str) -> bool:
+    candidate = PurePosixPath(value.replace("\\", "/"))
+    root = PurePosixPath(directory.replace("\\", "/"))
+    try:
+        candidate.relative_to(root)
+    except ValueError:
+        return False
+    return candidate != root
+
+
+def _resolved_is_under(path: Path, root: Path) -> bool:
+    try:
+        path.resolve().relative_to(root.resolve())
+    except ValueError:
+        return False
+    return True
 
 
 def _require_mapping(
@@ -88,7 +147,14 @@ def _validate_source(data: dict[str, Any], errors: list[dict[str, str]]) -> None
             errors,
             "unsafe_relative_path",
             "source.path",
-            "source.path must be a safe relative path",
+            "source.path must be a platform-safe relative path",
+        )
+    elif Path(source["path"]).suffix.lower() != ".md":
+        _add_error(
+            errors,
+            "invalid_source_format",
+            "source.path",
+            "source.path must name a Markdown file",
         )
     if not _is_sha256(source.get("sha256")):
         _add_error(
@@ -135,10 +201,7 @@ def _validate_top_level(data: dict[str, Any], errors: list[dict[str, str]]) -> N
     platforms = data.get("platforms")
     if not isinstance(platforms, list) or not platforms:
         _add_error(
-            errors,
-            "invalid_platforms",
-            "platforms",
-            "platforms must be a non-empty array",
+            errors, "invalid_platforms", "platforms", "platforms must be non-empty"
         )
     else:
         for index, platform in enumerate(platforms):
@@ -156,6 +219,66 @@ def _validate_top_level(data: dict[str, Any], errors: list[dict[str, str]]) -> N
                 "platforms",
                 "platforms must not contain duplicates",
             )
+
+    outputs = _require_mapping(data, "outputs", errors, "outputs")
+    for field in ("illustrated_markdown", "asset_directory"):
+        if not _is_safe_relative_path(outputs.get(field)):
+            _add_error(
+                errors,
+                "unsafe_relative_path",
+                f"outputs.{field}",
+                f"outputs.{field} must be a platform-safe relative path",
+            )
+    illustrated = outputs.get("illustrated_markdown")
+    if _is_safe_relative_path(illustrated) and Path(illustrated).suffix.lower() != ".md":
+        _add_error(
+            errors,
+            "invalid_output_format",
+            "outputs.illustrated_markdown",
+            "illustrated_markdown must name a Markdown file",
+        )
+    source = data.get("source")
+    if isinstance(source, dict) and illustrated == source.get("path"):
+        _add_error(
+            errors,
+            "source_output_collision",
+            "outputs.illustrated_markdown",
+            "the default illustrated output must differ from the source",
+        )
+    actual_illustrated = outputs.get("actual_illustrated_markdown")
+    if actual_illustrated is not None:
+        if not _is_safe_relative_path(actual_illustrated):
+            _add_error(
+                errors,
+                "unsafe_relative_path",
+                "outputs.actual_illustrated_markdown",
+                "actual_illustrated_markdown must be null or a platform-safe relative path",
+            )
+        elif Path(actual_illustrated).suffix.lower() != ".md":
+            _add_error(
+                errors,
+                "invalid_output_format",
+                "outputs.actual_illustrated_markdown",
+                "actual_illustrated_markdown must name a Markdown file",
+            )
+        elif isinstance(source, dict) and actual_illustrated == source.get("path"):
+            _add_error(
+                errors,
+                "source_output_collision",
+                "outputs.actual_illustrated_markdown",
+                "recorded illustrated output must differ from the source",
+            )
+    expected_asset_directory = f"assets/{article_slug}" if isinstance(article_slug, str) else None
+    if (
+        expected_asset_directory
+        and outputs.get("asset_directory") != expected_asset_directory
+    ):
+        _add_error(
+            errors,
+            "invalid_asset_directory",
+            "outputs.asset_directory",
+            f"asset_directory must be {expected_asset_directory!r}",
+        )
 
     style = _require_mapping(data, "style", errors, "style")
     for field in ("profile_id", "fingerprint"):
@@ -183,18 +306,57 @@ def _validate_top_level(data: dict[str, Any], errors: list[dict[str, str]]) -> N
             f"style_anchor must be one of {sorted(VALID_APPROVALS)}",
         )
 
+    integration = _require_mapping(data, "integration", errors, "integration")
+    if integration.get("status") not in VALID_INTEGRATION_STATES:
+        _add_error(
+            errors,
+            "invalid_status",
+            "integration.status",
+            f"integration.status must be one of {sorted(VALID_INTEGRATION_STATES)}",
+        )
+    if integration.get("verification_status") not in VALID_VERIFICATION_STATES:
+        _add_error(
+            errors,
+            "invalid_status",
+            "integration.verification_status",
+            "integration.verification_status must be pending, passed, or failed",
+        )
+
+
+def _validate_dimensions(
+    dimensions: Any, base: str, errors: list[dict[str, str]]
+) -> None:
+    if not isinstance(dimensions, dict):
+        _add_error(
+            errors,
+            "invalid_dimensions",
+            f"{base}.dimensions",
+            "dimensions must be an object with positive width and height",
+        )
+        return
+    for field in ("width", "height"):
+        value = dimensions.get(field)
+        if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
+            _add_error(
+                errors,
+                "invalid_dimensions",
+                f"{base}.dimensions.{field}",
+                f"dimensions.{field} must be a positive integer",
+            )
+
 
 def _validate_asset(
     asset: Any,
     index: int,
     manifest_path: Path,
     phase: str,
+    asset_directory: str | None,
     errors: list[dict[str, str]],
-) -> str | None:
+) -> tuple[str | None, str | None]:
     base = f"assets[{index}]"
     if not isinstance(asset, dict):
         _add_error(errors, "invalid_asset", base, "asset must be an object")
-        return None
+        return None, None
 
     asset_id = asset.get("id")
     if not isinstance(asset_id, str) or not SAFE_ID_RE.fullmatch(asset_id):
@@ -208,20 +370,55 @@ def _validate_asset(
     else:
         normalized_id = asset_id
 
-    if asset.get("role") not in VALID_ROLES:
+    for field in ("reader_takeaway", "visual_purpose", "safe_area"):
+        if not _is_nonempty_string(asset.get(field)):
+            _add_error(
+                errors,
+                "missing_asset_field",
+                f"{base}.{field}",
+                f"{field} must be a non-empty string",
+            )
+
+    role = asset.get("role")
+    renderer = asset.get("renderer")
+    if role not in VALID_ROLES:
         _add_error(
             errors,
             "invalid_role",
             f"{base}.role",
             f"role must be one of {sorted(VALID_ROLES)}",
         )
-    renderer = asset.get("renderer")
     if renderer not in VALID_RENDERERS:
         _add_error(
             errors,
             "invalid_renderer",
             f"{base}.renderer",
             f"renderer must be one of {sorted(VALID_RENDERERS)}",
+        )
+    elif role in ROLE_RENDERER and renderer != ROLE_RENDERER[role]:
+        _add_error(
+            errors,
+            "renderer_role_mismatch",
+            f"{base}.renderer",
+            f"role {role!r} requires renderer {ROLE_RENDERER[role]!r}",
+        )
+
+    output_format = asset.get("output_format")
+    if output_format not in VALID_OUTPUT_FORMATS:
+        _add_error(
+            errors,
+            "invalid_output_format",
+            f"{base}.output_format",
+            f"output_format must be one of {sorted(VALID_OUTPUT_FORMATS)}",
+        )
+    _validate_dimensions(asset.get("dimensions"), base, errors)
+    aspect_ratio = asset.get("aspect_ratio")
+    if not isinstance(aspect_ratio, str) or not ASPECT_RATIO_RE.fullmatch(aspect_ratio):
+        _add_error(
+            errors,
+            "invalid_aspect_ratio",
+            f"{base}.aspect_ratio",
+            "aspect_ratio must use width:height numeric notation",
         )
 
     anchor = asset.get("anchor")
@@ -267,15 +464,42 @@ def _validate_asset(
             f"{base}.prompt",
             "imagegen assets require an approved prompt",
         )
-    if renderer in {"deterministic-diagram", "deterministic-chart"} and not isinstance(
-        asset.get("diagram_spec"), dict
+    if renderer in {"deterministic-diagram", "deterministic-chart"}:
+        diagram_spec = asset.get("diagram_spec")
+        if not isinstance(diagram_spec, dict):
+            _add_error(
+                errors,
+                "missing_diagram_spec",
+                f"{base}.diagram_spec",
+                "deterministic assets require a structured diagram_spec",
+            )
+        else:
+            for field in ("nodes", "edges", "blocked_unconfirmed_edges"):
+                if not isinstance(diagram_spec.get(field), list):
+                    _add_error(
+                        errors,
+                        "invalid_diagram_spec",
+                        f"{base}.diagram_spec.{field}",
+                        f"diagram_spec.{field} must be an array",
+                    )
+        editable_source = asset.get("editable_source_path")
+        if not _is_safe_relative_path(editable_source):
+            _add_error(
+                errors,
+                "missing_editable_source",
+                f"{base}.editable_source_path",
+                "deterministic assets require a platform-safe editable source path",
+            )
+    elif asset.get("editable_source_path") is not None and not _is_safe_relative_path(
+        asset.get("editable_source_path")
     ):
         _add_error(
             errors,
-            "missing_diagram_spec",
-            f"{base}.diagram_spec",
-            "deterministic assets require a structured diagram_spec",
+            "unsafe_relative_path",
+            f"{base}.editable_source_path",
+            "editable_source_path must be null or a platform-safe relative path",
         )
+
     if asset.get("approval") != "approved":
         _add_error(
             errors,
@@ -290,8 +514,32 @@ def _validate_asset(
                 errors,
                 "unsafe_relative_path",
                 f"{base}.{field}",
-                f"{field} must be a safe relative path",
+                f"{field} must be a platform-safe relative path",
             )
+    artifact_path = asset.get("artifact_path")
+    if (
+        _is_safe_relative_path(artifact_path)
+        and output_format in VALID_OUTPUT_FORMATS
+        and Path(artifact_path).suffix.lower() != f".{output_format}"
+    ):
+        _add_error(
+            errors,
+            "artifact_format_mismatch",
+            f"{base}.artifact_path",
+            "artifact extension must match output_format",
+        )
+    markdown_path = asset.get("markdown_path")
+    if (
+        _is_safe_relative_path(markdown_path)
+        and asset_directory
+        and not _relative_is_under(markdown_path, asset_directory)
+    ):
+        _add_error(
+            errors,
+            "markdown_path_outside_asset_directory",
+            f"{base}.markdown_path",
+            "markdown_path must be inside outputs.asset_directory",
+        )
     if not _is_nonempty_string(asset.get("alt")):
         _add_error(
             errors,
@@ -336,17 +584,43 @@ def _validate_asset(
                 f"{base}.validation_status",
                 "integration requires validation_status=passed",
             )
-        artifact_path = asset.get("artifact_path")
+        manifest_root = manifest_path.parent.resolve()
         if _is_safe_relative_path(artifact_path):
-            absolute_artifact = manifest_path.parent / Path(artifact_path)
-            if not absolute_artifact.is_file():
+            absolute_artifact = (manifest_root / artifact_path).resolve()
+            if not _resolved_is_under(absolute_artifact, manifest_root):
+                _add_error(
+                    errors,
+                    "artifact_path_escape",
+                    f"{base}.artifact_path",
+                    "resolved artifact path escapes the manifest directory",
+                )
+            elif not absolute_artifact.is_file():
                 _add_error(
                     errors,
                     "artifact_missing",
                     f"{base}.artifact_path",
                     f"artifact does not exist: {artifact_path}",
                 )
-    return normalized_id
+        editable_source = asset.get("editable_source_path")
+        if renderer in {"deterministic-diagram", "deterministic-chart"} and _is_safe_relative_path(
+            editable_source
+        ):
+            absolute_source = (manifest_root / editable_source).resolve()
+            if not _resolved_is_under(absolute_source, manifest_root):
+                _add_error(
+                    errors,
+                    "editable_source_escape",
+                    f"{base}.editable_source_path",
+                    "resolved editable source escapes the manifest directory",
+                )
+            elif not absolute_source.is_file():
+                _add_error(
+                    errors,
+                    "editable_source_missing",
+                    f"{base}.editable_source_path",
+                    f"editable source does not exist: {editable_source}",
+                )
+    return normalized_id, markdown_path if _is_safe_relative_path(markdown_path) else None
 
 
 def validate_manifest(
@@ -372,20 +646,66 @@ def validate_manifest(
         ]
 
     _validate_top_level(data, errors)
+    if phase == "integration":
+        manifest_root = manifest_path.parent.resolve()
+        source = data.get("source")
+        source_value = source.get("path") if isinstance(source, dict) else None
+        if _is_safe_relative_path(source_value):
+            resolved_source = (manifest_root / source_value).resolve()
+            if not _resolved_is_under(resolved_source, manifest_root):
+                _add_error(
+                    errors,
+                    "source_path_escape",
+                    "source.path",
+                    "resolved source path escapes the manifest directory",
+                )
+        outputs = data.get("outputs")
+        output_value = (
+            outputs.get("illustrated_markdown")
+            if isinstance(outputs, dict)
+            else None
+        )
+        if _is_safe_relative_path(output_value):
+            resolved_output = (manifest_root / output_value).resolve()
+            if not _resolved_is_under(resolved_output, manifest_root):
+                _add_error(
+                    errors,
+                    "output_path_escape",
+                    "outputs.illustrated_markdown",
+                    "resolved output path escapes the manifest directory",
+                )
+        actual_output_value = (
+            outputs.get("actual_illustrated_markdown")
+            if isinstance(outputs, dict)
+            else None
+        )
+        if _is_safe_relative_path(actual_output_value):
+            resolved_actual_output = (manifest_root / actual_output_value).resolve()
+            if not _resolved_is_under(resolved_actual_output, manifest_root):
+                _add_error(
+                    errors,
+                    "output_path_escape",
+                    "outputs.actual_illustrated_markdown",
+                    "resolved actual output path escapes the manifest directory",
+                )
     assets = data.get("assets")
     if not isinstance(assets, list) or not assets:
         _add_error(
-            errors,
-            "invalid_assets",
-            "assets",
-            "assets must be a non-empty array",
+            errors, "invalid_assets", "assets", "assets must be a non-empty array"
         )
         return errors
 
+    outputs = data.get("outputs")
+    asset_directory = (
+        outputs.get("asset_directory") if isinstance(outputs, dict) else None
+    )
     asset_ids: set[str] = set()
+    markdown_paths: set[str] = set()
     raster_count = 0
     for index, asset in enumerate(assets):
-        asset_id = _validate_asset(asset, index, manifest_path, phase, errors)
+        asset_id, markdown_path = _validate_asset(
+            asset, index, manifest_path, phase, asset_directory, errors
+        )
         if asset_id in asset_ids:
             _add_error(
                 errors,
@@ -395,6 +715,15 @@ def validate_manifest(
             )
         elif asset_id is not None:
             asset_ids.add(asset_id)
+        if markdown_path in markdown_paths:
+            _add_error(
+                errors,
+                "duplicate_markdown_path",
+                f"assets[{index}].markdown_path",
+                f"markdown path is duplicated: {markdown_path}",
+            )
+        elif markdown_path is not None:
+            markdown_paths.add(markdown_path)
         if isinstance(asset, dict) and asset.get("renderer") == "imagegen":
             raster_count += 1
 
@@ -427,7 +756,11 @@ def main(argv: list[str] | None = None) -> int:
                 "message": str(exc),
             }
         ]
-    result = {"ok": not errors, "phase": args.phase, "errors": errors}
+    result = {
+        "overall": "passed" if not errors else "failed",
+        "phase": args.phase,
+        "errors": errors,
+    }
     json.dump(result, sys.stdout, ensure_ascii=False, indent=2)
     sys.stdout.write("\n")
     return 0 if not errors else 1
