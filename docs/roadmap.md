@@ -32,6 +32,10 @@ thinking-skills/
 
     content-creator/
       SKILL.md
+    article-visual-director/
+      SKILL.md
+      references/
+      scripts/
     technical-deep-dive/
       SKILL.md
     learning-coach/
@@ -72,6 +76,7 @@ thinking-skills/
   evals/
     routing-cases.md
     content-creator-cases.md
+    article-visual-director-cases.md
     technical-deep-dive-cases.md
     learning-coach-cases.md
     emotional-support-cases.md
@@ -82,6 +87,7 @@ thinking-skills/
 
   benchmarks/
     routing/
+    article-visual-director/
     learning-coach/
     content-creator/
     emotional-support/
@@ -109,6 +115,7 @@ thinking-skills/
 | v0.5 | Add Claude Code, Cursor, and OpenCode adapters | Broaden platform support without forking skill content |
 | v0.6 | Add improvement loop, failure taxonomy, eval schema, and `skill-evaluator` | Make skill improvement semi-automatic and reusable |
 | v0.7 | Add method base, safety refinements, and `conversation-review` / Dolores mode | Make skill methods explicit, handle high-stakes boundaries carefully, and review conversation-level skill traces |
+| v0.8 | Add `article-visual-director`, approval gates, visual manifests, and non-destructive Markdown integration | Turn stable technical articles into coherent illustrated editions without weakening technical accuracy |
 | v1.0 | Stable docs, stable first-party skills, eval set, contribution model | Ready for public use and contribution |
 
 ## MVP Progress Tracker
@@ -137,6 +144,9 @@ thinking-skills/
 | Add OpenCode plugin adapter | `.opencode/` | Done |
 | Write router skill | `skills/thinking-router/SKILL.md` | Done |
 | Write content skill | `skills/content-creator/SKILL.md` | Done |
+| Write article visual director | `skills/article-visual-director/SKILL.md` | Done |
+| Add article visual eval and benchmark cases | `evals/article-visual-director-cases.md`, `benchmarks/article-visual-director/` | Done |
+| Add visual manifest and Markdown integration scripts | `skills/article-visual-director/scripts/` | Done |
 | Write technical skill | `skills/technical-deep-dive/SKILL.md` | Done |
 | Write learning skill | `skills/learning-coach/SKILL.md` | Done |
 | Write emotional support skill | `skills/emotional-support/SKILL.md` | Done |
@@ -168,6 +178,7 @@ thinking-skills/
 | Framework docs | README, principles, routing, method bases, authoring, evaluation, safety, roadmap are complete | Done |
 | Router | Handles domain classification, uncertainty, and conflicts | Done |
 | MVP skills | First-party skills are written and tested with examples | Done |
+| Article visual workflow | Approved plans, renderer separation, manifest validation, and idempotent Markdown integration are implemented | Done |
 | Expanded skills | `life-decision`, `creative-studio`, `business-strategy` exist | Todo |
 | Evaluations | Each first-party skill has at least five realistic test cases | Done |
 | Benchmark runner | Fixed scenario benchmark cases can be listed, prompted, scored, and saved as run reports | Done |
@@ -193,6 +204,7 @@ thinking-skills/
 | OpenCode adapter | Implemented | `.opencode/plugins/thinking-skills.js` passed syntax check | Test in OpenCode |
 | Improvement flywheel | Locally verified | First emotional-support case has abstract case, evaluator diagnosis, and structured eval | Use it for emotional-support reference split |
 | Emotional-support modularization | Locally verified | Main `SKILL.md` split into reference modules; Skills CLI discovers the skill; reference links exist | Run live output checks against emotional-support eval cases |
+| Article visual director | Locally verified | Official skill validator passes; 10 Python unit tests cover gates, byte preservation, anchor safety, and idempotency | Run forward scenarios against a real article and generated assets |
 
 ## Completion Criteria for v0.1
 

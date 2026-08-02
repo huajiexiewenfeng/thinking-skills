@@ -91,6 +91,7 @@ Dolores belongs to the Reflection plane. It is not required to run after every a
 |---|---|
 | `thinking-router` | A request needs to be routed to the right thinking mode |
 | `content-creator` | Articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure |
+| `article-visual-director` | A substantially complete Markdown article needs a cover, concept illustrations, exact technical diagrams, approval-gated generation, and non-destructive image insertion |
 | `technical-deep-dive` | Code, architecture, debugging, performance, APIs, systems, technical trade-offs, and verification paths |
 | `learning-coach` | Concept understanding, mental models, knowledge gaps, study paths, practice, and explanation review |
 | `emotional-support` | Anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps |
@@ -208,6 +209,10 @@ Use content-creator to help me find the angle and outline.
 ```
 
 ```text
+Use article-visual-director to plan visuals for this final Markdown article, wait for my approval, then generate and insert them into a new copy.
+```
+
+```text
 Use learning-coach to help me understand this concept.
 ```
 
@@ -225,6 +230,7 @@ Thinking Skills is working when:
 
 - Non-technical requests are not forced into coding workflows.
 - Writing tasks produce audience, angle, thesis, and structure instead of implementation plans.
+- Final-article visual tasks produce an approved visual plan, use deterministic rendering for exact diagrams, and preserve the source Markdown.
 - Technical tasks separate facts, assumptions, hypotheses, trade-offs, and verification.
 - Learning tasks build compact mental models, surface misconceptions, and suggest small practice steps.
 - Emotional-support tasks validate feelings, avoid diagnosis, and prioritize safety when needed.
@@ -263,6 +269,7 @@ See [Benchmark](docs/benchmark.md) and [Benchmark Dashboard](docs/benchmark-dash
 skills/
   thinking-router/
   content-creator/
+  article-visual-director/
   technical-deep-dive/
   learning-coach/
   emotional-support/
@@ -287,6 +294,7 @@ docs/
 evals/
   routing-cases.md
   content-creator-cases.md
+  article-visual-director-cases.md
   technical-deep-dive-cases.md
   learning-coach-cases.md
   emotional-support-cases.md
@@ -296,6 +304,7 @@ evals/
 
 benchmarks/
   routing/
+  article-visual-director/
   learning-coach/
   content-creator/
   emotional-support/

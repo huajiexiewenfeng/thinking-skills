@@ -30,6 +30,7 @@ User request
 
 | Signals | Primary Skill |
 |---|---|
+| existing or final Markdown article, article cover, section illustration, visual plan, image prompt, process diagram, architecture diagram, insert images, illustrated copy, 已定稿文章配图, 公众号封面, CSDN 封面, 概念插画, 生成并回写 Markdown | `article-visual-director` |
 | article, essay, blog, newsletter, title, outline, audience, argument, draft, script, content structure | `content-creator` |
 | code, repo, architecture, bug, performance, API, tests, deployment, implementation, source, framework, database | `technical-deep-dive` |
 | learn, study, understand, explain, concept, intuition, mental model, knowledge gap, course, practice, exam, review, what is, how does | `learning-coach` |
@@ -50,9 +51,14 @@ Learning intent has priority over technical nouns when the user asks to understa
 
 Use `technical-deep-dive` instead when the user needs diagnosis, architecture choice, implementation guidance, source-level reasoning, adoption decisions, debugging, performance analysis, or verification.
 
+Use `article-visual-director` after the article exists or is substantially complete and the requested deliverable is its visual system or an illustrated Markdown copy. Keep `content-creator` primary when the angle, audience, thesis, outline, or prose still needs development. Technical architecture nouns may provide secondary context, but they do not displace the visual-director route when the immediate artifact is an article visual.
+
 | User Request | Route |
 |---|---|
 | "I want to write an article about why this API design is confusing." | Primary: `content-creator`; Secondary: `technical-deep-dive` |
+| "This Markdown article is final. Plan a cover, concept illustrations, and any necessary architecture diagram, then insert approved assets into a new copy." | Primary: `article-visual-director`; Secondary: none |
+| "The article is final, but the Gateway-to-Runtime direction is not verified. Plan the illustration without inventing edges." | Primary: `article-visual-director`; Secondary: `technical-deep-dive` if technical verification is requested |
+| "I only have an article idea; help me choose the angle before we think about illustrations." | Primary: `content-creator`; Secondary: none |
 | "Explain vector databases to me. I know normal databases but not this." | Primary: `learning-coach`; Secondary: none |
 | "Explain Kafka like I am new to distributed systems." | Primary: `learning-coach`; Secondary: `technical-deep-dive` |
 | "Can you help me understand this API design before we decide whether to adopt it?" | Primary: `technical-deep-dive`; Secondary: `learning-coach` |
@@ -76,3 +82,5 @@ Do you want to approach this mainly as writing, technical analysis, learning, li
 - Do not route to multiple skills just because several keywords appear.
 - Do not ask a long intake questionnaire before routing.
 - Do not force non-technical domains into implementation plans.
+- Do not route a final-article illustration workflow to `content-creator` merely because the artifact is an article.
+- Do not route early writing work to `article-visual-director` merely because future illustrations are mentioned.

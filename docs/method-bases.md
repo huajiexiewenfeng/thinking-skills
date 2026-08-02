@@ -67,6 +67,39 @@ Typical outputs:
 - Draft direction
 - Revision plan
 
+### `article-visual-director`
+
+Core:
+
+- Information hierarchy and editorial visual rhythm
+- Visual metaphor mapping
+- Diagram semantics: entities, boundaries, direction, sequence, and trust
+- Art direction through reusable style fingerprints
+- Approval-gated production
+
+Supporting:
+
+- Progressive disclosure and cognitive-load management
+- Platform-aware composition and crop-safe zones
+- Accessibility through useful alt text
+- Reproducible manifests and idempotent document transforms
+
+Safety:
+
+- Do not invent technical nodes, edges, boundaries, sequences, or causal relationships.
+- Use deterministic rendering for exact diagrams and image generation for metaphor, atmosphere, and concept illustration.
+- Do not imitate a living artist; translate references into general visual properties.
+- Do not overwrite the source Markdown or integrate unapproved and unvalidated assets.
+
+Typical outputs:
+
+- Visual thesis and rhythm map
+- Style recommendation and fingerprint
+- Cover and concept illustration prompts
+- Deterministic process or architecture specifications
+- Approved visual manifest
+- Validated assets and a new illustrated Markdown copy
+
 ### `technical-deep-dive`
 
 Core:

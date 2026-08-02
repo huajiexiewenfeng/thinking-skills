@@ -1,7 +1,7 @@
 {
   "name": "thinking-skills",
   "version": "0.1.0",
-  "description": "A domain-neutral thinking skills framework with intent routing, method bases, and specialized thinking modes.",
+  "description": "A domain-neutral thinking skills framework with intent routing, method bases, article visual production, and specialized thinking modes.",
   "author": {
     "name": "xiewenfeng",
     "url": "https://github.com/huajiexiewenfeng"
@@ -14,6 +14,7 @@
     "intent-routing",
     "skills",
     "content-creation",
+    "article-visuals",
     "technical-analysis",
     "learning",
     "emotional-support",
@@ -25,7 +26,7 @@
   "interface": {
     "displayName": "Thinking Skills",
     "shortDescription": "Domain-neutral intent routing and thinking modes",
-    "longDescription": "Use Thinking Skills to route user requests into domain-specific thinking modes for content creation, technical deep dives, learning support, emotional support, conversation self-review, and future life decision, creative, and business workflows.",
+    "longDescription": "Use Thinking Skills to route user requests into domain-specific thinking modes for content creation, approval-gated article visual production, technical deep dives, learning support, emotional support, conversation self-review, and future life decision, creative, and business workflows.",
     "developerName": "xiewenfeng",
     "category": "Productivity",
     "capabilities": [
@@ -36,6 +37,7 @@
     "defaultPrompt": [
       "I have an idea and want to think it through.",
       "Help me decide what thinking mode this request needs.",
+      "Plan and integrate visuals for this final Markdown article.",
       "I want to write something, analyze something technical, learn a concept, sort out an emotional issue, or self-review this conversation."
     ],
     "brandColor": "#2563EB",

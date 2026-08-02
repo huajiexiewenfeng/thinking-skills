@@ -24,6 +24,7 @@ Canonical skill content lives in `skills/`. Do not fork or rewrite that content 
 
 - `thinking-router`: Use at the start of a request to classify intent and route to a domain skill.
 - `content-creator`: Use for articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure.
+- `article-visual-director`: Use when an existing or substantially complete Markdown article needs covers, concept illustrations, exact diagrams, approval-gated generation, and non-destructive image insertion.
 - `technical-deep-dive`: Use for code, repositories, architecture, debugging, performance, APIs, systems, technical trade-offs, and verification.
 - `emotional-support`: Use for anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps.
 - `skill-evaluator`: Use when reviewing a failed Thinking Skills response, routing mistake, unsafe behavior, eval result, or platform adapter issue.
@@ -34,6 +35,7 @@ When a selected skill needs more detail, read its canonical file before answerin
 
 - `skills/thinking-router/SKILL.md`
 - `skills/content-creator/SKILL.md`
+- `skills/article-visual-director/SKILL.md`
 - `skills/technical-deep-dive/SKILL.md`
 - `skills/emotional-support/SKILL.md`
 - `skills/skill-evaluator/SKILL.md`
@@ -41,5 +43,6 @@ When a selected skill needs more detail, read its canonical file before answerin
 Keep responses domain-appropriate:
 
 - Writing work should produce audience, angle, thesis, structure, or draft direction.
+- Article-visual work should plan before generation, use deterministic rendering for exact diagrams, and preserve the source Markdown.
 - Technical work should separate facts, assumptions, hypotheses, trade-offs, and verification.
 - Emotional-support work should avoid diagnosis, avoid pretending to be therapy, and prioritize immediate safety when risk signals appear.

@@ -91,6 +91,7 @@ Dolores 属于 Reflection plane，不需要每次回答后都运行。
 |---|---|
 | `thinking-router` | 用户请求需要先判断应该进入哪种思考模式 |
 | `content-creator` | 文章、随笔、脚本、标题、大纲、论点、受众定位和内容结构 |
+| `article-visual-director` | 已基本定稿的 Markdown 文章需要封面、概念插画、精确技术图、审批后生成，并非破坏性地插回文章副本 |
 | `technical-deep-dive` | 代码、架构、debug、性能、API、系统、技术权衡和验证路径 |
 | `learning-coach` | 概念理解、心智模型、知识盲区、学习路径、练习和解释校准 |
 | `emotional-support` | 焦虑、压力、自责、关系痛苦、情绪困惑、危机信号和温和的下一步 |
@@ -208,6 +209,10 @@ self-review
 ```
 
 ```text
+使用 article-visual-director 为这篇已定稿的 Markdown 规划配图，等我确认后生成，并插入新的文章副本。
+```
+
+```text
 使用 learning-coach 帮我理解这个概念。
 ```
 
@@ -225,6 +230,7 @@ self-review
 
 - 非技术请求不再被强行塞进 coding workflow。
 - 写作任务会产出受众、角度、论点和结构，而不是 implementation plan。
+- 定稿文章的配图任务会先产出完整视觉方案，精确技术图使用确定性渲染，并保持原始 Markdown 不变。
 - 技术任务会区分事实、假设、推测、权衡和验证路径。
 - 学习任务会建立简洁的心智模型，暴露常见误解，并给出小的练习步骤。
 - 情绪支持任务会接住情绪、避免诊断，并在必要时优先处理安全问题。
@@ -263,6 +269,7 @@ Benchmark cases 放在 `benchmarks/` 下。runner 可以生成 agent 测试提�
 skills/
   thinking-router/
   content-creator/
+  article-visual-director/
   technical-deep-dive/
   learning-coach/
   emotional-support/
@@ -287,6 +294,7 @@ docs/
 evals/
   routing-cases.md
   content-creator-cases.md
+  article-visual-director-cases.md
   technical-deep-dive-cases.md
   learning-coach-cases.md
   emotional-support-cases.md
@@ -296,6 +304,7 @@ evals/
 
 benchmarks/
   routing/
+  article-visual-director/
   learning-coach/
   content-creator/
   emotional-support/
