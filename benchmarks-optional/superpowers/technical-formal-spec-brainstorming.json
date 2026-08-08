@@ -5,7 +5,7 @@
   "turns": [
     {
       "role": "user",
-      "content": "Could we add a protocol layer between the LLM and its skills, with a dynamic ratio for each skill? Please turn it into a formal, implementation-ready specification in the repository before development."
+      "content": "Please use `technical-deep-dive` to analyze the protocol layer and use brainstorming to turn it into an implementation-ready repository specification before development."
     }
   ],
   "expected_profile": {

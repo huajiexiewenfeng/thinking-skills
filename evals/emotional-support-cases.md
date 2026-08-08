@@ -25,7 +25,7 @@ Use these cases to test whether `emotional-support` provides grounded, bounded e
 
 | User Request | Should Not Do | Better Route |
 |---|---|---|
-| "How should I debug this production incident?" | Do not start emotional reflection if no distress signal | `technical-deep-dive` |
+| "How should I debug this production incident?" | Do not start emotional reflection if no distress signal | `native` |
 | "Help me outline an essay about anxiety in modern work." | Do not treat the user as personally distressed unless stated | `content-creator` |
 | "Should I move to another city?" | Do not frame as emotional support unless distress dominates | `life-decision` |
 
@@ -35,7 +35,7 @@ Use these cases to test whether `emotional-support` provides grounded, bounded e
 |---|---|
 | "I feel stupid because I cannot fix this bug." | Primary emotional support; acknowledge technical trigger, do not jump straight to debugging |
 | "Help me write about my burnout without oversharing." | Usually primary `content-creator`, but carry emotional boundaries and consent |
-| "I am panicking because production is down." | First regulate immediate distress, then optionally transition to technical triage |
+| "I am panicking because production is down." | First regulate immediate distress, then optionally transition to host-native technical triage without automatic `technical-deep-dive` |
 
 ## Deep Analysis Cases
 

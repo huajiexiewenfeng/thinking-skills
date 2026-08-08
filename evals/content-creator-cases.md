@@ -18,7 +18,7 @@ Use these cases to test whether `content-creator` behaves like an editorial thin
 
 | User Request | Should Not Do | Better Route |
 |---|---|---|
-| "This API keeps timing out. How do I debug it?" | Do not create an article structure | `technical-deep-dive` |
+| "This API keeps timing out. How do I debug it?" | Do not create an article structure | `native` |
 | "I feel crushed and cannot stop blaming myself." | Do not ask for article audience | `emotional-support` |
 | "Should I quit my job?" | Do not make a persuasive essay outline | `life-decision` |
 | "I want to write a reflective essay about why people keep old notebooks." | Do not force technical blog mode | `content-creator` general mode |
@@ -28,7 +28,8 @@ Use these cases to test whether `content-creator` behaves like an editorial thin
 | User Request | Expected Behavior |
 |---|---|
 | "I want to write about a painful breakup without oversharing." | Use `content-creator` with emotional-support sensitivity |
-| "I want to write a blog post about our bad architecture decisions." | Use `content-creator`; carry technical context as secondary |
+| "I want to write a blog post about our bad architecture decisions." | Use `content-creator`; technical correctness support remains host-native and does not add `technical-deep-dive` |
+| "I want to write a blog post about our bad architecture decisions. Please use `technical-deep-dive` for the technical analysis." | Use `content-creator` with explicitly invoked `technical-deep-dive` support |
 | "Help me make a talk from my burnout story." | Clarify audience impact and protect personal boundaries |
 
 ## Multi-Turn Cases

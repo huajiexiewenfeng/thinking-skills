@@ -5,7 +5,7 @@
   "turns": [
     {
       "role": "user",
-      "content": "Could we add a protocol layer between the LLM and its skills, with a dynamic ratio for each skill?"
+      "content": "Please use `technical-deep-dive` to explore whether a protocol layer between an LLM and its skills is feasible, including constraints and verification."
     }
   ],
   "expected": [],

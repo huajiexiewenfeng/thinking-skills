@@ -20,7 +20,7 @@ Use these cases to test whether `learning-coach` helps the user build usable und
 |---|---|---|---|
 | "I want to write an article explaining vector databases to beginners." | `content-creator` | `learning-coach` | Output goal is writing |
 | "I feel stupid because I cannot understand recursion." | `emotional-support` | `learning-coach` | Shame and self-blame first |
-| "Can you help me understand this API design before we decide whether to adopt it?" | `technical-deep-dive` | `learning-coach` | Technical decision dominates |
+| "Can you help me understand this API design before we decide whether to adopt it?" | `learning-coach` | None | Technical learning remains learning-coach without automatic technical-deep-dive |
 
 ## Anti-Cases
 
@@ -30,3 +30,4 @@ Use these cases to test whether `learning-coach` helps the user build usable und
 | "Teach me this whole field from zero." | Huge syllabus before the user can start. | Ask current goal or provide a small first-week path. |
 | "I do not understand this paper." | Pretend to know the paper without seeing it. | Ask for the excerpt or explain only from provided context. |
 | "Explain attention in transformers." | Start with equations and method names. | Give a compact intuition first, then optional depth. |
+| "How should I diagnose this production incident?" | Start an automatic technical-deep-dive route. | Use the host-native technical path. |

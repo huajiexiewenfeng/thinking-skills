@@ -11,7 +11,7 @@ Use these cases to test whether `conversation-review` enters Dolores mode approp
 | "进入 Dolores，深度复盘这轮对话" | Run a full Dolores review with conversation trace, skill trace, mode shifts, eval gaps, patch strategy, and Dolores Note |
 | "这段对话能不能收录成 failure case？" | Produce a failure-focused review with abstract case, expected behavior, must-not behavior, and minimal patch strategy |
 | "刚才你把项目开源范围说错了，做一下 self-review" | Identify evidence or certainty failure, note that project facts should have been checked or marked as assumptions, and propose an eval candidate |
-| "帮我找一下这轮对话里的 eval gap 和 improvement loop" | Focus on reusable eval gaps and improvement-loop actions rather than rewriting the whole skill |
+| "帮我找一下这轮对话里的 eval gap 和 improvement loop" | Focus on reusable eval gaps and improvement-loop actions rather than rewriting the whole skill; do not activate `technical-deep-dive` for Skill-review/meta discussion unless directly commanded |
 | "失败 case 统计" | Output a quality dashboard using local `cases/**/*.md` and `feedback/*.md` when available |
 | "quality dashboard" | Output case status summary, failure case details, and skill feedback summary |
 
@@ -23,7 +23,7 @@ Use these cases to test whether `conversation-review` enters Dolores mode approp
 | "我现在很焦虑，先别分析系统了，陪我聊一下" | Should route to emotional support, not retrospective conversation review |
 | "帮我实现这个 skill" | Should route to technical or implementation workflow, not conversation review |
 | "给这篇文章起几个标题" | Should route to content creation, not conversation review |
-| "这段代码为什么报错？" | Should route to technical deep dive unless the user asks to review prior conversation behavior |
+| "这段代码为什么报错？" | Should route to the host-native technical path unless the user asks to review prior conversation behavior |
 
 ## Structured Cases
 
