@@ -1069,23 +1069,23 @@ test("legacy hybrid scenarios retain separate route and response evidence", () =
   }
 });
 
-test("technical secondary routing requires an explicit technical-analysis signal", () => {
+test("technical-deep-dive route gold requires current-turn explicit user invocation", () => {
   const cases = loadBenchmarkCases("benchmarks/routing");
-  const attention = cases.find(
-    (item) => item.id === "router-learning-vs-technical-001",
-  );
-  const kafka = cases.find(
-    (item) => item.id === "router-learning-technical-noun-001",
-  );
+  const invocation = /\$thinking-skills:technical-deep-dive|(?:\buse\b|\binvoke\b|请用|使用|调用|运行)[^\n]{0,80}technical-deep-dive/i;
 
-  assert.ok(attention);
-  assert.ok(kafka);
-  assert.equal(attention.expected_route.secondary, null);
-  assert.doesNotMatch(attention.prompt, /architecture|replication|consumer groups/i);
-  assert.equal(kafka.expected_route.secondary, "technical-deep-dive");
-  assert.match(kafka.prompt, /partitions/i);
-  assert.match(kafka.prompt, /replication/i);
-  assert.match(kafka.prompt, /consumer groups/i);
+  for (const benchmarkCase of cases) {
+    const route = benchmarkCase.expected_route;
+    const selectsDeepDive =
+      route.primary === "technical-deep-dive" ||
+      route.secondary === "technical-deep-dive";
+    if (!selectsDeepDive) continue;
+
+    const turns = benchmarkCase.turns || benchmarkCase.messages || [
+      { role: "user", content: benchmarkCase.prompt },
+    ];
+    const lastUser = [...turns].reverse().find((turn) => turn.role === "user");
+    assert.match(lastUser.content, invocation, benchmarkCase.file);
+  }
 });
 
 test("loads the optional Superpowers integration suite only when requested", () => {

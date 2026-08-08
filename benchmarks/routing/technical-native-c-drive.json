@@ -1,0 +1,19 @@
+{
+  "id": "router-technical-native-c-drive-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "电脑 C 盘又快满了，帮我看看哪些地方占空间。",
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "diagnosis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "native",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["technical-deep-dive", "no-skill"]
+}

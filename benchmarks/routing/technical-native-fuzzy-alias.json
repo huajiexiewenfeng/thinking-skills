@@ -1,0 +1,19 @@
+{
+  "id": "router-technical-native-fuzzy-alias-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "Use technical deep analysis to inspect this API design.",
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "analysis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "native",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["technical-deep-dive", "no-skill"]
+}

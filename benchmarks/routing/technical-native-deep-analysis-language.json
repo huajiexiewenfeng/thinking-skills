@@ -1,0 +1,19 @@
+{
+  "id": "router-technical-native-deep-analysis-language-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "请深入、系统地分析一下这个架构问题。",
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "analysis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "native",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["technical-deep-dive", "no-skill"]
+}

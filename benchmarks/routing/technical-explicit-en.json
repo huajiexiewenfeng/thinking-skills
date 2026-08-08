@@ -1,0 +1,19 @@
+{
+  "id": "router-technical-explicit-en-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "Please use technical-deep-dive to analyze this production latency regression.",
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "analysis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "technical-deep-dive",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["native", "no-skill"]
+}

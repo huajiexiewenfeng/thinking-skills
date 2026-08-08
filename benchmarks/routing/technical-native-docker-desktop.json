@@ -1,0 +1,19 @@
+{
+  "id": "router-technical-native-docker-desktop-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "Docker Desktop 重启后界面一直不加载，Engine stopped，帮我诊断。",
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "diagnosis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "native",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["technical-deep-dive", "no-skill"]
+}

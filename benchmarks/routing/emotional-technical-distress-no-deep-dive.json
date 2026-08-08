@@ -1,0 +1,19 @@
+{
+  "id": "router-emotional-technical-distress-no-deep-dive-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "项目架构一团糟，我很焦虑，感觉都是我的错。",
+  "expected_profile": {
+    "domain": "emotional",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "support",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "emotional-support",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["technical-deep-dive", "native", "no-skill"]
+}

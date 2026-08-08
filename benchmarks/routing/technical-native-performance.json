@@ -1,0 +1,19 @@
+{
+  "id": "router-technical-native-performance-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "帮我分析这个查询为什么从 200ms 变成了 4 秒。",
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "analysis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "native",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["technical-deep-dive", "no-skill"]
+}

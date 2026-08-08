@@ -1,0 +1,19 @@
+{
+  "id": "router-content-technical-explicit-secondary-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "请用 content-creator 写这篇技术文章，并用 technical-deep-dive 校验架构语义。",
+  "expected_profile": {
+    "domain": "content",
+    "objective": "deliver",
+    "mutation": "none",
+    "artifact": "article",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "content-creator",
+    "secondary": "technical-deep-dive"
+  },
+  "expected_advisory": [],
+  "must_not_select": ["native", "no-skill"]
+}

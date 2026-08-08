@@ -15,11 +15,12 @@
     "artifact_sink": "workspace"
   },
   "expected_route": {
-    "primary": "technical-deep-dive",
+    "primary": "native",
     "secondary": null
   },
   "expected_advisory": [],
   "must_not_select": [
+    "technical-deep-dive",
     "no-skill"
   ]
 }

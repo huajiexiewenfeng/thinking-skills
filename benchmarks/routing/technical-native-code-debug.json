@@ -1,0 +1,19 @@
+{
+  "id": "router-technical-native-code-debug-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "这个接口偶发返回 500，帮我检查代码和日志定位原因。",
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "diagnosis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "native",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["technical-deep-dive", "no-skill"]
+}

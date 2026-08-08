@@ -1,0 +1,20 @@
+{
+  "id": "router-technical-explicit-not-carried-forward-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "turns": [
+    {"role": "user", "content": "请用 technical-deep-dive 分析第一个故障。"},
+    {"role": "assistant", "content": "第一轮分析摘要。"},
+    {"role": "user", "content": "继续帮我看另一个普通 Docker 故障。"}
+  ],
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "diagnosis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {"primary": "native", "secondary": null},
+  "expected_advisory": [],
+  "must_not_select": ["technical-deep-dive", "no-skill"]
+}

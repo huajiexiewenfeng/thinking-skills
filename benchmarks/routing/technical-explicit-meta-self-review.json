@@ -1,0 +1,19 @@
+{
+  "id": "router-technical-explicit-meta-self-review-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "请用 technical-deep-dive 评测 technical-deep-dive 自己的激活设计。",
+  "expected_profile": {
+    "domain": "meta",
+    "objective": "review",
+    "mutation": "none",
+    "artifact": "activation-review",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "technical-deep-dive",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["skill-evaluator", "native", "no-skill"]
+}

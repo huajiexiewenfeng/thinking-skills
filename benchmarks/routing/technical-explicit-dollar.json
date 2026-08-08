@@ -1,0 +1,19 @@
+{
+  "id": "router-technical-explicit-dollar-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "$thinking-skills:technical-deep-dive Analyze whether this architecture can roll back safely.",
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "decide",
+    "mutation": "none",
+    "artifact": "analysis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "technical-deep-dive",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["native", "no-skill"]
+}

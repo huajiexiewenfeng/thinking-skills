@@ -1,0 +1,19 @@
+{
+  "id": "router-meta-technical-deep-dive-discussion-001",
+  "kind": "route",
+  "skill": "thinking-router",
+  "prompt": "为什么 technical-deep-dive 在简单诊断里比较慢？",
+  "expected_profile": {
+    "domain": "meta",
+    "objective": "review",
+    "mutation": "none",
+    "artifact": "activation-review",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "skill-evaluator",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": ["technical-deep-dive", "native", "no-skill"]
+}
