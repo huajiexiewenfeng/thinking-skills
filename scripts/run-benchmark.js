@@ -675,7 +675,9 @@ function expectedDomainSkills(benchmarkCase) {
   return [
     benchmarkCase.expected_route?.primary,
     benchmarkCase.expected_route?.secondary,
-  ].filter((skill) => skill && skill !== "native");
+  ].filter(
+    (skill) => skill && skill !== "native" && skill !== "no-skill",
+  );
 }
 
 function scoreIntegrationResponse(

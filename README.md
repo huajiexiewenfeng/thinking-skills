@@ -16,7 +16,7 @@ Thinking Skills separates:
 
 ```text
 intent routing
--> domain-specific thinking
+-> Domain Skill | native | no-skill
 -> conversation self-review
 -> failure cases and evals
 -> improvement loop
@@ -257,7 +257,7 @@ See [Benchmark](docs/benchmark.md) and [Benchmark Dashboard](docs/benchmark-dash
 ## Design Principles
 
 - **Domain-neutral by default**: do not assume software development.
-- **Router does not solve**: route first, then let the selected skill reason.
+- **Router does not solve**: choose a Domain Skill, `native`, or `no-skill` first, then let the selected route own the response.
 - **Skills own their worldview**: each domain has its own questions, outputs, and boundaries.
 - **Methods beat vibes**: every domain skill declares method bases.
 - **Methods stay mostly internal**: frameworks guide the response, but should not become visible machinery unless useful.

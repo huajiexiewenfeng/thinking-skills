@@ -169,7 +169,7 @@ This case preserves a reusable collaboration pattern where one complex user goal
 
 ## Reusable Pattern
 
-- Choose one primary route based on the highest-risk dimension, then add secondary skills only when the current request explicitly invokes them for distinct constraints.
+- Choose one primary route based on the highest-risk dimension, then add a secondary skill when a clear second-domain need exists. `technical-deep-dive` may appear as secondary only when the current request explicitly invokes it.
 - Keep skills coordinated around one shared artifact rather than letting each skill produce an independent response.
 - Separate facts, inferences, publication-safe abstractions, and user-provided sensitive details.
 - Use self-review to identify a reusable success or failure signal after the work proves useful.

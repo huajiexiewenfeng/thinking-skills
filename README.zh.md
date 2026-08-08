@@ -16,7 +16,7 @@ Thinking Skills 把流程拆成：
 
 ```text
 意图路由
--> 领域专属思考
+-> Domain Skill | native | no-skill
 -> 对话自我复盘
 -> 失败案例和 eval
 -> 改进飞轮
@@ -257,7 +257,7 @@ Benchmark cases 放在 `benchmarks/` 下。runner 可以生成 agent 测试提�
 ## 设计原则
 
 - **默认领域中立**：不要默认这是软件开发问题。
-- **Router 只路由，不解决问题**：先选择 thinking mode，再由对应 skill 推理。
+- **Router 只路由，不解决问题**：先选择 Domain Skill、`native` 或 `no-skill`，再由所选路径负责回答。
 - **每个 skill 拥有自己的世界观**：不同领域有不同的问题、输出和边界。
 - **方法论优先于泛泛聊天**：每个 domain skill 都要声明 method bases。
 - **方法论主要留在内部**：框架指导回答，但不应该默认变成用户可见的机械结构。

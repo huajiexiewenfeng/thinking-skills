@@ -71,7 +71,7 @@ Use `article-visual-director` after the article exists or is substantially compl
 | "I am anxious because my project architecture is a mess." | Primary: `emotional-support`; Secondary: none |
 | "Help me decide whether to quit my job and build a startup." | Primary: `life-decision`; Secondary: `business-strategy` |
 | "Do a self-review of this conversation and find any eval gaps." | Primary: `conversation-review`; Secondary: `skill-evaluator` |
-| "Summarize what we discussed." | Primary: no Dolores trigger; provide a normal summary unless the user asks for review |
+| "Summarize what we discussed." | Primary: `no-skill`; Secondary: none |
 
 ## Low-Confidence Question
 

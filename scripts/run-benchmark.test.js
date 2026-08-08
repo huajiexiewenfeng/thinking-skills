@@ -942,6 +942,81 @@ test("integration scoring treats native as zero expected domain Skills", () => {
   assert.ok(fail.failures.some((item) => item.includes("technical-deep-dive")));
 });
 
+test("integration scoring treats no-skill as zero expected domain Skills", () => {
+  const benchmarkCase = {
+    id: "integration-no-skill-001",
+    kind: "integration",
+    turns: [{ role: "user", content: "I just want to chat." }],
+    expected_profile: {
+      domain: "none",
+      objective: "converse",
+      mutation: "none",
+      artifact: "conversation",
+      artifact_sink: "chat",
+    },
+    expected_route: { primary: "no-skill", secondary: null },
+    expected_advisory: [],
+    must_not_select: [],
+    expected: ["chat"],
+    must_not: [],
+  };
+  const response = "Sure, let's chat.";
+  const noDomainSkills = loadTraces(null, {
+    "integration-no-skill-001": makeTraceEnvelope({
+      benchmarkCase,
+      response,
+      trace: {
+        complete: true,
+        task_profile: {
+          domain: "none",
+          objective: "converse",
+          mutation: "none",
+          artifact: "conversation",
+          artifact_sink: "chat",
+        },
+        route: { primary: "no-skill", secondary: null },
+        advisory_components: [],
+        events: [],
+      },
+    }),
+  });
+  const pass = scoreIntegrationResponse(
+    benchmarkCase,
+    response,
+    noDomainSkills["integration-no-skill-001"],
+    traceBinding(benchmarkCase),
+  );
+  assert.equal(pass.status, "pass");
+
+  const selectedAndLoadedDomain = loadTraces(null, {
+    "integration-no-skill-001": makeTraceEnvelope({
+      benchmarkCase,
+      response,
+      trace: {
+        complete: true,
+        task_profile: {
+          domain: "none",
+          objective: "converse",
+          mutation: "none",
+          artifact: "conversation",
+          artifact_sink: "chat",
+        },
+        route: { primary: "no-skill", secondary: null },
+        advisory_components: [],
+        events: skillLifecycle("technical-deep-dive", "domain"),
+      },
+    }),
+  });
+  const fail = scoreIntegrationResponse(
+    benchmarkCase,
+    response,
+    selectedAndLoadedDomain["integration-no-skill-001"],
+    traceBinding(benchmarkCase),
+  );
+  assert.equal(fail.status, "fail");
+  assert.ok(fail.failures.some((item) => item.includes("technical-deep-dive")));
+});
+
 test("integration prompt asks only for a natural answer, not a self-reported trace", () => {
   const prompt = buildAgentPrompt({
     id: "integration-001",

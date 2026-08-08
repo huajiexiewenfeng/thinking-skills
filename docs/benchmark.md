@@ -195,7 +195,13 @@ The evaluator-owned trace file supplied with `--traces` uses this shape:
     "events_sha256": "<64 hex characters>",
     "trace": {
       "complete": true,
-      "task_profile": {},
+      "task_profile": {
+        "domain": "technical",
+        "objective": "explore",
+        "mutation": "none",
+        "artifact": "analysis",
+        "artifact_sink": "chat"
+      },
       "route": {
         "primary": "native",
         "secondary": null
@@ -207,7 +213,7 @@ The evaluator-owned trace file supplied with `--traces` uses this shape:
 ]
 ```
 
-Missing, embedded, incomplete, or untrusted-channel trace is a failure, not a response-only pass. Each selected Domain Skill lifecycle must follow `discovered → selected → loaded`; the selected/loaded domain set must exactly match Domain Skills named by `route.primary/secondary`, expected advisory Skills must be selected and loaded, and a forbidden Skill fails on either selection or loading regardless of role. For `native`, trusted integration scoring expects zero selected and zero loaded Domain Skills; discovery metadata may exist, but selection or loading of a Domain Skill fails the case. `advisory_components` must match advisory `loaded` events. Case id, run nonce, candidate-Prompt hash, response hash, adapter id/version, and event hash bind the trace to one capture.
+Missing, embedded, incomplete, or untrusted-channel trace is a failure, not a response-only pass. Each selected Domain Skill lifecycle must follow `discovered → selected → loaded`; the selected/loaded domain set must exactly match Domain Skills named by `route.primary/secondary`, expected advisory Skills must be selected and loaded, and a forbidden Skill fails on either selection or loading regardless of role. For `native` and `no-skill`, trusted integration scoring expects zero selected and zero loaded Domain Skills; discovery metadata may exist, but selection or loading of a Domain Skill fails the case. `advisory_components` must match advisory `loaded` events. Case id, run nonce, candidate-Prompt hash, response hash, adapter id/version, and event hash bind the trace to one capture.
 
 `--traces` is an evaluator trust boundary, not cryptographic attestation: the run manifest must still bind the adapter and preserve its raw events. Integration cases cannot use `--command`, because a separately launched process cannot be safely paired with a pre-existing trace; one adapter capture must produce the saved response and trace pair.
 
