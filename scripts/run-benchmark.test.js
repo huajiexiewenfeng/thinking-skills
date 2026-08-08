@@ -1374,9 +1374,17 @@ test("current-request invocation predicate rejects semantic false positives", ()
     routeCase("$thinking-skills:technical-deep-dive Analyze this failure."),
     routeCase("Please use technical-deep-dive to analyze this failure."),
     routeCase("Please use `technical-deep-dive` to analyze this failure."),
+    routeCase("Please use\nthe canonical name technical-deep-dive to analyze this fault."),
+    routeCase("Please use\ntechnical-deep-dive to analyze this fault."),
     routeCase("请用 technical-deep-dive 分析这个故障。"),
   ];
   const negatives = [
+    routeCase("Should we use technical-deep-dive for this?"),
+    routeCase("When should I use `technical-deep-dive`?"),
+    routeCase("Please review whether to use technical-deep-dive."),
+    routeCase("I do not want you to use technical-deep-dive."),
+    routeCase("Do not ever use technical-deep-dive."),
+    routeCase("不要再使用 technical-deep-dive。"),
     routeCase("Please do not use technical-deep-dive for this failure."),
     routeCase('Example: "Please use technical-deep-dive to analyze this failure."'),
     routeCase("Example:\nPlease use technical-deep-dive to analyze this failure."),
@@ -1391,11 +1399,11 @@ test("current-request invocation predicate rejects semantic false positives", ()
     routeCase('The user wrote "$thinking-skills:technical-deep-dive" in the example.'),
   ];
 
-  for (const benchmarkCase of positives) {
-    assert.equal(hasValidTechnicalDeepDiveInvocation(benchmarkCase), true);
-  }
   for (const benchmarkCase of negatives) {
     assert.equal(hasValidTechnicalDeepDiveInvocation(benchmarkCase), false);
+  }
+  for (const benchmarkCase of positives) {
+    assert.equal(hasValidTechnicalDeepDiveInvocation(benchmarkCase), true);
   }
 });
 

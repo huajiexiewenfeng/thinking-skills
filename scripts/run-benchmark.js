@@ -98,16 +98,74 @@ function routeCombinationFailure(route, label) {
 }
 
 function invocationSearchText(text) {
-  return text
-    .replace(/\r\n?/g, "\n")
-    .replace(/```[\s\S]*?```/g, " ")
-    .replace(/^\s*>.*$/gm, " ")
+  let inFence = false;
+  const visibleLines = [];
+  for (const line of text.replace(/\r\n?/g, "\n").split("\n")) {
+    if (line.trimStart().startsWith("```")) {
+      inFence = !inFence;
+      visibleLines.push("");
+    } else if (inFence || /^\s*>/.test(line)) {
+      visibleLines.push("");
+    } else {
+      visibleLines.push(line);
+    }
+  }
+
+  return visibleLines
+    .join("\n")
     .replace(/`([^`\n]+)`/g, (_match, inner) =>
       inner.trim().toLowerCase() === TECHNICAL_DEEP_DIVE
         ? TECHNICAL_DEEP_DIVE
         : " "
     )
-    .replace(/"[^"\n]*"|'[^'\n]*'|“[^”\n]*”|‘[^’\n]*’/g, " ");
+    .replace(/"[^"\n]*"|'[^'\n]*'|“[^”\n]*”|‘[^’\n]*’/g, " ")
+    .replace(/\be\.g\./gi, "example")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function commandTargetsTechnicalDeepDive(clause) {
+  const boundedClause = clause.slice(0, 512);
+  const english = boundedClause.match(
+    /^(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b\s*(.*)$/i,
+  );
+  const chinese = boundedClause.match(
+    /^(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用)\s*(.*)$/i,
+  );
+  const target = (english || chinese)?.[1];
+  if (!target) return false;
+
+  const canonicalObject = /^(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+)?technical-deep-dive(?=$|[\s,，:：])/i;
+  if (canonicalObject.test(target)) return true;
+
+  return /(?:\b(?:and|plus)\b|(?:并且?|以及))\s*(?:(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b\s*|(?:请\s*)?(?:使用|调用|运行|加载|应用|用)\s*)?(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+)?technical-deep-dive(?=$|[\s,，:：])/i
+    .test(target);
+}
+
+function directInvocationClauses(text) {
+  const clauses = [];
+  const dataContext = /(?:\b(?:example|sample|test data|as data|quoted?|quotation|the user (?:said|wrote)|the prompt (?:says|contains))\b|(?:例如|示例|比如|引用|原文|测试数据|作为数据))/i;
+  let sentenceStart = 0;
+
+  for (let index = 0; index <= text.length; index += 1) {
+    const terminator = text[index] || "";
+    if (index < text.length && !".!?;。！？；".includes(terminator)) {
+      continue;
+    }
+
+    const sentence = text.slice(sentenceStart, index).trim();
+    sentenceStart = index + 1;
+    if (!sentence || terminator === "?" || terminator === "？") continue;
+
+    const parts = sentence.split(/[,，]/);
+    let hasDataContext = false;
+    for (const part of parts) {
+      const clause = part.trim();
+      if (clause && !hasDataContext) clauses.push(clause);
+      if (!hasDataContext && dataContext.test(part)) hasDataContext = true;
+    }
+  }
+  return clauses;
 }
 
 function hasValidTechnicalDeepDiveInvocation(item) {
@@ -124,18 +182,7 @@ function hasValidTechnicalDeepDiveInvocation(item) {
   ) {
     return true;
   }
-
-  const invocation = /(?:\b(?:use|invoke|run|load|apply)\b|(?:请用|使用|调用|运行|加载|应用|用))([^\r\n]{0,80}?)technical-deep-dive\b/gi;
-  for (const match of text.matchAll(invocation)) {
-    const prefix = text.slice(Math.max(0, match.index - 160), match.index);
-    const between = match[1] || "";
-    const negated = /(?:\b(?:do\s+not|don't|dont|never|avoid|without|not\s+to)\s+|(?:请勿|不要|别|不用|禁止|不)\s*)$/i
-      .test(prefix) || /\b(?:not|no)\b|(?:不要|别|不)/i.test(between);
-    const dataContext = /(?:\b(?:example|for example|e\.g\.|such as|quoted?|quotation|sample|test data|as data|review (?:this )?(?:text|phrase|prompt|sentence)|modify (?:this )?(?:text|phrase|prompt|sentence)|the user (?:said|wrote)|the prompt (?:says|contains))\b|(?:例如|示例|比如|引用|原文|测试数据|作为数据|审查(?:这段)?(?:文本|提示词|句子)|修改(?:这段)?(?:文本|提示词|句子)))[^.!?。！？]{0,80}[:：]?\s*$/i
-      .test(prefix);
-    if (!negated && !dataContext) return true;
-  }
-  return false;
+  return directInvocationClauses(text).some(commandTargetsTechnicalDeepDive);
 }
 
 function validateRouteFields(item, filePath) {
