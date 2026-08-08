@@ -671,16 +671,20 @@ function aggregateRouteSamples(benchmarkCase, samples) {
   };
 }
 
+function expectedDomainSkills(benchmarkCase) {
+  return [
+    benchmarkCase.expected_route?.primary,
+    benchmarkCase.expected_route?.secondary,
+  ].filter((skill) => skill && skill !== "native");
+}
+
 function scoreIntegrationResponse(
   benchmarkCase,
   response,
   traceEnvelope,
   binding = null,
 ) {
-  const expectedDomain = [
-    benchmarkCase.expected_route?.primary,
-    benchmarkCase.expected_route?.secondary,
-  ].filter(Boolean);
+  const expectedDomain = expectedDomainSkills(benchmarkCase);
   const expectedAdvisory = benchmarkCase.expected_advisory || [];
   const forbiddenSkills = benchmarkCase.must_not_select || [];
   const lifecycleAssertionCount =

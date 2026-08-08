@@ -883,6 +883,65 @@ test("integration scoring requires both acceptable response and correct trace", 
   assert.ok(wrongBinding.failures.some((item) => item.includes("binding")));
 });
 
+test("integration scoring treats native as zero expected domain Skills", () => {
+  const benchmarkCase = {
+    id: "integration-native-001",
+    kind: "integration",
+    turns: [{ role: "user", content: "Give me a direct answer." }],
+    expected_profile: { objective: "explore" },
+    expected_route: { primary: "native", secondary: null },
+    expected_advisory: [],
+    must_not_select: ["technical-deep-dive"],
+    expected: ["direct answer"],
+    must_not: [],
+  };
+  const response = "Here is a direct answer.";
+  const discoveredOnly = loadTraces(null, {
+    "integration-native-001": makeTraceEnvelope({
+      benchmarkCase,
+      response,
+      trace: {
+        complete: true,
+        task_profile: { objective: "explore" },
+        route: { primary: "native", secondary: null },
+        advisory_components: [],
+        events: [
+          { event: "discovered", skill: "technical-deep-dive", role: "domain" },
+        ],
+      },
+    }),
+  });
+  const pass = scoreIntegrationResponse(
+    benchmarkCase,
+    response,
+    discoveredOnly["integration-native-001"],
+    traceBinding(benchmarkCase),
+  );
+  assert.equal(pass.status, "pass");
+
+  const loadedForbidden = loadTraces(null, {
+    "integration-native-001": makeTraceEnvelope({
+      benchmarkCase,
+      response,
+      trace: {
+        complete: true,
+        task_profile: { objective: "explore" },
+        route: { primary: "native", secondary: null },
+        advisory_components: [],
+        events: skillLifecycle("technical-deep-dive", "domain"),
+      },
+    }),
+  });
+  const fail = scoreIntegrationResponse(
+    benchmarkCase,
+    response,
+    loadedForbidden["integration-native-001"],
+    traceBinding(benchmarkCase),
+  );
+  assert.equal(fail.status, "fail");
+  assert.ok(fail.failures.some((item) => item.includes("technical-deep-dive")));
+});
+
 test("integration prompt asks only for a natural answer, not a self-reported trace", () => {
   const prompt = buildAgentPrompt({
     id: "integration-001",
