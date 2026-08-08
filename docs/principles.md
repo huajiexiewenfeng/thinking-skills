@@ -40,7 +40,7 @@ When more information is needed, ask one focused question. Multiple questions cr
 
 ## 6. Ask Only When Uncertain
 
-If the route is obvious, route directly. If confidence is low, ask a short routing question before choosing a skill.
+If the route is obvious, route directly. If confidence is low, ask a short routing question before choosing a route.
 
 ## 7. Output Shape Follows the Domain
 
