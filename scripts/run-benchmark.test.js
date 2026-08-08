@@ -1084,6 +1084,7 @@ test("technical-deep-dive route gold requires current-turn explicit user invocat
       { role: "user", content: benchmarkCase.prompt },
     ];
     const lastUser = [...turns].reverse().find((turn) => turn.role === "user");
+    assert.ok(lastUser, `${benchmarkCase.file} requires a user turn for TDD selection`);
     assert.match(lastUser.content, invocation, benchmarkCase.file);
   }
 });
