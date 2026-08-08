@@ -10,6 +10,7 @@ const {
   loadBenchmarkCases,
   loadResponses,
   loadTraces,
+  hasValidTechnicalDeepDiveInvocation,
   normalizeRouteSample,
   parseArgs,
   runBenchmark,
@@ -282,7 +283,7 @@ function makeSamplingRouteCase() {
     id: "route-sampling-001",
     kind: "route",
     skill: "thinking-router",
-    turns: [{ role: "user", content: "Explain whether this protocol can work." }],
+    turns: [{ role: "user", content: "Please use technical-deep-dive to explain whether this protocol can work." }],
     expected_profile: {
       domain: "technical",
       objective: "explore",
@@ -442,7 +443,7 @@ test("loads a valid route case", () => {
     JSON.stringify({
       id: "route-only-001",
       kind: "route",
-      turns: [{ role: "user", content: "Can we discuss this architecture?" }],
+      turns: [{ role: "user", content: "Please use technical-deep-dive to discuss this architecture." }],
       expected_profile: {
         domain: "technical",
         objective: "explore",
@@ -883,6 +884,96 @@ test("integration scoring requires both acceptable response and correct trace", 
   assert.ok(wrongBinding.failures.some((item) => item.includes("binding")));
 });
 
+test("route contracts reject sentinel primaries with secondaries and sentinel secondaries", () => {
+  const baseCase = {
+    kind: "route",
+    prompt: "Classify this request.",
+    expected_profile: {
+      domain: "learning",
+      objective: "explore",
+      mutation: "none",
+      artifact: "explanation",
+      artifact_sink: "chat",
+    },
+    expected_advisory: [],
+    must_not_select: [],
+  };
+
+  for (const sentinel of ["native", "no-skill"]) {
+    const invalidRoutes = [
+      { primary: sentinel, secondary: "learning-coach" },
+      { primary: "learning-coach", secondary: sentinel },
+    ];
+
+    for (const [index, expectedRoute] of invalidRoutes.entries()) {
+      const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-sentinel-route-"));
+      fs.writeFileSync(
+        path.join(tempDir, "route.json"),
+        JSON.stringify({
+          ...baseCase,
+          id: `sentinel-${sentinel}-${index}`,
+          expected_route: expectedRoute,
+        }),
+        "utf8",
+      );
+
+      assert.throws(
+        () => loadBenchmarkCases(tempDir),
+        new RegExp(`expected_route.*${sentinel}|${sentinel}.*expected_route`),
+      );
+
+      const normalized = normalizeRouteSample({
+        task_profile: baseCase.expected_profile,
+        route: expectedRoute,
+        advisory_components: [],
+      });
+      assert.equal(normalized.status, "invalid");
+      assert.equal(normalized.error, "invalid_contract");
+      assert.match(normalized.message, new RegExp(sentinel));
+    }
+  }
+});
+
+test("route contracts preserve a real Domain primary plus secondary", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-domain-route-"));
+  const expectedRoute = {
+    primary: "content-creator",
+    secondary: "learning-coach",
+  };
+  fs.writeFileSync(
+    path.join(tempDir, "route.json"),
+    JSON.stringify({
+      id: "domain-primary-secondary-001",
+      kind: "route",
+      prompt: "Write an article that teaches this concept.",
+      expected_profile: {
+        domain: "content",
+        objective: "deliver",
+        mutation: "none",
+        artifact: "article",
+        artifact_sink: "chat",
+      },
+      expected_route: expectedRoute,
+      expected_advisory: [],
+      must_not_select: [],
+    }),
+    "utf8",
+  );
+
+  assert.equal(loadBenchmarkCases(tempDir).length, 1);
+  assert.equal(normalizeRouteSample({
+    task_profile: {
+      domain: "content",
+      objective: "deliver",
+      mutation: "none",
+      artifact: "article",
+      artifact_sink: "chat",
+    },
+    route: expectedRoute,
+    advisory_components: [],
+  }).status, "valid");
+});
+
 test("integration scoring treats native as zero expected domain Skills", () => {
   const benchmarkCase = {
     id: "integration-native-001",
@@ -1017,6 +1108,117 @@ test("integration scoring treats no-skill as zero expected domain Skills", () =>
   assert.ok(fail.failures.some((item) => item.includes("technical-deep-dive")));
 });
 
+test("integration sentinel primaries ignore malformed Domain secondaries", () => {
+  for (const sentinel of ["native", "no-skill"]) {
+    const benchmarkCase = {
+      id: `integration-${sentinel}-secondary-001`,
+      kind: "integration",
+      turns: [{ role: "user", content: "Give me a direct answer." }],
+      expected_profile: {
+        domain: sentinel === "native" ? "technical" : "none",
+        objective: sentinel === "native" ? "explore" : "converse",
+        mutation: "none",
+        artifact: "answer",
+        artifact_sink: "chat",
+      },
+      expected_route: {
+        primary: sentinel,
+        secondary: "learning-coach",
+      },
+      expected_advisory: [],
+      must_not_select: [],
+      expected: ["direct answer"],
+      must_not: [],
+    };
+    const response = "Here is a direct answer.";
+    const baseTrace = {
+      complete: true,
+      task_profile: benchmarkCase.expected_profile,
+      route: benchmarkCase.expected_route,
+      advisory_components: [],
+      events: [],
+    };
+    const noDomain = loadTraces(null, {
+      [benchmarkCase.id]: makeTraceEnvelope({
+        benchmarkCase,
+        response,
+        trace: baseTrace,
+      }),
+    });
+    const pass = scoreIntegrationResponse(
+      benchmarkCase,
+      response,
+      noDomain[benchmarkCase.id],
+      traceBinding(benchmarkCase),
+    );
+    assert.equal(pass.status, "pass", sentinel);
+
+    const activatedDomain = loadTraces(null, {
+      [benchmarkCase.id]: makeTraceEnvelope({
+        benchmarkCase,
+        response,
+        trace: {
+          ...baseTrace,
+          events: skillLifecycle("learning-coach", "domain"),
+        },
+      }),
+    });
+    const fail = scoreIntegrationResponse(
+      benchmarkCase,
+      response,
+      activatedDomain[benchmarkCase.id],
+      traceBinding(benchmarkCase),
+    );
+    assert.equal(fail.status, "fail", sentinel);
+    assert.ok(fail.failures.some((item) => item.includes("domain set")), sentinel);
+  }
+});
+
+test("integration scoring preserves a real Domain primary plus secondary", () => {
+  const benchmarkCase = {
+    id: "integration-domain-secondary-001",
+    kind: "integration",
+    turns: [{ role: "user", content: "Write and teach." }],
+    expected_profile: {
+      domain: "content",
+      objective: "deliver",
+      mutation: "none",
+      artifact: "article",
+      artifact_sink: "chat",
+    },
+    expected_route: {
+      primary: "content-creator",
+      secondary: "learning-coach",
+    },
+    expected_advisory: [],
+    must_not_select: [],
+    expected: ["article"],
+    must_not: [],
+  };
+  const response = "Here is the article.";
+  const trace = {
+    complete: true,
+    task_profile: benchmarkCase.expected_profile,
+    route: benchmarkCase.expected_route,
+    advisory_components: [],
+    events: [
+      ...skillLifecycle("content-creator", "domain"),
+      ...skillLifecycle("learning-coach", "domain"),
+    ],
+  };
+  const trusted = loadTraces(null, {
+    [benchmarkCase.id]: makeTraceEnvelope({ benchmarkCase, response, trace }),
+  });
+
+  const result = scoreIntegrationResponse(
+    benchmarkCase,
+    response,
+    trusted[benchmarkCase.id],
+    traceBinding(benchmarkCase),
+  );
+  assert.equal(result.status, "pass");
+});
+
 test("integration prompt asks only for a natural answer, not a self-reported trace", () => {
   const prompt = buildAgentPrompt({
     id: "integration-001",
@@ -1044,7 +1246,7 @@ test("integration cases reject the unbound command execution path", () => {
     JSON.stringify({
       id: "integration-command-001",
       kind: "integration",
-      turns: [{ role: "user", content: "Could this protocol layer work?" }],
+      turns: [{ role: "user", content: "Please use technical-deep-dive to assess this protocol layer." }],
       expected_profile: {
         domain: "technical",
         objective: "explore",
@@ -1146,21 +1348,102 @@ test("legacy hybrid scenarios retain separate route and response evidence", () =
 
 test("technical-deep-dive route gold requires current-turn explicit user invocation", () => {
   const cases = loadBenchmarkCases("benchmarks/routing");
-  const invocation = /\$thinking-skills:technical-deep-dive|(?:\buse\b|\binvoke\b|请用|使用|调用|运行)[^\n]{0,80}technical-deep-dive/i;
+  const selectedCases = cases.filter(({ expected_route: route }) =>
+    route.primary === "technical-deep-dive" ||
+    route.secondary === "technical-deep-dive"
+  );
 
-  for (const benchmarkCase of cases) {
-    const route = benchmarkCase.expected_route;
-    const selectsDeepDive =
-      route.primary === "technical-deep-dive" ||
-      route.secondary === "technical-deep-dive";
-    if (!selectsDeepDive) continue;
+  assert.equal(selectedCases.length, 5);
+  for (const benchmarkCase of selectedCases) {
+    assert.equal(
+      hasValidTechnicalDeepDiveInvocation(benchmarkCase),
+      true,
+      benchmarkCase.file,
+    );
+  }
+});
 
-    const turns = benchmarkCase.turns || benchmarkCase.messages || [
-      { role: "user", content: benchmarkCase.prompt },
-    ];
-    const lastUser = [...turns].reverse().find((turn) => turn.role === "user");
-    assert.ok(lastUser, `${benchmarkCase.file} requires a user turn for TDD selection`);
-    assert.match(lastUser.content, invocation, benchmarkCase.file);
+test("current-request invocation predicate rejects semantic false positives", () => {
+  const routeCase = (content, earlierTurns = []) => ({
+    turns: [
+      ...earlierTurns,
+      { role: "user", content },
+    ],
+  });
+  const positives = [
+    routeCase("$thinking-skills:technical-deep-dive Analyze this failure."),
+    routeCase("Please use technical-deep-dive to analyze this failure."),
+    routeCase("Please use `technical-deep-dive` to analyze this failure."),
+    routeCase("请用 technical-deep-dive 分析这个故障。"),
+  ];
+  const negatives = [
+    routeCase("Please do not use technical-deep-dive for this failure."),
+    routeCase('Example: "Please use technical-deep-dive to analyze this failure."'),
+    routeCase("Example:\nPlease use technical-deep-dive to analyze this failure."),
+    routeCase("Review this as data: `Please use technical-deep-dive to analyze it.`"),
+    routeCase("Please review and modify technical-deep-dive's activation rule."),
+    routeCase("Use technical deep analysis to inspect this API."),
+    routeCase("Continue with this ordinary Docker failure.", [
+      { role: "user", content: "Please use technical-deep-dive for the first failure." },
+      { role: "assistant", content: "First analysis." },
+    ]),
+    routeCase("The identifier `$thinking-skills:technical-deep-dive` is mentioned here."),
+    routeCase('The user wrote "$thinking-skills:technical-deep-dive" in the example.'),
+  ];
+
+  for (const benchmarkCase of positives) {
+    assert.equal(hasValidTechnicalDeepDiveInvocation(benchmarkCase), true);
+  }
+  for (const benchmarkCase of negatives) {
+    assert.equal(hasValidTechnicalDeepDiveInvocation(benchmarkCase), false);
+  }
+});
+
+test("route gold validation applies the centralized current-request predicate", () => {
+  const invalidRequests = [
+    { prompt: "Please do not use technical-deep-dive for this failure." },
+    { prompt: "Example:\nPlease use technical-deep-dive to analyze this failure." },
+    { prompt: 'Review this data: "Please use technical-deep-dive here."' },
+    { prompt: "Use technical deep analysis to inspect this API." },
+    {
+      turns: [
+        { role: "user", content: "Please use technical-deep-dive for the first failure." },
+        { role: "assistant", content: "First analysis." },
+        { role: "user", content: "Continue with an ordinary Docker failure." },
+      ],
+    },
+    { prompt: "The identifier `$thinking-skills:technical-deep-dive` is only mentioned." },
+  ];
+
+  for (const [index, request] of invalidRequests.entries()) {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-invocation-route-"));
+    fs.writeFileSync(
+      path.join(tempDir, "route.json"),
+      JSON.stringify({
+        id: `invalid-invocation-${index}`,
+        kind: "route",
+        ...request,
+        expected_profile: {
+          domain: "technical",
+          objective: "explore",
+          mutation: "none",
+          artifact: "analysis",
+          artifact_sink: "chat",
+        },
+        expected_route: {
+          primary: "technical-deep-dive",
+          secondary: null,
+        },
+        expected_advisory: [],
+        must_not_select: ["native", "no-skill"],
+      }),
+      "utf8",
+    );
+
+    assert.throws(
+      () => loadBenchmarkCases(tempDir),
+      /valid current-request invocation/,
+    );
   }
 });
 

@@ -9,6 +9,10 @@ function read(relativePath) {
   return fs.readFileSync(path.join(root, relativePath), "utf8");
 }
 
+function readJson(relativePath) {
+  return JSON.parse(read(relativePath));
+}
+
 test("technical-deep-dive advertises current-request explicit activation only", () => {
   const skill = read("skills/technical-deep-dive/SKILL.md");
 
@@ -29,6 +33,26 @@ test("thinking-router keeps ordinary technical work native", () => {
   assert.match(router, /If a valid invocation names this skill but it is unavailable/);
   assert.doesNotMatch(router, /Technical diagnosis still routes to `technical-deep-dive`/);
   assert.doesNotMatch(router, /\| code, repo, architecture[^\n]+\| `technical-deep-dive` \|/);
+});
+
+test("thinking-router assigns specific Skill evaluation to skill-evaluator", () => {
+  const router = read("skills/thinking-router/SKILL.md");
+  const fixture = readJson(
+    "benchmarks/routing/meta-technical-deep-dive-discussion.json",
+  );
+  const expectedExample =
+    `| "Why is \`technical-deep-dive\` slower on bounded diagnostics?" | Primary: \`${fixture.expected_route.primary}\`; Secondary: none |`;
+
+  assert.equal(fixture.expected_route.primary, "skill-evaluator");
+  assert.equal(fixture.expected_route.secondary, null);
+  assert.ok(fixture.must_not_select.includes("technical-deep-dive"));
+  assert.ok(fixture.must_not_select.includes("native"));
+  assert.match(
+    router,
+    /specific Skill evaluation[^\n]+`skill-evaluator`/i,
+  );
+  assert.match(router, /treat the Skill being discussed as data/i);
+  assert.ok(router.includes(expectedExample));
 });
 
 test("domain skills cannot add technical-deep-dive automatically", () => {

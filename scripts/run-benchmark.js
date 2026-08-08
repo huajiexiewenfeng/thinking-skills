@@ -8,6 +8,8 @@ const { createHash } = require("node:crypto");
 
 const CASE_KINDS = new Set(["route", "response", "integration"]);
 const BENCHMARK_CONTRACT_VERSION = "3.0.0";
+const ROUTE_SENTINELS = new Set(["native", "no-skill"]);
+const TECHNICAL_DEEP_DIVE = "technical-deep-dive";
 const ROUTE_ONLY_FIELDS = [
   "expected_profile",
   "expected_route",
@@ -85,6 +87,57 @@ function validateTurns(item, filePath) {
   }
 }
 
+function routeCombinationFailure(route, label) {
+  if (ROUTE_SENTINELS.has(route.primary) && route.secondary !== null) {
+    return `${label} primary ${route.primary} requires secondary null`;
+  }
+  if (ROUTE_SENTINELS.has(route.secondary)) {
+    return `${label} secondary must not be sentinel route: ${route.secondary}`;
+  }
+  return null;
+}
+
+function invocationSearchText(text) {
+  return text
+    .replace(/\r\n?/g, "\n")
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/^\s*>.*$/gm, " ")
+    .replace(/`([^`\n]+)`/g, (_match, inner) =>
+      inner.trim().toLowerCase() === TECHNICAL_DEEP_DIVE
+        ? TECHNICAL_DEEP_DIVE
+        : " "
+    )
+    .replace(/"[^"\n]*"|'[^'\n]*'|“[^”\n]*”|‘[^’\n]*’/g, " ");
+}
+
+function hasValidTechnicalDeepDiveInvocation(item) {
+  const turns = typeof item === "string"
+    ? [{ role: "user", content: item }]
+    : getCaseTurns(item);
+  const lastUser = [...turns].reverse().find((turn) => turn.role === "user");
+  if (!lastUser) return false;
+
+  const text = invocationSearchText(lastUser.content);
+  if (
+    /^\s*\$thinking-skills:technical-deep-dive(?=$|[\s,.;:!?，。；：！？])/i
+      .test(text)
+  ) {
+    return true;
+  }
+
+  const invocation = /(?:\b(?:use|invoke|run|load|apply)\b|(?:请用|使用|调用|运行|加载|应用|用))([^\r\n]{0,80}?)technical-deep-dive\b/gi;
+  for (const match of text.matchAll(invocation)) {
+    const prefix = text.slice(Math.max(0, match.index - 160), match.index);
+    const between = match[1] || "";
+    const negated = /(?:\b(?:do\s+not|don't|dont|never|avoid|without|not\s+to)\s+|(?:请勿|不要|别|不用|禁止|不)\s*)$/i
+      .test(prefix) || /\b(?:not|no)\b|(?:不要|别|不)/i.test(between);
+    const dataContext = /(?:\b(?:example|for example|e\.g\.|such as|quoted?|quotation|sample|test data|as data|review (?:this )?(?:text|phrase|prompt|sentence)|modify (?:this )?(?:text|phrase|prompt|sentence)|the user (?:said|wrote)|the prompt (?:says|contains))\b|(?:例如|示例|比如|引用|原文|测试数据|作为数据|审查(?:这段)?(?:文本|提示词|句子)|修改(?:这段)?(?:文本|提示词|句子)))[^.!?。！？]{0,80}[:：]?\s*$/i
+      .test(prefix);
+    if (!negated && !dataContext) return true;
+  }
+  return false;
+}
+
 function validateRouteFields(item, filePath) {
   if (!item.expected_profile || typeof item.expected_profile !== "object") {
     throw new Error(`${filePath} is missing required field: expected_profile`);
@@ -130,6 +183,22 @@ function validateRouteFields(item, filePath) {
     )
   ) {
     throw new Error(`${filePath} expected_route secondary must be null or a non-empty string`);
+  }
+  const routeFailure = routeCombinationFailure(
+    item.expected_route,
+    "expected_route",
+  );
+  if (routeFailure) {
+    throw new Error(`${filePath} ${routeFailure}`);
+  }
+  if (
+    [item.expected_route.primary, item.expected_route.secondary]
+      .includes(TECHNICAL_DEEP_DIVE) &&
+    !hasValidTechnicalDeepDiveInvocation(item)
+  ) {
+    throw new Error(
+      `${filePath} expected_route selects technical-deep-dive without a valid current-request invocation`,
+    );
   }
   if (!Array.isArray(item.expected_advisory)) {
     throw new Error(`${filePath} expected_advisory must be an array`);
@@ -538,6 +607,8 @@ function validateActualRouteContract(parsed) {
     ) {
       failures.push("route secondary must be null or a non-empty string");
     }
+    const routeFailure = routeCombinationFailure(route, "route");
+    if (routeFailure) failures.push(routeFailure);
   }
 
   if (!Array.isArray(parsed.advisory_components)) {
@@ -672,6 +743,9 @@ function aggregateRouteSamples(benchmarkCase, samples) {
 }
 
 function expectedDomainSkills(benchmarkCase) {
+  if (ROUTE_SENTINELS.has(benchmarkCase.expected_route?.primary)) {
+    return [];
+  }
   return [
     benchmarkCase.expected_route?.primary,
     benchmarkCase.expected_route?.secondary,
@@ -1603,6 +1677,7 @@ module.exports = {
   loadBenchmarkCases,
   loadResponses,
   loadTraces,
+  hasValidTechnicalDeepDiveInvocation,
   normalizeRouteSample,
   parseArgs,
   runBenchmark,

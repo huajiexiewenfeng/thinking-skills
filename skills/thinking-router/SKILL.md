@@ -60,6 +60,8 @@ It is validly invoked only when the current user request does one of the followi
 
 Technical subject matter, requests for deep or systematic analysis, mere mention or meta discussion, evaluation or modification, fuzzy aliases, another component's handoff, and prior-request invocation do not qualify.
 
+Specific Skill evaluation is a meta deliverable: route it to `skill-evaluator` and treat the Skill being discussed as data. Do not activate that Skill unless the same current request also validly invokes it.
+
 A valid invocation applies only to the current request and overrides topic classification, including in meta discussion. Without it, do not select, announce, load, follow, or claim to have run this skill.
 
 If a valid invocation names this skill but it is unavailable or disabled, say that it cannot be loaded. Do not bypass the host by reading a known file path, and do not silently present a native response as if this skill ran.
@@ -143,6 +145,7 @@ For a session-level off-ramp, such as "this whole session without skill" or "整
 | User Signals | Primary Route |
 |---|---|
 | benchmark, eval, regression test, score, dashboard, test a skill, run benchmark, compare benchmark runs, 跑 benchmark, 做评测, 回归测试, 看分数, 更新 dashboard | `benchmark-assistant` |
+| specific Skill evaluation, Skill performance review, activation-contract review, evaluate a named Skill, 具体 Skill 评测, Skill 性能复盘, 激活契约复盘 | `skill-evaluator` |
 | existing or final Markdown article plus cover, illustration, concept image, process diagram, architecture diagram, image prompt, visual plan, generate images, insert images, illustrated copy, 已定稿文章配图, Markdown 插图, 公众号封面, CSDN 封面, 概念插画, 配图方案, 生成图片并回写 | `article-visual-director` |
 | article, essay, blog, newsletter, title, outline, audience, argument, draft, script, content plan, writing style | `content-creator` |
 | code, repo, architecture, bug, performance, API, tests, deployment, implementation, source code, framework, database, refactor | `native` |
@@ -179,7 +182,7 @@ Examples:
 | "I am anxious because my project architecture is a mess." | Primary: `emotional-support`; Secondary: none |
 | "Please use `technical-deep-dive` to analyze this production fault." | Primary: `technical-deep-dive`; Secondary: none |
 | "Use `content-creator` to write the article and `technical-deep-dive` to verify its technical semantics." | Primary: `content-creator`; Secondary: `technical-deep-dive` |
-| "Why is `technical-deep-dive` slower on bounded diagnostics?" | Primary: `native`; Secondary: none |
+| "Why is `technical-deep-dive` slower on bounded diagnostics?" | Primary: `skill-evaluator`; Secondary: none |
 
 ## Safety Override
 
