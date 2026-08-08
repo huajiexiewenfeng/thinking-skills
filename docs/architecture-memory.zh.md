@@ -14,7 +14,7 @@ Thinking Skills 是一个独立的、领域中立的思考技能框架。
 
 ```text
 把用户请求路由到合适的思考模式，
-再由 domain skill 使用自己的世界观、方法底座、输出形态和安全边界来协作。
+再根据请求使用 Domain Skill、native 或 no-skill。
 ```
 
 ## 核心架构
@@ -23,8 +23,8 @@ Thinking Skills 是一个独立的、领域中立的思考技能框架。
 Runtime plane:
   用户请求
     -> thinking-router
-    -> domain skill
-    -> method bases
+    -> Domain Skill | native | no-skill
+    -> 可选 method bases
     -> response
 
 Reflection plane:
@@ -49,7 +49,7 @@ Content plane:
 
 | Plane | 目的 |
 |---|---|
-| Runtime | 通过路由、领域 skill 和 method bases 生成当前回答 |
+| Runtime | 通过 Domain Skill、`native` 或 `no-skill` 生成当前回答 |
 | Reflection | 复盘对话，把可复用失败转成 eval 和 patch |
 | Content | 存放 canonical skills、docs、evals、cases 和 feedback |
 
@@ -126,8 +126,8 @@ cases/
 它应该：
 
 - 判断用户请求。
-- 选择一个 primary skill。
-- 最多添加一个 secondary skill。
+- 选择一个 primary route：Domain Skill、`native` 或 `no-skill`。
+- 仅在明确合理时最多添加一个 secondary Domain Skill。
 - 低置信度时只问一个短的路由问题。
 - 不默认假设这是软件开发问题。
 
@@ -139,11 +139,17 @@ cases/
 
 重要路由区别：
 
-- 写技术主题的文章，通常 primary 是 `content-creator`，secondary 是 `technical-deep-dive`。
-- 因技术问题表达痛苦，通常 primary 是 `emotional-support`，secondary 是 `technical-deep-dive`。
-- 真正的技术诊断，路由到 `technical-deep-dive`。
+- 写技术主题的文章，通常 primary 是 `content-creator`，不会自动添加技术 secondary。
+- 因技术问题表达痛苦，通常 primary 是 `emotional-support`，不会自动添加技术 secondary。
+- 普通、任务型的技术诊断、架构、实现、debugging、性能或验证请求路由到 `native`。
+- 直接调用 `$thinking-skills:technical-deep-dive` 的请求路由到 `technical-deep-dive`。
+- 同时显式调用 `content-creator` 和 `technical-deep-dive` 的请求可以把后者作为 secondary。
 - 理解概念、建立直觉、发现知识盲区或练习回忆，路由到 `learning-coach`。
 - self-review、Dolores、对话复盘、skill 使用复盘、eval gap review 通常路由到 `conversation-review`；如果需要失败分类，`skill-evaluator` 可作为 secondary。
+
+普通、任务型技术请求使用宿主原生路径。只有当前用户请求直接调用 `$thinking-skills:technical-deep-dive`，或同时包含调用意图与规范名称 `technical-deep-dive` 时，才能激活该 Skill。技术主题、深入或系统分析的自然语言、仅提及、其他组件转交和上一请求的调用都不构成激活。
+
+`native` 是由宿主模型、system/developer rules、工具和 harness 负责的任务型技术工作，不加载 Thinking Skills Domain Skill。`no-skill` 用于普通对话或显式 off-ramp，不应用领域方法底座。
 
 ## Domain Skills
 
@@ -185,7 +191,7 @@ cases/
 
 ### `technical-deep-dive`
 
-适用于：
+仅在当前请求有效显式激活后适用于：
 
 - 代码
 - 仓库

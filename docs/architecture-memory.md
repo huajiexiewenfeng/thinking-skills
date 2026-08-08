@@ -16,8 +16,7 @@ The core goal is:
 
 ```text
 Route a user request into the right mode of thinking,
-then let a domain skill collaborate using its own worldview,
-method bases, output shape, and safety boundaries.
+then use a Domain Skill, native, or no-skill according to the request.
 ```
 
 ## Core Architecture
@@ -26,8 +25,8 @@ method bases, output shape, and safety boundaries.
 Runtime plane:
   user request
     -> thinking-router
-    -> domain skill
-    -> method bases
+    -> Domain Skill | native | no-skill
+    -> optional method bases
     -> response
 
 Reflection plane:
@@ -52,7 +51,7 @@ The framework is described as three planes, not a strict runtime stack:
 
 | Plane | Purpose |
 |---|---|
-| Runtime | Generate the current answer with routing, domain skills, and method bases |
+| Runtime | Generate the current answer through a Domain Skill, `native`, or `no-skill` |
 | Reflection | Review conversations and turn reusable failures into evals and patches |
 | Content | Store the canonical skills, docs, evals, cases, benchmark runs, and feedback |
 
@@ -127,8 +126,8 @@ cases/
 It should:
 
 - Classify the user's request.
-- Choose exactly one primary skill.
-- Add at most one secondary skill.
+- Choose exactly one primary route: a Domain Skill, `native`, or `no-skill`.
+- Add at most one secondary Domain Skill when explicitly justified.
 - Ask one short routing question if confidence is low.
 - Avoid assuming software development.
 
@@ -140,11 +139,17 @@ It should not:
 
 Important routing distinction:
 
-- A request to write about technology usually routes to `content-creator`, with `technical-deep-dive` as secondary.
-- A request expressing distress about technology usually routes to `emotional-support`, with `technical-deep-dive` as secondary.
-- A request for actual technical diagnosis routes to `technical-deep-dive`.
+- A request to write about technology usually routes to `content-creator` with no automatic technical secondary.
+- A request expressing distress about technology usually routes to `emotional-support` with no automatic technical secondary.
+- An ordinary task-shaped request for technical diagnosis, architecture, implementation, debugging, performance, or verification routes to `native`.
+- A request that directly invokes `$thinking-skills:technical-deep-dive` routes to `technical-deep-dive`.
+- A request that explicitly invokes both `content-creator` and `technical-deep-dive` may use the latter as secondary.
 - A request to understand a concept, build intuition, find knowledge gaps, or practice recall routes to `learning-coach`.
 - A request for self-review, Dolores mode, conversation review, skill trace audit, or eval gap review routes to `conversation-review`, with `skill-evaluator` as secondary when failure classification is requested.
+
+Ordinary task-shaped technical requests use the host-native route. `technical-deep-dive` is available only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines an invocation command with the canonical name `technical-deep-dive`. Technical subject matter, requests for deep or systematic analysis, mere mention, another component's handoff, and prior-request invocation do not activate it.
+
+`native` is task-shaped technical work owned by the host model, system and developer rules, tools, and harness; it does not load a Thinking Skills Domain Skill. `no-skill` is ordinary conversation or an explicit off-ramp and applies no domain method base.
 
 ## Domain Skills
 
@@ -186,7 +191,7 @@ Do not invent facts, citations, statistics, or personal experience.
 
 ### `technical-deep-dive`
 
-Use for:
+Available after valid current-request explicit activation for:
 
 - Code
 - Repositories

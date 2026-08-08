@@ -58,7 +58,9 @@ Thinking Skills 目前处于 Alpha 阶段。
 
 如果 AI 默认进入 coding workflow，后面的回答就很容易变成 implementation plan、task breakdown、tests、commit 这一类结构。
 
-Thinking Skills 会先用 router 判断意图，再把请求交给拥有合适世界观、方法底座、输出形态和安全边界的 skill。
+Thinking Skills 会先用 router 判断意图，再根据请求选择 Domain Skill、`native` 或 `no-skill`。
+
+普通、任务型技术请求使用宿主原生路径。只有当前用户请求直接调用 `$thinking-skills:technical-deep-dive`，或同时包含调用意图与规范名称 `technical-deep-dive` 时，才能激活该 Skill。技术主题、深入或系统分析的自然语言、仅提及、其他组件转交和上一请求的调用都不构成激活。
 
 ## 核心架构
 
@@ -66,7 +68,7 @@ Thinking Skills 更适合理解为三个 plane，而不是一套很重的治理�
 
 ```text
 Runtime plane:
-  用户请求 -> thinking-router -> domain skill -> response
+  用户请求 -> thinking-router -> Domain Skill | native | no-skill -> response
 
 Reflection plane:
   conversation trace -> Dolores -> failure case / eval -> small patch
@@ -77,7 +79,7 @@ Content plane:
 
 | Plane | 责任 |
 |---|---|
-| Runtime | 通过路由和领域技能生成当前回答 |
+| Runtime | 通过 Domain Skill、`native` 或 `no-skill` 生成当前回答 |
 | Reflection | 复盘对话，把可复用失败转成 eval 和小补丁 |
 | Content | 存放 canonical skills、docs、evals 和抽象 cases |
 
@@ -92,7 +94,7 @@ Dolores 属于 Reflection plane，不需要每次回答后都运行。
 | `thinking-router` | 用户请求需要先判断应该进入哪种思考模式 |
 | `content-creator` | 文章、随笔、脚本、标题、大纲、论点、受众定位和内容结构 |
 | `article-visual-director` | 已基本定稿的 Markdown 文章需要封面、概念插画、精确技术图、审批后生成，并非破坏性地插回文章副本 |
-| `technical-deep-dive` | 代码、架构、debug、性能、API、系统、技术权衡和验证路径 |
+| `technical-deep-dive` | 仅在显式调用后用于代码、架构、debug、性能、API、系统、技术权衡和验证路径 |
 | `learning-coach` | 概念理解、心智模型、知识盲区、学习路径、练习和解释校准 |
 | `emotional-support` | 焦虑、压力、自责、关系痛苦、情绪困惑、危机信号和温和的下一步 |
 

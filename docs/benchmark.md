@@ -62,6 +62,8 @@ Commands launched with `--command` run from a new temporary working directory fo
 
 ## Case Formats
 
+`expected_route.primary` may name a Domain Skill, `native`, or `no-skill`. Use `native` for ordinary task-shaped technical work without a valid current-request invocation of `technical-deep-dive`.
+
 ### Route
 
 ```json
@@ -82,11 +84,12 @@ Commands launched with `--command` run from a new temporary working directory fo
     "artifact_sink": "chat"
   },
   "expected_route": {
-    "primary": "technical-deep-dive",
+    "primary": "native",
     "secondary": null
   },
   "expected_advisory": [],
   "must_not_select": [
+    "technical-deep-dive",
     "no-skill"
   ]
 }
@@ -105,7 +108,7 @@ The candidate returns only:
     "confidence": 0.9
   },
   "route": {
-    "primary": "technical-deep-dive",
+    "primary": "native",
     "secondary": null
   },
   "advisory_components": []
@@ -134,7 +137,7 @@ Objective boundaries:
 
 `mutation` and `artifact_sink` are related but not interchangeable. A repository specification can be `objective=decide`, `mutation=requested`, `artifact=spec`, `artifact_sink=workspace`; read-only repository analysis can be `mutation=none` and return to `chat`. This is why the formal-spec case is not forced into `deliver` merely because it creates a file.
 
-Secondary routes require an explicit second-domain need, not a technical noun by itself. A basic request to understand transformer attention remains `learning-coach` only. The Kafka pair requests conceptual system architecture across partitions, replication, and consumer groups, which makes `technical-deep-dive` a reproducible secondary route.
+Secondary routes require an explicit second-domain need, not a technical noun by itself. A basic request to understand transformer attention remains `learning-coach` only. A Kafka learning request also remains `learning-coach` only unless the current user request explicitly invokes `technical-deep-dive`; topic complexity and depth wording do not create a TDD secondary.
 
 `advisory_components` is exhaustive for the candidate's declared route. Omitting it is a failure; absence of a name from an unreported list is never scored as proof that the Skill was not selected. This field remains self-report and cannot replace integration evidence.
 
@@ -145,7 +148,7 @@ Secondary routes require an explicit second-domain need, not a technical noun by
   "id": "technical-exploration-response-001",
   "kind": "response",
   "skill": "technical-deep-dive",
-  "prompt": "Could this protocol layer work?",
+  "prompt": "Use technical-deep-dive to assess whether this protocol layer could work.",
   "expected": [],
   "must_not": [
     "I need you to approve the design first"
@@ -193,31 +196,18 @@ The evaluator-owned trace file supplied with `--traces` uses this shape:
     "trace": {
       "complete": true,
       "task_profile": {},
-      "route": {},
+      "route": {
+        "primary": "native",
+        "secondary": null
+      },
       "advisory_components": [],
-      "events": [
-        {
-          "event": "discovered",
-          "skill": "technical-deep-dive",
-          "role": "domain"
-        },
-        {
-          "event": "selected",
-          "skill": "technical-deep-dive",
-          "role": "domain"
-        },
-        {
-          "event": "loaded",
-          "skill": "technical-deep-dive",
-          "role": "domain"
-        }
-      ]
+      "events": []
     }
   }
 ]
 ```
 
-Missing, embedded, incomplete, or untrusted-channel trace is a failure, not a response-only pass. Each Skill lifecycle must follow `discovered → selected → loaded`; the selected/loaded domain set must exactly match `route.primary/secondary`, expected advisory Skills must be selected and loaded, and a forbidden Skill fails on either selection or loading regardless of role. `advisory_components` must match advisory `loaded` events. Case id, run nonce, candidate-Prompt hash, response hash, adapter id/version, and event hash bind the trace to one capture.
+Missing, embedded, incomplete, or untrusted-channel trace is a failure, not a response-only pass. Each selected Domain Skill lifecycle must follow `discovered → selected → loaded`; the selected/loaded domain set must exactly match Domain Skills named by `route.primary/secondary`, expected advisory Skills must be selected and loaded, and a forbidden Skill fails on either selection or loading regardless of role. For `native`, trusted integration scoring expects zero selected and zero loaded Domain Skills; discovery metadata may exist, but selection or loading of a Domain Skill fails the case. `advisory_components` must match advisory `loaded` events. Case id, run nonce, candidate-Prompt hash, response hash, adapter id/version, and event hash bind the trace to one capture.
 
 `--traces` is an evaluator trust boundary, not cryptographic attestation: the run manifest must still bind the adapter and preserve its raw events. Integration cases cannot use `--command`, because a separately launched process cannot be safely paired with a pre-existing trace; one adapter capture must produce the saved response and trace pair.
 

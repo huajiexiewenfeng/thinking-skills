@@ -150,11 +150,12 @@ For now, use this document to guide Dolores reviews and evaluator recommendation
 
 ## Why This Is Golden
 
-This case preserves a reusable collaboration pattern where one complex user goal required multiple domain skills to work on the same artifact, not produce separate answers. Technical analysis grounded the facts, content creation shaped the public article format, conversation review identified a reusable failure signal, and the improvement was written back into the relevant skill rule and pushed to version control.
+This case preserves a reusable collaboration pattern where one complex user goal explicitly invoked multiple domain skills to work on the same artifact, not produce separate answers. The current request invoked `technical-deep-dive` to ground the facts, content creation shaped the public article format, conversation review identified a reusable failure signal, and the improvement was written back into the relevant skill rule and pushed to version control.
 
 ## Applies When
 
 - The user is working on a real artifact that crosses technical analysis, writing, platform fit, and workflow improvement.
+- The current user request explicitly invokes `technical-deep-dive`; technical subject matter or a prior-request invocation alone does not preserve this TDD behavior.
 - The task involves private or sensitive implementation context that must be abstracted before publication.
 - The user asks for self-review, preservation, or rule updates after a successful collaboration pattern appears.
 - A small observed failure can be converted into a durable skill rule without overfitting.
@@ -168,7 +169,7 @@ This case preserves a reusable collaboration pattern where one complex user goal
 
 ## Reusable Pattern
 
-- Choose one primary skill based on the highest-risk dimension, then add secondary skills only for distinct constraints.
+- Choose one primary route based on the highest-risk dimension, then add secondary skills only when the current request explicitly invokes them for distinct constraints.
 - Keep skills coordinated around one shared artifact rather than letting each skill produce an independent response.
 - Separate facts, inferences, publication-safe abstractions, and user-provided sensitive details.
 - Use self-review to identify a reusable success or failure signal after the work proves useful.
@@ -196,10 +197,10 @@ Future routing changes could make the assistant choose only one skill for cross-
 ## Eval Form
 
 Input:
-A user asks for help improving a technical article series using real project context, then notices a reusable platform-formatting issue and asks whether the behavior should be preserved.
+A user asks: "Use `$thinking-skills:technical-deep-dive` to verify the real project context, use `content-creator` to improve this technical article series, then review whether the reusable platform-formatting behavior should be preserved."
 
 Expected:
-Route through technical analysis for correctness, content creation for platform shape, and conversation review for reusable behavior. Abstract private implementation details, patch the smallest relevant skill rule when asked, verify the diff, and keep unrelated worktree changes untouched.
+Honor the current-request `technical-deep-dive` invocation for correctness, use content creation for platform shape, and use conversation review for reusable behavior. Abstract private implementation details, patch the smallest relevant skill rule when asked, verify the diff, and keep unrelated worktree changes untouched.
 
 Must not:
 Treat the task as ordinary article polishing, expose raw project-specific details in public-facing prose, invoke skills as disconnected answer blocks, or record praise instead of reusable behavior.

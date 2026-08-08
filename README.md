@@ -58,7 +58,9 @@ That could mean:
 
 If the assistant defaults to coding, the conversation is already off course.
 
-Thinking Skills starts with a router, then hands the request to the skill whose worldview, method base, output shape, and safety boundary fit the situation.
+Thinking Skills starts with a router, then chooses a Domain Skill, `native`, or `no-skill` according to the request.
+
+Ordinary task-shaped technical requests use the host-native route. `technical-deep-dive` is available only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines an invocation command with the canonical name `technical-deep-dive`. Technical subject matter, requests for deep or systematic analysis, mere mention, another component's handoff, and prior-request invocation do not activate it.
 
 ## Core Architecture
 
@@ -66,7 +68,7 @@ Thinking Skills is easier to understand as three planes, not as a heavy governan
 
 ```text
 Runtime plane:
-  user request -> thinking-router -> domain skill -> response
+  user request -> thinking-router -> Domain Skill | native | no-skill -> response
 
 Reflection plane:
   conversation trace -> Dolores -> failure case / eval -> small patch
@@ -77,7 +79,7 @@ Content plane:
 
 | Plane | Responsibility |
 |---|---|
-| Runtime | Generate the current answer with routing and domain skills |
+| Runtime | Generate the current answer through a Domain Skill, `native`, or `no-skill` |
 | Reflection | Review conversations and turn reusable failures into evals and patches |
 | Content | Store the canonical skills, docs, evals, and abstract cases |
 
@@ -92,7 +94,7 @@ Dolores belongs to the Reflection plane. It is not required to run after every a
 | `thinking-router` | A request needs to be routed to the right thinking mode |
 | `content-creator` | Articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure |
 | `article-visual-director` | A substantially complete Markdown article needs a cover, concept illustrations, exact technical diagrams, approval-gated generation, and non-destructive image insertion |
-| `technical-deep-dive` | Code, architecture, debugging, performance, APIs, systems, technical trade-offs, and verification paths |
+| `technical-deep-dive` | Explicitly invoked technical reasoning for code, architecture, debugging, performance, APIs, systems, trade-offs, and verification paths |
 | `learning-coach` | Concept understanding, mental models, knowledge gaps, study paths, practice, and explanation review |
 | `emotional-support` | Anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps |
 

@@ -1,6 +1,6 @@
 # Thinking Skills Activation Policy MVP Design
 
-**Status:** Draft for user review
+**Status:** Superseded by `docs/superpowers/specs/2026-08-08-technical-deep-dive-explicit-user-activation-design.md`
 **Date:** 2026-08-07
 **Primary target:** Private owner-preview build on Codex using GPT-5.6 Sol
 

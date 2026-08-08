@@ -4,7 +4,7 @@
 
 Do not assume the user is asking for software development help. Technical work is one possible domain, not the default domain.
 
-Route to technical thinking only when the user provides technical signals such as code, repository, architecture, bug, performance, API, tests, deployment, data model, or implementation details.
+Ordinary task-shaped technical requests use the host-native route. `technical-deep-dive` is available only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines an invocation command with the canonical name `technical-deep-dive`. Technical subject matter, requests for deep or systematic analysis, mere mention, another component's handoff, and prior-request invocation do not activate it.
 
 ## 2. Router Does Not Solve
 
