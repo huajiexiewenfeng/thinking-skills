@@ -15,12 +15,15 @@ It classifies the user's request and routes it to the best domain-specific think
 
 1. Do not solve the user's substantive problem inside this skill.
 2. Do not assume the request is about software development.
-3. Check whether the best route is `no-skill` before selecting a domain skill.
-4. Choose exactly one primary route: a domain skill or `no-skill`.
-5. Add at most one secondary skill when mixed intent is important.
-6. If routing confidence is low, ask one short routing question.
-7. After routing to a domain skill, follow that skill's method bases and process.
-8. After routing to `no-skill`, do not load a domain skill or apply a domain method base.
+3. Run the `no-skill` gate before choosing a task-shaped route.
+4. Treat `native` as a first-class route for ordinary task-shaped technical requests that do not validly invoke `technical-deep-dive`.
+5. Choose exactly one primary route: a domain skill, `native`, or `no-skill`.
+6. Add at most one secondary skill when mixed intent is important.
+7. Never select `technical-deep-dive` as primary or secondary unless the current user request validly invokes it under the explicit-activation rule below.
+8. If routing confidence is low, ask one short routing question.
+9. After routing to a domain skill, follow that skill's method bases and process.
+10. After routing to `native`, do not load a Thinking Skills domain skill merely to supply technical reasoning; use the host model, system and developer rules, tools, and harness.
+11. After routing to `no-skill`, do not load a domain skill or apply a domain method base.
 
 ## Method Bases
 
@@ -45,6 +48,29 @@ Domain skills own their own method bases. For example, `emotional-support` may u
 6. Optionally select one secondary skill.
 7. If confidence is low, ask one short routing question.
 8. Announce the selected route briefly only when it helps the user, then proceed.
+
+## Explicit `technical-deep-dive` Activation
+
+`technical-deep-dive` is never an automatic route or secondary skill.
+
+It is validly invoked only when the current user request does one of the following:
+
+- directly invokes `$thinking-skills:technical-deep-dive`; or
+- combines an invocation command with the canonical name `technical-deep-dive`, for example, "use `technical-deep-dive` to analyze this fault."
+
+Technical subject matter, requests for deep or systematic analysis, mere mention or meta discussion, evaluation or modification, fuzzy aliases, another component's handoff, and prior-request invocation do not qualify.
+
+A valid invocation applies only to the current request and overrides topic classification, including in meta discussion. Without it, do not select, announce, load, follow, or claim to have run this skill.
+
+If a valid invocation names this skill but it is unavailable or disabled, say that it cannot be loaded. Do not bypass the host by reading a known file path, and do not silently present a native response as if this skill ran.
+
+## Native Route
+
+`native` is a first-class route for task-shaped technical work. It is not `no-skill`, a fallback, or a routing error.
+
+Use `native` for diagnosis, architecture, implementation, source-level reasoning, debugging, performance analysis, and verification when valid explicit activation is absent. Let the host model, system and developer rules, tools, and harness own the work.
+
+Writing, learning, emotional-support, review, and evaluation requests retain their existing domain routes when those intents own the deliverable. Use `no-skill` for ordinary conversation or an explicit off-ramp; use `native` for ordinary task-shaped technical work.
 
 ## No-Skill Gate
 
@@ -73,7 +99,7 @@ Do not overuse `no-skill`:
 
 - Writing requests still route to `content-creator`, even if casual.
 - Learning requests still route to `learning-coach`, even if conversational.
-- Technical diagnosis still routes to `technical-deep-dive`, even if informal.
+- Technical diagnosis routes to `native` unless the current request validly invokes `technical-deep-dive`.
 - Emotional support requests still route to `emotional-support` when there is clear distress, reflection, or help-seeking.
 - Self-review, trace, eval, and improvement-loop requests still route to the relevant meta skill.
 
@@ -101,7 +127,7 @@ For a session-level off-ramp, such as "this whole session without skill" or "整
 
 | Confidence | Meaning | Action |
 |---|---|---|
-| High | One domain or `no-skill` clearly dominates | Route directly |
+| High | One domain, `native`, or `no-skill` clearly dominates | Route directly |
 | Medium | One domain is primary, but another matters | Route to the primary skill and carry the secondary context |
 | Low | The request is underspecified or several domains fit equally | Ask one short routing question |
 
@@ -114,12 +140,12 @@ For a session-level off-ramp, such as "this whole session without skill" or "整
 
 ## MVP Routing Table
 
-| User Signals | Primary Skill |
+| User Signals | Primary Route |
 |---|---|
 | benchmark, eval, regression test, score, dashboard, test a skill, run benchmark, compare benchmark runs, 跑 benchmark, 做评测, 回归测试, 看分数, 更新 dashboard | `benchmark-assistant` |
 | existing or final Markdown article plus cover, illustration, concept image, process diagram, architecture diagram, image prompt, visual plan, generate images, insert images, illustrated copy, 已定稿文章配图, Markdown 插图, 公众号封面, CSDN 封面, 概念插画, 配图方案, 生成图片并回写 | `article-visual-director` |
 | article, essay, blog, newsletter, title, outline, audience, argument, draft, script, content plan, writing style | `content-creator` |
-| code, repo, architecture, bug, performance, API, tests, deployment, implementation, source code, framework, database, refactor | `technical-deep-dive` |
+| code, repo, architecture, bug, performance, API, tests, deployment, implementation, source code, framework, database, refactor | `native` |
 | learn, study, understand, explain, concept, intuition, mental model, knowledge gap, course, practice, exam, review, what is, how does, I do not understand, 学习, 理解, 解释, 概念, 心智模型, 知识盲区, 看不懂, 学不会 | `learning-coach` |
 | anxious, overwhelmed, sad, self-blame, stress, burnout, relationship pain, emotional pain, confused feelings, shame, fear, why am I like this, why do I always, help me see the essence, find the main thread, do not just comfort me, stop only asking questions, 看本质, 抓主线, 不要只安慰, 别一直问, 你来判断, 为什么我总是这样, 为什么我反应这么大 | `emotional-support` |
 | self-review, Dolores, Dolores mode, 自我检查, 自我复盘, 对话复盘, skill 使用复盘, review this conversation, audit skill usage, failure case review, failure case status, failure case dashboard, quality dashboard, skill feedback statistics, eval gap review, improvement loop, patch strategy for this conversation, 失败 case 统计, 改进状态统计, skill 反馈统计 | `conversation-review` |
@@ -138,25 +164,22 @@ When a request contains multiple domains, choose the primary skill based on the 
 
 Learning intent has priority over technical nouns when the user asks to understand, learn, explain, build intuition, or fix a knowledge gap. Technical nouns alone do not make the request a `technical-deep-dive`.
 
-Use `technical-deep-dive` instead when the user needs diagnosis, architecture choice, implementation guidance, source-level reasoning, adoption decisions, debugging, performance analysis, or verification.
+Use `native` when the user needs diagnosis, architecture choice, implementation guidance, source-level reasoning, adoption decisions, debugging, performance analysis, or verification without valid explicit activation. Use `technical-deep-dive` only when the current request validly invokes it.
 
-Use `article-visual-director` when the article already exists or is substantially complete and the immediate deliverable is a visual plan, generated article assets, or an illustrated Markdown copy. Keep `content-creator` primary while the angle, audience, thesis, structure, or prose is still being developed. Technical nouns inside an article do not make `technical-deep-dive` primary when the requested artifact is the article's visual system.
+Use `article-visual-director` when the article already exists or is substantially complete and the immediate deliverable is a visual plan, generated article assets, or an illustrated Markdown copy. Keep `content-creator` primary while the angle, audience, thesis, structure, or prose is still being developed. Technical nouns inside an article never add `technical-deep-dive` automatically.
 
 Examples:
 
 | Request | Route |
 |---|---|
-| "I want to write an article about why this API design is confusing." | Primary: `content-creator`; Secondary: `technical-deep-dive` |
-| "This Markdown article is final. Plan its CSDN cover and three concept illustrations, then generate and insert them after approval." | Primary: `article-visual-director`; Secondary: none |
-| "Add a precise approval flow and policy-boundary diagram to this final technical article." | Primary: `article-visual-director`; Secondary: `technical-deep-dive` only if the article does not contain enough verified semantics |
-| "I only have an article idea; help me choose an angle and outline before we think about images." | Primary: `content-creator`; Secondary: none |
-| "Explain Kafka like I am new to distributed systems." | Primary: `learning-coach`; Secondary: `technical-deep-dive` |
-| "Can you help me understand this API design before we decide whether to adopt it?" | Primary: `technical-deep-dive`; Secondary: `learning-coach` |
-| "I am anxious because my project architecture is a mess." | Primary: `emotional-support`; Secondary: `technical-deep-dive` |
-| "Help me decide whether to quit my job and build a startup." | Primary: `life-decision`; Secondary: `business-strategy` |
-| "Help me turn my burnout story into a blog post." | Primary: `content-creator`; Secondary: `emotional-support` |
-| "Do not just comfort me. Tell me what pattern you see in why I keep reacting this way." | Primary: `emotional-support`; Secondary: none |
-| "Do a self-review of this conversation and tell me whether there is an eval gap." | Primary: `conversation-review`; Secondary: `skill-evaluator` |
+| "I want to write an article about why this API design is confusing." | Primary: `content-creator`; Secondary: none |
+| "Add a precise approval flow and policy-boundary diagram to this final technical article." | Primary: `article-visual-director`; Secondary: none |
+| "Explain Kafka like I am new to distributed systems." | Primary: `learning-coach`; Secondary: none |
+| "Can you help me understand this API design before we decide whether to adopt it?" | Primary: `learning-coach`; Secondary: none |
+| "I am anxious because my project architecture is a mess." | Primary: `emotional-support`; Secondary: none |
+| "Please use `technical-deep-dive` to analyze this production fault." | Primary: `technical-deep-dive`; Secondary: none |
+| "Use `content-creator` to write the article and `technical-deep-dive` to verify its technical semantics." | Primary: `content-creator`; Secondary: `technical-deep-dive` |
+| "Why is `technical-deep-dive` slower on bounded diagnostics?" | Primary: `native`; Secondary: none |
 
 ## Safety Override
 
@@ -182,6 +205,8 @@ When routing is clear and a visible announcement helps, keep it short.
 
 Do not announce routing for ordinary `no-skill` casual chat. Let the answer feel natural.
 
+For `native`, do not announce a Skill.
+
 ```text
 I will use `content-creator` to help shape the audience, angle, and structure.
 ```
@@ -189,6 +214,8 @@ I will use `content-creator` to help shape the audience, angle, and structure.
 ```text
 I will use `article-visual-director` to plan the article's visual system, wait for approval, and integrate validated assets into a new Markdown copy.
 ```
+
+Only after valid current-request explicit activation:
 
 ```text
 I will use `technical-deep-dive` to analyze the system, constraints, trade-offs, and verification path.
@@ -238,6 +265,16 @@ Confidence: high
 Secondary: none
 Reason: User is casual chatting / explicitly opted out.
 Next: Answer directly without loading domain skills.
+```
+
+For `native`:
+
+```text
+Route: native
+Confidence: high
+Secondary: none
+Reason: User asks for ordinary task-shaped technical work without valid explicit activation.
+Next: Use the host model, system and developer rules, tools, and harness.
 ```
 
 Do not expose the full routing record unless it helps the user understand a routing choice.

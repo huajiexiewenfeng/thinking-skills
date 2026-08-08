@@ -24,7 +24,7 @@ Use this skill when the user asks for help with:
 
 ## When Not to Use
 
-- Use `technical-deep-dive` when the main need is technical correctness, architecture, debugging, or system analysis.
+- When the main need is technical correctness, architecture, debugging, or system analysis, leave the task to the host-native technical path. Technical subject matter does not add `technical-deep-dive` as secondary; use it only after valid explicit invocation in the current request.
 - Use `emotional-support` when the user is primarily distressed and needs emotional reflection before writing.
 - Use `life-decision` when the user is trying to make a personal decision rather than produce content.
 

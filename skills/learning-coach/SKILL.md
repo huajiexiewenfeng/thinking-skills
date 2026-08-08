@@ -26,7 +26,7 @@ Use this skill when the user asks for help with:
 ## When Not to Use
 
 - Use `content-creator` when the main goal is to write for an audience.
-- Use `technical-deep-dive` when the main goal is technical diagnosis, architecture, implementation, debugging, or source-level reasoning.
+- When the main goal is technical diagnosis, architecture, implementation, debugging, or source-level reasoning, use the host-native technical path. Use `technical-deep-dive` only after valid explicit invocation in the current request.
 - Use `emotional-support` when shame, anxiety, overwhelm, or self-blame is the immediate need before learning can continue.
 - Use `conversation-review` when the user asks to review the conversation, skill trace, eval gap, or improvement loop.
 

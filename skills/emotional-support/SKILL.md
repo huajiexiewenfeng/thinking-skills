@@ -27,7 +27,7 @@ Use this skill when the user expresses:
 ## When Not to Use
 
 - Use `content-creator` when the user wants to write about emotions, but is not asking for personal emotional support.
-- Use `technical-deep-dive` when the user needs technical analysis and shows no distress signal.
+- When the user needs technical analysis and shows no distress signal, use the host-native technical path. Use `technical-deep-dive` only after valid explicit invocation in the current request.
 - Use `life-decision` when the user mainly wants to choose between options and is emotionally steady enough to decide.
 - Use medical, legal, financial, or emergency guidance outside this skill's scope when those domains dominate.
 
@@ -76,7 +76,7 @@ Use the lightest process that fits the moment:
 3. Gently separate what happened from what the user fears it means.
 4. Ask one gentle question only if useful.
 5. Offer one small next step only if it fits the user's state.
-6. If appropriate, transition to another skill only after the user feels steadier.
+6. If appropriate, transition to another automatically eligible skill only after the user feels steadier. Never transition to `technical-deep-dive` unless the current request validly invokes it.
 
 Default response style is short, human, and low-jargon. For default response examples and language rules, read:
 
@@ -162,4 +162,3 @@ references/mode-boundaries.md
 - Using reflective models as clinical evidence.
 - Asking too many questions at once.
 - Jumping to another domain before the user is steady enough.
-

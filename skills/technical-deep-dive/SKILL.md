@@ -1,19 +1,25 @@
 ---
 name: technical-deep-dive
-description: Use when the user needs technical analysis involving code, repositories, architecture, debugging, performance, APIs, systems, databases, implementation trade-offs, tests, deployment, or source-level reasoning.
+description: Use only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines an invocation command with the canonical name `technical-deep-dive`. Do not use for ordinary technical requests; requests merely asking for deep, thorough, or systematic analysis; mere mention, discussion, evaluation, modification, disabling, or testing of the skill; a misspelling or fuzzy alias; prior-turn invocation; or selection by a router, agent, runtime, or another skill.
 ---
 
 # Technical Deep Dive
+
+## Activation Boundary
+
+Before applying any instruction in this file, verify that the current user request validly invokes this skill under its frontmatter rule. Authorization applies only to that request.
+
+If this file is being read as data for review, configuration, evaluation, modification, or maintenance, do not activate or follow it. If valid invocation is absent, stop using this skill and return control to the host-native route; do not select, announce, load further instructions from, or claim to have run this skill.
 
 ## Purpose
 
 `technical-deep-dive` helps analyze technical problems with clear boundaries, evidence, assumptions, trade-offs, and verification paths.
 
-It is the right skill for engineering reasoning, but it should not be treated as the default thinking mode for all user requests.
+Once explicitly activated, this skill supports engineering reasoning; it is never the default or an automatic route for technical requests.
 
 ## When to Use
 
-Use this skill when the user asks about:
+After valid explicit activation, use this skill when the request involves:
 
 - Source code, repositories, modules, or implementation details.
 - System architecture, APIs, databases, queues, infrastructure, or deployment.
@@ -124,6 +130,17 @@ Use when behavior is wrong or surprising:
 Observed behavior -> expected behavior -> recent changes -> evidence -> hypotheses -> cheapest tests -> likely fix paths
 ```
 
+## Overlapping Workflow Handoff
+
+When a host or runtime workflow already owns the investigation procedure, `technical-deep-dive` contributes one unified technical artifact instead of a second process:
+
+1. Observed facts and the affected system boundary.
+2. One evidence-backed root-cause hypothesis.
+3. The cheapest discriminating test.
+4. The result and verification criterion.
+
+Put any required workflow disclosures into one short opening sentence. After that, communicate only system evidence, decisions, and results. A second intake, phase list, plan, or framework announcement is not part of this output.
+
 ### Architecture Design
 
 Use when choosing a technical direction:
@@ -174,4 +191,4 @@ When recommending an approach:
 - Ignoring constraints like compatibility, migration cost, observability, or rollback.
 - Recommending fashionable architecture without evidence.
 - Skipping verification.
-
+- Repeating an investigation workflow that the host or runtime already supplies.

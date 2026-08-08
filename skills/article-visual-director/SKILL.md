@@ -42,7 +42,7 @@ Use this skill as primary when the user has an existing or nearly final Markdown
 - precise process, architecture, comparison, timeline, or chart visuals;
 - generated images inserted back into Markdown.
 
-Keep `content-creator` primary while the thesis, argument, outline, or prose is still changing. Use this skill after the content structure is stable. A mixed request may use `technical-deep-dive` as secondary context to verify technical semantics, but this skill owns the visual plan and document integration.
+Keep `content-creator` primary while the thesis, argument, outline, or prose is still changing. Use this skill after the content structure is stable. A mixed request may use `technical-deep-dive` as secondary context only after valid explicit invocation in the current request; otherwise verify semantics from the article, provided sources, and host-native capabilities. This skill owns the visual plan and document integration.
 
 For a standalone technical diagram unrelated to an article, use the environment's dedicated technical-visual or diagram capability instead.
 
