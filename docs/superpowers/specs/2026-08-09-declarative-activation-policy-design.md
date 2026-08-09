@@ -1,6 +1,6 @@
 # Declarative Thinking Skills Activation Policy Design
 
-**Status:** Draft for user review
+**Status:** Approved
 **Date:** 2026-08-09
 **Primary target:** Thinking Skills on Codex with GPT-5.6 Sol at `xhigh`
 

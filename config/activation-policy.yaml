@@ -1,0 +1,31 @@
+schema_version: 1
+default_mode: auto
+
+skills:
+  thinking-router:
+    mode: auto
+    auto_description: "Use when a user request needs intent classification, especially when domain work, host-native technical work, or ordinary conversation could each fit."
+  content-creator:
+    mode: auto
+    auto_description: "Use when the user is developing articles, essays, posts, newsletters, scripts, talks, titles, outlines, arguments, audience positioning, drafts, or content structure."
+  article-visual-director:
+    mode: auto
+    auto_description: "Use whenever the user wants to plan, generate, validate, or insert a coherent set of visuals for an existing or substantially complete Markdown article, especially a technical article for CSDN or WeChat Official Accounts. Covers article covers, concept illustrations, process diagrams, architecture diagrams, visual style selection, image prompts, approval gates, and non-destructive Markdown integration. Do not use as the primary skill for early article ideation or drafting, or for a standalone diagram that is not part of an article."
+  technical-deep-dive:
+    mode: explicit
+    auto_description: "Use when the user needs technical analysis involving code, repositories, architecture, debugging, performance, APIs, systems, databases, implementation trade-offs, tests, deployment, or source-level reasoning."
+  learning-coach:
+    mode: explicit
+    auto_description: "Use when the user wants to understand a concept, learn a topic, build a mental model, explain something in simpler terms, find knowledge gaps, make a study plan, practice retrieval, or turn confusing material into usable understanding."
+  emotional-support:
+    mode: auto
+    auto_description: "Use when the user expresses anxiety, sadness, shame, self-blame, burnout, overwhelm, relationship pain, emotional confusion, distress, crisis signals, or asks to understand feelings and needs."
+  conversation-review:
+    mode: auto
+    auto_description: "Use when the user asks for self-review, Dolores mode, conversation review, skill trace audit, failure analysis, eval gap detection, improvement-loop suggestions, failure case or golden case status, or skill feedback dashboard."
+  skill-evaluator:
+    mode: auto
+    auto_description: "Use when reviewing a Thinking Skills failure, golden case candidate, user feedback about a skill response, eval result, routing mistake, unsafe behavior, overly long output, too many questions, jargon exposure, regression risk, or when deciding how to improve or preserve a skill."
+  benchmark-assistant:
+    mode: auto
+    auto_description: "Use when the user wants to run Thinking Skills benchmarks, test a skill, check regressions, generate benchmark prompts, score saved benchmark responses, update or compare the benchmark dashboard, add a benchmark case, interpret benchmark results, or decide what to patch after a benchmark failure."
