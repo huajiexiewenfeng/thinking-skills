@@ -1447,6 +1447,46 @@ test("current-request invocation predicate preserves raw host and CommonMark blo
   );
 });
 
+const nonActivatingLogicalBlockCases = [
+  [
+    "CommonMark lazy-continuation blockquote",
+    "> quoted material\nPlease use technical-deep-dive to analyze this.",
+  ],
+  [
+    "qualified Test case label",
+    "Test case:\nPlease use technical-deep-dive to analyze this.",
+  ],
+  [
+    "qualified Example input label",
+    "Example input:\nPlease use technical-deep-dive to analyze this.",
+  ],
+  [
+    "qualified Sample prompt label",
+    "Sample prompt:\nPlease use technical-deep-dive to analyze this.",
+  ],
+  [
+    "list-prefixed Example label",
+    "- Example:\n  Please use technical-deep-dive to analyze this.",
+  ],
+];
+
+for (const [name, content] of nonActivatingLogicalBlockCases) {
+  test(`current-request invocation predicate rejects ${name}`, () => {
+    assert.equal(hasValidTechnicalDeepDiveInvocation(content), false);
+  });
+}
+
+test("current-request invocation predicate recognizes coordinated imperative subclauses", () => {
+  const directCommands = [
+    "Inspect the logs and then use technical-deep-dive to analyze the failure.",
+    "Test this API, then use technical-deep-dive to analyze the result.",
+  ];
+
+  for (const content of directCommands) {
+    assert.equal(hasValidTechnicalDeepDiveInvocation(content), true, content);
+  }
+});
+
 test("current-request invocation predicate finds late commands and requires a final user turn", () => {
   const longLead = "content-creator to preserve the evidence and article structure ".repeat(12);
   const longMultiSkillRequest =

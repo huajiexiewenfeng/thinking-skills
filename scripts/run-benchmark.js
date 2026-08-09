@@ -113,12 +113,19 @@ function parseFenceLine(line) {
 
 function startsDataBlock(line) {
   return (
-    /^\s*(?:(?:for\s+)?example|sample|test(?:\s+data)?|data|quoted?(?:\s+(?:text|material))?|quotation|the user (?:said|wrote)|the prompt (?:says|contains))\s*(?:[:.]|$)/i
+    /^ {0,3}(?:(?:#{1,6}|[-+*]|\d+[.)])\s+)?(?:(?:(?:for\s+)?example|sample|test|data)(?:\s+(?:case|input|output|prompt|fixture|text|data))?|quoted?(?:\s+(?:text|material))?|quotation|the user (?:said|wrote)|the prompt (?:says|contains))\s*(?:[:.]|$)/i
       .test(line) ||
-    /^\s*(?:review|analy[sz]e|modify|inspect)\b[^\n]{0,160}\bas\s+(?:data|text|an?\s+example)\b/i
+    /^ {0,3}(?:(?:#{1,6}|[-+*]|\d+[.)])\s+)?(?:review|analy[sz]e|modify|inspect)\b[^\n]{0,160}\bas\s+(?:data|text|an?\s+example)\b/i
       .test(line) ||
-    /^\s*(?:例如|示例|比如|样例|测试数据|数据|引用|原文)(?:\s|[:：。.，,]|$)/
+    /^ {0,3}(?:(?:#{1,6}|[-+*]|\d+[.)])\s+)?(?:例如|示例|比如|样例|测试数据|数据|引用|原文)(?:\s|[:：。.，,]|$)/
       .test(line)
+  );
+}
+
+function startsBlockBoundary(line) {
+  return (
+    /^(?: {4}|\t)/.test(line) ||
+    /^ {0,3}(?:#{1,6}(?:\s|$)|(?:[-+*]|\d+[.)])\s+)/.test(line)
   );
 }
 
@@ -138,6 +145,7 @@ function maskInlineLiterals(line) {
 function invocationSearchText(text) {
   const normalized = text.replace(/\r\n/g, " \n").replace(/\r/g, "\n");
   let fence = null;
+  let inBlockquote = false;
   let inDataBlock = false;
   const visibleLines = [];
   for (const line of normalized.split("\n")) {
@@ -159,15 +167,26 @@ function invocationSearchText(text) {
       fenceLine &&
       !(fenceLine.character === "`" && fenceLine.rest.includes("`"))
     ) {
+      inBlockquote = false;
       fence = fenceLine;
       visibleLines.push(maskCharacters(line));
       continue;
     }
 
     if (!line.trim()) {
+      inBlockquote = false;
       inDataBlock = false;
       visibleLines.push(line);
       continue;
+    }
+
+    if (inBlockquote) {
+      if (startsBlockBoundary(line)) {
+        inBlockquote = false;
+      } else {
+        visibleLines.push(maskCharacters(line));
+        continue;
+      }
     }
 
     if (inDataBlock) {
@@ -175,7 +194,13 @@ function invocationSearchText(text) {
       continue;
     }
 
-    if (/^(?: {4}|\t)/.test(line) || /^ {0,3}>/.test(line)) {
+    if (/^ {0,3}>/.test(line)) {
+      inBlockquote = true;
+      visibleLines.push(maskCharacters(line));
+      continue;
+    }
+
+    if (/^(?: {4}|\t)/.test(line)) {
       visibleLines.push(maskCharacters(line));
       continue;
     }
@@ -193,7 +218,7 @@ function invocationSearchText(text) {
 }
 
 function sentenceHasDirectInvocation(sentence) {
-  const command = /(?:^|[\n,，])[ \t]*(?:(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b|(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用))/gim;
+  const command = /(?:^|[\n,，]|\b(?:and(?:\s+then)?|then|also)\b\s+)[ \t]*(?:(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b|(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用))/gim;
   const commands = [...sentence.matchAll(command)].map((match) => ({
     start: match.index,
     end: match.index + match[0].length,
