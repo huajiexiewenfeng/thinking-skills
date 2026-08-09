@@ -1,6 +1,6 @@
 # Learning Coach Explicit User Activation Design
 
-**Status:** Draft for user review
+**Status:** Superseded before implementation by `2026-08-09-declarative-activation-policy-design.md`
 **Date:** 2026-08-09
 **Primary target:** Codex with GPT-5.6 Sol at `xhigh`, using host-native reasoning by default
 
