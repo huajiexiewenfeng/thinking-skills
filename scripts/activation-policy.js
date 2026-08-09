@@ -4,6 +4,8 @@ const path = require("node:path");
 const VALID_ACTIVATION_MODES = Object.freeze(["auto", "explicit", "disabled"]);
 const VALID_MODE_SET = new Set(VALID_ACTIVATION_MODES);
 const SKILL_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const SOURCE_METADATA = new WeakMap();
+const TOP_LEVEL_KEYS = new Set(["schema_version", "default_mode", "skills"]);
 
 function fail(sourcePath, message, lineNumber) {
   const location = lineNumber === undefined ? "" : `: line ${lineNumber}`;
@@ -15,6 +17,7 @@ function parseActivationPolicy(text, sourcePath) {
   const seenTopLevelKeys = new Set();
   const seenSkillKeys = new Set();
   const seenEntryKeys = new Map();
+  const topLevelLines = {};
   let currentSkillId;
   let inSkills = false;
 
@@ -27,16 +30,19 @@ function parseActivationPolicy(text, sourcePath) {
       if (line === "skills:") {
         if (seenTopLevelKeys.has("skills")) fail(sourcePath, "duplicate top-level key skills", lineNumber);
         seenTopLevelKeys.add("skills");
+        topLevelLines.skills = lineNumber;
         inSkills = true;
         continue;
       }
 
-      const topLevel = /^(schema_version|default_mode): (.+)$/.exec(line);
+      const topLevel = /^([a-z_][a-z0-9_]*): (.+)$/.exec(line);
       if (!topLevel) fail(sourcePath, "unsupported syntax", lineNumber);
 
       const [, key, value] = topLevel;
+      if (!TOP_LEVEL_KEYS.has(key)) fail(sourcePath, `unsupported top-level field ${key}`, lineNumber);
       if (seenTopLevelKeys.has(key)) fail(sourcePath, `duplicate top-level key ${key}`, lineNumber);
       seenTopLevelKeys.add(key);
+      topLevelLines[key] = lineNumber;
 
       if (key === "schema_version") {
         if (!/^\d+$/.test(value)) fail(sourcePath, "schema_version must be an integer", lineNumber);
@@ -82,6 +88,7 @@ function parseActivationPolicy(text, sourcePath) {
     }
   }
 
+  SOURCE_METADATA.set(policy, { topLevelLines });
   return policy;
 }
 
@@ -98,10 +105,16 @@ function validateActivationPolicy(policy, discoveredSkillIds, sourcePath) {
   if (!policy || typeof policy !== "object" || Array.isArray(policy)) {
     fail(sourcePath, "policy must be an object");
   }
-  if (policy.schema_version !== 1) fail(sourcePath, "schema_version must be 1");
-  if (!VALID_MODE_SET.has(policy.default_mode)) fail(sourcePath, "default_mode must be supported");
+  const metadata = SOURCE_METADATA.get(policy);
+  const failTopLevel = (key, message) => fail(sourcePath, message, metadata?.topLevelLines[key]);
+
+  for (const key of Object.keys(policy)) {
+    if (!TOP_LEVEL_KEYS.has(key)) failTopLevel(key, `unsupported top-level field ${key}`);
+  }
+  if (policy.schema_version !== 1) failTopLevel("schema_version", "schema_version must be 1");
+  if (!VALID_MODE_SET.has(policy.default_mode)) failTopLevel("default_mode", "default_mode must be supported");
   if (!policy.skills || typeof policy.skills !== "object" || Array.isArray(policy.skills)) {
-    fail(sourcePath, "skills must be an object");
+    failTopLevel("skills", "skills must be an object");
   }
 
   const discovered = new Set(discoveredSkillIds);

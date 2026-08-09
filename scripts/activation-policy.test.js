@@ -26,7 +26,27 @@ test("committed activation policy covers every first-party Skill exactly once", 
   ]);
   assert.deepEqual(skillIdsByMode(policy, "disabled"), []);
   assert.equal(getSkillPolicy(policy, "content-creator").mode, "auto");
+  assert.equal(Object.isFrozen(policy), true);
+  assert.equal(Object.isFrozen(policy.skills), true);
   assert.equal(Object.isFrozen(policy.skills["learning-coach"]), true);
+  assert.throws(() => {
+    (function rejectRootMutation() {
+      "use strict";
+      policy.default_mode = "disabled";
+    })();
+  }, TypeError);
+  assert.throws(() => {
+    (function rejectContainerMutation() {
+      "use strict";
+      policy.skills.extra = { mode: "auto", auto_description: "Use for extras." };
+    })();
+  }, TypeError);
+  assert.throws(() => {
+    (function rejectEntryMutation() {
+      "use strict";
+      policy.skills["learning-coach"].mode = "disabled";
+    })();
+  }, TypeError);
 });
 
 test("strict parser rejects unsupported syntax and duplicate keys", () => {
@@ -38,7 +58,14 @@ test("strict parser rejects unsupported syntax and duplicate keys", () => {
   ];
 
   for (const [name, text] of invalid) {
-    assert.throws(() => parseActivationPolicy(text, name), Error, name);
+    assert.throws(
+      () => parseActivationPolicy(text, name),
+      (error) => {
+        assert.match(error.message, new RegExp(`${name}: line \\d+:`));
+        return true;
+      },
+      name,
+    );
   }
 });
 
@@ -53,4 +80,20 @@ test("validation rejects missing, unknown, blank, and unsupported entries", () =
   assert.throws(() => validateActivationPolicy(base, [], "fixture"), /unknown/);
   assert.throws(() => validateActivationPolicy({ ...base, schema_version: 2 }, ["demo"], "fixture"), /schema_version/);
   assert.throws(() => validateActivationPolicy({ ...base, skills: { demo: { mode: "auto", auto_description: "" } } }, ["demo"], "fixture"), /auto_description/);
+  assert.throws(
+    () => validateActivationPolicy({ ...base, unexpected_top_level: true }, ["demo"], "direct-fixture.yaml"),
+    /direct-fixture\.yaml: .*unexpected_top_level/,
+  );
+});
+
+test("top-level validation errors retain parsed source locations", () => {
+  const parsed = parseActivationPolicy(
+    "schema_version: 2\ndefault_mode: auto\nskills:\n  demo:\n    mode: auto\n    auto_description: \"Use for demos.\"\n",
+    "parsed-fixture.yaml",
+  );
+
+  assert.throws(
+    () => validateActivationPolicy(parsed, ["demo"], "parsed-fixture.yaml"),
+    /parsed-fixture\.yaml: line 1: schema_version/,
+  );
 });
