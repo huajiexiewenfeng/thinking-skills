@@ -39,6 +39,7 @@ function parseActivationPolicy(text, sourcePath) {
       if (!topLevel) fail(sourcePath, "unsupported syntax", lineNumber);
 
       const [, key, value] = topLevel;
+      if (key === "skills") fail(sourcePath, "skills must be an exact mapping marker", lineNumber);
       if (!TOP_LEVEL_KEYS.has(key)) fail(sourcePath, `unsupported top-level field ${key}`, lineNumber);
       if (seenTopLevelKeys.has(key)) fail(sourcePath, `duplicate top-level key ${key}`, lineNumber);
       seenTopLevelKeys.add(key);

@@ -69,6 +69,13 @@ test("strict parser rejects unsupported syntax and duplicate keys", () => {
   }
 });
 
+test("strict parser rejects scalar skills declarations", () => {
+  assert.throws(
+    () => parseActivationPolicy("schema_version: 1\ndefault_mode: auto\nskills: auto\n", "scalar-skills"),
+    /scalar-skills: line 3:/,
+  );
+});
+
 test("validation rejects missing, unknown, blank, and unsupported entries", () => {
   const base = {
     schema_version: 1,
