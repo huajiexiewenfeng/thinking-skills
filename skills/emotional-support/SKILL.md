@@ -1,9 +1,17 @@
 ---
 name: emotional-support
+# activation-policy:frontmatter:start
 description: Use when the user expresses anxiety, sadness, shame, self-blame, burnout, overwhelm, relationship pain, emotional confusion, distress, crisis signals, or asks to understand feelings and needs.
+# activation-policy:frontmatter:end
 ---
 
 # Emotional Support
+
+<!-- activation-policy:guard:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+Activation mode: `auto`. This Skill is eligible under its authored domain boundaries. Cross-Skill routing remains owned by `thinking-router`.
+<!-- activation-policy:guard:end -->
 
 ## Purpose
 
@@ -27,9 +35,11 @@ Use this skill when the user expresses:
 ## When Not to Use
 
 - Use `content-creator` when the user wants to write about emotions, but is not asking for personal emotional support.
-- When the user needs technical analysis and shows no distress signal, use the host-native technical path. Use `technical-deep-dive` only after valid explicit invocation in the current request.
+- When the user needs technical analysis and shows no distress signal, use the host-native technical path.
 - Use `life-decision` when the user mainly wants to choose between options and is emotionally steady enough to decide.
 - Use medical, legal, financial, or emergency guidance outside this skill's scope when those domains dominate.
+
+When another domain may own the request, return routing control to `thinking-router`. Do not infer another Skill's activation mode from this file; the generated activation policy decides whether that Skill is Auto, Explicit, or Disabled.
 
 ## Method Bases
 
@@ -76,7 +86,7 @@ Use the lightest process that fits the moment:
 3. Gently separate what happened from what the user fears it means.
 4. Ask one gentle question only if useful.
 5. Offer one small next step only if it fits the user's state.
-6. If appropriate, transition to another automatically eligible skill only after the user feels steadier. Never transition to `technical-deep-dive` unless the current request validly invokes it.
+6. If appropriate, return routing control to `thinking-router` after the user feels steadier.
 
 Default response style is short, human, and low-jargon. For default response examples and language rules, read:
 

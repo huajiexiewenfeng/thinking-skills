@@ -195,8 +195,48 @@ function renderActivationBenchmarkCases(policy) {
   return rendered;
 }
 
-function hasAnySkillMarker(text) {
-  return text.includes("activation-policy:frontmatter:") || text.includes("activation-policy:guard:");
+function escapeRegExp(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function hasValidExactInvocation(request, skillId) {
+  if (request.includes(`$thinking-skills:${skillId}`)) return true;
+  const normalized = request.replace(/`/g, "");
+  return new RegExp(
+    `\\b(?:use|invoke|activate|run|load|apply)\\b[^|\\n]*\\b${escapeRegExp(skillId)}\\b`,
+    "i",
+  ).test(normalized);
+}
+
+function validateRouterExamples(text, policy, filePath) {
+  for (const line of text.split(/\r?\n/)) {
+    if (!/^\|.*\b(?:Primary|Secondary):/i.test(line)) continue;
+    const cells = line.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim());
+    if (cells.length < 2) continue;
+    const request = cells[0];
+    const route = cells.slice(1).join(" | ");
+    for (const [skillId, entry] of Object.entries(policy.skills)) {
+      requireMode(entry, skillId);
+      const selected = new RegExp(
+        `\\b(?:Primary|Secondary):\\s*\\x60?${escapeRegExp(skillId)}\\x60?(?:\\s*[;|]|\\s*$)`,
+        "i",
+      ).test(route);
+      if (!selected || entry.mode === "auto") continue;
+      if (entry.mode === "disabled") {
+        throw new Error(`${skillId}: Router example selects disabled Skill`);
+      }
+      if (!hasValidExactInvocation(request, skillId)) {
+        throw new Error(`${skillId}: Router example selects explicit Skill without valid exact invocation`);
+      }
+    }
+  }
+}
+
+function addOwnedRegionTarget(plan, filePath, regionId, generatedBody) {
+  if (!fs.existsSync(filePath)) return;
+  const before = fs.readFileSync(filePath, "utf8");
+  const after = replaceOwnedRegion(before, regionId, generatedBody, filePath);
+  plan.push({ path: filePath, before, after });
 }
 
 function buildActivationSyncPlan({ repoRoot, policy }) {
@@ -207,7 +247,6 @@ function buildActivationSyncPlan({ repoRoot, policy }) {
     const filePath = path.join(resolvedRoot, "skills", skillId, "SKILL.md");
     if (!fs.existsSync(filePath)) continue;
     const before = fs.readFileSync(filePath, "utf8");
-    if (!hasAnySkillMarker(before)) continue;
     const description = renderSkillFrontmatterDescription(policy.skills[skillId], skillId);
     let after = replaceOwnedRegion(
       before,
@@ -216,8 +255,25 @@ function buildActivationSyncPlan({ repoRoot, policy }) {
       filePath,
     );
     after = replaceOwnedRegion(after, "guard", renderSkillActivationGuard(policy.skills[skillId], skillId), filePath);
+    if (skillId === "thinking-router") {
+      after = replaceOwnedRegion(after, "router", renderRouterPolicy(policy), filePath);
+      validateRouterExamples(after, policy, filePath);
+    }
     plan.push({ path: filePath, before, after });
   }
+
+  addOwnedRegionTarget(
+    plan,
+    path.join(resolvedRoot, ".cursor", "rules", "thinking-skills.mdc"),
+    "cursor",
+    renderCursorPolicy(policy),
+  );
+  addOwnedRegionTarget(
+    plan,
+    path.join(resolvedRoot, ".opencode", "plugins", "thinking-skills.js"),
+    "runtime",
+    renderOpenCodePolicy(policy),
+  );
 
   const generatedRoot = path.join(resolvedRoot, ...GENERATED_FIXTURE_SEGMENTS);
   if (fs.existsSync(generatedRoot)) {

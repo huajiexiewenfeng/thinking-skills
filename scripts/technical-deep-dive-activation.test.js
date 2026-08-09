@@ -2,9 +2,18 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
+const { loadActivationPolicy } = require("./activation-policy");
 const {
   hasValidTechnicalDeepDiveInvocation,
 } = require("./run-benchmark");
+const {
+  markerPair,
+  renderCursorPolicy,
+  renderOpenCodePolicy,
+  renderRouterPolicy,
+  renderSkillActivationGuard,
+  renderSkillFrontmatterDescription,
+} = require("./sync-activation-policy");
 
 const root = path.resolve(__dirname, "..");
 
@@ -16,26 +25,110 @@ function readJson(relativePath) {
   return JSON.parse(read(relativePath));
 }
 
-test("technical-deep-dive advertises current-request explicit activation only", () => {
+function normalize(text) {
+  return text.replace(/\r\n?/g, "\n");
+}
+
+function countExactLines(text, marker) {
+  return normalize(text).split("\n").filter((line) => line === marker).length;
+}
+
+function ownedBody(text, regionId, filePath) {
+  const normalized = normalize(text);
+  const [start, end] = markerPair(regionId, filePath);
+  assert.equal(countExactLines(normalized, start), 1, `${filePath}: ${start}`);
+  assert.equal(countExactLines(normalized, end), 1, `${filePath}: ${end}`);
+  return normalized.split(`${start}\n`)[1].split(`\n${end}`)[0];
+}
+
+test("all first-party Skills expose unique manifest-owned activation surfaces", () => {
+  const policy = loadActivationPolicy({ repoRoot: root });
+
+  for (const [skillId, entry] of Object.entries(policy.skills)) {
+    const filePath = path.join(root, "skills", skillId, "SKILL.md");
+    const skill = read(path.join("skills", skillId, "SKILL.md"));
+
+    assert.equal(
+      ownedBody(skill, "frontmatter", filePath),
+      `description: ${renderSkillFrontmatterDescription(entry, skillId)}`,
+    );
+    assert.equal(
+      ownedBody(skill, "guard", filePath),
+      renderSkillActivationGuard(entry, skillId),
+    );
+    assert.match(
+      ownedBody(skill, "guard", filePath),
+      new RegExp("Activation mode: `" + entry.mode + "`"),
+    );
+  }
+});
+
+test("Explicit and Disabled guards enforce their generic manifest semantics", () => {
+  const policy = loadActivationPolicy({ repoRoot: root });
+  const explicitIds = Object.keys(policy.skills)
+    .filter((skillId) => policy.skills[skillId].mode === "explicit");
+  assert.ok(explicitIds.length > 0, "fixture policy must exercise Explicit semantics");
+
+  for (const skillId of explicitIds) {
+    const guard = renderSkillActivationGuard(policy.skills[skillId], skillId);
+    assert.match(guard, /verify a valid exact invocation/i);
+    assert.match(guard, /current final user request/i);
+    assert.match(guard, /return control to `thinking-router`/i);
+    assert.match(guard, /do not claim this Skill ran/i);
+  }
+
+  const disabledGuard = renderSkillActivationGuard(
+    { mode: "disabled", auto_description: "Unused disabled fixture." },
+    "disabled-fixture",
+  );
+  assert.match(disabledGuard, /Activation mode: `disabled`/);
+  assert.match(disabledGuard, /Return control to `thinking-router`/);
+  assert.match(disabledGuard, /Do not follow this file/);
+  assert.match(disabledGuard, /even after explicit invocation/);
+});
+
+test("technical-deep-dive preserves its authored method and workflow handoff", () => {
   const skill = read("skills/technical-deep-dive/SKILL.md");
 
   assert.match(skill, /^description: Use only when the current user request/m);
-  assert.match(skill, /## Activation Boundary/);
-  assert.match(skill, /If this file is being read as data .* do not activate or follow it/i);
+  assert.match(skill, /## Purpose/);
   assert.match(skill, /After valid explicit activation, use this skill when/i);
+  assert.match(skill, /## Method Bases/);
+  assert.match(skill, /## Overlapping Workflow Handoff/);
+  assert.match(skill, /one unified technical artifact/i);
   assert.doesNotMatch(skill, /description: Use when the user needs technical analysis/);
 });
 
-test("thinking-router keeps ordinary technical work native", () => {
+test("Router, Cursor, and OpenCode expose unique manifest-rendered policy blocks", () => {
+  const policy = loadActivationPolicy({ repoRoot: root });
   const router = read("skills/thinking-router/SKILL.md");
+  const cursor = read(".cursor/rules/thinking-skills.mdc");
+  const openCode = read(".opencode/plugins/thinking-skills.js");
 
-  assert.match(router, /## Explicit `technical-deep-dive` Activation/);
+  assert.equal(
+    ownedBody(router, "router", path.join(root, "skills", "thinking-router", "SKILL.md")),
+    renderRouterPolicy(policy),
+  );
+  assert.equal(
+    ownedBody(cursor, "cursor", path.join(root, ".cursor", "rules", "thinking-skills.mdc")),
+    renderCursorPolicy(policy),
+  );
+  assert.equal(
+    ownedBody(openCode, "runtime", path.join(root, ".opencode", "plugins", "thinking-skills.js")),
+    renderOpenCodePolicy(policy),
+  );
+
   assert.match(router, /## Native Route/);
   assert.match(router, /`native` is a first-class route for task-shaped technical work/);
-  assert.match(router, /never an automatic route or secondary skill/);
-  assert.match(router, /If a valid invocation names this skill but it is unavailable/);
-  assert.doesNotMatch(router, /Technical diagnosis still routes to `technical-deep-dive`/);
+  assert.match(router, /An Explicit or Disabled Skill cannot be added as secondary/i);
+  assert.match(router, /Evaluation of a named Skill remains `skill-evaluator`/i);
   assert.doesNotMatch(router, /\| code, repo, architecture[^\n]+\| `technical-deep-dive` \|/);
+
+  assert.match(openCode, /const enabledSkills = Object\.freeze\(\[/);
+  assert.match(openCode, /\.\.\.activationPolicy\.auto/);
+  assert.match(openCode, /\.\.\.activationPolicy\.explicit/);
+  assert.match(openCode, /activationPolicy\.disabled\.length > 0/);
+  assert.match(openCode, /filtered package/i);
 });
 
 test("thinking-router assigns specific Skill evaluation to skill-evaluator", () => {
@@ -52,13 +145,13 @@ test("thinking-router assigns specific Skill evaluation to skill-evaluator", () 
   assert.ok(fixture.must_not_select.includes("native"));
   assert.match(
     router,
-    /specific Skill evaluation[^\n]+`skill-evaluator`/i,
+    /Evaluation of a named Skill remains `skill-evaluator`/i,
   );
-  assert.match(router, /treat the Skill being discussed as data/i);
+  assert.match(router, /named Skill treated as data/i);
   assert.ok(router.includes(expectedExample));
 });
 
-test("domain skills cannot add technical-deep-dive automatically", () => {
+test("domain Skills return cross-domain activation decisions to the Router", () => {
   const files = [
     "skills/content-creator/SKILL.md",
     "skills/learning-coach/SKILL.md",
@@ -68,20 +161,12 @@ test("domain skills cannot add technical-deep-dive automatically", () => {
 
   for (const file of files) {
     const content = read(file);
-    assert.match(content, /technical-deep-dive/);
-    assert.match(content, /current (?:user )?request/i);
-    assert.match(content, /explicit/i);
+    assert.match(content, /return routing control to `thinking-router`/i);
+    assert.match(content, /Do not infer another Skill's activation mode from this file/i);
+    assert.match(content, /generated activation policy decides whether that Skill is Auto, Explicit, or Disabled/i);
+    assert.doesNotMatch(content, /technical-deep-dive/i);
     assert.doesNotMatch(content, /Use `technical-deep-dive` when the main need/i);
   }
-});
-
-test("platform bootstraps preserve explicit-only loading", () => {
-  const cursor = read(".cursor/rules/thinking-skills.mdc");
-  const openCode = read(".opencode/plugins/thinking-skills.js");
-
-  assert.match(cursor, /`native`/);
-  assert.match(cursor, /technical-deep-dive[^\n]+explicit/i);
-  assert.match(openCode, /technical-deep-dive[^\n]+explicit/i);
 });
 
 test("Router metadata and public diagrams expose the three-way primary route", () => {

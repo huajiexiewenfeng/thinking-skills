@@ -9,7 +9,41 @@ import fs from "fs";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const skillsDir = path.resolve(__dirname, "../../skills");
+const sourceSkillsDir = path.resolve(__dirname, "../../skills");
+const skillsDir = sourceSkillsDir;
+
+// activation-policy:runtime:start
+const activationPolicy = Object.freeze({
+  auto: Object.freeze([
+    "article-visual-director",
+    "benchmark-assistant",
+    "content-creator",
+    "conversation-review",
+    "emotional-support",
+    "skill-evaluator",
+    "thinking-router",
+  ]),
+  explicit: Object.freeze([
+    "learning-coach",
+    "technical-deep-dive",
+  ]),
+  disabled: Object.freeze([
+  ]),
+});
+// activation-policy:runtime:end
+
+const enabledSkills = Object.freeze([
+  ...activationPolicy.auto,
+  ...activationPolicy.explicit,
+]);
+
+const assertActivationPolicyCanUseSkillsDir = () => {
+  if (activationPolicy.disabled.length > 0 && skillsDir === sourceSkillsDir) {
+    throw new Error(
+      `Thinking Skills disables ${activationPolicy.disabled.join(", ")}, but OpenCode points at the unfiltered source Skills directory. Build and use a filtered package before starting the plugin.`,
+    );
+  }
+};
 
 const extractAndStripFrontmatter = (content) => {
   const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -23,6 +57,15 @@ const getBootstrapContent = () => {
 
   const fullContent = fs.readFileSync(skillPath, "utf8");
   const { content } = extractAndStripFrontmatter(fullContent);
+  const skillList = enabledSkills
+    .filter((skillId) => skillId !== "thinking-router")
+    .map((skillId) => {
+      const qualifier = activationPolicy.explicit.includes(skillId)
+        ? " (load only after valid exact invocation in the current final user request)"
+        : "";
+      return `- thinking-skills/${skillId}${qualifier}`;
+    })
+    .join("\n");
 
   return `
 You have access to Thinking Skills.
@@ -30,19 +73,15 @@ You have access to Thinking Skills.
 The thinking-router skill is included below as bootstrap context. Use it at the start of user requests to classify intent and route to the right thinking mode. Do not assume software development unless the user clearly indicates a technical context.
 
 When you need a domain skill, use OpenCode's native skill tool to load it:
-- thinking-skills/content-creator
-- thinking-skills/article-visual-director
-- thinking-skills/technical-deep-dive (load only after a valid explicit invocation in the current user request)
-- thinking-skills/learning-coach
-- thinking-skills/emotional-support
-- thinking-skills/conversation-review
-- thinking-skills/skill-evaluator
+${skillList}
 
 ${content}
 `;
 };
 
 export const ThinkingSkillsPlugin = async () => {
+  assertActivationPolicyCanUseSkillsDir();
+
   return {
     config: async (config) => {
       config.skills = config.skills || {};

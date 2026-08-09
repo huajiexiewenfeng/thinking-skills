@@ -12,12 +12,22 @@ Do not assume unclear requests are software development tasks. First classify th
 
 Canonical skill content lives in `skills/`. Do not fork or rewrite that content in Cursor rules.
 
+<!-- activation-policy:cursor:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+- `auto`: `article-visual-director`, `benchmark-assistant`, `content-creator`, `conversation-review`, `emotional-support`, `skill-evaluator`, `thinking-router`
+- `explicit`: `learning-coach`, `technical-deep-dive`
+- `disabled`: _(none)_
+
+Explicit Skills require valid exact invocation in the current final user request. Disabled Skills are unavailable and must not be selected, loaded, announced, or handed off to.
+<!-- activation-policy:cursor:end -->
+
 ## Routing Rules
 
 1. Read the user's request.
 2. Choose exactly one primary route: a domain skill, `native`, or `no-skill`.
 3. Add at most one secondary skill when mixed intent matters.
-4. Never select `technical-deep-dive` as primary or secondary without valid explicit invocation in the current user request.
+4. Apply the generated activation policy before selecting any Skill as primary or secondary.
 5. If routing confidence is low, ask one short routing question.
 6. After routing to a domain skill, follow the selected skill's process and boundaries.
 7. After routing to `native`, use the host model, system and developer rules, tools, and harness.
@@ -27,8 +37,8 @@ Canonical skill content lives in `skills/`. Do not fork or rewrite that content 
 - `thinking-router`: Use at the start of a request to choose exactly one primary route: a Domain Skill, `native`, or `no-skill`.
 - `content-creator`: Use for articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure.
 - `article-visual-director`: Use when an existing or substantially complete Markdown article needs covers, concept illustrations, exact diagrams, approval-gated generation, and non-destructive image insertion.
-- `native`: Use for ordinary task-shaped technical work without valid explicit activation.
-- `technical-deep-dive`: Use only after valid explicit invocation in the current user request; never add it automatically as a primary or secondary skill.
+- `native`: Use for ordinary task-shaped work when no eligible Domain Skill owns the deliverable.
+- `technical-deep-dive`: Use for technical analysis when the generated activation policy marks it eligible for the current request.
 - `emotional-support`: Use for anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps.
 - `skill-evaluator`: Use when reviewing a failed Thinking Skills response, routing mistake, unsafe behavior, eval result, or platform adapter issue.
 
@@ -39,7 +49,7 @@ When a selected skill needs more detail, read its canonical file before answerin
 - `skills/thinking-router/SKILL.md`
 - `skills/content-creator/SKILL.md`
 - `skills/article-visual-director/SKILL.md`
-- `skills/technical-deep-dive/SKILL.md` (read only after valid explicit invocation in the current user request)
+- `skills/technical-deep-dive/SKILL.md` (read only when the generated activation policy marks it eligible)
 - `skills/emotional-support/SKILL.md`
 - `skills/skill-evaluator/SKILL.md`
 
@@ -47,5 +57,5 @@ Keep responses domain-appropriate:
 
 - Writing work should produce audience, angle, thesis, structure, or draft direction.
 - Article-visual work should plan before generation, use deterministic rendering for exact diagrams, and preserve the source Markdown.
-- Technical work without valid explicit activation should follow the host model, system and developer rules, tools, and harness.
+- Task-shaped work without an eligible Domain Skill should follow the host model, system and developer rules, tools, and harness.
 - Emotional-support work should avoid diagnosis, avoid pretending to be therapy, and prioritize immediate safety when risk signals appear.

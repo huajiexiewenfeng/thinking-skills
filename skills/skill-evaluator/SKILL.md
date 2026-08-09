@@ -1,9 +1,17 @@
 ---
 name: skill-evaluator
+# activation-policy:frontmatter:start
 description: Use when reviewing a Thinking Skills failure, golden case candidate, user feedback about a skill response, eval result, routing mistake, unsafe behavior, overly long output, too many questions, jargon exposure, regression risk, or when deciding how to improve or preserve a skill.
+# activation-policy:frontmatter:end
 ---
 
 # Skill Evaluator
+
+<!-- activation-policy:guard:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+Activation mode: `auto`. This Skill is eligible under its authored domain boundaries. Cross-Skill routing remains owned by `thinking-router`.
+<!-- activation-policy:guard:end -->
 
 ## Purpose
 

@@ -1,9 +1,17 @@
 ---
 name: benchmark-assistant
+# activation-policy:frontmatter:start
 description: Use when the user wants to run Thinking Skills benchmarks, test a skill, check regressions, generate benchmark prompts, score saved benchmark responses, update or compare the benchmark dashboard, add a benchmark case, interpret benchmark results, or decide what to patch after a benchmark failure.
+# activation-policy:frontmatter:end
 ---
 
 # Benchmark Assistant
+
+<!-- activation-policy:guard:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+Activation mode: `auto`. This Skill is eligible under its authored domain boundaries. Cross-Skill routing remains owned by `thinking-router`.
+<!-- activation-policy:guard:end -->
 
 ## Purpose
 

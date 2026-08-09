@@ -1,9 +1,17 @@
 ---
 name: conversation-review
+# activation-policy:frontmatter:start
 description: Use when the user asks for self-review, Dolores mode, conversation review, skill trace audit, failure analysis, eval gap detection, improvement-loop suggestions, failure case or golden case status, or skill feedback dashboard.
+# activation-policy:frontmatter:end
 ---
 
 # Conversation Review
+
+<!-- activation-policy:guard:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+Activation mode: `auto`. This Skill is eligible under its authored domain boundaries. Cross-Skill routing remains owned by `thinking-router`.
+<!-- activation-policy:guard:end -->
 
 ## Purpose
 

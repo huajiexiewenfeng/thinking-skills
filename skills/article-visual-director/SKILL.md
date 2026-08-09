@@ -1,9 +1,17 @@
 ---
 name: article-visual-director
+# activation-policy:frontmatter:start
 description: Use whenever the user wants to plan, generate, validate, or insert a coherent set of visuals for an existing or substantially complete Markdown article, especially a technical article for CSDN or WeChat Official Accounts. Covers article covers, concept illustrations, process diagrams, architecture diagrams, visual style selection, image prompts, approval gates, and non-destructive Markdown integration. Do not use as the primary skill for early article ideation or drafting, or for a standalone diagram that is not part of an article.
+# activation-policy:frontmatter:end
 ---
 
 # Article Visual Director
+
+<!-- activation-policy:guard:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+Activation mode: `auto`. This Skill is eligible under its authored domain boundaries. Cross-Skill routing remains owned by `thinking-router`.
+<!-- activation-policy:guard:end -->
 
 Turn an approved Markdown article into a coherent illustrated edition. Direct the visual system first, generate only after approval, use deterministic rendering for exact technical meaning, and integrate only validated assets into a new Markdown copy.
 
@@ -42,7 +50,9 @@ Use this skill as primary when the user has an existing or nearly final Markdown
 - precise process, architecture, comparison, timeline, or chart visuals;
 - generated images inserted back into Markdown.
 
-Keep `content-creator` primary while the thesis, argument, outline, or prose is still changing. Use this skill after the content structure is stable. A mixed request may use `technical-deep-dive` as secondary context only after valid explicit invocation in the current request; otherwise verify semantics from the article, provided sources, and host-native capabilities. This skill owns the visual plan and document integration.
+Keep `content-creator` primary while the thesis, argument, outline, or prose is still changing. Use this skill after the content structure is stable. Verify semantics from the article, provided sources, and host-native capabilities. This skill owns the visual plan and document integration.
+
+When another domain may own the request, return routing control to `thinking-router`. Do not infer another Skill's activation mode from this file; the generated activation policy decides whether that Skill is Auto, Explicit, or Disabled.
 
 For a standalone technical diagram unrelated to an article, use the environment's dedicated technical-visual or diagram capability instead.
 

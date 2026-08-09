@@ -4,6 +4,7 @@ const os = require("node:os");
 const path = require("node:path");
 const test = require("node:test");
 
+const { loadActivationPolicy } = require("./activation-policy");
 const {
   applyActivationSyncPlan,
   buildActivationSyncPlan,
@@ -85,6 +86,122 @@ function makeFixtureRepo(entries = [["demo", "auto", "Use automatically for demo
   fs.writeFileSync(path.join(repoRoot, "config", "activation-policy.yaml"), yaml, "utf8");
   return { repoRoot, policy };
 }
+
+function countExactLines(text, line) {
+  return text.split(/\r?\n/).filter((candidate) => candidate === line).length;
+}
+
+test("checked-in activation surfaces match the manifest", () => {
+  const repoRoot = path.resolve(__dirname, "..");
+  const policy = loadActivationPolicy({ repoRoot });
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  assert.deepEqual(checkActivationSyncPlan(plan), []);
+});
+
+test("checked-in runtime surfaces each expose exactly one owned activation region", () => {
+  const repoRoot = path.resolve(__dirname, "..");
+  const policy = loadActivationPolicy({ repoRoot });
+
+  for (const skillId of Object.keys(policy.skills)) {
+    const contents = fs.readFileSync(path.join(repoRoot, "skills", skillId, "SKILL.md"), "utf8");
+    for (const marker of [
+      "# activation-policy:frontmatter:start",
+      "# activation-policy:frontmatter:end",
+      "<!-- activation-policy:guard:start -->",
+      "<!-- activation-policy:guard:end -->",
+    ]) {
+      assert.equal(countExactLines(contents, marker), 1, `${skillId}: ${marker}`);
+    }
+  }
+
+  for (const [filePath, start, end] of [
+    [path.join(repoRoot, "skills", "thinking-router", "SKILL.md"), "<!-- activation-policy:router:start -->", "<!-- activation-policy:router:end -->"],
+    [path.join(repoRoot, ".cursor", "rules", "thinking-skills.mdc"), "<!-- activation-policy:cursor:start -->", "<!-- activation-policy:cursor:end -->"],
+    [path.join(repoRoot, ".opencode", "plugins", "thinking-skills.js"), "// activation-policy:runtime:start", "// activation-policy:runtime:end"],
+  ]) {
+    const contents = fs.readFileSync(filePath, "utf8");
+    assert.equal(countExactLines(contents, start), 1, `${filePath}: ${start}`);
+    assert.equal(countExactLines(contents, end), 1, `${filePath}: ${end}`);
+  }
+
+});
+
+test("OpenCode rejects disabled policy with the unfiltered source Skills directory", () => {
+  const repoRoot = path.resolve(__dirname, "..");
+  const openCode = fs.readFileSync(
+    path.join(repoRoot, ".opencode", "plugins", "thinking-skills.js"),
+    "utf8",
+  );
+  assert.match(openCode, /activationPolicy\.disabled\.length > 0/);
+  assert.match(openCode, /unfiltered source Skills directory/i);
+  assert.match(openCode, /filtered package/i);
+});
+
+test("OpenCode generated enabled Skills exclude fixture-disabled Skills", () => {
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["thinking-router", "auto", "Route requests."],
+    ["auto-skill", "auto", "Use automatically."],
+    ["explicit-skill", "explicit", "Explicit."],
+    ["disabled-skill", "disabled", "Disabled."],
+  ]);
+  const pluginPath = path.join(repoRoot, ".opencode", "plugins", "thinking-skills.js");
+  fs.mkdirSync(path.dirname(pluginPath), { recursive: true });
+  fs.writeFileSync(pluginPath, [
+    "// activation-policy:runtime:start",
+    "const activationPolicy = Object.freeze({});",
+    "// activation-policy:runtime:end",
+    "const enabledSkills = [...activationPolicy.auto, ...activationPolicy.explicit];",
+    "const bootstrap = enabledSkills.map((skillId) => `thinking-skills/${skillId}`).join(\"\\n\");",
+    "",
+  ].join("\n"), "utf8");
+  const routerPath = path.join(repoRoot, "skills", "thinking-router", "SKILL.md");
+  fs.writeFileSync(
+    routerPath,
+    fs.readFileSync(routerPath, "utf8").replace(
+      "Human-authored method text.",
+      "<!-- activation-policy:router:start -->\nOld router policy.\n<!-- activation-policy:router:end -->\n\nHuman-authored method text.",
+    ),
+    "utf8",
+  );
+
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const plugin = plan.find((item) => item.path === pluginPath);
+  assert.ok(plugin, "expected OpenCode to be a registered sync target");
+  assert.match(plugin.after, /disabled: Object\.freeze\(\[\s+"disabled-skill",/);
+  assert.match(plugin.after, /const enabledSkills = \[\.\.\.activationPolicy\.auto, \.\.\.activationPolicy\.explicit\];/);
+  assert.doesNotMatch(plugin.after, /thinking-skills\/disabled-skill/);
+});
+
+test("Router examples reject an uninvoked Explicit or selected Disabled Skill", () => {
+  for (const [mode, request] of [
+    ["explicit", "Explain this topic."],
+    ["disabled", "Use disabled-skill to explain this topic."],
+  ]) {
+    const { repoRoot, policy } = makeFixtureRepo([
+      ["thinking-router", "auto", "Route requests."],
+      [`${mode}-skill`, mode, `${mode} description.`],
+    ]);
+    const routerPath = path.join(repoRoot, "skills", "thinking-router", "SKILL.md");
+    const router = fs.readFileSync(routerPath, "utf8").replace(
+      "Human-authored method text.",
+      [
+        "<!-- activation-policy:router:start -->",
+        "Old router policy.",
+        "<!-- activation-policy:router:end -->",
+        "",
+        "| Request | Route |",
+        "|---|---|",
+        `| \"${request}\" | Primary: \`${mode}-skill\`; Secondary: none |`,
+      ].join("\n"),
+    );
+    fs.writeFileSync(routerPath, router, "utf8");
+
+    assert.throws(
+      () => buildActivationSyncPlan({ repoRoot, policy }),
+      new RegExp(`${mode}-skill.*example.*${mode}`, "i"),
+    );
+  }
+});
 
 test("replaceOwnedRegion changes one region and preserves all authored bytes", () => {
   const filePath = path.join("fixture", "SKILL.md");

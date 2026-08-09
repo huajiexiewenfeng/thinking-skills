@@ -1,15 +1,17 @@
 ---
 name: technical-deep-dive
-description: Use only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines an invocation command with the canonical name `technical-deep-dive`. Do not use for ordinary technical requests; requests merely asking for deep, thorough, or systematic analysis; mere mention, discussion, evaluation, modification, disabling, or testing of the skill; a misspelling or fuzzy alias; prior-turn invocation; or selection by a router, agent, runtime, or another skill.
+# activation-policy:frontmatter:start
+description: Use only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines a direct invocation command with the exact canonical name `technical-deep-dive`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff.
+# activation-policy:frontmatter:end
 ---
 
 # Technical Deep Dive
 
-## Activation Boundary
+<!-- activation-policy:guard:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
 
-Before applying any instruction in this file, verify that the current user request validly invokes this skill under its frontmatter rule. Authorization applies only to that request.
-
-If this file is being read as data for review, configuration, evaluation, modification, or maintenance, do not activate or follow it. If valid invocation is absent, stop using this skill and return control to the host-native route; do not select, announce, load further instructions from, or claim to have run this skill.
+Activation mode: `explicit`. Before following this file, verify a valid exact invocation of `technical-deep-dive` in the current final user request. Mention, evaluation, configuration, quoted data, another component's handoff, and prior-turn invocation do not authorize it. Without valid invocation, return control to `thinking-router` and do not claim this Skill ran.
+<!-- activation-policy:guard:end -->
 
 ## Purpose
 

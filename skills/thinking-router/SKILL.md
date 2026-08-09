@@ -1,9 +1,17 @@
 ---
 name: thinking-router
+# activation-policy:frontmatter:start
 description: Use when a user request needs intent classification, especially when domain work, host-native technical work, or ordinary conversation could each fit.
+# activation-policy:frontmatter:end
 ---
 
 # Thinking Router
+
+<!-- activation-policy:guard:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+Activation mode: `auto`. This Skill is eligible under its authored domain boundaries. Cross-Skill routing remains owned by `thinking-router`.
+<!-- activation-policy:guard:end -->
 
 ## Purpose
 
@@ -16,10 +24,10 @@ It classifies the user's request and chooses exactly one primary route: a Domain
 1. Do not solve the user's substantive problem inside this skill.
 2. Do not assume the request is about software development.
 3. Run the `no-skill` gate before choosing a task-shaped route.
-4. Treat `native` as a first-class route for ordinary task-shaped technical requests that do not validly invoke `technical-deep-dive`.
+4. Treat `native` as a first-class route for ordinary task-shaped requests when no eligible Domain Skill owns the deliverable under the generated activation policy.
 5. Choose exactly one primary route: a domain skill, `native`, or `no-skill`.
 6. Add at most one secondary skill when mixed intent is important.
-7. Never select `technical-deep-dive` as primary or secondary unless the current user request validly invokes it under the explicit-activation rule below.
+7. Apply the generated Activation Modes rules before selecting a primary or secondary Skill. Explicit Skills require valid current-request invocation; Disabled Skills are never eligible.
 8. If routing confidence is low, ask one short routing question.
 9. After routing to a domain skill, follow that skill's method bases and process.
 10. After routing to `native`, do not load a Thinking Skills domain skill merely to supply technical reasoning; use the host model, system and developer rules, tools, and harness.
@@ -49,30 +57,39 @@ Domain skills own their own method bases. For example, `emotional-support` may u
 7. If confidence is low, ask one short routing question.
 8. Announce the selected route briefly only when it helps the user, then proceed.
 
-## Explicit `technical-deep-dive` Activation
+<!-- activation-policy:router:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
 
-`technical-deep-dive` is never an automatic route or secondary skill.
+## Activation Modes
 
-It is validly invoked only when the current user request does one of the following:
+| Skill | Mode |
+|---|---|
+| `article-visual-director` | `auto` |
+| `benchmark-assistant` | `auto` |
+| `content-creator` | `auto` |
+| `conversation-review` | `auto` |
+| `emotional-support` | `auto` |
+| `learning-coach` | `explicit` |
+| `skill-evaluator` | `auto` |
+| `technical-deep-dive` | `explicit` |
+| `thinking-router` | `auto` |
 
-- directly invokes `$thinking-skills:technical-deep-dive`; or
-- combines an invocation command with the canonical name `technical-deep-dive`, for example, "use `technical-deep-dive` to analyze this fault."
+### Mode Rules
 
-Technical subject matter, requests for deep or systematic analysis, mere mention or meta discussion, evaluation or modification, fuzzy aliases, another component's handoff, and prior-request invocation do not qualify.
+- `auto`: eligible under the authored domain routing rules.
+- `explicit`: eligible only after valid exact invocation in the current final user request; otherwise its ordinary domain intent uses `native` unless another Auto Skill owns the deliverable.
+- `disabled`: never select, announce, load, or hand off; a direct invocation receives an unavailable response.
 
-Specific Skill evaluation is a meta deliverable: route it to `skill-evaluator` and treat the Skill being discussed as data. Do not activate that Skill unless the same current request also validly invokes it.
-
-A valid invocation applies only to the current request and overrides topic classification, including in meta discussion. Without it, do not select, announce, load, follow, or claim to have run this skill.
-
-If a valid invocation names this skill but it is unavailable or disabled, say that it cannot be loaded. Do not bypass the host by reading a known file path, and do not silently present a native response as if this skill ran.
+An Explicit or Disabled Skill cannot be added as secondary merely because its subject matter is relevant. Evaluation of a named Skill remains `skill-evaluator`, with the named Skill treated as data, unless the same request validly invokes an enabled Explicit Skill.
+<!-- activation-policy:router:end -->
 
 ## Native Route
 
 `native` is a first-class route for task-shaped technical work. It is not `no-skill`, a fallback, or a routing error.
 
-Use `native` for diagnosis, architecture, implementation, source-level reasoning, debugging, performance analysis, and verification when valid explicit activation is absent. Let the host model, system and developer rules, tools, and harness own the work.
+Use `native` for task-shaped work when the generated activation policy leaves no eligible Domain Skill owning the deliverable. Let the host model, system and developer rules, tools, and harness own the work.
 
-Writing, learning, emotional-support, review, and evaluation requests retain their existing domain routes when those intents own the deliverable. Use `no-skill` for ordinary conversation or an explicit off-ramp; use `native` for ordinary task-shaped technical work.
+Domain intents still pass through the routing tables and generated Activation Modes rules. Use `no-skill` for ordinary conversation or an explicit off-ramp; use `native` for task-shaped work without an eligible Domain Skill.
 
 ## No-Skill Gate
 
@@ -100,8 +117,8 @@ When routed to `no-skill`:
 Do not overuse `no-skill`:
 
 - Writing requests still route to `content-creator`, even if casual.
-- Learning requests still route to `learning-coach`, even if conversational.
-- Technical diagnosis routes to `native` unless the current request validly invokes `technical-deep-dive`.
+- Task-shaped learning requests still pass through candidate-domain and activation-policy checks; they are not `no-skill` merely because they are conversational.
+- Technical diagnosis is task-shaped: apply the candidate-domain and activation-policy checks, using `native` when no eligible Domain Skill owns it.
 - Emotional support requests still route to `emotional-support` when there is clear distress, reflection, or help-seeking.
 - Self-review, trace, eval, and improvement-loop requests still route to the relevant meta skill.
 
@@ -140,9 +157,9 @@ For a session-level off-ramp, such as "this whole session without skill" or "整
 | casual greeting, small talk, banter, play, joking, word game, light meta conversation, "just chatting", "不用帮我", "只是聊聊", "随便聊聊" | `no-skill` |
 | this time without skill, freewheel, use base style, skip framework, don't use thinking-skills, 这次不用 skill, 用 base 风格回我, 别用 thinking-skills, 不要套方法 | `no-skill` |
 
-## MVP Routing Table
+## MVP Candidate-Domain Table
 
-| User Signals | Primary Route |
+| User Signals | Candidate Domain or Native Route |
 |---|---|
 | benchmark, eval, regression test, score, dashboard, test a skill, run benchmark, compare benchmark runs, 跑 benchmark, 做评测, 回归测试, 看分数, 更新 dashboard | `benchmark-assistant` |
 | specific Skill evaluation, Skill performance review, activation-contract review, evaluate a named Skill, 具体 Skill 评测, Skill 性能复盘, 激活契约复盘 | `skill-evaluator` |
@@ -165,20 +182,20 @@ For a session-level off-ramp, such as "this whole session without skill" or "整
 
 When a request contains multiple domains, choose the primary skill based on the user's immediate need.
 
-Learning intent has priority over technical nouns when the user asks to understand, learn, explain, build intuition, or fix a knowledge gap. Technical nouns alone do not make the request a `technical-deep-dive`.
+Learning intent determines the candidate domain before technical nouns when the user asks to understand, learn, explain, build intuition, or fix a knowledge gap. The generated Activation Modes table then decides whether that candidate is eligible.
 
-Use `native` when the user needs diagnosis, architecture choice, implementation guidance, source-level reasoning, adoption decisions, debugging, performance analysis, or verification without valid explicit activation. Use `technical-deep-dive` only when the current request validly invokes it.
+Use `native` when no eligible Auto Skill or validly invoked Explicit Skill owns the immediate deliverable.
 
-Use `article-visual-director` when the article already exists or is substantially complete and the immediate deliverable is a visual plan, generated article assets, or an illustrated Markdown copy. Keep `content-creator` primary while the angle, audience, thesis, structure, or prose is still being developed. Technical nouns inside an article never add `technical-deep-dive` automatically.
+Use `article-visual-director` when the article already exists or is substantially complete and the immediate deliverable is a visual plan, generated article assets, or an illustrated Markdown copy. Keep `content-creator` as the candidate domain while the angle, audience, thesis, structure, or prose is still being developed. Technical nouns inside an article do not make another Skill eligible; apply the generated table.
 
-Examples:
+Examples below apply the generated Activation Modes table:
 
 | Request | Route |
 |---|---|
 | "I want to write an article about why this API design is confusing." | Primary: `content-creator`; Secondary: none |
 | "Add a precise approval flow and policy-boundary diagram to this final technical article." | Primary: `article-visual-director`; Secondary: none |
-| "Explain Kafka like I am new to distributed systems." | Primary: `learning-coach`; Secondary: none |
-| "Can you help me understand this API design before we decide whether to adopt it?" | Primary: `learning-coach`; Secondary: none |
+| "Explain Kafka like I am new to distributed systems." | Primary: `native`; Secondary: none |
+| "Use `learning-coach` to help me understand this API design before we decide whether to adopt it." | Primary: `learning-coach`; Secondary: none |
 | "I am anxious because my project architecture is a mess." | Primary: `emotional-support`; Secondary: none |
 | "Please use `technical-deep-dive` to analyze this production fault." | Primary: `technical-deep-dive`; Secondary: none |
 | "Use `content-creator` to write the article and `technical-deep-dive` to verify its technical semantics." | Primary: `content-creator`; Secondary: `technical-deep-dive` |
@@ -218,7 +235,7 @@ I will use `content-creator` to help shape the audience, angle, and structure.
 I will use `article-visual-director` to plan the article's visual system, wait for approval, and integrate validated assets into a new Markdown copy.
 ```
 
-Only after valid current-request explicit activation:
+Only after the generated activation policy confirms that the selected Skill is eligible:
 
 ```text
 I will use `technical-deep-dive` to analyze the system, constraints, trade-offs, and verification path.
@@ -276,7 +293,7 @@ For `native`:
 Route: native
 Confidence: high
 Secondary: none
-Reason: User asks for ordinary task-shaped technical work without valid explicit activation.
+Reason: User asks for task-shaped work without an eligible Domain Skill under the generated activation policy.
 Next: Use the host model, system and developer rules, tools, and harness.
 ```
 

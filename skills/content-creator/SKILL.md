@@ -1,9 +1,17 @@
 ---
 name: content-creator
+# activation-policy:frontmatter:start
 description: Use when the user is developing articles, essays, posts, newsletters, scripts, talks, titles, outlines, arguments, audience positioning, drafts, or content structure.
+# activation-policy:frontmatter:end
 ---
 
 # Content Creator
+
+<!-- activation-policy:guard:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+Activation mode: `auto`. This Skill is eligible under its authored domain boundaries. Cross-Skill routing remains owned by `thinking-router`.
+<!-- activation-policy:guard:end -->
 
 ## Purpose
 
@@ -24,9 +32,11 @@ Use this skill when the user asks for help with:
 
 ## When Not to Use
 
-- When the main need is technical correctness, architecture, debugging, or system analysis, leave the task to the host-native technical path. Technical subject matter does not add `technical-deep-dive` as secondary; use it only after valid explicit invocation in the current request.
+- When the main need is technical correctness, architecture, debugging, or system analysis, leave the task to the host-native technical path.
 - Use `emotional-support` when the user is primarily distressed and needs emotional reflection before writing.
 - Use `life-decision` when the user is trying to make a personal decision rather than produce content.
+
+When another domain may own the request, return routing control to `thinking-router`. Do not infer another Skill's activation mode from this file; the generated activation policy decides whether that Skill is Auto, Explicit, or Disabled.
 
 ## Method Bases
 

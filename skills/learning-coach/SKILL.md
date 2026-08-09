@@ -1,9 +1,17 @@
 ---
 name: learning-coach
-description: Use when the user wants to understand a concept, learn a topic, build a mental model, explain something in simpler terms, find knowledge gaps, make a study plan, practice retrieval, or turn confusing material into usable understanding.
+# activation-policy:frontmatter:start
+description: Use only when the current user request directly invokes `$thinking-skills:learning-coach` or combines a direct invocation command with the exact canonical name `learning-coach`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff.
+# activation-policy:frontmatter:end
 ---
 
 # Learning Coach
+
+<!-- activation-policy:guard:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+Activation mode: `explicit`. Before following this file, verify a valid exact invocation of `learning-coach` in the current final user request. Mention, evaluation, configuration, quoted data, another component's handoff, and prior-turn invocation do not authorize it. Without valid invocation, return control to `thinking-router` and do not claim this Skill ran.
+<!-- activation-policy:guard:end -->
 
 ## Purpose
 
@@ -26,9 +34,11 @@ Use this skill when the user asks for help with:
 ## When Not to Use
 
 - Use `content-creator` when the main goal is to write for an audience.
-- When the main goal is technical diagnosis, architecture, implementation, debugging, or source-level reasoning, use the host-native technical path. Use `technical-deep-dive` only after valid explicit invocation in the current request.
+- When the main goal is technical diagnosis, architecture, implementation, debugging, or source-level reasoning, use the host-native technical path.
 - Use `emotional-support` when shame, anxiety, overwhelm, or self-blame is the immediate need before learning can continue.
 - Use `conversation-review` when the user asks to review the conversation, skill trace, eval gap, or improvement loop.
+
+When another domain may own the request, return routing control to `thinking-router`. Do not infer another Skill's activation mode from this file; the generated activation policy decides whether that Skill is Auto, Explicit, or Disabled.
 
 ## Method Bases
 
