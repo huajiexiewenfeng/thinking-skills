@@ -139,10 +139,10 @@ function maskInlineLiterals(line) {
   return line
     .replace(/`([^`\n]*)`/g, maskLiteralUnlessCanonical)
     .replace(
-      /(?:"([^"\n]*)"|'([^'\n]*)'|“([^”\n]*)”|‘([^’\n]*)’)/g,
+      /(?:"([^"\n]*)"|'([^'\n]*)'|“([^”\n]*)”|‘([^’\n]*)’|「([^」\n]*)」|『([^』\n]*)』)/g,
       (match, ...captures) => maskLiteralUnlessCanonical(
         match,
-        captures.slice(0, 4).find((capture) => capture !== undefined),
+        captures.slice(0, 6).find((capture) => capture !== undefined),
       ),
     );
 }
@@ -244,8 +244,14 @@ function hasNonDirectiveGoverningScope(sentence, commandStart) {
 
 function hasReportedCommandScope(sentence, commandStart) {
   const governingText = sentence.slice(0, commandStart).trim();
-  return /^(?:(?:according\s+to|in)\s+(?:the\s+)?(?:documentation|docs?|guide|manual)\b|(?:the\s+)?(?:documentation|docs?|guide|manual)\s+(?:says?|states?|reads?|recommends?|instructs?)\b)/i
-    .test(governingText);
+  return (
+    /^(?:according\s+to|in)\s+(?:the\s+)?(?:documentation|docs?|guide|manual)\b/i
+      .test(governingText) ||
+    /\b(?:said|says|stated|states|wrote|writes|recommended|recommends|instructed|instructs)\s*$/i
+      .test(governingText) ||
+    /\btold\s+(?:me|us|you|him|her|them)\s*$/i.test(governingText) ||
+    /\b(?:was|were|am|is|are|be|been)\s+told\s*$/i.test(governingText)
+  );
 }
 
 function sentenceHasDirectInvocation(sentence) {
@@ -289,7 +295,7 @@ function sentenceHasDirectInvocation(sentence) {
     const directObjectDistance = tokenStart - activeCommand.end;
     const directObject =
       directObjectDistance <= 128 &&
-      /^\s*(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+)?$/i
+      /^\s*(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+|the\s+)?$/i
         .test(sentence.slice(activeCommand.end, tokenStart));
     const localPrefix = sentence.slice(
       Math.max(activeCommand.end, tokenStart - 192),

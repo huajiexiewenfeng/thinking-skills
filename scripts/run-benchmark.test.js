@@ -1418,6 +1418,16 @@ test("current-request invocation predicate accepts direct wrappers but rejects r
     ["The guide says, please use technical-deep-dive to analyze faults.", false],
     ["The documentation says: use technical-deep-dive to analyze faults.", false],
     ["$thinking-skills:technical-deep-dive Analyze this fault.", true],
+    ["Use the technical-deep-dive skill to analyze this fault.", true],
+    ["请调用「technical-deep-dive」分析故障。", true],
+    ["My teammate said, use technical-deep-dive to analyze faults.", false],
+    ["The user says: use technical-deep-dive to analyze faults.", false],
+    ["The assistant said, please use technical-deep-dive to analyze faults.", false],
+    ["I was told, use technical-deep-dive to analyze faults.", false],
+    ['Please use the "technical-deep-dive" skill to analyze this fault.', true],
+    ["请调用『technical-deep-dive』分析故障。", true],
+    ["Our operator stated: please activate technical-deep-dive.", false],
+    ["We were told: activate technical-deep-dive.", false],
   ];
 
   assert.deepEqual(
