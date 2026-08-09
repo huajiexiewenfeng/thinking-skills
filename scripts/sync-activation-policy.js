@@ -305,6 +305,26 @@ function nextSiblingPath(targetPath, kind, fsImpl) {
   }
 }
 
+function cleanupWarning(kind, paths, error) {
+  return Object.freeze({
+    kind,
+    ...paths,
+    message: error.message,
+    code: error.code,
+  });
+}
+
+function attachCleanupWarnings(error, cleanupWarnings) {
+  if (cleanupWarnings.length === 0) return error;
+  const combined = [...(error.cleanupWarnings ?? []), ...cleanupWarnings];
+  Object.defineProperty(error, "cleanupWarnings", {
+    value: Object.freeze(combined),
+    enumerable: false,
+    configurable: true,
+  });
+  return error;
+}
+
 function prepareFile(item, fsImpl) {
   const tempPath = nextSiblingPath(item.path, "tmp", fsImpl);
   let descriptor;
@@ -317,13 +337,28 @@ function prepareFile(item, fsImpl) {
     descriptor = undefined;
     return tempPath;
   } catch (error) {
+    const cleanupWarnings = [];
     if (descriptor !== undefined) {
-      try { fsImpl.closeSync(descriptor); } catch {}
+      try {
+        fsImpl.closeSync(descriptor);
+      } catch (cleanupError) {
+        cleanupWarnings.push(cleanupWarning("temp-close", {
+          targetPath: item.path,
+          tempPath,
+        }, cleanupError));
+      }
     }
     if (ownsTemp) {
-      try { fsImpl.unlinkSync(tempPath); } catch {}
+      try {
+        fsImpl.unlinkSync(tempPath);
+      } catch (cleanupError) {
+        cleanupWarnings.push(cleanupWarning("temp-file", {
+          targetPath: item.path,
+          tempPath,
+        }, cleanupError));
+      }
     }
-    throw error;
+    throw attachCleanupWarnings(error, cleanupWarnings);
   }
 }
 
@@ -335,6 +370,51 @@ function currentContents(item, fsImpl) {
 function removeIfPresent(filePath, fsImpl) {
   if (!filePath || !fsImpl.existsSync(filePath)) return;
   fsImpl.unlinkSync(filePath);
+}
+
+function cleanupPreparedTemp(targetPath, tempPath, fsImpl, cleanupWarnings) {
+  try {
+    removeIfPresent(tempPath, fsImpl);
+  } catch (error) {
+    cleanupWarnings.push(cleanupWarning("temp-file", { targetPath, tempPath }, error));
+  }
+}
+
+function allocateBackupDirectory(record, fsImpl) {
+  const prefix = path.join(
+    path.dirname(record.item.path),
+    `${path.basename(record.item.path)}.activation-policy.bak-`,
+  );
+  record.backupDirectory = fsImpl.mkdtempSync(prefix);
+  record.backupPath = path.join(record.backupDirectory, "original");
+}
+
+function cleanupBackupArtifacts(record, fsImpl, cleanupWarnings) {
+  if (!record.backupDirectory) return;
+  if (record.backupCreated) {
+    try {
+      removeIfPresent(record.backupPath, fsImpl);
+      record.backupCreated = false;
+    } catch (error) {
+      cleanupWarnings.push(cleanupWarning("backup-file", {
+        targetPath: record.item.path,
+        backupPath: record.backupPath,
+        backupDirectory: record.backupDirectory,
+      }, error));
+      return;
+    }
+  }
+  try {
+    fsImpl.rmdirSync(record.backupDirectory);
+    record.backupDirectory = null;
+    record.backupPath = null;
+  } catch (error) {
+    cleanupWarnings.push(cleanupWarning("backup-directory", {
+      targetPath: record.item.path,
+      backupPath: record.backupPath,
+      backupDirectory: record.backupDirectory,
+    }, error));
+  }
 }
 
 function applyResult(paths, cleanupWarnings = []) {
@@ -366,67 +446,88 @@ function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
     for (const item of changes) {
       const record = {
         item,
+        backupDirectory: null,
         backupPath: null,
-        backupMoved: false,
+        backupCreated: false,
+        targetMoved: false,
+        installed: false,
         expectedCurrent: item.before,
       };
       committed.push(record);
       if (item.before !== null) {
-        record.backupPath = nextSiblingPath(item.path, "bak", fsImpl);
+        allocateBackupDirectory(record, fsImpl);
         fsImpl.renameSync(item.path, record.backupPath);
-        record.backupMoved = true;
+        record.backupCreated = true;
+        record.targetMoved = true;
         record.expectedCurrent = null;
       }
       if (item.after !== null) {
         fsImpl.renameSync(prepared.get(item.path), item.path);
         prepared.delete(item.path);
+        record.installed = true;
         record.expectedCurrent = item.after;
       }
     }
   } catch (error) {
     const rollbackErrors = [];
+    const cleanupWarnings = [];
     for (const record of committed.reverse()) {
       try {
+        if (!record.targetMoved && !record.installed) {
+          cleanupBackupArtifacts(record, fsImpl, cleanupWarnings);
+          continue;
+        }
         const actual = currentContents(record.item, fsImpl);
         if (actual !== record.expectedCurrent) {
-          const backup = record.backupMoved ? record.backupPath : "<no transaction backup>";
+          const backup = record.backupCreated ? record.backupPath : "<no transaction backup>";
           rollbackErrors.push(
             `rollback conflict for ${record.item.path}; original backup preserved at ${backup}`,
           );
           continue;
         }
-        if (record.expectedCurrent !== null) removeIfPresent(record.item.path, fsImpl);
-        if (record.backupMoved && fsImpl.existsSync(record.backupPath)) {
-          fsImpl.renameSync(record.backupPath, record.item.path);
+        if (record.installed) {
+          removeIfPresent(record.item.path, fsImpl);
+          record.installed = false;
+          record.expectedCurrent = null;
         }
+        if (record.targetMoved && record.backupCreated) {
+          fsImpl.renameSync(record.backupPath, record.item.path);
+          record.backupCreated = false;
+          record.targetMoved = false;
+          record.expectedCurrent = record.item.before;
+        }
+        cleanupBackupArtifacts(record, fsImpl, cleanupWarnings);
       } catch (rollbackError) {
         rollbackErrors.push(`${record.item.path}: ${rollbackError.message}`);
       }
     }
-    for (const tempPath of prepared.values()) {
-      try { removeIfPresent(tempPath, fsImpl); } catch {}
+    for (const [targetPath, tempPath] of prepared) {
+      cleanupPreparedTemp(targetPath, tempPath, fsImpl, cleanupWarnings);
     }
     if (rollbackErrors.length > 0) {
-      throw new Error(`${error.message}; rollback failed: ${rollbackErrors.join("; ")}`, { cause: error });
+      throw attachCleanupWarnings(
+        new Error(`${error.message}; rollback failed: ${rollbackErrors.join("; ")}`, { cause: error }),
+        [...(error.cleanupWarnings ?? []), ...cleanupWarnings],
+      );
     }
-    throw error;
+    throw attachCleanupWarnings(error, cleanupWarnings);
   }
 
   const cleanupWarnings = [];
   for (const record of committed) {
-    if (!record.backupMoved) continue;
-    try {
-      removeIfPresent(record.backupPath, fsImpl);
-    } catch (error) {
-      cleanupWarnings.push(Object.freeze({
-        targetPath: record.item.path,
-        backupPath: record.backupPath,
-        message: error.message,
-        code: error.code,
-      }));
-    }
+    cleanupBackupArtifacts(record, fsImpl, cleanupWarnings);
   }
   return applyResult(changes.map((item) => item.path), cleanupWarnings);
+}
+
+function formatCleanupWarning(warning) {
+  if (warning.kind === "temp-file" || warning.kind === "temp-close") {
+    return `Activation policy cleanup warning: retained temp ${warning.tempPath} for ${warning.targetPath}: ${warning.message}`;
+  }
+  const retainedPath = warning.kind === "backup-directory"
+    ? warning.backupDirectory
+    : warning.backupPath;
+  return `Activation policy cleanup warning: retained backup ${retainedPath} for ${warning.targetPath}: ${warning.message}`;
 }
 
 function parseCliArgs(argv) {
@@ -445,6 +546,7 @@ function main(
     repoRoot = path.resolve(__dirname, ".."),
     stdout = process.stdout,
     stderr = process.stderr,
+    fsImpl = fs,
   } = {},
 ) {
   const options = parseCliArgs(argv);
@@ -464,11 +566,9 @@ function main(
     return 0;
   }
 
-  const applied = applyActivationSyncPlan(plan);
+  const applied = applyActivationSyncPlan(plan, { fsImpl });
   for (const warning of applied.cleanupWarnings) {
-    stderr.write(
-      `Activation policy cleanup warning: retained backup ${warning.backupPath} for ${warning.targetPath}: ${warning.message}\n`,
-    );
+    stderr.write(`${formatCleanupWarning(warning)}\n`);
   }
   return 0;
 }
@@ -477,6 +577,7 @@ if (require.main === module) {
   try {
     process.exitCode = main();
   } catch (error) {
+    for (const warning of error.cleanupWarnings ?? []) console.error(formatCleanupWarning(warning));
     console.error(error.message);
     process.exitCode = 1;
   }

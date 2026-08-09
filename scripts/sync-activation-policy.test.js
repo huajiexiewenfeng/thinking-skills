@@ -347,6 +347,33 @@ test("apply rolls back every target when a prepared rename fails", () => {
   }
 });
 
+test("failed initial target move leaves the original target untouched", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const targetPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
+  const targetBefore = fs.readFileSync(targetPath, "utf8");
+  let targetUnlinks = 0;
+  let backupRestoreAttempts = 0;
+  const fsWithInitialMoveFailure = Object.create(fs);
+  fsWithInitialMoveFailure.renameSync = (source, target) => {
+    if (source === targetPath) throw new Error("injected initial target move failure");
+    if (source.includes(".activation-policy.bak-")) backupRestoreAttempts += 1;
+    return fs.renameSync(source, target);
+  };
+  fsWithInitialMoveFailure.unlinkSync = (filePath) => {
+    if (filePath === targetPath) targetUnlinks += 1;
+    return fs.unlinkSync(filePath);
+  };
+
+  assert.throws(
+    () => applyActivationSyncPlan(plan, { fsImpl: fsWithInitialMoveFailure }),
+    /injected initial target move failure/,
+  );
+  assert.equal(fs.readFileSync(targetPath, "utf8"), targetBefore);
+  assert.equal(targetUnlinks, 0);
+  assert.equal(backupRestoreAttempts, 0);
+});
+
 test("rollback preserves a concurrent user edit and its original backup", () => {
   const { repoRoot, policy } = makeFixtureRepo([
     ["alpha-skill", "auto", "Alpha restored."],
@@ -378,10 +405,35 @@ test("rollback preserves a concurrent user edit and its original backup", () => 
   );
   assert.equal(fs.readFileSync(alphaPath, "utf8"), "USER-EDIT\n");
   assert.equal(fs.readFileSync(zetaPath, "utf8"), zetaBefore);
-  const backups = fs.readdirSync(path.dirname(alphaPath))
-    .filter((name) => name.startsWith(`${path.basename(alphaPath)}.activation-policy.bak-`));
-  assert.equal(backups.length, 1);
-  assert.equal(fs.readFileSync(path.join(path.dirname(alphaPath), backups[0]), "utf8"), alphaBefore);
+  const backupDirectories = fs.readdirSync(path.dirname(alphaPath), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory()
+      && entry.name.startsWith(`${path.basename(alphaPath)}.activation-policy.bak-`));
+  assert.equal(backupDirectories.length, 1);
+  assert.equal(
+    fs.readFileSync(path.join(path.dirname(alphaPath), backupDirectories[0].name, "original"), "utf8"),
+    alphaBefore,
+  );
+});
+
+test("exclusive backup directories never overwrite foreign backup-like paths", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const targetPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
+  const foreignDirectory = `${targetPath}.activation-policy.bak-FOREIGN`;
+  const foreignPath = path.join(foreignDirectory, "original");
+  fs.mkdirSync(foreignDirectory);
+  fs.writeFileSync(foreignPath, "FOREIGN-BACKUP\n", "utf8");
+  let exclusiveBackupAllocations = 0;
+  const fsWithBackupAudit = Object.create(fs);
+  fsWithBackupAudit.mkdtempSync = (prefix) => {
+    exclusiveBackupAllocations += 1;
+    return fs.mkdtempSync(prefix);
+  };
+
+  applyActivationSyncPlan(plan, { fsImpl: fsWithBackupAudit });
+
+  assert.ok(exclusiveBackupAllocations > 0);
+  assert.equal(fs.readFileSync(foreignPath, "utf8"), "FOREIGN-BACKUP\n");
 });
 
 test("apply validates initially-current plan entries before any replacement", () => {
@@ -431,6 +483,39 @@ test("failed exclusive temp open preserves a raced foreign file", () => {
   );
   assert.equal(fs.readFileSync(racedTempPath, "utf8"), "FOREIGN-TEMP\n");
   assert.equal(fs.readFileSync(targetPath, "utf8"), targetBefore);
+});
+
+test("owned temp cleanup failures are surfaced as cleanup warnings", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  let ownedTempPath;
+  const fsWithTempCleanupFailure = Object.create(fs);
+  fsWithTempCleanupFailure.openSync = (filePath, flags, ...rest) => {
+    const descriptor = fs.openSync(filePath, flags, ...rest);
+    if (flags === "wx") ownedTempPath = filePath;
+    return descriptor;
+  };
+  fsWithTempCleanupFailure.writeFileSync = (target, contents, encoding) => {
+    if (typeof target === "number") throw new Error("injected temp write failure");
+    return fs.writeFileSync(target, contents, encoding);
+  };
+  fsWithTempCleanupFailure.unlinkSync = (filePath) => {
+    if (filePath === ownedTempPath) {
+      const error = new Error("injected owned temp cleanup failure");
+      error.code = "EACCES";
+      throw error;
+    }
+    return fs.unlinkSync(filePath);
+  };
+
+  assert.throws(
+    () => applyActivationSyncPlan(plan, { fsImpl: fsWithTempCleanupFailure }),
+    (error) => error.message.includes("injected temp write failure")
+      && error.cleanupWarnings?.length === 1
+      && error.cleanupWarnings[0].tempPath === ownedTempPath
+      && error.cleanupWarnings[0].message.includes("injected owned temp cleanup failure"),
+  );
+  assert.equal(fs.existsSync(ownedTempPath), true);
 });
 
 test("create and delete ownership is bound to the plan repository root", () => {
@@ -494,6 +579,31 @@ test("backup cleanup failure returns a truthful warning after successful commit"
   assert.equal(applied.cleanupWarnings.length, 1);
   assert.match(applied.cleanupWarnings[0].message, /injected backup cleanup failure/);
   assert.equal(fs.existsSync(applied.cleanupWarnings[0].backupPath), true);
+});
+
+test("CLI reports cleanup warnings while returning successful apply status", () => {
+  const { repoRoot } = makeFixtureRepo();
+  const targetPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
+  const stderr = [];
+  const fsWithCleanupFailure = Object.create(fs);
+  fsWithCleanupFailure.unlinkSync = (filePath) => {
+    if (filePath.includes(".activation-policy.bak-")) {
+      const error = new Error("injected CLI backup cleanup failure");
+      error.code = "EACCES";
+      throw error;
+    }
+    return fs.unlinkSync(filePath);
+  };
+
+  const exitCode = main([], {
+    repoRoot,
+    stderr: { write: (text) => stderr.push(text) },
+    fsImpl: fsWithCleanupFailure,
+  });
+
+  assert.equal(exitCode, 0);
+  assert.match(stderr.join(""), /cleanup warning.*retained backup.*injected CLI backup cleanup failure/i);
+  assert.match(fs.readFileSync(targetPath, "utf8"), /Use automatically for demos\./);
 });
 
 test("generated fixture creates and deletions stay inside the exact owned directory", () => {
