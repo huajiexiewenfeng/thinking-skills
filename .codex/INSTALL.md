@@ -51,6 +51,28 @@ Get-ChildItem "$env:USERPROFILE\.agents\skills\thinking-skills"
 
 You should see the Thinking Skills skill directories.
 
+## Apply the Activation Policy
+
+Check the repository-generated policy surfaces, then preview the static Codex
+configuration change. Preview is the default and does not write the config or
+create a backup.
+
+```powershell
+node scripts/sync-activation-policy.js --check
+node scripts/apply-codex-activation-policy.js `
+  --config "$env:USERPROFILE\.codex\config.toml" `
+  --skills-root "$env:USERPROFILE\.agents\skills\thinking-skills"
+
+# After reviewing the preview:
+node scripts/apply-codex-activation-policy.js `
+  --config "$env:USERPROFILE\.codex\config.toml" `
+  --skills-root "$env:USERPROFILE\.agents\skills\thinking-skills" `
+  --apply
+```
+
+Apply mode creates a sibling backup before replacing or bootstrapping the
+managed block. Restart Codex after applying a static disabled-state change.
+
 ## Updating
 
 ```bash
