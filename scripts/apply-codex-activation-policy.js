@@ -75,18 +75,107 @@ function renderManagedBlock({ policy, skillsRoot }) {
   return lines.join("\n");
 }
 
+function tomlStatementBoundaries(text, configPath) {
+  const boundaries = [];
+  let stringMode = null;
+  let squareDepth = 0;
+  let curlyDepth = 0;
+
+  for (const [lineIndex, line] of text.split(/\r?\n/).entries()) {
+    boundaries.push(stringMode === null && squareDepth === 0 && curlyDepth === 0);
+    for (let index = 0; index < line.length;) {
+      if (stringMode === "multiline-basic") {
+        if (line.startsWith('"""', index)) {
+          let backslashes = 0;
+          for (let cursor = index - 1; cursor >= 0 && line[cursor] === "\\"; cursor -= 1) backslashes += 1;
+          if (backslashes % 2 === 0) {
+            stringMode = null;
+            index += 3;
+            continue;
+          }
+        }
+        index += 1;
+        continue;
+      }
+      if (stringMode === "multiline-literal") {
+        if (line.startsWith("'''", index)) {
+          stringMode = null;
+          index += 3;
+        } else index += 1;
+        continue;
+      }
+      if (stringMode === "basic") {
+        if (line[index] === "\\") index += Math.min(2, line.length - index);
+        else if (line[index] === '"') {
+          stringMode = null;
+          index += 1;
+        } else index += 1;
+        continue;
+      }
+      if (stringMode === "literal") {
+        if (line[index] === "'") stringMode = null;
+        index += 1;
+        continue;
+      }
+
+      if (line[index] === "#") break;
+      if (line.startsWith('"""', index)) {
+        stringMode = "multiline-basic";
+        index += 3;
+      } else if (line.startsWith("'''", index)) {
+        stringMode = "multiline-literal";
+        index += 3;
+      } else if (line[index] === '"') {
+        stringMode = "basic";
+        index += 1;
+      } else if (line[index] === "'") {
+        stringMode = "literal";
+        index += 1;
+      } else if (line[index] === "[") {
+        squareDepth += 1;
+        index += 1;
+      } else if (line[index] === "]") {
+        squareDepth -= 1;
+        if (squareDepth < 0) throw new Error(`${configPath}: invalid TOML bracket context on line ${lineIndex + 1}`);
+        index += 1;
+      } else if (line[index] === "{") {
+        curlyDepth += 1;
+        index += 1;
+      } else if (line[index] === "}") {
+        curlyDepth -= 1;
+        if (curlyDepth < 0) throw new Error(`${configPath}: invalid TOML inline-table context on line ${lineIndex + 1}`);
+        index += 1;
+      } else index += 1;
+    }
+    if (stringMode === "basic" || stringMode === "literal") {
+      throw new Error(`${configPath}: unterminated TOML string on line ${lineIndex + 1}`);
+    }
+  }
+  return boundaries;
+}
+
 function analyzeOwnedBlock(configBytes, configPath) {
   const text = configBytes.toString("utf8");
   if (!Buffer.from(text, "utf8").equals(configBytes)) {
     throw new Error(`${configPath}: config must contain valid UTF-8 bytes`);
   }
   const lines = text.split(/\r?\n/);
+  const statementBoundaries = tomlStatementBoundaries(text, configPath);
   const starts = [];
   const ends = [];
   const malformed = [];
   for (const [index, line] of lines.entries()) {
-    if (line === START_MARKER) starts.push(index);
-    else if (line === END_MARKER) ends.push(index);
+    if (line === START_MARKER) {
+      if (!statementBoundaries[index]) {
+        throw new Error(`${configPath}: owned marker must be a top-level TOML comment at a statement boundary`);
+      }
+      starts.push(index);
+    } else if (line === END_MARKER) {
+      if (!statementBoundaries[index]) {
+        throw new Error(`${configPath}: owned marker must be a top-level TOML comment at a statement boundary`);
+      }
+      ends.push(index);
+    }
     else if (line.trim().startsWith(OWNED_MARKER_PREFIX)) malformed.push(index);
   }
 
@@ -221,6 +310,38 @@ function cleanupExactFile(filePath, fsImpl, warnings) {
   }
 }
 
+function attachErrorDetails(error, cleanupWarnings, retainedArtifacts) {
+  const combinedWarnings = Object.freeze([
+    ...(error.cleanupWarnings ?? []),
+    ...cleanupWarnings,
+  ]);
+  const combinedArtifacts = Object.freeze([
+    ...new Set([...(error.retainedArtifacts ?? []), ...retainedArtifacts]),
+  ]);
+  Object.defineProperty(error, "cleanupWarnings", {
+    value: combinedWarnings,
+    enumerable: false,
+    configurable: true,
+  });
+  Object.defineProperty(error, "retainedArtifacts", {
+    value: combinedArtifacts,
+    enumerable: false,
+    configurable: true,
+  });
+  if (combinedArtifacts.length > 0 && !error.message.includes("Retained artifacts:")) {
+    error.message = `${error.message}; Retained artifacts: ${combinedArtifacts.join(", ")}`;
+  }
+  return error;
+}
+
+function formatError(error) {
+  const lines = [error.message];
+  for (const warning of error.cleanupWarnings ?? []) {
+    lines.push(`Cleanup warning; retained artifact ${warning.path}: ${warning.message}`);
+  }
+  return lines.join("\n");
+}
+
 function validateTrustedPlan(plan) {
   const metadata = plan && PLAN_METADATA.get(plan);
   if (!metadata
@@ -259,6 +380,7 @@ function applyCodexActivationPlan(plan, { fsImpl = fs } = {}) {
   let descriptor;
   let ownsTemp = false;
   let targetMoved = false;
+  let conflictTarget = false;
   try {
     descriptor = fsImpl.openSync(tempPath, "wx");
     ownsTemp = true;
@@ -277,8 +399,19 @@ function applyCodexActivationPlan(plan, { fsImpl = fs } = {}) {
 
     fsImpl.renameSync(metadata.configPath, rollbackPath);
     targetMoved = true;
-    fsImpl.renameSync(tempPath, metadata.configPath);
-    ownsTemp = false;
+    const rollbackBytes = fsImpl.readFileSync(rollbackPath);
+    if (!rollbackBytes.equals(metadata.before)) {
+      throw new Error(`${rollbackPath}: rollback bytes changed after move and before install`);
+    }
+    if (fsImpl.existsSync(metadata.configPath)) {
+      conflictTarget = true;
+      throw new Error(
+        `rollback conflict; concurrent target retained at ${metadata.configPath}; original retained at ${rollbackPath}`,
+      );
+    }
+    fsImpl.linkSync(tempPath, metadata.configPath);
+    cleanupExactFile(tempPath, fsImpl, cleanupWarnings);
+    ownsTemp = fsImpl.existsSync(tempPath);
   } catch (error) {
     if (descriptor !== undefined) {
       try {
@@ -288,41 +421,40 @@ function applyCodexActivationPlan(plan, { fsImpl = fs } = {}) {
       }
     }
     if (targetMoved) {
-      try {
-        if (fsImpl.existsSync(metadata.configPath)) {
-          const installed = fsImpl.readFileSync(metadata.configPath);
-          if (!installed.equals(metadata.after)) {
-            throw new Error(`rollback conflict; unexpected bytes retained at ${metadata.configPath}`);
-          }
-          fsImpl.unlinkSync(metadata.configPath);
+      if (fsImpl.existsSync(metadata.configPath)) {
+        conflictTarget = true;
+      } else {
+        try {
+          fsImpl.renameSync(rollbackPath, metadata.configPath);
+          targetMoved = false;
+        } catch (rollbackError) {
+          error.message = `${error.message}; rollback failed: ${rollbackError.message}`;
         }
-        fsImpl.renameSync(rollbackPath, metadata.configPath);
-        targetMoved = false;
-      } catch (rollbackError) {
-        cleanupExactFile(ownsTemp ? tempPath : null, fsImpl, cleanupWarnings);
-        throw new Error(
-          `${error.message}; rollback failed: ${rollbackError.message}; original backup retained at ${metadata.backupPath}`,
-          { cause: error },
-        );
       }
     }
     cleanupExactFile(ownsTemp ? tempPath : null, fsImpl, cleanupWarnings);
-    try {
-      fsImpl.rmdirSync(rollbackDirectory);
-    } catch (cleanupError) {
-      cleanupWarnings.push(Object.freeze({
-        path: rollbackDirectory,
-        message: cleanupError.message,
-        code: cleanupError.code,
-      }));
+    if (!targetMoved) {
+      try {
+        fsImpl.rmdirSync(rollbackDirectory);
+      } catch (cleanupError) {
+        cleanupWarnings.push(Object.freeze({
+          path: rollbackDirectory,
+          message: cleanupError.message,
+          code: cleanupError.code,
+        }));
+      }
     }
-    if (cleanupWarnings.length > 0) {
-      Object.defineProperty(error, "cleanupWarnings", {
-        value: Object.freeze(cleanupWarnings),
-        enumerable: false,
-      });
+    const retainedArtifacts = [];
+    for (const artifactPath of [metadata.backupPath, tempPath, rollbackPath]) {
+      if (fsImpl.existsSync(artifactPath)) retainedArtifacts.push(artifactPath);
     }
-    throw error;
+    if (conflictTarget && fsImpl.existsSync(metadata.configPath)) {
+      retainedArtifacts.push(metadata.configPath);
+    }
+    if (fsImpl.existsSync(rollbackDirectory) && !fsImpl.existsSync(rollbackPath)) {
+      retainedArtifacts.push(rollbackDirectory);
+    }
+    throw attachErrorDetails(error, cleanupWarnings, retainedArtifacts);
   }
 
   cleanupExactFile(rollbackPath, fsImpl, cleanupWarnings);
@@ -429,10 +561,7 @@ if (require.main === module) {
   try {
     process.exitCode = main();
   } catch (error) {
-    for (const warning of error.cleanupWarnings ?? []) {
-      console.error(`Cleanup warning for ${warning.path}: ${warning.message}`);
-    }
-    console.error(error.message);
+    console.error(formatError(error));
     process.exitCode = 1;
   }
 }
@@ -448,5 +577,6 @@ module.exports = {
   applyCodexActivationPlan,
   parseCliArgs,
   formatPreview,
+  formatError,
   main,
 };

@@ -58,6 +58,7 @@ configuration change. Preview is the default and does not write the config or
 create a backup.
 
 ```powershell
+Set-Location "$env:USERPROFILE\.codex\thinking-skills"
 node scripts/sync-activation-policy.js --check
 node scripts/apply-codex-activation-policy.js `
   --config "$env:USERPROFILE\.codex\config.toml" `
@@ -72,6 +73,30 @@ node scripts/apply-codex-activation-policy.js `
 
 Apply mode creates a sibling backup before replacing or bootstrapping the
 managed block. Restart Codex after applying a static disabled-state change.
+
+All repository script commands above assume the current directory is the
+Thinking Skills clone. If you cloned elsewhere, set the location to that
+absolute repository root first.
+
+## Validate Cursor or OpenCode Source Mode
+
+Cursor/OpenCode policy prose does not itself disable Skill discovery. From the
+repository root, run the read-only adapter check before pointing either adapter
+at the unfiltered source `skills/` directory:
+
+```powershell
+node scripts/package-thinking-skills.js --check-source-mode --adapter cursor
+node scripts/package-thinking-skills.js --check-source-mode --adapter opencode
+```
+
+If a future policy contains a Disabled Skill, the source-mode check exits
+non-zero and directs you to a filtered package. Create that package only in an
+explicit absent or empty directory outside the repository and user-profile
+root:
+
+```powershell
+node scripts/package-thinking-skills.js --out "D:\staging\thinking-skills-package"
+```
 
 ## Updating
 

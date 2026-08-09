@@ -12,6 +12,7 @@ const {
   START_MARKER,
   applyCodexActivationPlan,
   buildCodexActivationPlan,
+  formatError,
   main,
   renderManagedBlock,
 } = require("./apply-codex-activation-policy");
@@ -173,20 +174,150 @@ test("a forced replacement failure restores the original config bytes", () => {
   const fixture = makeFixture();
   const original = fs.readFileSync(fixture.configPath);
   const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
-  let renameCount = 0;
   const failingFs = Object.create(fs);
-  failingFs.renameSync = (source, target) => {
-    renameCount += 1;
-    if (renameCount === 2) throw new Error("injected replacement failure");
-    return fs.renameSync(source, target);
+  failingFs.linkSync = () => {
+    throw new Error("injected replacement failure");
   };
 
+  let failure;
   assert.throws(
     () => applyCodexActivationPlan(plan, { fsImpl: failingFs }),
-    /injected replacement failure/,
+    (error) => {
+      failure = error;
+      return /injected replacement failure/.test(error.message);
+    },
   );
   assert.deepEqual(fs.readFileSync(fixture.configPath), original);
   assert.deepEqual(fs.readFileSync(plan.backupPath), original);
+  assert.deepEqual(failure.retainedArtifacts, [plan.backupPath]);
+  assert.match(formatError(failure), new RegExp(plan.backupPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
+
+test("post-move rollback bytes are revalidated before install and safely restored when target is absent", () => {
+  const fixture = makeFixture();
+  const original = fs.readFileSync(fixture.configPath);
+  const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
+  const concurrentBytes = Buffer.from("CONCURRENT-ROLLBACK-BYTES\n", "utf8");
+  let rollbackPath;
+  const racedFs = Object.create(fs);
+  racedFs.renameSync = (source, target) => {
+    const result = fs.renameSync(source, target);
+    if (source === fixture.configPath) {
+      rollbackPath = target;
+      fs.writeFileSync(target, concurrentBytes);
+    }
+    return result;
+  };
+  let failure;
+
+  assert.throws(
+    () => applyCodexActivationPlan(plan, { fsImpl: racedFs }),
+    (error) => {
+      failure = error;
+      return /rollback.*changed.*before install/i.test(error.message);
+    },
+  );
+  assert.deepEqual(fs.readFileSync(fixture.configPath), concurrentBytes);
+  assert.equal(fs.existsSync(rollbackPath), false);
+  assert.deepEqual(fs.readFileSync(plan.backupPath), original);
+  assert.deepEqual(failure.retainedArtifacts, [plan.backupPath]);
+});
+
+test("a target recreated after the original move is preserved with rollback and backup paths", () => {
+  const fixture = makeFixture();
+  const original = fs.readFileSync(fixture.configPath);
+  const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
+  const concurrentBytes = Buffer.from("CONCURRENT-TARGET\n", "utf8");
+  let rollbackPath;
+  const racedFs = Object.create(fs);
+  racedFs.renameSync = (source, target) => {
+    const result = fs.renameSync(source, target);
+    if (source === fixture.configPath) {
+      rollbackPath = target;
+      fs.writeFileSync(fixture.configPath, concurrentBytes);
+    }
+    return result;
+  };
+  let failure;
+
+  assert.throws(
+    () => applyCodexActivationPlan(plan, { fsImpl: racedFs }),
+    (error) => {
+      failure = error;
+      return /rollback conflict/i.test(error.message);
+    },
+  );
+  assert.deepEqual(fs.readFileSync(fixture.configPath), concurrentBytes);
+  assert.deepEqual(fs.readFileSync(rollbackPath), original);
+  assert.deepEqual(fs.readFileSync(plan.backupPath), original);
+  assert.deepEqual(
+    new Set(failure.retainedArtifacts),
+    new Set([fixture.configPath, rollbackPath, plan.backupPath]),
+  );
+  for (const retainedPath of failure.retainedArtifacts) {
+    assert.match(formatError(failure), new RegExp(retainedPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+});
+
+test("an initial target move failure reports the already-created backup path", () => {
+  const fixture = makeFixture();
+  const original = fs.readFileSync(fixture.configPath);
+  const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
+  const busyFs = Object.create(fs);
+  busyFs.renameSync = (source, target) => {
+    if (source === fixture.configPath) {
+      const error = new Error("injected initial EBUSY");
+      error.code = "EBUSY";
+      throw error;
+    }
+    return fs.renameSync(source, target);
+  };
+  let failure;
+
+  assert.throws(
+    () => applyCodexActivationPlan(plan, { fsImpl: busyFs }),
+    (error) => {
+      failure = error;
+      return error.code === "EBUSY";
+    },
+  );
+  assert.deepEqual(fs.readFileSync(fixture.configPath), original);
+  assert.deepEqual(fs.readFileSync(plan.backupPath), original);
+  assert.deepEqual(failure.retainedArtifacts, [plan.backupPath]);
+  assert.match(formatError(failure), /injected initial EBUSY/);
+  assert.match(formatError(failure), new RegExp(plan.backupPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
+
+test("a retained temporary artifact is named in structured error and CLI formatting", () => {
+  const fixture = makeFixture();
+  const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
+  let tempPath;
+  const failingFs = Object.create(fs);
+  failingFs.openSync = (filePath, flags, ...rest) => {
+    const descriptor = fs.openSync(filePath, flags, ...rest);
+    if (flags === "wx") tempPath = filePath;
+    return descriptor;
+  };
+  failingFs.writeFileSync = (target, contents) => {
+    if (typeof target === "number") throw new Error("injected temp write failure");
+    return fs.writeFileSync(target, contents);
+  };
+  failingFs.unlinkSync = (filePath) => {
+    if (filePath === tempPath) throw new Error("injected temp cleanup failure");
+    return fs.unlinkSync(filePath);
+  };
+  let failure;
+
+  assert.throws(
+    () => applyCodexActivationPlan(plan, { fsImpl: failingFs }),
+    (error) => {
+      failure = error;
+      return /injected temp write failure/.test(error.message);
+    },
+  );
+  assert.equal(fs.existsSync(tempPath), true);
+  assert.deepEqual(failure.retainedArtifacts, [tempPath]);
+  assert.match(formatError(failure), new RegExp(tempPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 });
 
 test("zero-marker config safely bootstraps in preview/check/apply while preserving all original bytes", () => {
@@ -249,6 +380,23 @@ test("partial, duplicate, reversed, nested, and malformed owned markers fail clo
       () => buildCodexActivationPlan({ ...fixture, clock: fixedClock }),
       (error) => error.message.includes(fixture.configPath)
         && /marker|owned block/i.test(error.message),
+      name,
+    );
+  }
+});
+
+test("owned markers inside multiline TOML values are rejected as non-top-level context", () => {
+  const cases = [
+    ["multiline basic string", `value = """\n${START_MARKER}\n${GENERATED_COMMENT}\n${END_MARKER}\n"""\n`],
+    ["multiline literal string", `value = '''\n${START_MARKER}\n${GENERATED_COMMENT}\n${END_MARKER}\n'''\n`],
+    ["multiline array", `value = [\n${START_MARKER}\n${GENERATED_COMMENT}\n${END_MARKER}\n]\n`],
+    ["multiline inline table", `value = {\n${START_MARKER}\n${GENERATED_COMMENT}\n${END_MARKER}\n}\n`],
+  ];
+  for (const [name, configText] of cases) {
+    const fixture = makeFixture({ configText });
+    assert.throws(
+      () => buildCodexActivationPlan({ ...fixture, clock: fixedClock }),
+      /top-level TOML comment.*statement boundary/i,
       name,
     );
   }

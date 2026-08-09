@@ -1,4 +1,5 @@
 const assert = require("node:assert/strict");
+const childProcess = require("node:child_process");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
@@ -53,6 +54,27 @@ function makeFixtureRepo() {
   }
 
   return { repoRoot, outputParent, policy: makePolicy(), manifest, policyBytes };
+}
+
+function initializeTrackedFixture(repoRoot) {
+  fs.writeFileSync(
+    path.join(repoRoot, ".gitignore"),
+    "**/__pycache__/\n*.pyc\n*.pyo\n.DS_Store\nignored-cache.tmp\n",
+    "utf8",
+  );
+  childProcess.execFileSync("git", ["init", "--quiet"], { cwd: repoRoot, stdio: "ignore" });
+  childProcess.execFileSync("git", [
+    "add",
+    "--",
+    ".codex-plugin/plugin.json",
+    "config/activation-policy.yaml",
+    "skills",
+    "ATTRIBUTION.md",
+    "LICENSE",
+    "README.md",
+    "README.zh.md",
+    ".gitignore",
+  ], { cwd: repoRoot, stdio: "ignore" });
 }
 
 function assertTreeFileBytesEqual(sourceRoot, targetRoot, relativePath) {
@@ -143,15 +165,68 @@ test("rejects forged plans and requires an explicit CLI output path", () => {
 test("source-mode Cursor and OpenCode deployment rejects Disabled Skills without filtering", () => {
   const policy = makePolicy();
   assert.throws(
-    () => validateSourceModeAdapters({ policy, filteredPackage: false }),
-    (error) => /Cursor.*OpenCode/i.test(error.message)
+    () => validateSourceModeAdapters({ policy, filteredPackage: false, adapter: "cursor" }),
+    (error) => /Cursor/i.test(error.message)
       && /disabled-skill/.test(error.message)
       && /filtered package/i.test(error.message),
   );
-  assert.doesNotThrow(() => validateSourceModeAdapters({ policy, filteredPackage: true }));
+  assert.doesNotThrow(() => validateSourceModeAdapters({
+    policy,
+    filteredPackage: true,
+    adapter: "cursor",
+  }));
   const enabledPolicy = makePolicy();
   enabledPolicy.skills["disabled-skill"].mode = "auto";
-  assert.doesNotThrow(() => validateSourceModeAdapters({ policy: enabledPolicy, filteredPackage: false }));
+  assert.doesNotThrow(() => validateSourceModeAdapters({
+    policy: enabledPolicy,
+    filteredPackage: false,
+    adapter: "opencode",
+  }));
+});
+
+test("source-mode guard is reachable from a read-only Cursor/OpenCode CLI mode", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  for (const adapter of ["cursor", "opencode"]) {
+    const stderr = [];
+    assert.equal(main(["--check-source-mode", "--adapter", adapter], {
+      repoRoot,
+      policy,
+      stderr: { write: (text) => stderr.push(text) },
+    }), 1);
+    assert.match(stderr.join(""), new RegExp(adapter, "i"));
+    assert.match(stderr.join(""), /filtered package/i);
+  }
+
+  const enabledPolicy = makePolicy();
+  enabledPolicy.skills["disabled-skill"].mode = "auto";
+  assert.equal(main(["--check-source-mode", "--adapter", "cursor"], {
+    repoRoot,
+    policy: enabledPolicy,
+    stdout: { write: () => {} },
+  }), 0);
+  assert.throws(
+    () => main(["--check-source-mode"], { repoRoot, policy }),
+    /--adapter.*required/i,
+  );
+  assert.throws(
+    () => main(["--check-source-mode", "--adapter", "other"], { repoRoot, policy }),
+    /adapter.*cursor.*opencode/i,
+  );
+  assert.throws(
+    () => main(["--check-source-mode", "--adapter", "cursor", "--out", "stage"], {
+      repoRoot,
+      policy,
+    }),
+    /cannot.*--out/i,
+  );
+});
+
+test("shipped zero-Disabled policy passes the production source-mode CLI guard", () => {
+  const repoRoot = path.resolve(__dirname, "..");
+  assert.equal(main(["--check-source-mode", "--adapter", "cursor"], {
+    repoRoot,
+    stdout: { write: () => {} },
+  }), 0);
 });
 
 test("CLI creates a caller-selected filtered staging directory", () => {
@@ -195,4 +270,93 @@ test("apply rejects an approved source redirected outside the repository after p
 
   assert.throws(() => applyPackagePlan(plan), /source.*changed after planning/i);
   assert.equal(fs.existsSync(path.join(outputRoot, "skills", "auto-skill", "SECRET.txt")), false);
+});
+
+test("enabled Skill traversal rejects an external junction before planning any recursive copy", () => {
+  const { repoRoot, outputParent, policy } = makeFixtureRepo();
+  const outsideSource = path.join(outputParent, "outside-junction-target");
+  const junction = path.join(repoRoot, "skills", "auto-skill", "assets", "external");
+  fs.mkdirSync(outsideSource);
+  fs.writeFileSync(path.join(outsideSource, "SECRET.txt"), "outside\n", "utf8");
+  fs.symlinkSync(outsideSource, junction, "junction");
+
+  assert.throws(
+    () => buildPackagePlan({
+      repoRoot,
+      outputRoot: path.join(outputParent, "junction-stage"),
+      policy,
+    }),
+    /symbolic link|junction|reparse/i,
+  );
+});
+
+test("a Disabled Skill represented by an external junction is never traversed or packaged", () => {
+  const { repoRoot, outputParent, policy } = makeFixtureRepo();
+  const disabledRoot = path.join(repoRoot, "skills", "disabled-skill");
+  const outsideSource = path.join(outputParent, "disabled-outside-target");
+  fs.rmSync(disabledRoot, { recursive: true });
+  fs.mkdirSync(outsideSource);
+  fs.writeFileSync(path.join(outsideSource, "SECRET.txt"), "disabled outside\n", "utf8");
+  fs.symlinkSync(outsideSource, disabledRoot, "junction");
+  const outputRoot = path.join(outputParent, "disabled-link-stage");
+
+  const plan = buildPackagePlan({ repoRoot, outputRoot, policy });
+  applyPackagePlan(plan);
+
+  assert.equal(fs.existsSync(path.join(outputRoot, "skills", "disabled-skill")), false);
+});
+
+test("fallback walker excludes cache artifacts and never calls recursive cpSync", () => {
+  const { repoRoot, outputParent, policy } = makeFixtureRepo();
+  const skillRoot = path.join(repoRoot, "skills", "auto-skill");
+  fs.mkdirSync(path.join(skillRoot, "__pycache__"));
+  fs.writeFileSync(path.join(skillRoot, "__pycache__", "module.pyc"), "cache", "utf8");
+  fs.writeFileSync(path.join(skillRoot, "module.pyo"), "cache", "utf8");
+  fs.writeFileSync(path.join(skillRoot, ".DS_Store"), "cache", "utf8");
+  const outputRoot = path.join(outputParent, "safe-walker-stage");
+  const plan = buildPackagePlan({ repoRoot, outputRoot, policy });
+  const auditedFs = Object.create(fs);
+  auditedFs.cpSync = () => {
+    throw new Error("recursive cpSync must not be called");
+  };
+
+  applyPackagePlan(plan, { fsImpl: auditedFs });
+
+  assert.equal(fs.existsSync(path.join(outputRoot, "skills", "auto-skill", "__pycache__")), false);
+  assert.equal(fs.existsSync(path.join(outputRoot, "skills", "auto-skill", "module.pyo")), false);
+  assert.equal(fs.existsSync(path.join(outputRoot, "skills", "auto-skill", ".DS_Store")), false);
+});
+
+test("Git tracked inventory excludes ignored and untracked cache files", () => {
+  const { repoRoot, outputParent, policy } = makeFixtureRepo();
+  const skillRoot = path.join(repoRoot, "skills", "auto-skill");
+  fs.mkdirSync(path.join(skillRoot, "__pycache__"));
+  fs.writeFileSync(path.join(skillRoot, "__pycache__", "ignored.pyc"), "ignored", "utf8");
+  fs.writeFileSync(path.join(skillRoot, "ignored-cache.tmp"), "ignored", "utf8");
+  initializeTrackedFixture(repoRoot);
+  fs.writeFileSync(path.join(skillRoot, "untracked-cache.bin"), "untracked", "utf8");
+  const outputRoot = path.join(outputParent, "tracked-stage");
+
+  applyPackagePlan(buildPackagePlan({ repoRoot, outputRoot, policy }));
+
+  assert.equal(fs.existsSync(path.join(outputRoot, "skills", "auto-skill", "SKILL.md")), true);
+  assert.equal(fs.existsSync(path.join(outputRoot, "skills", "auto-skill", "__pycache__")), false);
+  assert.equal(fs.existsSync(path.join(outputRoot, "skills", "auto-skill", "ignored-cache.tmp")), false);
+  assert.equal(fs.existsSync(path.join(outputRoot, "skills", "auto-skill", "untracked-cache.bin")), false);
+});
+
+test("the real repository package plan is file-explicit and excludes the existing __pycache__", () => {
+  const repoRoot = path.resolve(__dirname, "..");
+  const outputParent = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-skills-real-package-plan-"));
+  tempRoots.push(outputParent);
+  const policy = require("./activation-policy").loadActivationPolicy({ repoRoot });
+  const plan = buildPackagePlan({
+    repoRoot,
+    outputRoot: path.join(outputParent, "stage"),
+    policy,
+  });
+
+  assert.equal(plan.copies.every((item) => item.kind === "file"), true);
+  assert.equal(plan.copies.some((item) => item.source.includes("__pycache__")), false);
+  assert.equal(plan.copies.some((item) => /\.py[co]$/i.test(item.source)), false);
 });
