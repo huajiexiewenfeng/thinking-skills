@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const { loadActivationPolicy, skillIdsByMode } = require("./activation-policy");
+const { hasCurrentRequestExplicitSkillInvocation } = require("./explicit-skill-invocation");
 
 const GENERATED_HEADER = "Generated from config/activation-policy.yaml. Do not edit this block.";
 const VALID_MODES = new Set(["auto", "explicit", "disabled"]);
@@ -121,11 +122,15 @@ function renderRouterPolicy(policy) {
     "|---|---|",
     ...rows,
     "",
-    "### Mode Rules",
+    "### Candidate Resolution",
     "",
-    "- `auto`: eligible under the authored domain routing rules.",
-    "- `explicit`: eligible only after valid exact invocation in the current final user request; otherwise its ordinary domain intent uses `native` unless another Auto Skill owns the deliverable.",
-    "- `disabled`: never select, announce, load, or hand off; a direct invocation receives an unavailable response.",
+    "Authored routing identifies a domain candidate from domain ownership only. Apply the candidate's generated mode before selection:",
+    "",
+    "- `auto`: the candidate may be selected.",
+    "- `explicit`: the candidate may be selected only after valid exact canonical invocation in the current final user request.",
+    "- `disabled`: the candidate is never selectable; a direct invocation receives an unavailable response.",
+    "",
+    "When a candidate is not selectable, continue among other appropriate eligible routes or `native`. Task-shaped technical work may resolve to `native`; other intent keeps its authored domain ownership while eligibility is resolved.",
     "",
     "An Explicit or Disabled Skill cannot be added as secondary merely because its subject matter is relevant. Evaluation of a named Skill remains `skill-evaluator`, with the named Skill treated as data, unless the same request validly invokes an enabled Explicit Skill.",
   ].join("\n");
@@ -199,13 +204,15 @@ function escapeRegExp(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function hasValidExactInvocation(request, skillId) {
-  if (request.includes(`$thinking-skills:${skillId}`)) return true;
-  const normalized = request.replace(/`/g, "");
-  return new RegExp(
-    `\\b(?:use|invoke|activate|run|load|apply)\\b[^|\\n]*\\b${escapeRegExp(skillId)}\\b`,
-    "i",
-  ).test(normalized);
+function routerExamplePrompt(requestCell) {
+  const prompt = requestCell.trim();
+  const quotePairs = [["\"", "\""], ["'", "'"], ["“", "”"], ["‘", "’"]];
+  for (const [opening, closing] of quotePairs) {
+    if (prompt.startsWith(opening) && prompt.endsWith(closing)) {
+      return prompt.slice(opening.length, -closing.length);
+    }
+  }
+  return prompt;
 }
 
 function validateRouterExamples(text, policy, filePath) {
@@ -225,15 +232,20 @@ function validateRouterExamples(text, policy, filePath) {
       if (entry.mode === "disabled") {
         throw new Error(`${skillId}: Router example selects disabled Skill`);
       }
-      if (!hasValidExactInvocation(request, skillId)) {
+      const currentRequest = {
+        turns: [{ role: "user", content: routerExamplePrompt(request) }],
+      };
+      if (!hasCurrentRequestExplicitSkillInvocation(currentRequest, skillId)) {
         throw new Error(`${skillId}: Router example selects explicit Skill without valid exact invocation`);
       }
     }
   }
 }
 
-function addOwnedRegionTarget(plan, filePath, regionId, generatedBody) {
-  if (!fs.existsSync(filePath)) return;
+function addRequiredOwnedRegionTarget(plan, filePath, regionId, generatedBody, targetName) {
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`${targetName} activation-policy runtime target is required but missing: ${filePath}`);
+  }
   const before = fs.readFileSync(filePath, "utf8");
   const after = replaceOwnedRegion(before, regionId, generatedBody, filePath);
   plan.push({ path: filePath, before, after });
@@ -245,7 +257,9 @@ function buildActivationSyncPlan({ repoRoot, policy }) {
 
   for (const skillId of sortedSkillIds(policy)) {
     const filePath = path.join(resolvedRoot, "skills", skillId, "SKILL.md");
-    if (!fs.existsSync(filePath)) continue;
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`${skillId}: required Skill activation target is missing: ${filePath}`);
+    }
     const before = fs.readFileSync(filePath, "utf8");
     const description = renderSkillFrontmatterDescription(policy.skills[skillId], skillId);
     let after = replaceOwnedRegion(
@@ -262,17 +276,19 @@ function buildActivationSyncPlan({ repoRoot, policy }) {
     plan.push({ path: filePath, before, after });
   }
 
-  addOwnedRegionTarget(
+  addRequiredOwnedRegionTarget(
     plan,
     path.join(resolvedRoot, ".cursor", "rules", "thinking-skills.mdc"),
     "cursor",
     renderCursorPolicy(policy),
+    "Cursor",
   );
-  addOwnedRegionTarget(
+  addRequiredOwnedRegionTarget(
     plan,
     path.join(resolvedRoot, ".opencode", "plugins", "thinking-skills.js"),
     "runtime",
     renderOpenCodePolicy(policy),
+    "OpenCode",
   );
 
   const generatedRoot = path.join(resolvedRoot, ...GENERATED_FIXTURE_SEGMENTS);

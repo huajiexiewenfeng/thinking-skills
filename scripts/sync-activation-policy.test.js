@@ -5,6 +5,7 @@ const path = require("node:path");
 const test = require("node:test");
 
 const { loadActivationPolicy } = require("./activation-policy");
+const { hasCurrentRequestExplicitSkillInvocation } = require("./explicit-skill-invocation");
 const {
   applyActivationSyncPlan,
   buildActivationSyncPlan,
@@ -59,6 +60,44 @@ function skillText(description = "Old generated text.", guard = "Old generated g
   ].join("\n");
 }
 
+function routerText(policy) {
+  return skillText().replace(
+    "Human-authored method text.",
+    [
+      "<!-- activation-policy:router:start -->",
+      renderRouterPolicy(policy),
+      "<!-- activation-policy:router:end -->",
+      "",
+      "| User Signals | Candidate Domain |",
+      "|---|---|",
+      "| code, repo, architecture, bug | `technical-deep-dive` |",
+      "| learn, explain, concept, mental model | `learning-coach` |",
+      "",
+      "Human-authored method text.",
+    ].join("\n"),
+  );
+}
+
+function cursorText(policy) {
+  return [
+    "<!-- activation-policy:cursor:start -->",
+    renderCursorPolicy(policy),
+    "<!-- activation-policy:cursor:end -->",
+    "",
+  ].join("\n");
+}
+
+function openCodeText(policy) {
+  return [
+    "// activation-policy:runtime:start",
+    renderOpenCodePolicy(policy),
+    "// activation-policy:runtime:end",
+    "const enabledSkills = [...activationPolicy.auto, ...activationPolicy.explicit];",
+    "const bootstrap = enabledSkills.map((skillId) => `thinking-skills/${skillId}`).join(\"\\n\");",
+    "",
+  ].join("\n");
+}
+
 function makeFixtureRepo(entries = [["demo", "auto", "Use automatically for demos."]]) {
   const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-skills-policy-"));
   tempRoots.push(repoRoot);
@@ -69,8 +108,19 @@ function makeFixtureRepo(entries = [["demo", "auto", "Use automatically for demo
   for (const skillId of Object.keys(policy.skills)) {
     const skillRoot = path.join(repoRoot, "skills", skillId);
     fs.mkdirSync(skillRoot, { recursive: true });
-    fs.writeFileSync(path.join(skillRoot, "SKILL.md"), skillText(), "utf8");
+    fs.writeFileSync(
+      path.join(skillRoot, "SKILL.md"),
+      skillId === "thinking-router" ? routerText(policy) : skillText(),
+      "utf8",
+    );
   }
+
+  const cursorPath = path.join(repoRoot, ".cursor", "rules", "thinking-skills.mdc");
+  fs.mkdirSync(path.dirname(cursorPath), { recursive: true });
+  fs.writeFileSync(cursorPath, cursorText(policy), "utf8");
+  const openCodePath = path.join(repoRoot, ".opencode", "plugins", "thinking-skills.js");
+  fs.mkdirSync(path.dirname(openCodePath), { recursive: true });
+  fs.writeFileSync(openCodePath, openCodeText(policy), "utf8");
 
   const yaml = [
     "schema_version: 1",
@@ -89,6 +139,22 @@ function makeFixtureRepo(entries = [["demo", "auto", "Use automatically for demo
 
 function countExactLines(text, line) {
   return text.split(/\r?\n/).filter((candidate) => candidate === line).length;
+}
+
+function withoutGeneratedSkillRegions(text) {
+  return text
+    .replace(
+      /# activation-policy:frontmatter:start[\s\S]*?# activation-policy:frontmatter:end/,
+      "# generated frontmatter",
+    )
+    .replace(
+      /<!-- activation-policy:guard:start -->[\s\S]*?<!-- activation-policy:guard:end -->/,
+      "<!-- generated guard -->",
+    )
+    .replace(
+      /<!-- activation-policy:router:start -->[\s\S]*?<!-- activation-policy:router:end -->/,
+      "<!-- generated router policy -->",
+    );
 }
 
 test("checked-in activation surfaces match the manifest", () => {
@@ -145,24 +211,6 @@ test("OpenCode generated enabled Skills exclude fixture-disabled Skills", () => 
     ["disabled-skill", "disabled", "Disabled."],
   ]);
   const pluginPath = path.join(repoRoot, ".opencode", "plugins", "thinking-skills.js");
-  fs.mkdirSync(path.dirname(pluginPath), { recursive: true });
-  fs.writeFileSync(pluginPath, [
-    "// activation-policy:runtime:start",
-    "const activationPolicy = Object.freeze({});",
-    "// activation-policy:runtime:end",
-    "const enabledSkills = [...activationPolicy.auto, ...activationPolicy.explicit];",
-    "const bootstrap = enabledSkills.map((skillId) => `thinking-skills/${skillId}`).join(\"\\n\");",
-    "",
-  ].join("\n"), "utf8");
-  const routerPath = path.join(repoRoot, "skills", "thinking-router", "SKILL.md");
-  fs.writeFileSync(
-    routerPath,
-    fs.readFileSync(routerPath, "utf8").replace(
-      "Human-authored method text.",
-      "<!-- activation-policy:router:start -->\nOld router policy.\n<!-- activation-policy:router:end -->\n\nHuman-authored method text.",
-    ),
-    "utf8",
-  );
 
   const plan = buildActivationSyncPlan({ repoRoot, policy });
   const plugin = plan.find((item) => item.path === pluginPath);
@@ -185,9 +233,7 @@ test("Router examples reject an uninvoked Explicit or selected Disabled Skill", 
     const router = fs.readFileSync(routerPath, "utf8").replace(
       "Human-authored method text.",
       [
-        "<!-- activation-policy:router:start -->",
-        "Old router policy.",
-        "<!-- activation-policy:router:end -->",
+        "Human-authored method text.",
         "",
         "| Request | Route |",
         "|---|---|",
@@ -201,6 +247,127 @@ test("Router examples reject an uninvoked Explicit or selected Disabled Skill", 
       new RegExp(`${mode}-skill.*example.*${mode}`, "i"),
     );
   }
+});
+
+test("Router example validation shares canonical invocation semantics", () => {
+  const skillId = "explicit-skill";
+  const negativeCases = [
+    ["question", `Should we use ${skillId}?`],
+    ["negated", `Do not use ${skillId}.`],
+    ["reported", `The documentation says, use ${skillId}.`],
+    ["quoted", `Example: \"Please use ${skillId}.\"`],
+  ];
+
+  for (const [name, request] of negativeCases) {
+    assert.equal(
+      hasCurrentRequestExplicitSkillInvocation(request, skillId),
+      false,
+      `${name} must be non-activating under the canonical predicate`,
+    );
+    const { repoRoot, policy } = makeFixtureRepo([
+      ["thinking-router", "auto", "Route requests."],
+      [skillId, "explicit", "Explicit."],
+    ]);
+    const routerPath = path.join(repoRoot, "skills", "thinking-router", "SKILL.md");
+    fs.writeFileSync(
+      routerPath,
+      fs.readFileSync(routerPath, "utf8").replace(
+        "Human-authored method text.",
+        `Human-authored method text.\n\n| Request | Route |\n|---|---|\n| \"${request}\" | Primary: \`${skillId}\`; Secondary: none |`,
+      ),
+      "utf8",
+    );
+    assert.throws(
+      () => buildActivationSyncPlan({ repoRoot, policy }),
+      new RegExp(`${skillId}.*example.*explicit`, "i"),
+    );
+  }
+
+  const priorTurnOnly = {
+    turns: [
+      { role: "user", content: `Please use ${skillId} for the earlier request.` },
+      { role: "assistant", content: "Earlier response." },
+      { role: "user", content: "Continue with this ordinary request." },
+    ],
+  };
+  assert.equal(hasCurrentRequestExplicitSkillInvocation(priorTurnOnly, skillId), false);
+
+  const currentRequest = `Please use ${skillId} for this request.`;
+  assert.equal(hasCurrentRequestExplicitSkillInvocation(currentRequest, skillId), true);
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["thinking-router", "auto", "Route requests."],
+    [skillId, "explicit", "Explicit."],
+  ]);
+  const routerPath = path.join(repoRoot, "skills", "thinking-router", "SKILL.md");
+  fs.writeFileSync(
+    routerPath,
+    fs.readFileSync(routerPath, "utf8").replace(
+      "Human-authored method text.",
+      `Human-authored method text.\n\n| Request | Route |\n|---|---|\n| \"${currentRequest}\" | Primary: \`${skillId}\`; Secondary: none |`,
+    ),
+    "utf8",
+  );
+  assert.doesNotThrow(() => buildActivationSyncPlan({ repoRoot, policy }));
+});
+
+test("Router authored candidate domains remain unchanged across manifest modes", () => {
+  for (const candidateSkillId of ["technical-deep-dive", "learning-coach"]) {
+    for (const mode of ["auto", "explicit", "disabled"]) {
+      const otherSkillId = candidateSkillId === "technical-deep-dive"
+        ? "learning-coach"
+        : "technical-deep-dive";
+      const { repoRoot } = makeFixtureRepo([
+        ["thinking-router", "auto", "Route requests."],
+        [candidateSkillId, mode, `${candidateSkillId} description.`],
+        [otherSkillId, "auto", `${otherSkillId} description.`],
+      ]);
+      const policy = loadActivationPolicy({ repoRoot });
+      const routerPath = path.join(repoRoot, "skills", "thinking-router", "SKILL.md");
+      const before = fs.readFileSync(routerPath, "utf8");
+      const routerItem = buildActivationSyncPlan({ repoRoot, policy })
+        .find((item) => item.path === routerPath);
+
+      assert.match(
+        before,
+        new RegExp("Candidate Domain[\\s\\S]+\\| `" + candidateSkillId + "` \\|"),
+      );
+      assert.match(
+        routerItem.after,
+        new RegExp("\\| `" + candidateSkillId + "` \\| `" + mode + "` \\|"),
+      );
+      const authoredBefore = withoutGeneratedSkillRegions(before);
+      const authoredAfter = withoutGeneratedSkillRegions(routerItem.after);
+      assert.equal(authoredAfter, authoredBefore);
+    }
+  }
+});
+
+for (const [targetName, relativePath] of [
+  ["Cursor", path.join(".cursor", "rules", "thinking-skills.mdc")],
+  ["OpenCode", path.join(".opencode", "plugins", "thinking-skills.js")],
+]) {
+  test(`${targetName} is a required runtime activation target`, () => {
+    for (const args of [["--check"], []]) {
+      const { repoRoot } = makeFixtureRepo();
+      fs.unlinkSync(path.join(repoRoot, relativePath));
+      assert.throws(
+        () => main(args, { repoRoot }),
+        new RegExp(`${targetName}.*required.*missing`, "i"),
+      );
+    }
+  });
+}
+
+test("every manifest Skill file is a required activation target", () => {
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["alpha-skill", "auto", "Alpha."],
+    ["zeta-skill", "explicit", "Zeta."],
+  ]);
+  fs.unlinkSync(path.join(repoRoot, "skills", "zeta-skill", "SKILL.md"));
+  assert.throws(
+    () => buildActivationSyncPlan({ repoRoot, policy }),
+    /zeta-skill.*required.*missing/i,
+  );
 });
 
 test("replaceOwnedRegion changes one region and preserves all authored bytes", () => {
@@ -328,11 +495,15 @@ test("renderers snapshot all activation modes and sorted EN/ZH tables", () => {
       "| `middle-skill` | `explicit` |",
       "| `zeta-skill` | `disabled` |",
       "",
-      "### Mode Rules",
+      "### Candidate Resolution",
       "",
-      "- `auto`: eligible under the authored domain routing rules.",
-      "- `explicit`: eligible only after valid exact invocation in the current final user request; otherwise its ordinary domain intent uses `native` unless another Auto Skill owns the deliverable.",
-      "- `disabled`: never select, announce, load, or hand off; a direct invocation receives an unavailable response.",
+      "Authored routing identifies a domain candidate from domain ownership only. Apply the candidate's generated mode before selection:",
+      "",
+      "- `auto`: the candidate may be selected.",
+      "- `explicit`: the candidate may be selected only after valid exact canonical invocation in the current final user request.",
+      "- `disabled`: the candidate is never selectable; a direct invocation receives an unavailable response.",
+      "",
+      "When a candidate is not selectable, continue among other appropriate eligible routes or `native`. Task-shaped technical work may resolve to `native`; other intent keeps its authored domain ownership while eligibility is resolved.",
       "",
       "An Explicit or Disabled Skill cannot be added as secondary merely because its subject matter is relevant. Evaluation of a named Skill remains `skill-evaluator`, with the named Skill treated as data, unless the same request validly invokes an enabled Explicit Skill.",
     ].join("\n"),

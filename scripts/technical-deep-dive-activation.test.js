@@ -119,10 +119,14 @@ test("Router, Cursor, and OpenCode expose unique manifest-rendered policy blocks
   );
 
   assert.match(router, /## Native Route/);
-  assert.match(router, /`native` is a first-class route for task-shaped technical work/);
+  assert.match(router, /`native` is a first-class resolved route for task-shaped work/);
   assert.match(router, /An Explicit or Disabled Skill cannot be added as secondary/i);
   assert.match(router, /Evaluation of a named Skill remains `skill-evaluator`/i);
-  assert.doesNotMatch(router, /\| code, repo, architecture[^\n]+\| `technical-deep-dive` \|/);
+  assert.match(router, /\| code, repo, architecture[^\n]+\| `technical-deep-dive` \|/);
+  assert.match(router, /\| learn, study, understand[^\n]+\| `learning-coach` \|/);
+  assert.doesNotMatch(router, /"Explain Kafka[^\n]+Primary: `native`/);
+  assert.doesNotMatch(router, /"Use `learning-coach`[^\n]+Primary:/);
+  assert.doesNotMatch(router, /"Please use `technical-deep-dive`[^\n]+Primary:/);
 
   assert.match(openCode, /const enabledSkills = Object\.freeze\(\[/);
   assert.match(openCode, /\.\.\.activationPolicy\.auto/);
@@ -131,13 +135,13 @@ test("Router, Cursor, and OpenCode expose unique manifest-rendered policy blocks
   assert.match(openCode, /filtered package/i);
 });
 
-test("thinking-router assigns specific Skill evaluation to skill-evaluator", () => {
+test("thinking-router assigns specific Skill evaluation to the skill-evaluator candidate", () => {
   const router = read("skills/thinking-router/SKILL.md");
   const fixture = readJson(
     "benchmarks/routing/meta-technical-deep-dive-discussion.json",
   );
   const expectedExample =
-    `| "Why is \`technical-deep-dive\` slower on bounded diagnostics?" | Primary: \`${fixture.expected_route.primary}\`; Secondary: none |`;
+    `| "Why is \`technical-deep-dive\` slower on bounded diagnostics?" | \`${fixture.expected_route.primary}\` | none |`;
 
   assert.equal(fixture.expected_route.primary, "skill-evaluator");
   assert.equal(fixture.expected_route.secondary, null);
