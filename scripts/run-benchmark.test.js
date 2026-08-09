@@ -1505,11 +1505,16 @@ test("current-request invocation predicate preserves governing scope for coordin
     "Please do not inspect the logs and then use technical-deep-dive.",
     "Please don't inspect the logs and then use technical-deep-dive.",
     "Can you inspect the logs and then use technical-deep-dive.",
+    "Please review whether to not only inspect the logs but also use technical-deep-dive.",
+    "I don't want you to not only inspect the logs but also use technical-deep-dive.",
   ];
 
   assert.deepEqual(
     scopedMentions.map((content) => hasValidTechnicalDeepDiveInvocation(content)),
-    [false, false, false, false, false, false, false, false, false, false],
+    [
+      false, false, false, false, false, false,
+      false, false, false, false, false, false,
+    ],
   );
 });
 

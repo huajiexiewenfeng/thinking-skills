@@ -224,13 +224,9 @@ function hasNonDirectiveGoverningScope(sentence, commandStart) {
     sentence.lastIndexOf("，", commandStart - 1),
   ) + 1;
   const governingClause = sentence.slice(boundaryStart, commandStart).trim();
-  if (/\bnot\s+only\b[\s\S]*\bbut\s*$/i.test(governingClause)) {
-    return false;
-  }
-  const scopeWithoutAffirmativeQualifier = governingClause.replace(
-    /\bif\s+needed\b/gi,
-    " ",
-  );
+  const scopeWithoutAffirmativeQualifier = governingClause
+    .replace(/\bnot(?=\s+only\b[\s\S]*\bbut\s*$)/gi, "   ")
+    .replace(/\bif\s+needed\b/gi, " ");
   return (
     /\bnever\b|\b(?:do|does|did|can|could|should|would|will|may|might|must|is|are|was|were|have|has|had)\s+not\b|\b[A-Za-z]+n['’]t\b/i
       .test(scopeWithoutAffirmativeQualifier) ||
