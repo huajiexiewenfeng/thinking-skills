@@ -4,7 +4,15 @@ Independent, domain-neutral AI thinking skills with routing, domain methods, con
 
 English | [简体中文](./README.zh.md)
 
-![Thinking Skills stage 2 system architecture](./docs/assets/thinking-skills-stage2-en.png)
+```mermaid
+flowchart LR
+  Request["User request"] --> Router["thinking-router"]
+  Router --> Domain["Domain Skill"]
+  Router --> Native["native"]
+  Router --> NoSkill["no-skill"]
+  Request -.-> Explicit["Explicit user invocation"]
+  Explicit --> TDD["technical-deep-dive"]
+```
 
 ## What Is This?
 

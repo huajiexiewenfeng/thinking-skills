@@ -24,7 +24,7 @@ Canonical skill content lives in `skills/`. Do not fork or rewrite that content 
 
 ## Skill Map
 
-- `thinking-router`: Use at the start of a request to classify intent and route to a domain skill.
+- `thinking-router`: Use at the start of a request to choose exactly one primary route: a Domain Skill, `native`, or `no-skill`.
 - `content-creator`: Use for articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure.
 - `article-visual-director`: Use when an existing or substantially complete Markdown article needs covers, concept illustrations, exact diagrams, approval-gated generation, and non-destructive image insertion.
 - `native`: Use for ordinary task-shaped technical work without valid explicit activation.

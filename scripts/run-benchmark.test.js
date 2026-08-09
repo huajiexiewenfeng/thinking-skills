@@ -1407,6 +1407,82 @@ test("current-request invocation predicate rejects semantic false positives", ()
   }
 });
 
+test("current-request invocation predicate preserves raw host and CommonMark block boundaries", () => {
+  const invalidRequests = [
+    "Example.\nPlease use technical-deep-dive to analyze this.",
+    "Test.\nPlease use technical-deep-dive to analyze this.",
+    "Data.\nPlease use technical-deep-dive to analyze this.",
+    "Please use technical-deep-dive as data in this example.",
+    "Please use technical-deep-dive as example text for the fixture.",
+    "    Please use technical-deep-dive to analyze this.",
+    "\tPlease use technical-deep-dive to analyze this.",
+    "    $thinking-skills:technical-deep-dive analyze this.",
+    "\t$thinking-skills:technical-deep-dive analyze this.",
+    "   ~~~~text\nExample.\nPlease use technical-deep-dive to analyze this.\n~~~~",
+    "````markdown\n```text\nPlease use technical-deep-dive to analyze this.\n```\n````",
+    "> quoted material\n$thinking-skills:technical-deep-dive analyze this.",
+    "```text\nquoted material\n```\n$thinking-skills:technical-deep-dive analyze this.",
+    "\"quoted material\"\n$thinking-skills:technical-deep-dive analyze this.",
+  ];
+
+  for (const content of invalidRequests) {
+    assert.equal(
+      hasValidTechnicalDeepDiveInvocation(content),
+      false,
+      content,
+    );
+  }
+
+  assert.equal(
+    hasValidTechnicalDeepDiveInvocation(
+      "$thinking-skills:technical-deep-dive Analyze this failure.",
+    ),
+    true,
+  );
+  assert.equal(
+    hasValidTechnicalDeepDiveInvocation(
+      "Test this API, then use technical-deep-dive to analyze the result.",
+    ),
+    true,
+  );
+});
+
+test("current-request invocation predicate finds late commands and requires a final user turn", () => {
+  const longLead = "content-creator to preserve the evidence and article structure ".repeat(12);
+  const longMultiSkillRequest =
+    `Please use ${longLead}and technical-deep-dive to verify the technical semantics.`;
+
+  assert.ok(longMultiSkillRequest.indexOf("technical-deep-dive") > 512);
+  assert.equal(
+    hasValidTechnicalDeepDiveInvocation(longMultiSkillRequest),
+    true,
+  );
+  assert.equal(
+    hasValidTechnicalDeepDiveInvocation({
+      turns: [
+        { role: "user", content: "Please use technical-deep-dive to analyze this." },
+        { role: "assistant", content: "I will analyze it." },
+      ],
+    }),
+    false,
+  );
+  assert.equal(
+    hasValidTechnicalDeepDiveInvocation({
+      turns: [
+        { role: "assistant", content: "Which route should I use?" },
+        { role: "user", content: longMultiSkillRequest },
+      ],
+    }),
+    true,
+  );
+});
+
+test("current-request invocation predicate handles long non-matching input without pathological scanning", () => {
+  const longInput = `${"ordinary technical context ".repeat(20000)}technical deep analysis`;
+
+  assert.equal(hasValidTechnicalDeepDiveInvocation(longInput), false);
+});
+
 test("route gold validation applies the centralized current-request predicate", () => {
   const invalidRequests = [
     { prompt: "Please do not use technical-deep-dive for this failure." },

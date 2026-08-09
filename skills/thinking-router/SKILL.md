@@ -1,6 +1,6 @@
 ---
 name: thinking-router
-description: Use at the start of a user request to classify intent and route to the most appropriate domain-specific thinking skill. Do not assume software development unless explicitly indicated.
+description: Use when a user request needs intent classification, especially when domain work, host-native technical work, or ordinary conversation could each fit.
 ---
 
 # Thinking Router
@@ -9,7 +9,7 @@ description: Use at the start of a user request to classify intent and route to 
 
 `thinking-router` is the entry point for Thinking Skills.
 
-It classifies the user's request and routes it to the best domain-specific thinking skill. It does not answer the user's substantive question.
+It classifies the user's request and chooses exactly one primary route: a Domain Skill, `native`, or `no-skill`. It does not answer the user's substantive question.
 
 ## Hard Rules
 

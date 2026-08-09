@@ -97,92 +97,195 @@ function routeCombinationFailure(route, label) {
   return null;
 }
 
+function maskCharacters(text) {
+  return " ".repeat(text.length);
+}
+
+function parseFenceLine(line) {
+  const match = /^( {0,3})(`{3,}|~{3,})(.*)$/.exec(line);
+  if (!match) return null;
+  return {
+    character: match[2][0],
+    length: match[2].length,
+    rest: match[3],
+  };
+}
+
+function startsDataBlock(line) {
+  return (
+    /^\s*(?:(?:for\s+)?example|sample|test(?:\s+data)?|data|quoted?(?:\s+(?:text|material))?|quotation|the user (?:said|wrote)|the prompt (?:says|contains))\s*(?:[:.]|$)/i
+      .test(line) ||
+    /^\s*(?:review|analy[sz]e|modify|inspect)\b[^\n]{0,160}\bas\s+(?:data|text|an?\s+example)\b/i
+      .test(line) ||
+    /^\s*(?:例如|示例|比如|样例|测试数据|数据|引用|原文)(?:\s|[:：。.，,]|$)/
+      .test(line)
+  );
+}
+
+function maskInlineLiterals(line) {
+  return line
+    .replace(/`([^`\n]*)`/g, (match, inner) =>
+      inner.trim().toLowerCase() === TECHNICAL_DEEP_DIVE
+        ? ` ${inner} `
+        : maskCharacters(match)
+    )
+    .replace(
+      /"[^"\n]*"|'[^'\n]*'|“[^”\n]*”|‘[^’\n]*’/g,
+      (match) => maskCharacters(match),
+    );
+}
+
 function invocationSearchText(text) {
-  let inFence = false;
+  const normalized = text.replace(/\r\n/g, " \n").replace(/\r/g, "\n");
+  let fence = null;
+  let inDataBlock = false;
   const visibleLines = [];
-  for (const line of text.replace(/\r\n?/g, "\n").split("\n")) {
-    if (line.trimStart().startsWith("```")) {
-      inFence = !inFence;
-      visibleLines.push("");
-    } else if (inFence || /^\s*>/.test(line)) {
-      visibleLines.push("");
-    } else {
-      visibleLines.push(line);
+  for (const line of normalized.split("\n")) {
+    const fenceLine = parseFenceLine(line);
+    if (fence) {
+      visibleLines.push(maskCharacters(line));
+      if (
+        fenceLine &&
+        fenceLine.character === fence.character &&
+        fenceLine.length >= fence.length &&
+        !fenceLine.rest.trim()
+      ) {
+        fence = null;
+      }
+      continue;
     }
+
+    if (
+      fenceLine &&
+      !(fenceLine.character === "`" && fenceLine.rest.includes("`"))
+    ) {
+      fence = fenceLine;
+      visibleLines.push(maskCharacters(line));
+      continue;
+    }
+
+    if (!line.trim()) {
+      inDataBlock = false;
+      visibleLines.push(line);
+      continue;
+    }
+
+    if (inDataBlock) {
+      visibleLines.push(maskCharacters(line));
+      continue;
+    }
+
+    if (/^(?: {4}|\t)/.test(line) || /^ {0,3}>/.test(line)) {
+      visibleLines.push(maskCharacters(line));
+      continue;
+    }
+
+    if (startsDataBlock(line)) {
+      inDataBlock = true;
+      visibleLines.push(maskCharacters(line));
+      continue;
+    }
+
+    visibleLines.push(maskInlineLiterals(line));
   }
 
-  return visibleLines
-    .join("\n")
-    .replace(/`([^`\n]+)`/g, (_match, inner) =>
-      inner.trim().toLowerCase() === TECHNICAL_DEEP_DIVE
-        ? TECHNICAL_DEEP_DIVE
-        : " "
-    )
-    .replace(/"[^"\n]*"|'[^'\n]*'|“[^”\n]*”|‘[^’\n]*’/g, " ")
-    .replace(/\be\.g\./gi, "example")
-    .replace(/\s+/g, " ")
-    .trim();
+  return visibleLines.join("\n");
 }
 
-function commandTargetsTechnicalDeepDive(clause) {
-  const boundedClause = clause.slice(0, 512);
-  const english = boundedClause.match(
-    /^(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b\s*(.*)$/i,
-  );
-  const chinese = boundedClause.match(
-    /^(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用)\s*(.*)$/i,
-  );
-  const target = (english || chinese)?.[1];
-  if (!target) return false;
+function sentenceHasDirectInvocation(sentence) {
+  const command = /(?:^|[\n,，])[ \t]*(?:(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b|(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用))/gim;
+  const commands = [...sentence.matchAll(command)].map((match) => ({
+    start: match.index,
+    end: match.index + match[0].length,
+  }));
+  if (!commands.length) return false;
 
-  const canonicalObject = /^(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+)?technical-deep-dive(?=$|[\s,，:：])/i;
-  if (canonicalObject.test(target)) return true;
+  const canonical = /technical-deep-dive/gi;
+  let commandIndex = 0;
+  let activeCommand = null;
+  for (const match of sentence.matchAll(canonical)) {
+    const tokenStart = match.index;
+    const tokenEnd = tokenStart + match[0].length;
+    while (
+      commandIndex < commands.length &&
+      commands[commandIndex].end <= tokenStart
+    ) {
+      activeCommand = commands[commandIndex];
+      commandIndex += 1;
+    }
+    if (!activeCommand) continue;
 
-  return /(?:\b(?:and|plus)\b|(?:并且?|以及))\s*(?:(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b\s*|(?:请\s*)?(?:使用|调用|运行|加载|应用|用)\s*)?(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+)?technical-deep-dive(?=$|[\s,，:：])/i
-    .test(target);
+    const precedingCharacter = sentence[tokenStart - 1] || "";
+    const followingCharacter = sentence[tokenEnd] || "";
+    if (
+      /[A-Za-z0-9_-]/.test(precedingCharacter) ||
+      /[A-Za-z0-9_-]/.test(followingCharacter)
+    ) {
+      continue;
+    }
+
+    const directObjectDistance = tokenStart - activeCommand.end;
+    const directObject =
+      directObjectDistance <= 128 &&
+      /^\s*(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+)?$/i
+        .test(sentence.slice(activeCommand.end, tokenStart));
+    const localPrefix = sentence.slice(
+      Math.max(activeCommand.end, tokenStart - 192),
+      tokenStart,
+    );
+    const listedObject = /(?:\b(?:and|plus)\b|(?:并且?|以及))\s*(?:(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b\s*|(?:请\s*)?(?:使用|调用|运行|加载|应用|用)\s*)?(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+)?$/i
+      .test(localPrefix);
+    if (!directObject && !listedObject) continue;
+
+    const localSuffix = sentence.slice(tokenEnd, tokenEnd + 192);
+    if (
+      /^\s*(?:(?:as|used\s+as|for\s+use\s+as|to\s+use\s+as)\s+(?:(?:an?\s+)?(?:data|example|sample|text|test\s+data|quoted\s+text))\b|(?:作为|当作)(?:数据|示例|样例|文本|测试数据))/i
+        .test(localSuffix)
+    ) {
+      continue;
+    }
+
+    return true;
+  }
+  return false;
 }
 
-function directInvocationClauses(text) {
-  const clauses = [];
-  const dataContext = /(?:\b(?:example|sample|test data|as data|quoted?|quotation|the user (?:said|wrote)|the prompt (?:says|contains))\b|(?:例如|示例|比如|引用|原文|测试数据|作为数据))/i;
+function hasDirectInvocation(text) {
   let sentenceStart = 0;
-
   for (let index = 0; index <= text.length; index += 1) {
     const terminator = text[index] || "";
     if (index < text.length && !".!?;。！？；".includes(terminator)) {
       continue;
     }
 
-    const sentence = text.slice(sentenceStart, index).trim();
+    const sentence = text.slice(sentenceStart, index);
     sentenceStart = index + 1;
-    if (!sentence || terminator === "?" || terminator === "？") continue;
-
-    const parts = sentence.split(/[,，]/);
-    let hasDataContext = false;
-    for (const part of parts) {
-      const clause = part.trim();
-      if (clause && !hasDataContext) clauses.push(clause);
-      if (!hasDataContext && dataContext.test(part)) hasDataContext = true;
+    if (
+      sentence &&
+      terminator !== "?" &&
+      terminator !== "？" &&
+      sentenceHasDirectInvocation(sentence)
+    ) {
+      return true;
     }
   }
-  return clauses;
+  return false;
 }
 
 function hasValidTechnicalDeepDiveInvocation(item) {
   const turns = typeof item === "string"
     ? [{ role: "user", content: item }]
     : getCaseTurns(item);
-  const lastUser = [...turns].reverse().find((turn) => turn.role === "user");
-  if (!lastUser) return false;
+  const finalTurn = turns[turns.length - 1];
+  if (!finalTurn || finalTurn.role !== "user") return false;
 
-  const text = invocationSearchText(lastUser.content);
   if (
-    /^\s*\$thinking-skills:technical-deep-dive(?=$|[\s,.;:!?，。；：！？])/i
-      .test(text)
+    /^(?:[ \t]*(?:\r\n?|\n))* {0,3}\$thinking-skills:technical-deep-dive(?=$|[\s,.;:!?，。；：！？])/i
+      .test(finalTurn.content)
   ) {
     return true;
   }
-  return directInvocationClauses(text).some(commandTargetsTechnicalDeepDive);
+  return hasDirectInvocation(invocationSearchText(finalTurn.content));
 }
 
 function validateRouteFields(item, filePath) {

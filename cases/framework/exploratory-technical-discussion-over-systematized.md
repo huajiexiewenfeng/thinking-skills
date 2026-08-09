@@ -26,14 +26,23 @@ Ceiling-cap review labels:
 - `OVER_SYSTEMATIZATION`
 - `TRACE_LEAKAGE`
 
-## Likely Source
+## Historical Evidence
 
-This is primarily a cross-framework arbitration failure rather than a domain-routing failure:
+The original case recorded this primarily as a cross-framework arbitration failure rather than a domain-routing failure. Preserve these observations as historical evidence, not as the current activation policy:
 
 - The technical domain route was reasonable.
 - The technical analysis skill could have answered directly because enough context was already available.
 - A process skill interpreted exploratory design language as an instruction to enter a full specification workflow.
 - Multiple routing and process layers had no shared protocol for role, phase, preconditions, exclusivity, or enforcement strength.
+
+## Current Route Reassessment
+
+The current explicit-activation contract separates two paths:
+
+- The original ordinary exploratory technical prompt routes to `native` and must not load `technical-deep-dive`. The host model should provide direct feasibility analysis without a duplicate Domain Skill procedure.
+- If the current request explicitly invokes `technical-deep-dive`, that Skill may be selected. Its exploratory conversational style may remain lightweight: answer the feasibility question first, avoid duplicate procedure, and do not create a specification workflow unless the user requests one.
+
+The historical claim that an automatic technical Domain route was reasonable is therefore superseded for current behavior.
 
 ## What Should Have Happened
 
@@ -59,11 +68,13 @@ context:
   - "The user and assistant are already discussing skill-framework architecture."
   - "The user asks for feasibility analysis, not implementation or a formal specification."
 expected:
+  - "Route the ordinary uninvoked prompt to native and do not load technical-deep-dive."
   - "Give a direct feasibility judgment before asking a question."
   - "Explain why a percentage needs an explicit operational meaning."
   - "Offer concrete protocol dimensions or design alternatives."
   - "Preserve an exploratory, collaborative tone."
 must_not:
+  - "Treat technical subject matter alone as a technical-deep-dive invocation."
   - "Create a full implementation or specification plan."
   - "Stop after only asking a clarifying question."
   - "Require design approval before providing substantive analysis."
@@ -79,7 +90,7 @@ quality_checks:
 ### Thinking Skills
 
 - Distinguish exploratory technical discussion from implementation intent.
-- Allow `technical-deep-dive` to remain conversational when no mutation or formal design artifact is requested.
+- Keep the ordinary uninvoked prompt on `native`; when the current request explicitly invokes `technical-deep-dive`, allow it to remain conversational when no mutation or formal design artifact is requested.
 - Add protocol metadata for skill role, phase, influence, hardness, exclusivity, preconditions, and fallback.
 - Add a regression case that protects direct analytical value before clarification.
 

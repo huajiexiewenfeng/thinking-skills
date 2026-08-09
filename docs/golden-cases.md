@@ -197,7 +197,7 @@ Future routing changes could make the assistant choose only one skill for cross-
 ## Eval Form
 
 Input:
-A user asks: "Use `$thinking-skills:technical-deep-dive` to verify the real project context, use `content-creator` to improve this technical article series, then review whether the reusable platform-formatting behavior should be preserved."
+$thinking-skills:technical-deep-dive Verify the real project context, use `content-creator` to improve this technical article series, then review whether the reusable platform-formatting behavior should be preserved.
 
 Expected:
 Honor the current-request `technical-deep-dive` invocation for correctness, use content creation for platform shape, and use conversation review for reusable behavior. Abstract private implementation details, patch the smallest relevant skill rule when asked, verify the diff, and keep unrelated worktree changes untouched.

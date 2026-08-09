@@ -2,6 +2,9 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
+const {
+  hasValidTechnicalDeepDiveInvocation,
+} = require("./run-benchmark");
 
 const root = path.resolve(__dirname, "..");
 
@@ -79,4 +82,58 @@ test("platform bootstraps preserve explicit-only loading", () => {
   assert.match(cursor, /`native`/);
   assert.match(cursor, /technical-deep-dive[^\n]+explicit/i);
   assert.match(openCode, /technical-deep-dive[^\n]+explicit/i);
+});
+
+test("Router metadata and public diagrams expose the three-way primary route", () => {
+  const router = read("skills/thinking-router/SKILL.md").replace(/\r\n?/g, "\n");
+  const cursor = read(".cursor/rules/thinking-skills.mdc");
+  const english = read("README.md");
+  const chinese = read("README.zh.md");
+  const frontmatter = router.match(/^---\n([\s\S]*?)\n---/)?.[1] || "";
+  const purpose = router.match(/## Purpose\n([\s\S]*?)\n## /)?.[1] || "";
+
+  assert.match(frontmatter, /description: Use when a user request needs intent classification/i);
+  assert.doesNotMatch(frontmatter, /route to the most appropriate domain-specific thinking skill/i);
+  assert.match(
+    purpose,
+    /exactly one primary route: a Domain Skill, `native`, or `no-skill`/i,
+  );
+  assert.match(
+    cursor,
+    /`thinking-router`: Use at the start of a request to choose exactly one primary route: a Domain Skill, `native`, or `no-skill`\./,
+  );
+
+  for (const readme of [english, chinese]) {
+    const top = readme.slice(0, 1800);
+    assert.doesNotMatch(top, /thinking-skills-stage2-(?:en|zh)\.png/);
+    assert.match(top, /Router\s*-->\s*Domain/);
+    assert.match(top, /Router\s*-->\s*Native/);
+    assert.match(top, /Router\s*-->\s*NoSkill/);
+    assert.match(top, /Explicit\s*-->\s*TDD/);
+    assert.doesNotMatch(top, /Tech\s*-->\s*TDD/);
+  }
+});
+
+test("golden-case input is raw and passes the shared invocation predicate", () => {
+  const goldenCase = read("docs/golden-cases.md")
+    .replace(/\r\n?/g, "\n")
+    .split("# Golden Case: Multi-Skill Collaboration Improvement Loop")[1];
+  const input = goldenCase.match(/## Eval Form\s+Input:\s*\n([\s\S]*?)\n\s*Expected:/)?.[1].trim();
+
+  assert.ok(input, "golden-case Eval Form must include a raw input");
+  assert.match(input, /^\$thinking-skills:technical-deep-dive\b/);
+  assert.equal(hasValidTechnicalDeepDiveInvocation(input), true);
+});
+
+test("exploratory technical case distinguishes native and explicit invocation paths", () => {
+  const historicalCase = read(
+    "cases/framework/exploratory-technical-discussion-over-systematized.md",
+  );
+
+  assert.match(historicalCase, /## Historical Evidence/);
+  assert.match(historicalCase, /## Current Route Reassessment/);
+  assert.match(historicalCase, /ordinary exploratory technical prompt[^\n]+`native`/i);
+  assert.match(historicalCase, /must not load `technical-deep-dive`/i);
+  assert.match(historicalCase, /explicitly invokes `technical-deep-dive`/i);
+  assert.match(historicalCase, /may remain lightweight/i);
 });

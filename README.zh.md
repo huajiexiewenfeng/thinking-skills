@@ -4,7 +4,15 @@
 
 [English](./README.md) | 简体中文
 
-![Thinking Skills 第二阶段系统架构](./docs/assets/thinking-skills-stage2-zh.png)
+```mermaid
+flowchart LR
+  Request["用户请求"] --> Router["thinking-router"]
+  Router --> Domain["Domain Skill"]
+  Router --> Native["native"]
+  Router --> NoSkill["no-skill"]
+  Request -.-> Explicit["当前用户请求显式调用"]
+  Explicit --> TDD["technical-deep-dive"]
+```
 
 ## 这是什么？
 
