@@ -6,6 +6,7 @@ const { loadActivationPolicy, skillIdsByMode } = require("./activation-policy");
 const GENERATED_HEADER = "Generated from config/activation-policy.yaml. Do not edit this block.";
 const VALID_MODES = new Set(["auto", "explicit", "disabled"]);
 const GENERATED_FIXTURE_SEGMENTS = ["benchmarks", "generated", "activation-policy"];
+const PLAN_METADATA = Symbol("activation-policy-plan-metadata");
 let uniqueFileCounter = 0;
 
 function markerPair(regionId, filePath) {
@@ -70,7 +71,12 @@ function replaceOwnedRegion(text, regionId, generatedBody, filePath) {
   const startIndex = lineStartOffset(text, startLine);
   const endIndex = lineStartOffset(text, endLine);
   const body = generatedBody.replace(/\r\n?/g, "\n").replace(/^\n+|\n+$/g, "");
-  const replacement = body === "" ? "\n" : `\n${body}\n`;
+  const ownedText = text.slice(startIndex + startMarker.length, endIndex);
+  const leadingBoundary = /^(\r\n|\n)/.exec(ownedText)?.[0] ?? "\n";
+  const trailingBoundary = /(\r\n|\n)$/.exec(ownedText)?.[0] ?? leadingBoundary;
+  const replacement = body === ""
+    ? leadingBoundary
+    : `${leadingBoundary}${body}${trailingBoundary}`;
   return `${text.slice(0, startIndex + startMarker.length)}${replacement}${text.slice(endIndex)}`;
 }
 
@@ -235,7 +241,15 @@ function buildActivationSyncPlan({ repoRoot, policy }) {
     }
   }
 
-  return plan.sort((left, right) => left.path.localeCompare(right.path, "en"));
+  plan.sort((left, right) => left.path.localeCompare(right.path, "en"));
+  Object.defineProperty(plan, PLAN_METADATA, {
+    value: Object.freeze({
+      repoRoot: resolvedRoot,
+      generatedRoot,
+    }),
+    enumerable: false,
+  });
+  return plan;
 }
 
 function checkActivationSyncPlan(plan) {
@@ -245,15 +259,19 @@ function checkActivationSyncPlan(plan) {
     .sort((left, right) => left.localeCompare(right, "en"));
 }
 
-function isGeneratedFixturePath(filePath) {
-  const parentParts = path.resolve(path.dirname(filePath)).split(path.sep).filter(Boolean);
-  const expected = GENERATED_FIXTURE_SEGMENTS;
-  if (parentParts.length < expected.length) return false;
-  const suffix = parentParts.slice(-expected.length);
-  return suffix.every((part, index) => part.toLowerCase() === expected[index]);
+function comparablePath(filePath) {
+  const resolved = path.resolve(filePath);
+  return process.platform === "win32" ? resolved.toLowerCase() : resolved;
 }
 
 function validateApplyPlan(plan) {
+  if (!Array.isArray(plan)) throw new Error("Activation sync plan must be an array");
+  const metadata = plan[PLAN_METADATA];
+  const trustedGeneratedRoot = metadata
+    && comparablePath(metadata.generatedRoot)
+      === comparablePath(path.join(metadata.repoRoot, ...GENERATED_FIXTURE_SEGMENTS))
+    ? metadata.generatedRoot
+    : null;
   const seen = new Set();
   for (const item of plan) {
     if (!item || !path.isAbsolute(item.path)) throw new Error("Activation sync plan paths must be absolute");
@@ -267,9 +285,14 @@ function validateApplyPlan(plan) {
     if (item.after !== null && typeof item.after !== "string") {
       throw new Error(`${item.path}: plan after must be a string or null`);
     }
-    if ((item.before === null || item.after === null)
-      && (!isGeneratedFixturePath(item.path) || path.extname(item.path) !== ".json")) {
-      throw new Error(`${item.path}: creates and deletions are allowed only in the generated activation fixture directory`);
+    if ((item.before === null || item.after === null) && (
+      trustedGeneratedRoot === null
+      || comparablePath(path.dirname(item.path)) !== comparablePath(trustedGeneratedRoot)
+      || path.extname(item.path) !== ".json"
+    )) {
+      throw new Error(
+        `${item.path}: creates and deletions require the trusted repository generated fixture root (generated activation fixture directory)`,
+      );
     }
   }
 }
@@ -285,8 +308,10 @@ function nextSiblingPath(targetPath, kind, fsImpl) {
 function prepareFile(item, fsImpl) {
   const tempPath = nextSiblingPath(item.path, "tmp", fsImpl);
   let descriptor;
+  let ownsTemp = false;
   try {
     descriptor = fsImpl.openSync(tempPath, "wx");
+    ownsTemp = true;
     fsImpl.writeFileSync(descriptor, item.after, "utf8");
     fsImpl.closeSync(descriptor);
     descriptor = undefined;
@@ -295,7 +320,9 @@ function prepareFile(item, fsImpl) {
     if (descriptor !== undefined) {
       try { fsImpl.closeSync(descriptor); } catch {}
     }
-    try { fsImpl.unlinkSync(tempPath); } catch {}
+    if (ownsTemp) {
+      try { fsImpl.unlinkSync(tempPath); } catch {}
+    }
     throw error;
   }
 }
@@ -310,10 +337,18 @@ function removeIfPresent(filePath, fsImpl) {
   fsImpl.unlinkSync(filePath);
 }
 
+function applyResult(paths, cleanupWarnings = []) {
+  Object.defineProperty(paths, "cleanupWarnings", {
+    value: Object.freeze(cleanupWarnings),
+    enumerable: false,
+  });
+  return paths;
+}
+
 function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
   validateApplyPlan(plan);
   const changes = plan.filter((item) => item.before !== item.after);
-  if (changes.length === 0) return [];
+  if (changes.length === 0) return applyResult([]);
 
   const prepared = new Map();
   const committed = [];
@@ -322,7 +357,7 @@ function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
       if (item.after !== null) prepared.set(item.path, prepareFile(item, fsImpl));
     }
 
-    for (const item of changes) {
+    for (const item of plan) {
       if (currentContents(item, fsImpl) !== item.before) {
         throw new Error(`${item.path}: target changed after planning`);
       }
@@ -332,25 +367,36 @@ function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
       const record = {
         item,
         backupPath: null,
-        installed: false,
+        backupMoved: false,
+        expectedCurrent: item.before,
       };
       committed.push(record);
       if (item.before !== null) {
         record.backupPath = nextSiblingPath(item.path, "bak", fsImpl);
         fsImpl.renameSync(item.path, record.backupPath);
+        record.backupMoved = true;
+        record.expectedCurrent = null;
       }
       if (item.after !== null) {
         fsImpl.renameSync(prepared.get(item.path), item.path);
         prepared.delete(item.path);
-        record.installed = true;
+        record.expectedCurrent = item.after;
       }
     }
   } catch (error) {
     const rollbackErrors = [];
     for (const record of committed.reverse()) {
       try {
-        if (record.installed) removeIfPresent(record.item.path, fsImpl);
-        if (record.backupPath && fsImpl.existsSync(record.backupPath)) {
+        const actual = currentContents(record.item, fsImpl);
+        if (actual !== record.expectedCurrent) {
+          const backup = record.backupMoved ? record.backupPath : "<no transaction backup>";
+          rollbackErrors.push(
+            `rollback conflict for ${record.item.path}; original backup preserved at ${backup}`,
+          );
+          continue;
+        }
+        if (record.expectedCurrent !== null) removeIfPresent(record.item.path, fsImpl);
+        if (record.backupMoved && fsImpl.existsSync(record.backupPath)) {
           fsImpl.renameSync(record.backupPath, record.item.path);
         }
       } catch (rollbackError) {
@@ -366,10 +412,21 @@ function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
     throw error;
   }
 
+  const cleanupWarnings = [];
   for (const record of committed) {
-    if (record.backupPath) removeIfPresent(record.backupPath, fsImpl);
+    if (!record.backupMoved) continue;
+    try {
+      removeIfPresent(record.backupPath, fsImpl);
+    } catch (error) {
+      cleanupWarnings.push(Object.freeze({
+        targetPath: record.item.path,
+        backupPath: record.backupPath,
+        message: error.message,
+        code: error.code,
+      }));
+    }
   }
-  return changes.map((item) => item.path);
+  return applyResult(changes.map((item) => item.path), cleanupWarnings);
 }
 
 function parseCliArgs(argv) {
@@ -407,7 +464,12 @@ function main(
     return 0;
   }
 
-  applyActivationSyncPlan(plan);
+  const applied = applyActivationSyncPlan(plan);
+  for (const warning of applied.cleanupWarnings) {
+    stderr.write(
+      `Activation policy cleanup warning: retained backup ${warning.backupPath} for ${warning.targetPath}: ${warning.message}\n`,
+    );
+  }
   return 0;
 }
 
