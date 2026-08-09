@@ -2,7 +2,7 @@
   "id": "learning-technical-noun-001",
   "kind": "response",
   "skill": "learning-coach",
-  "prompt": "Explain Kafka like I am new to distributed systems, including how partitions, replication, and consumer groups fit together architecturally.",
+  "prompt": "$thinking-skills:learning-coach Explain Kafka like I am new to distributed systems, including how partitions, replication, and consumer groups fit together architecturally, so I can build a usable mental model.",
   "expected": [],
   "must_not": [],
   "quality": {

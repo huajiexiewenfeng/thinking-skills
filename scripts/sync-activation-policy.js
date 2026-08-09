@@ -8,6 +8,78 @@ const GENERATED_HEADER = "Generated from config/activation-policy.yaml. Do not e
 const VALID_MODES = new Set(["auto", "explicit", "disabled"]);
 const GENERATED_FIXTURE_SEGMENTS = ["benchmarks", "generated", "activation-policy"];
 const PLAN_METADATA = Symbol("activation-policy-plan-metadata");
+const ACTIVATION_BENCHMARK_PROFILES = Object.freeze({
+  "article-visual-director": Object.freeze({
+    domain: "content",
+    objective: "deliver",
+    mutation: "requested",
+    artifact: "visual system",
+    artifact_sink: "workspace",
+  }),
+  "benchmark-assistant": Object.freeze({
+    domain: "meta",
+    objective: "review",
+    mutation: "none",
+    artifact: "benchmark analysis",
+    artifact_sink: "chat",
+  }),
+  "content-creator": Object.freeze({
+    domain: "content",
+    objective: "deliver",
+    mutation: "none",
+    artifact: "content draft",
+    artifact_sink: "chat",
+  }),
+  "conversation-review": Object.freeze({
+    domain: "meta",
+    objective: "review",
+    mutation: "none",
+    artifact: "conversation review",
+    artifact_sink: "chat",
+  }),
+  "emotional-support": Object.freeze({
+    domain: "emotional",
+    objective: "explore",
+    mutation: "none",
+    artifact: "support",
+    artifact_sink: "chat",
+  }),
+  "learning-coach": Object.freeze({
+    domain: "learning",
+    objective: "explore",
+    mutation: "none",
+    artifact: "guided understanding",
+    artifact_sink: "chat",
+  }),
+  "skill-evaluator": Object.freeze({
+    domain: "meta",
+    objective: "review",
+    mutation: "none",
+    artifact: "skill evaluation",
+    artifact_sink: "chat",
+  }),
+  "technical-deep-dive": Object.freeze({
+    domain: "technical",
+    objective: "explore",
+    mutation: "none",
+    artifact: "analysis",
+    artifact_sink: "chat",
+  }),
+  "thinking-router": Object.freeze({
+    domain: "meta",
+    objective: "decide",
+    mutation: "none",
+    artifact: "routing decision",
+    artifact_sink: "chat",
+  }),
+});
+const DEFAULT_ACTIVATION_BENCHMARK_PROFILE = Object.freeze({
+  domain: "none",
+  objective: "explore",
+  mutation: "none",
+  artifact: "activation result",
+  artifact_sink: "chat",
+});
 let uniqueFileCounter = 0;
 
 function markerPair(regionId, filePath) {
@@ -188,6 +260,9 @@ function renderActivationBenchmarkCases(policy) {
         role: "user",
         content: `$thinking-skills:${skillId} Help me work through this request.`,
       }],
+      expected_profile: {
+        ...(ACTIVATION_BENCHMARK_PROFILES[skillId] ?? DEFAULT_ACTIVATION_BENCHMARK_PROFILE),
+      },
       expected_route: { primary: selected, secondary: null },
       expected_advisory: [],
       must_not_select: entry.mode === "explicit" ? ["native", "no-skill"] : [skillId],
@@ -292,8 +367,8 @@ function buildActivationSyncPlan({ repoRoot, policy }) {
   );
 
   const generatedRoot = path.join(resolvedRoot, ...GENERATED_FIXTURE_SEGMENTS);
+  const desired = new Map(renderActivationBenchmarkCases(policy).map((item) => [item.fileName, item.content]));
   if (fs.existsSync(generatedRoot)) {
-    const desired = new Map(renderActivationBenchmarkCases(policy).map((item) => [item.fileName, item.content]));
     const entries = fs.readdirSync(generatedRoot, { withFileTypes: true });
     for (const entry of entries) {
       if (!entry.isFile() || path.extname(entry.name) !== ".json") {
@@ -308,9 +383,9 @@ function buildActivationSyncPlan({ repoRoot, policy }) {
         plan.push({ path: filePath, before, after: null });
       }
     }
-    for (const [fileName, after] of desired) {
-      plan.push({ path: path.join(generatedRoot, fileName), before: null, after });
-    }
+  }
+  for (const [fileName, after] of desired) {
+    plan.push({ path: path.join(generatedRoot, fileName), before: null, after });
   }
 
   plan.sort((left, right) => left.path.localeCompare(right.path, "en"));
@@ -452,6 +527,37 @@ function cleanupPreparedTemp(targetPath, tempPath, fsImpl, cleanupWarnings) {
   }
 }
 
+function ensureGeneratedFixtureRoot(plan, changes, fsImpl, createdDirectories) {
+  if (!changes.some((item) => item.before === null && item.after !== null)) return;
+  const metadata = plan[PLAN_METADATA];
+  const generatedRoot = metadata.generatedRoot;
+  const generatedParent = path.dirname(generatedRoot);
+  const benchmarksRoot = path.dirname(generatedParent);
+  if (!fsImpl.existsSync(benchmarksRoot) || !fsImpl.statSync(benchmarksRoot).isDirectory()) {
+    throw new Error(`${benchmarksRoot}: benchmark root is required before generating activation fixtures`);
+  }
+  for (const directory of [generatedParent, generatedRoot]) {
+    if (fsImpl.existsSync(directory)) {
+      if (!fsImpl.statSync(directory).isDirectory()) {
+        throw new Error(`${directory}: generated activation fixture path must be a directory`);
+      }
+      continue;
+    }
+    fsImpl.mkdirSync(directory);
+    createdDirectories.push(directory);
+  }
+}
+
+function cleanupCreatedDirectories(createdDirectories, fsImpl, cleanupWarnings) {
+  for (const directory of [...createdDirectories].reverse()) {
+    try {
+      fsImpl.rmdirSync(directory);
+    } catch (error) {
+      cleanupWarnings.push(cleanupWarning("generated-directory", { directory }, error));
+    }
+  }
+}
+
 function allocateBackupDirectory(record, fsImpl) {
   const prefix = path.join(
     path.dirname(record.item.path),
@@ -504,7 +610,9 @@ function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
 
   const prepared = new Map();
   const committed = [];
+  const createdDirectories = [];
   try {
+    ensureGeneratedFixtureRoot(plan, changes, fsImpl, createdDirectories);
     for (const item of changes) {
       if (item.after !== null) prepared.set(item.path, prepareFile(item, fsImpl));
     }
@@ -576,6 +684,7 @@ function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
     for (const [targetPath, tempPath] of prepared) {
       cleanupPreparedTemp(targetPath, tempPath, fsImpl, cleanupWarnings);
     }
+    cleanupCreatedDirectories(createdDirectories, fsImpl, cleanupWarnings);
     if (rollbackErrors.length > 0) {
       throw attachCleanupWarnings(
         new Error(`${error.message}; rollback failed: ${rollbackErrors.join("; ")}`, { cause: error }),
@@ -593,6 +702,9 @@ function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
 }
 
 function formatCleanupWarning(warning) {
+  if (warning.kind === "generated-directory") {
+    return `Activation policy cleanup warning: retained generated directory ${warning.directory}: ${warning.message}`;
+  }
   if (warning.kind === "temp-file" || warning.kind === "temp-close") {
     return `Activation policy cleanup warning: retained temp ${warning.tempPath} for ${warning.targetPath}: ${warning.message}`;
   }

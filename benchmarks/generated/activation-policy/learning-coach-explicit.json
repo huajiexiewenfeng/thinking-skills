@@ -1,0 +1,26 @@
+{
+  "id": "activation-explicit-learning-coach-001",
+  "kind": "route",
+  "turns": [
+    {
+      "role": "user",
+      "content": "$thinking-skills:learning-coach Help me work through this request."
+    }
+  ],
+  "expected_profile": {
+    "domain": "learning",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "guided understanding",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "learning-coach",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": [
+    "native",
+    "no-skill"
+  ]
+}

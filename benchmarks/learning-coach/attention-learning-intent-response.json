@@ -2,7 +2,7 @@
   "id": "learning-attention-intent-response-001",
   "kind": "response",
   "skill": "learning-coach",
-  "prompt": "I read about attention in transformers but I still do not understand it.",
+  "prompt": "Please use learning-coach to help me understand attention in transformers. I have read about it but still do not understand what it is doing.",
   "expected": [],
   "must_not": [],
   "quality": {

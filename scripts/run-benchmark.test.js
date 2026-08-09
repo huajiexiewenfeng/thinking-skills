@@ -27,7 +27,7 @@ const {
   buildDashboard,
   loadRunReports,
 } = require("./update-benchmark-dashboard");
-const { loadActivationPolicy } = require("./activation-policy");
+const { loadActivationPolicy, skillIdsByMode } = require("./activation-policy");
 
 const defaultActivationPolicy = loadActivationPolicy({
   repoRoot: path.resolve(__dirname, ".."),
@@ -1515,19 +1515,83 @@ test("legacy hybrid scenarios retain separate route and response evidence", () =
   }
 });
 
-test("technical-deep-dive route gold requires current-turn explicit user invocation", () => {
-  const cases = loadBenchmarkCases("benchmarks/routing");
-  const selectedCases = cases.filter(({ expected_route: route }) =>
-    route.primary === "technical-deep-dive" ||
-    route.secondary === "technical-deep-dive"
-  );
+test("route golds obey configured activation modes", () => {
+  const cases = loadBenchmarkCases("benchmarks");
+  const explicitIds = skillIdsByMode(defaultActivationPolicy, "explicit");
+  const disabledIds = skillIdsByMode(defaultActivationPolicy, "disabled");
 
-  assert.equal(selectedCases.length, 5);
-  for (const benchmarkCase of selectedCases) {
+  for (const benchmarkCase of cases.filter((item) => item.kind === "route")) {
+    const selected = [
+      benchmarkCase.expected_route.primary,
+      benchmarkCase.expected_route.secondary,
+      ...benchmarkCase.expected_advisory,
+    ].filter(Boolean);
+    for (const skillId of explicitIds.filter((id) => selected.includes(id))) {
+      assert.equal(
+        hasCurrentRequestExplicitSkillInvocation(benchmarkCase, skillId),
+        true,
+        `${benchmarkCase.file}: ${skillId}`,
+      );
+    }
+    for (const skillId of disabledIds) {
+      assert.equal(selected.includes(skillId), false, benchmarkCase.file);
+    }
+  }
+});
+
+test("learning-coach response golds directly invoke the configured Explicit Skill", () => {
+  const cases = loadBenchmarkCases("benchmarks/learning-coach");
+
+  assert.equal(cases.length, 2);
+  for (const benchmarkCase of cases) {
     assert.equal(
-      hasValidTechnicalDeepDiveInvocation(benchmarkCase),
+      hasCurrentRequestExplicitSkillInvocation(benchmarkCase, "learning-coach"),
       true,
       benchmarkCase.file,
+    );
+  }
+});
+
+test("learning-coach eval positives directly invoke the configured Explicit Skill", () => {
+  const tableRows = (text) => text.split(/\r?\n/)
+    .filter((line) => /^\|\s*"/.test(line))
+    .map((line) => line.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim()));
+  const section = (text, heading, nextHeading) => text.slice(
+    text.indexOf(`## ${heading}`),
+    text.indexOf(`## ${nextHeading}`),
+  );
+
+  const learningText = fs.readFileSync("evals/learning-coach-cases.md", "utf8");
+  const learningCoreRows = tableRows(section(
+    learningText,
+    "Core Cases",
+    "Mixed-Intent Cases",
+  ));
+  assert.equal(learningCoreRows.length, 7);
+  for (const [request] of learningCoreRows) {
+    const prompt = request.replace(/^"|"$/g, "");
+    assert.equal(
+      hasCurrentRequestExplicitSkillInvocation(prompt, "learning-coach"),
+      true,
+      prompt,
+    );
+  }
+
+  const routingText = fs.readFileSync("evals/routing-cases.md", "utf8");
+  const routeRows = [
+    ...tableRows(section(routingText, "Clear MVP Cases", "Mixed-Intent Cases"))
+      .map(([request, primary, secondary]) => ({ request, expected: `${primary} ${secondary}` })),
+    ...tableRows(section(routingText, "Mixed-Intent Cases", "Ambiguous Cases"))
+      .map(([request, primary, secondary]) => ({ request, expected: `${primary} ${secondary}` })),
+    ...tableRows(routingText.slice(routingText.indexOf("## Anti-Cases")))
+      .map(([request, _incorrect, correct]) => ({ request, expected: correct })),
+  ];
+  for (const { request, expected } of routeRows.filter((row) => /`learning-coach`/.test(row.expected))) {
+    const prompt = request.replace(/^"|"$/g, "");
+    assert.equal(
+      hasCurrentRequestExplicitSkillInvocation(prompt, "learning-coach"),
+      true,
+      prompt,
     );
   }
 });

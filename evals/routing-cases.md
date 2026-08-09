@@ -12,10 +12,10 @@ Use these cases to test whether `thinking-router` chooses the expected primary s
 | "This Java service has a memory leak. How should I investigate it?" | `native` | None | Ordinary technical debugging stays host-native |
 | "I need to compare two API designs for a payment service." | `native` | None | Ordinary architecture and trade-offs stay host-native |
 | "Please use `technical-deep-dive` to compare two API designs for a payment service." | `technical-deep-dive` | None | Direct current-request invocation |
-| "Explain vector databases to me. I know normal databases but not this." | `learning-coach` | None | Concept explanation and mental model |
-| "I read about attention in transformers but I still do not understand it." | `learning-coach` | None | Learning confusion |
-| "帮我理解一下什么是检索增强生成，我总是分不清它和普通搜索。" | `learning-coach` | None | Chinese learning signal |
-| "Explain Kafka like I am new to distributed systems." | `learning-coach` | None | Technical noun does not add an uninvoked secondary |
+| "$thinking-skills:learning-coach Explain vector databases to me. I know normal databases but not this." | `learning-coach` | None | Direct learning-coach invocation |
+| "Please use learning-coach to help me understand attention in transformers. I have read about it but still do not understand what it is doing." | `learning-coach` | None | Direct learning-coach invocation |
+| "请调用 learning-coach 帮我理解一下什么是检索增强生成，我总是分不清它和普通搜索。" | `learning-coach` | None | Direct Chinese learning-coach invocation |
+| "$thinking-skills:learning-coach Explain Kafka like I am new to distributed systems." | `learning-coach` | None | Direct learning-coach invocation; technical-deep-dive remains unselected |
 | "I feel anxious and keep blaming myself for everything." | `emotional-support` | None | Emotional support |
 | "I am overwhelmed after a conflict with my friend and do not know what I need." | `emotional-support` | None | Relationship pain and needs |
 | "self-review" | `conversation-review` | None | Light Dolores trigger |
@@ -32,9 +32,9 @@ Use these cases to test whether `thinking-router` chooses the expected primary s
 | User Request | Expected Primary | Expected Secondary | Notes |
 |---|---|---|---|
 | "I want to write an article about why this API design is confusing." | `content-creator` | None | User's output goal is writing; technical support remains host-native |
-| "I want to write an article explaining vector databases to beginners." | `content-creator` | `learning-coach` | Writing output dominates; learning supports clarity |
+| "I want to write an article explaining vector databases to beginners." | `content-creator` | None | Auto writing owner survives; uninvoked learning-coach is not secondary |
 | "I am panicking because our production architecture is failing." | `emotional-support` | None | Emotional urgency first; do not add an uninvoked technical secondary |
-| "I feel stupid because I cannot understand recursion." | `emotional-support` | `learning-coach` | Shame and self-blame first |
+| "I feel stupid because I cannot understand recursion." | `emotional-support` | None | Auto emotional owner survives; uninvoked learning-coach is not secondary |
 | "Help me turn my burnout experience into a public talk." | `content-creator` | `emotional-support` | Content output with emotional material |
 | "The article is final; it needs concept illustrations plus one exact runtime architecture diagram." | `article-visual-director` | None | One article-level visual plan selects multiple renderers |
 | "I have not chosen the article angle yet, but later I want images." | `content-creator` | None | Writing direction must stabilize before visual planning |
@@ -55,7 +55,7 @@ Use these cases to test whether `thinking-router` chooses the expected primary s
 | User Request | Incorrect Route | Correct Route | Notes |
 |---|---|---|---|
 | "I want to write about software architecture for non-engineers." | `technical-deep-dive` | `content-creator` | Writing goal dominates |
-| "Explain Kafka like I am new to distributed systems." | `technical-deep-dive` | `learning-coach` | Learning goal dominates over technical implementation |
+| "$thinking-skills:learning-coach Explain Kafka like I am new to distributed systems." | `technical-deep-dive` | `learning-coach` | Explicit learning goal dominates over technical implementation |
 | "I feel stupid because I cannot fix this bug." | `technical-deep-dive` | `emotional-support` | Emotional distress dominates |
 | "Give me titles for my post about debugging." | `technical-deep-dive` | `content-creator` | Title generation is content work |
 | "I only have an article idea; choose all of its images first." | `article-visual-director` | `content-creator` | Early content positioning remains primary |

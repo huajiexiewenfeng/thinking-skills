@@ -540,15 +540,190 @@ test("renderers snapshot all activation modes and sorted EN/ZH tables", () => {
 
 test("generated activation fixture names are stable and sorted", () => {
   const policy = makePolicy([
-    ["zeta-skill", "disabled", "Zeta."],
-    ["auto-skill", "auto", "Auto."],
-    ["middle-skill", "explicit", "Middle."],
+    ["technical-deep-dive", "disabled", "Technical."],
+    ["content-creator", "auto", "Content."],
+    ["learning-coach", "explicit", "Learning."],
   ]);
 
   assert.deepEqual(
     renderActivationBenchmarkCases(policy).map((item) => item.fileName),
-    ["middle-skill-explicit.json", "zeta-skill-disabled.json"],
+    ["learning-coach-explicit.json", "technical-deep-dive-disabled.json"],
   );
+});
+
+test("generated activation fixtures use deterministic profiles for every first-party Skill", () => {
+  const expectedProfiles = {
+    "article-visual-director": {
+      domain: "content",
+      objective: "deliver",
+      mutation: "requested",
+      artifact: "visual system",
+      artifact_sink: "workspace",
+    },
+    "benchmark-assistant": {
+      domain: "meta",
+      objective: "review",
+      mutation: "none",
+      artifact: "benchmark analysis",
+      artifact_sink: "chat",
+    },
+    "content-creator": {
+      domain: "content",
+      objective: "deliver",
+      mutation: "none",
+      artifact: "content draft",
+      artifact_sink: "chat",
+    },
+    "conversation-review": {
+      domain: "meta",
+      objective: "review",
+      mutation: "none",
+      artifact: "conversation review",
+      artifact_sink: "chat",
+    },
+    "emotional-support": {
+      domain: "emotional",
+      objective: "explore",
+      mutation: "none",
+      artifact: "support",
+      artifact_sink: "chat",
+    },
+    "learning-coach": {
+      domain: "learning",
+      objective: "explore",
+      mutation: "none",
+      artifact: "guided understanding",
+      artifact_sink: "chat",
+    },
+    "skill-evaluator": {
+      domain: "meta",
+      objective: "review",
+      mutation: "none",
+      artifact: "skill evaluation",
+      artifact_sink: "chat",
+    },
+    "technical-deep-dive": {
+      domain: "technical",
+      objective: "explore",
+      mutation: "none",
+      artifact: "analysis",
+      artifact_sink: "chat",
+    },
+    "thinking-router": {
+      domain: "meta",
+      objective: "decide",
+      mutation: "none",
+      artifact: "routing decision",
+      artifact_sink: "chat",
+    },
+  };
+  const policy = makePolicy(
+    Object.keys(expectedProfiles).reverse().map((skillId) => [skillId, "explicit", `${skillId}.`]),
+  );
+
+  const rendered = renderActivationBenchmarkCases(policy);
+
+  assert.deepEqual(
+    rendered.map((item) => item.fileName),
+    Object.keys(expectedProfiles).map((skillId) => `${skillId}-explicit.json`),
+  );
+  for (const item of rendered) {
+    const benchmarkCase = JSON.parse(item.content);
+    const skillId = item.fileName.replace(/-explicit\.json$/, "");
+    assert.deepEqual(benchmarkCase.expected_profile, expectedProfiles[skillId]);
+  }
+});
+
+test("generated activation fixtures encode Explicit selection and Disabled unavailability", () => {
+  const policy = makePolicy([
+    ["technical-deep-dive", "disabled", "Technical."],
+    ["content-creator", "auto", "Content."],
+    ["learning-coach", "explicit", "Learning."],
+  ]);
+
+  assert.deepEqual(
+    renderActivationBenchmarkCases(policy),
+    [
+      {
+        fileName: "learning-coach-explicit.json",
+        content: `${JSON.stringify({
+          id: "activation-explicit-learning-coach-001",
+          kind: "route",
+          turns: [{
+            role: "user",
+            content: "$thinking-skills:learning-coach Help me work through this request.",
+          }],
+          expected_profile: {
+            domain: "learning",
+            objective: "explore",
+            mutation: "none",
+            artifact: "guided understanding",
+            artifact_sink: "chat",
+          },
+          expected_route: { primary: "learning-coach", secondary: null },
+          expected_advisory: [],
+          must_not_select: ["native", "no-skill"],
+        }, null, 2)}\n`,
+      },
+      {
+        fileName: "technical-deep-dive-disabled.json",
+        content: `${JSON.stringify({
+          id: "activation-disabled-technical-deep-dive-001",
+          kind: "route",
+          turns: [{
+            role: "user",
+            content: "$thinking-skills:technical-deep-dive Help me work through this request.",
+          }],
+          expected_profile: {
+            domain: "technical",
+            objective: "explore",
+            mutation: "none",
+            artifact: "analysis",
+            artifact_sink: "chat",
+          },
+          expected_route: { primary: "native", secondary: null },
+          expected_advisory: [],
+          must_not_select: ["technical-deep-dive"],
+        }, null, 2)}\n`,
+      },
+    ],
+  );
+});
+
+test("missing generated fixture directory is created from the rendered plan", () => {
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["learning-coach", "explicit", "Learning."],
+  ]);
+  const generatedParent = path.join(repoRoot, "benchmarks", "generated");
+  const generatedRoot = path.join(generatedParent, "activation-policy");
+  fs.rmSync(generatedParent, { recursive: true, force: true });
+
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const generatedPath = path.join(generatedRoot, "learning-coach-explicit.json");
+  assert.ok(plan.some((item) => item.path === generatedPath && item.before === null));
+
+  applyActivationSyncPlan(plan);
+
+  assert.equal(fs.existsSync(generatedPath), true);
+  assert.deepEqual(
+    checkActivationSyncPlan(buildActivationSyncPlan({ repoRoot, policy })),
+    [],
+  );
+});
+
+test("generated fixture planning rejects non-JSON entries without deleting them", () => {
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["learning-coach", "explicit", "Learning."],
+  ]);
+  const generatedRoot = path.join(repoRoot, "benchmarks", "generated", "activation-policy");
+  const foreignPath = path.join(generatedRoot, "README.md");
+  fs.writeFileSync(foreignPath, "FOREIGN\n", "utf8");
+
+  assert.throws(
+    () => buildActivationSyncPlan({ repoRoot, policy }),
+    /accepts only JSON files/,
+  );
+  assert.equal(fs.readFileSync(foreignPath, "utf8"), "FOREIGN\n");
 });
 
 test("check mode reports sorted stale paths and performs no writes", () => {

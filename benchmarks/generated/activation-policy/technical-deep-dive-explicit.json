@@ -1,0 +1,26 @@
+{
+  "id": "activation-explicit-technical-deep-dive-001",
+  "kind": "route",
+  "turns": [
+    {
+      "role": "user",
+      "content": "$thinking-skills:technical-deep-dive Help me work through this request."
+    }
+  ],
+  "expected_profile": {
+    "domain": "technical",
+    "objective": "explore",
+    "mutation": "none",
+    "artifact": "analysis",
+    "artifact_sink": "chat"
+  },
+  "expected_route": {
+    "primary": "technical-deep-dive",
+    "secondary": null
+  },
+  "expected_advisory": [],
+  "must_not_select": [
+    "native",
+    "no-skill"
+  ]
+}
