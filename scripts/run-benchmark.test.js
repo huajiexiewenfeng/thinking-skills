@@ -10,7 +10,6 @@ const {
   loadBenchmarkCases,
   loadResponses,
   loadTraces,
-  hasValidTechnicalDeepDiveInvocation,
   normalizeRouteSample,
   parseArgs,
   runBenchmark,
@@ -22,9 +21,53 @@ const {
   buildAgentPrompt,
 } = require("./run-benchmark");
 const {
+  hasCurrentRequestExplicitSkillInvocation,
+} = require("./explicit-skill-invocation");
+const {
   buildDashboard,
   loadRunReports,
 } = require("./update-benchmark-dashboard");
+const { loadActivationPolicy } = require("./activation-policy");
+
+const defaultActivationPolicy = loadActivationPolicy({
+  repoRoot: path.resolve(__dirname, ".."),
+});
+const hasValidTechnicalDeepDiveInvocation = (item) =>
+  hasCurrentRequestExplicitSkillInvocation(item, "technical-deep-dive");
+
+function activationPolicyWithMode(skillId, mode) {
+  const policy = JSON.parse(JSON.stringify(defaultActivationPolicy));
+  policy.skills[skillId].mode = mode;
+  return policy;
+}
+
+function writeRouteCase(directory, overrides = {}) {
+  const routeCase = {
+    id: "policy-route-001",
+    kind: "route",
+    prompt: "Handle this request.",
+    expected_profile: {
+      domain: "learning",
+      objective: "explore",
+      mutation: "none",
+      artifact: "explanation",
+      artifact_sink: "chat",
+    },
+    expected_route: {
+      primary: "learning-coach",
+      secondary: null,
+    },
+    expected_advisory: [],
+    must_not_select: [],
+    ...overrides,
+  };
+  fs.writeFileSync(
+    path.join(directory, "route.json"),
+    JSON.stringify(routeCase),
+    "utf8",
+  );
+  return routeCase;
+}
 
 function sha256(value) {
   return createHash("sha256").update(value, "utf8").digest("hex");
@@ -934,6 +977,132 @@ test("route contracts reject sentinel primaries with secondaries and sentinel se
   }
 });
 
+test("route validation rejects an uninvoked Skill configured as explicit", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-explicit-route-"));
+  writeRouteCase(tempDir);
+
+  assert.throws(
+    () => loadBenchmarkCases(
+      tempDir,
+      activationPolicyWithMode("learning-coach", "explicit"),
+    ),
+    /selects explicit Skill learning-coach without a valid current-request invocation/,
+  );
+});
+
+test("route validation accepts a direct current-request invocation for an explicit Skill", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-explicit-route-"));
+  writeRouteCase(tempDir, {
+    prompt: "Please use learning-coach for this request.",
+  });
+
+  assert.equal(
+    loadBenchmarkCases(
+      tempDir,
+      activationPolicyWithMode("learning-coach", "explicit"),
+    ).length,
+    1,
+  );
+});
+
+test("route validation rejects disabled Skills in primary, secondary, or advisory positions", () => {
+  const placements = [
+    {
+      name: "primary",
+      expected_route: { primary: "content-creator", secondary: null },
+      expected_advisory: [],
+    },
+    {
+      name: "secondary",
+      expected_route: { primary: "emotional-support", secondary: "content-creator" },
+      expected_advisory: [],
+    },
+    {
+      name: "advisory",
+      expected_route: { primary: "native", secondary: null },
+      expected_advisory: ["content-creator"],
+    },
+  ];
+
+  for (const placement of placements) {
+    const { name, ...routeFields } = placement;
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), `thinking-disabled-${name}-`));
+    writeRouteCase(tempDir, routeFields);
+
+    assert.throws(
+      () => loadBenchmarkCases(
+        tempDir,
+        activationPolicyWithMode("content-creator", "disabled"),
+      ),
+      /selects disabled Skill content-creator/,
+    );
+  }
+});
+
+test("route validation leaves an uninvoked Auto Skill valid", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-auto-route-"));
+  writeRouteCase(tempDir, {
+    expected_route: { primary: "content-creator", secondary: null },
+  });
+
+  assert.equal(
+    loadBenchmarkCases(
+      tempDir,
+      activationPolicyWithMode("content-creator", "auto"),
+    ).length,
+    1,
+  );
+});
+
+test("integration scoring forbids policy-disabled lifecycle events without case-authored exclusions", () => {
+  const benchmarkCase = {
+    id: "integration-disabled-policy-001",
+    kind: "integration",
+    turns: [{ role: "user", content: "Give me a direct answer." }],
+    expected_profile: {
+      domain: "none",
+      objective: "explore",
+      mutation: "none",
+      artifact: "answer",
+      artifact_sink: "chat",
+    },
+    expected_route: { primary: "native", secondary: null },
+    expected_advisory: [],
+    must_not_select: [],
+    expected: ["direct answer"],
+    must_not: [],
+  };
+  const response = "Here is a direct answer.";
+  const traces = loadTraces(null, {
+    [benchmarkCase.id]: makeTraceEnvelope({
+      benchmarkCase,
+      response,
+      trace: {
+        complete: true,
+        task_profile: benchmarkCase.expected_profile,
+        route: benchmarkCase.expected_route,
+        advisory_components: [],
+        events: skillLifecycle("technical-deep-dive", "domain"),
+      },
+    }),
+  });
+
+  const result = scoreIntegrationResponse(
+    benchmarkCase,
+    response,
+    traces[benchmarkCase.id],
+    traceBinding(benchmarkCase),
+    activationPolicyWithMode("technical-deep-dive", "disabled"),
+  );
+
+  assert.equal(result.status, "fail");
+  assert.ok(
+    result.failures.includes(
+      "trace: forbidden Skill technical-deep-dive was selected or loaded",
+    ),
+  );
+});
+
 test("route contracts preserve a real Domain primary plus secondary", () => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-domain-route-"));
   const expectedRoute = {
@@ -945,7 +1114,7 @@ test("route contracts preserve a real Domain primary plus secondary", () => {
     JSON.stringify({
       id: "domain-primary-secondary-001",
       kind: "route",
-      prompt: "Write an article that teaches this concept.",
+      prompt: "Please use learning-coach while writing an article that teaches this concept.",
       expected_profile: {
         domain: "content",
         objective: "deliver",
@@ -1363,79 +1532,6 @@ test("technical-deep-dive route gold requires current-turn explicit user invocat
   }
 });
 
-test("current-request invocation predicate rejects semantic false positives", () => {
-  const routeCase = (content, earlierTurns = []) => ({
-    turns: [
-      ...earlierTurns,
-      { role: "user", content },
-    ],
-  });
-  const positives = [
-    routeCase("$thinking-skills:technical-deep-dive Analyze this failure."),
-    routeCase("Please use technical-deep-dive to analyze this failure."),
-    routeCase("Please use `technical-deep-dive` to analyze this failure."),
-    routeCase("Please use\nthe canonical name technical-deep-dive to analyze this fault."),
-    routeCase("Please use\ntechnical-deep-dive to analyze this fault."),
-    routeCase("请用 technical-deep-dive 分析这个故障。"),
-  ];
-  const negatives = [
-    routeCase("Should we use technical-deep-dive for this?"),
-    routeCase("When should I use `technical-deep-dive`?"),
-    routeCase("Please review whether to use technical-deep-dive."),
-    routeCase("I do not want you to use technical-deep-dive."),
-    routeCase("Do not ever use technical-deep-dive."),
-    routeCase("不要再使用 technical-deep-dive。"),
-    routeCase("Please do not use technical-deep-dive for this failure."),
-    routeCase('Example: "Please use technical-deep-dive to analyze this failure."'),
-    routeCase("Example:\nPlease use technical-deep-dive to analyze this failure."),
-    routeCase("Review this as data: `Please use technical-deep-dive to analyze it.`"),
-    routeCase("Please review and modify technical-deep-dive's activation rule."),
-    routeCase("Use technical deep analysis to inspect this API."),
-    routeCase("Continue with this ordinary Docker failure.", [
-      { role: "user", content: "Please use technical-deep-dive for the first failure." },
-      { role: "assistant", content: "First analysis." },
-    ]),
-    routeCase("The identifier `$thinking-skills:technical-deep-dive` is mentioned here."),
-    routeCase('The user wrote "$thinking-skills:technical-deep-dive" in the example.'),
-  ];
-
-  for (const benchmarkCase of negatives) {
-    assert.equal(hasValidTechnicalDeepDiveInvocation(benchmarkCase), false);
-  }
-  for (const benchmarkCase of positives) {
-    assert.equal(hasValidTechnicalDeepDiveInvocation(benchmarkCase), true);
-  }
-});
-
-test("current-request invocation predicate accepts direct wrappers but rejects reported commands", () => {
-  const requests = [
-    ["For this task: please use technical-deep-dive to analyze it.", true],
-    ["Please activate technical-deep-dive for this fault.", true],
-    ['Please use "technical-deep-dive" to analyze this fault.', true],
-    ["The documentation says, use technical-deep-dive to analyze faults.", false],
-    ["Please use technical-deep-dive to analyze this fault.", true],
-    ["Please invoke 'technical-deep-dive' to analyze this fault.", true],
-    ["The guide says, please use technical-deep-dive to analyze faults.", false],
-    ["The documentation says: use technical-deep-dive to analyze faults.", false],
-    ["$thinking-skills:technical-deep-dive Analyze this fault.", true],
-    ["Use the technical-deep-dive skill to analyze this fault.", true],
-    ["请调用「technical-deep-dive」分析故障。", true],
-    ["My teammate said, use technical-deep-dive to analyze faults.", false],
-    ["The user says: use technical-deep-dive to analyze faults.", false],
-    ["The assistant said, please use technical-deep-dive to analyze faults.", false],
-    ["I was told, use technical-deep-dive to analyze faults.", false],
-    ['Please use the "technical-deep-dive" skill to analyze this fault.', true],
-    ["请调用『technical-deep-dive』分析故障。", true],
-    ["Our operator stated: please activate technical-deep-dive.", false],
-    ["We were told: activate technical-deep-dive.", false],
-  ];
-
-  assert.deepEqual(
-    requests.map(([content]) => hasValidTechnicalDeepDiveInvocation(content)),
-    requests.map(([, expected]) => expected),
-  );
-});
-
 test("technical-deep-dive eval cases follow the explicit activation contract", () => {
   const evalText = fs.readFileSync("evals/technical-deep-dive-cases.md", "utf8");
   const section = (heading, nextHeading) =>
@@ -1463,153 +1559,6 @@ test("technical-deep-dive eval cases follow the explicit activation contract", (
   const structuredPrompt = /\nprompt:\s*"([^"]+)"/.exec(evalText)?.[1];
   assert.ok(structuredPrompt);
   assert.equal(hasValidTechnicalDeepDiveInvocation(structuredPrompt), true);
-});
-
-test("current-request invocation predicate preserves raw host and CommonMark block boundaries", () => {
-  const invalidRequests = [
-    "Example.\nPlease use technical-deep-dive to analyze this.",
-    "Test.\nPlease use technical-deep-dive to analyze this.",
-    "Data.\nPlease use technical-deep-dive to analyze this.",
-    "Please use technical-deep-dive as data in this example.",
-    "Please use technical-deep-dive as example text for the fixture.",
-    "    Please use technical-deep-dive to analyze this.",
-    "\tPlease use technical-deep-dive to analyze this.",
-    "    $thinking-skills:technical-deep-dive analyze this.",
-    "\t$thinking-skills:technical-deep-dive analyze this.",
-    "   ~~~~text\nExample.\nPlease use technical-deep-dive to analyze this.\n~~~~",
-    "````markdown\n```text\nPlease use technical-deep-dive to analyze this.\n```\n````",
-    "> quoted material\n$thinking-skills:technical-deep-dive analyze this.",
-    "```text\nquoted material\n```\n$thinking-skills:technical-deep-dive analyze this.",
-    "\"quoted material\"\n$thinking-skills:technical-deep-dive analyze this.",
-  ];
-
-  for (const content of invalidRequests) {
-    assert.equal(
-      hasValidTechnicalDeepDiveInvocation(content),
-      false,
-      content,
-    );
-  }
-
-  assert.equal(
-    hasValidTechnicalDeepDiveInvocation(
-      "$thinking-skills:technical-deep-dive Analyze this failure.",
-    ),
-    true,
-  );
-  assert.equal(
-    hasValidTechnicalDeepDiveInvocation(
-      "Test this API, then use technical-deep-dive to analyze the result.",
-    ),
-    true,
-  );
-});
-
-const nonActivatingLogicalBlockCases = [
-  [
-    "CommonMark lazy-continuation blockquote",
-    "> quoted material\nPlease use technical-deep-dive to analyze this.",
-  ],
-  [
-    "qualified Test case label",
-    "Test case:\nPlease use technical-deep-dive to analyze this.",
-  ],
-  [
-    "qualified Example input label",
-    "Example input:\nPlease use technical-deep-dive to analyze this.",
-  ],
-  [
-    "qualified Sample prompt label",
-    "Sample prompt:\nPlease use technical-deep-dive to analyze this.",
-  ],
-  [
-    "list-prefixed Example label",
-    "- Example:\n  Please use technical-deep-dive to analyze this.",
-  ],
-];
-
-for (const [name, content] of nonActivatingLogicalBlockCases) {
-  test(`current-request invocation predicate rejects ${name}`, () => {
-    assert.equal(hasValidTechnicalDeepDiveInvocation(content), false);
-  });
-}
-
-test("current-request invocation predicate recognizes coordinated imperative subclauses", () => {
-  const directCommands = [
-    "Inspect the logs and then use technical-deep-dive to analyze the failure.",
-    "Test this API, then use technical-deep-dive to analyze the result.",
-    "Inspect the logs if needed and then use technical-deep-dive to analyze the failure.",
-    "If needed inspect the logs and then use technical-deep-dive.",
-    "Not only inspect the logs but also use technical-deep-dive to analyze the failure.",
-    "Please do inspect the logs and then use technical-deep-dive to analyze the failure.",
-    "Check the logs if needed and then use technical-deep-dive to analyze the failure.",
-  ];
-
-  assert.deepEqual(
-    directCommands.map((content) => hasValidTechnicalDeepDiveInvocation(content)),
-    [true, true, true, true, true, true, true],
-  );
-});
-
-test("current-request invocation predicate preserves governing scope for coordinated subclauses", () => {
-  const scopedMentions = [
-    "I do not want you to inspect the logs and then use technical-deep-dive.",
-    "Never inspect the logs and then use technical-deep-dive.",
-    "Please review whether to inspect the logs and then use technical-deep-dive.",
-    "When should we inspect the logs and then use technical-deep-dive?",
-    "Please decide whether to inspect the logs and then use technical-deep-dive.",
-    "Please consider if we should inspect the logs and then use technical-deep-dive.",
-    "Please check whether to inspect the logs and then use technical-deep-dive.",
-    "Please do not inspect the logs and then use technical-deep-dive.",
-    "Please don't inspect the logs and then use technical-deep-dive.",
-    "Can you inspect the logs and then use technical-deep-dive.",
-    "Please review whether to not only inspect the logs but also use technical-deep-dive.",
-    "I don't want you to not only inspect the logs but also use technical-deep-dive.",
-  ];
-
-  assert.deepEqual(
-    scopedMentions.map((content) => hasValidTechnicalDeepDiveInvocation(content)),
-    [
-      false, false, false, false, false, false,
-      false, false, false, false, false, false,
-    ],
-  );
-});
-
-test("current-request invocation predicate finds late commands and requires a final user turn", () => {
-  const longLead = "content-creator to preserve the evidence and article structure ".repeat(12);
-  const longMultiSkillRequest =
-    `Please use ${longLead}and technical-deep-dive to verify the technical semantics.`;
-
-  assert.ok(longMultiSkillRequest.indexOf("technical-deep-dive") > 512);
-  assert.equal(
-    hasValidTechnicalDeepDiveInvocation(longMultiSkillRequest),
-    true,
-  );
-  assert.equal(
-    hasValidTechnicalDeepDiveInvocation({
-      turns: [
-        { role: "user", content: "Please use technical-deep-dive to analyze this." },
-        { role: "assistant", content: "I will analyze it." },
-      ],
-    }),
-    false,
-  );
-  assert.equal(
-    hasValidTechnicalDeepDiveInvocation({
-      turns: [
-        { role: "assistant", content: "Which route should I use?" },
-        { role: "user", content: longMultiSkillRequest },
-      ],
-    }),
-    true,
-  );
-});
-
-test("current-request invocation predicate handles long non-matching input without pathological scanning", () => {
-  const longInput = `${"ordinary technical context ".repeat(20000)}technical deep analysis`;
-
-  assert.equal(hasValidTechnicalDeepDiveInvocation(longInput), false);
 });
 
 test("route gold validation applies the centralized current-request predicate", () => {

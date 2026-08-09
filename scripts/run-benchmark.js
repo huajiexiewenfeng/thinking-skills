@@ -5,11 +5,14 @@ const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const { createHash } = require("node:crypto");
+const { loadActivationPolicy, skillIdsByMode } = require("./activation-policy");
+const { hasCurrentRequestExplicitSkillInvocation } = require("./explicit-skill-invocation");
 
 const CASE_KINDS = new Set(["route", "response", "integration"]);
 const BENCHMARK_CONTRACT_VERSION = "3.0.0";
 const ROUTE_SENTINELS = new Set(["native", "no-skill"]);
-const TECHNICAL_DEEP_DIVE = "technical-deep-dive";
+const REPO_ROOT = path.resolve(__dirname, "..");
+const DEFAULT_ACTIVATION_POLICY = loadActivationPolicy({ repoRoot: REPO_ROOT });
 const ROUTE_ONLY_FIELDS = [
   "expected_profile",
   "expected_route",
@@ -97,266 +100,11 @@ function routeCombinationFailure(route, label) {
   return null;
 }
 
-function maskCharacters(text) {
-  return " ".repeat(text.length);
-}
-
-function parseFenceLine(line) {
-  const match = /^( {0,3})(`{3,}|~{3,})(.*)$/.exec(line);
-  if (!match) return null;
-  return {
-    character: match[2][0],
-    length: match[2].length,
-    rest: match[3],
-  };
-}
-
-function startsDataBlock(line) {
-  return (
-    /^ {0,3}(?:(?:#{1,6}|[-+*]|\d+[.)])\s+)?(?:(?:(?:for\s+)?example|sample|test|data)(?:\s+(?:case|input|output|prompt|fixture|text|data))?|quoted?(?:\s+(?:text|material))?|quotation|the user (?:said|wrote)|the prompt (?:says|contains))\s*(?:[:.]|$)/i
-      .test(line) ||
-    /^ {0,3}(?:(?:#{1,6}|[-+*]|\d+[.)])\s+)?(?:review|analy[sz]e|modify|inspect)\b[^\n]{0,160}\bas\s+(?:data|text|an?\s+example)\b/i
-      .test(line) ||
-    /^ {0,3}(?:(?:#{1,6}|[-+*]|\d+[.)])\s+)?(?:例如|示例|比如|样例|测试数据|数据|引用|原文)(?:\s|[:：。.，,]|$)/
-      .test(line)
-  );
-}
-
-function startsBlockBoundary(line) {
-  return (
-    /^(?: {4}|\t)/.test(line) ||
-    /^ {0,3}(?:#{1,6}(?:\s|$)|(?:[-+*]|\d+[.)])\s+)/.test(line)
-  );
-}
-
-function maskLiteralUnlessCanonical(match, inner) {
-  return inner.trim().toLowerCase() === TECHNICAL_DEEP_DIVE
-    ? ` ${inner} `
-    : maskCharacters(match);
-}
-
-function maskInlineLiterals(line) {
-  return line
-    .replace(/`([^`\n]*)`/g, maskLiteralUnlessCanonical)
-    .replace(
-      /(?:"([^"\n]*)"|'([^'\n]*)'|“([^”\n]*)”|‘([^’\n]*)’|「([^」\n]*)」|『([^』\n]*)』)/g,
-      (match, ...captures) => maskLiteralUnlessCanonical(
-        match,
-        captures.slice(0, 6).find((capture) => capture !== undefined),
-      ),
-    );
-}
-
-function invocationSearchText(text) {
-  const normalized = text.replace(/\r\n/g, " \n").replace(/\r/g, "\n");
-  let fence = null;
-  let inBlockquote = false;
-  let inDataBlock = false;
-  const visibleLines = [];
-  for (const line of normalized.split("\n")) {
-    const fenceLine = parseFenceLine(line);
-    if (fence) {
-      visibleLines.push(maskCharacters(line));
-      if (
-        fenceLine &&
-        fenceLine.character === fence.character &&
-        fenceLine.length >= fence.length &&
-        !fenceLine.rest.trim()
-      ) {
-        fence = null;
-      }
-      continue;
-    }
-
-    if (
-      fenceLine &&
-      !(fenceLine.character === "`" && fenceLine.rest.includes("`"))
-    ) {
-      inBlockquote = false;
-      fence = fenceLine;
-      visibleLines.push(maskCharacters(line));
-      continue;
-    }
-
-    if (!line.trim()) {
-      inBlockquote = false;
-      inDataBlock = false;
-      visibleLines.push(line);
-      continue;
-    }
-
-    if (inBlockquote) {
-      if (startsBlockBoundary(line)) {
-        inBlockquote = false;
-      } else {
-        visibleLines.push(maskCharacters(line));
-        continue;
-      }
-    }
-
-    if (inDataBlock) {
-      visibleLines.push(maskCharacters(line));
-      continue;
-    }
-
-    if (/^ {0,3}>/.test(line)) {
-      inBlockquote = true;
-      visibleLines.push(maskCharacters(line));
-      continue;
-    }
-
-    if (/^(?: {4}|\t)/.test(line)) {
-      visibleLines.push(maskCharacters(line));
-      continue;
-    }
-
-    if (startsDataBlock(line)) {
-      inDataBlock = true;
-      visibleLines.push(maskCharacters(line));
-      continue;
-    }
-
-    visibleLines.push(maskInlineLiterals(line));
-  }
-
-  return visibleLines.join("\n");
-}
-
-function hasNonDirectiveGoverningScope(sentence, commandStart) {
-  const boundaryStart = Math.max(
-    sentence.lastIndexOf("\n", commandStart - 1),
-    sentence.lastIndexOf(",", commandStart - 1),
-    sentence.lastIndexOf("，", commandStart - 1),
-  ) + 1;
-  const governingClause = sentence.slice(boundaryStart, commandStart).trim();
-  const scopeWithoutAffirmativeQualifier = governingClause
-    .replace(/\bnot(?=\s+only\b[\s\S]*\bbut\s*$)/gi, "   ")
-    .replace(/\bif\s+needed\b/gi, " ");
-  return (
-    /\bnever\b|\b(?:do|does|did|can|could|should|would|will|may|might|must|is|are|was|were|have|has|had)\s+not\b|\b[A-Za-z]+n['’]t\b/i
-      .test(scopeWithoutAffirmativeQualifier) ||
-    /\b(?:review|decide|consider|check)\b[\s\S]{0,160}\b(?:whether|if)\b/i
-      .test(scopeWithoutAffirmativeQualifier) ||
-    /^(?:who|what|when|where|why|how|which|do|does|did|can|could|should|would|will|is|are|was|were|have|has|had|may|might|must)\b/i
-      .test(scopeWithoutAffirmativeQualifier.trim())
-  );
-}
-
-function hasReportedCommandScope(sentence, commandStart) {
-  const governingText = sentence.slice(0, commandStart).trim();
-  return (
-    /^(?:according\s+to|in)\s+(?:the\s+)?(?:documentation|docs?|guide|manual)\b/i
-      .test(governingText) ||
-    /\b(?:said|says|stated|states|wrote|writes|recommended|recommends|instructed|instructs)\s*$/i
-      .test(governingText) ||
-    /\btold\s+(?:me|us|you|him|her|them)\s*$/i.test(governingText) ||
-    /\b(?:was|were|am|is|are|be|been)\s+told\s*$/i.test(governingText)
-  );
-}
-
-function sentenceHasDirectInvocation(sentence) {
-  const command = /(?:^|[\n,，:：]|(\b(?:and(?:\s+then)?|then|also)\b\s+))[ \t]*(?:(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply|activate)\b|(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用))/gim;
-  const commands = [...sentence.matchAll(command)]
-    .filter(
-      (match) =>
-        !hasReportedCommandScope(sentence, match.index) &&
-        (!match[1] || !hasNonDirectiveGoverningScope(sentence, match.index)),
-    )
-    .map((match) => ({
-      start: match.index,
-      end: match.index + match[0].length,
-    }));
-  if (!commands.length) return false;
-
-  const canonical = /technical-deep-dive/gi;
-  let commandIndex = 0;
-  let activeCommand = null;
-  for (const match of sentence.matchAll(canonical)) {
-    const tokenStart = match.index;
-    const tokenEnd = tokenStart + match[0].length;
-    while (
-      commandIndex < commands.length &&
-      commands[commandIndex].end <= tokenStart
-    ) {
-      activeCommand = commands[commandIndex];
-      commandIndex += 1;
-    }
-    if (!activeCommand) continue;
-
-    const precedingCharacter = sentence[tokenStart - 1] || "";
-    const followingCharacter = sentence[tokenEnd] || "";
-    if (
-      /[A-Za-z0-9_-]/.test(precedingCharacter) ||
-      /[A-Za-z0-9_-]/.test(followingCharacter)
-    ) {
-      continue;
-    }
-
-    const directObjectDistance = tokenStart - activeCommand.end;
-    const directObject =
-      directObjectDistance <= 128 &&
-      /^\s*(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+|the\s+)?$/i
-        .test(sentence.slice(activeCommand.end, tokenStart));
-    const localPrefix = sentence.slice(
-      Math.max(activeCommand.end, tokenStart - 192),
-      tokenStart,
-    );
-    const listedObject = /(?:\b(?:and|plus)\b|(?:并且?|以及))\s*(?:(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply|activate)\b\s*|(?:请\s*)?(?:使用|调用|运行|加载|应用|用)\s*)?(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+)?$/i
-      .test(localPrefix);
-    if (!directObject && !listedObject) continue;
-
-    const localSuffix = sentence.slice(tokenEnd, tokenEnd + 192);
-    if (
-      /^\s*(?:(?:as|used\s+as|for\s+use\s+as|to\s+use\s+as)\s+(?:(?:an?\s+)?(?:data|example|sample|text|test\s+data|quoted\s+text))\b|(?:作为|当作)(?:数据|示例|样例|文本|测试数据))/i
-        .test(localSuffix)
-    ) {
-      continue;
-    }
-
-    return true;
-  }
-  return false;
-}
-
-function hasDirectInvocation(text) {
-  let sentenceStart = 0;
-  for (let index = 0; index <= text.length; index += 1) {
-    const terminator = text[index] || "";
-    if (index < text.length && !".!?;。！？；".includes(terminator)) {
-      continue;
-    }
-
-    const sentence = text.slice(sentenceStart, index);
-    sentenceStart = index + 1;
-    if (
-      sentence &&
-      terminator !== "?" &&
-      terminator !== "？" &&
-      sentenceHasDirectInvocation(sentence)
-    ) {
-      return true;
-    }
-  }
-  return false;
-}
-
 function hasValidTechnicalDeepDiveInvocation(item) {
-  const turns = typeof item === "string"
-    ? [{ role: "user", content: item }]
-    : getCaseTurns(item);
-  const finalTurn = turns[turns.length - 1];
-  if (!finalTurn || finalTurn.role !== "user") return false;
-
-  if (
-    /^(?:[ \t]*(?:\r\n?|\n))* {0,3}\$thinking-skills:technical-deep-dive(?=$|[\s,.;:!?，。；：！？])/i
-      .test(finalTurn.content)
-  ) {
-    return true;
-  }
-  return hasDirectInvocation(invocationSearchText(finalTurn.content));
+  return hasCurrentRequestExplicitSkillInvocation(item, "technical-deep-dive");
 }
 
-function validateRouteFields(item, filePath) {
+function validateRouteFields(item, filePath, policy = DEFAULT_ACTIVATION_POLICY) {
   if (!item.expected_profile || typeof item.expected_profile !== "object") {
     throw new Error(`${filePath} is missing required field: expected_profile`);
   }
@@ -409,15 +157,6 @@ function validateRouteFields(item, filePath) {
   if (routeFailure) {
     throw new Error(`${filePath} ${routeFailure}`);
   }
-  if (
-    [item.expected_route.primary, item.expected_route.secondary]
-      .includes(TECHNICAL_DEEP_DIVE) &&
-    !hasValidTechnicalDeepDiveInvocation(item)
-  ) {
-    throw new Error(
-      `${filePath} expected_route selects technical-deep-dive without a valid current-request invocation`,
-    );
-  }
   if (!Array.isArray(item.expected_advisory)) {
     throw new Error(`${filePath} expected_advisory must be an array`);
   }
@@ -429,6 +168,34 @@ function validateRouteFields(item, filePath) {
   }
   if (item.must_not_select.some((value) => typeof value !== "string" || !value.trim())) {
     throw new Error(`${filePath} must_not_select must contain non-empty strings`);
+  }
+  validateRouteActivation(item, filePath, policy);
+}
+
+function validateRouteActivation(
+  item,
+  filePath,
+  policy = DEFAULT_ACTIVATION_POLICY,
+) {
+  const selected = [
+    item.expected_route.primary,
+    item.expected_route.secondary,
+    ...item.expected_advisory,
+  ].filter(Boolean);
+  const disabled = new Set(skillIdsByMode(policy, "disabled"));
+
+  for (const skillId of selected) {
+    if (disabled.has(skillId)) {
+      throw new Error(`${filePath} selects disabled Skill ${skillId}`);
+    }
+    if (
+      policy.skills[skillId]?.mode === "explicit" &&
+      !hasCurrentRequestExplicitSkillInvocation(item, skillId)
+    ) {
+      throw new Error(
+        `${filePath} selects explicit Skill ${skillId} without a valid current-request invocation`,
+      );
+    }
   }
 }
 
@@ -499,7 +266,7 @@ function rejectFields(item, filePath, kind, fields, fieldType) {
   }
 }
 
-function validateCase(item, filePath) {
+function validateCase(item, filePath, policy = DEFAULT_ACTIVATION_POLICY) {
   if (!("id" in item)) {
     throw new Error(`${filePath} is missing required field: id`);
   }
@@ -525,7 +292,7 @@ function validateCase(item, filePath) {
       RESPONSE_ONLY_FIELDS,
       "response-only",
     );
-    validateRouteFields(item, filePath);
+    validateRouteFields(item, filePath, policy);
   } else if (kind === "response") {
     rejectFields(
       item,
@@ -536,15 +303,15 @@ function validateCase(item, filePath) {
     );
     validateResponseFields(item, filePath);
   } else {
-    validateRouteFields(item, filePath);
+    validateRouteFields(item, filePath, policy);
     validateResponseFields(item, filePath);
   }
 }
 
-function loadBenchmarkCases(root = "benchmarks") {
+function loadBenchmarkCases(root = "benchmarks", policy = DEFAULT_ACTIVATION_POLICY) {
   return walkJsonFiles(root).map((filePath) => {
     const item = JSON.parse(fs.readFileSync(filePath, "utf8"));
-    validateCase(item, filePath);
+    validateCase(item, filePath, policy);
     return { ...item, kind: getCaseKind(item), file: filePath };
   });
 }
@@ -977,10 +744,14 @@ function scoreIntegrationResponse(
   response,
   traceEnvelope,
   binding = null,
+  policy = DEFAULT_ACTIVATION_POLICY,
 ) {
   const expectedDomain = expectedDomainSkills(benchmarkCase);
   const expectedAdvisory = benchmarkCase.expected_advisory || [];
-  const forbiddenSkills = benchmarkCase.must_not_select || [];
+  const forbiddenSkills = canonicalComponents([
+    ...(benchmarkCase.must_not_select || []),
+    ...skillIdsByMode(policy, "disabled"),
+  ]);
   const lifecycleAssertionCount =
     expectedDomain.length +
     expectedAdvisory.length +

@@ -11,11 +11,12 @@
     "artifact_sink": "chat"
   },
   "expected_route": {
-    "primary": "learning-coach",
+    "primary": "native",
     "secondary": null
   },
   "expected_advisory": [],
   "must_not_select": [
+    "learning-coach",
     "technical-deep-dive"
   ]
 }

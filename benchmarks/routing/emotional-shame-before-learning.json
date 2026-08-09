@@ -12,10 +12,11 @@
   },
   "expected_route": {
     "primary": "emotional-support",
-    "secondary": "learning-coach"
+    "secondary": null
   },
   "expected_advisory": [],
   "must_not_select": [
+    "learning-coach",
     "no-skill"
   ]
 }
