@@ -217,12 +217,31 @@ function invocationSearchText(text) {
   return visibleLines.join("\n");
 }
 
+function hasNonDirectiveGoverningScope(sentence, commandStart) {
+  const boundaryStart = Math.max(
+    sentence.lastIndexOf("\n", commandStart - 1),
+    sentence.lastIndexOf(",", commandStart - 1),
+    sentence.lastIndexOf("，", commandStart - 1),
+  ) + 1;
+  const governingClause = sentence.slice(boundaryStart, commandStart).trim();
+  return (
+    /\b(?:not|never)\b|n['’]t\b/i.test(governingClause) ||
+    /\b(?:whether|if)\b/i.test(governingClause) ||
+    /^(?:(?:please|kindly)\s+)?(?:who|what|when|where|why|how|which|do|does|did|can|could|should|would|will|is|are|was|were|have|has|had|may|might|must)\b/i
+      .test(governingClause)
+  );
+}
+
 function sentenceHasDirectInvocation(sentence) {
-  const command = /(?:^|[\n,，]|\b(?:and(?:\s+then)?|then|also)\b\s+)[ \t]*(?:(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b|(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用))/gim;
-  const commands = [...sentence.matchAll(command)].map((match) => ({
-    start: match.index,
-    end: match.index + match[0].length,
-  }));
+  const command = /(?:^|[\n,，]|(\b(?:and(?:\s+then)?|then|also)\b\s+))[ \t]*(?:(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b|(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用))/gim;
+  const commands = [...sentence.matchAll(command)]
+    .filter((match) =>
+      !match[1] || !hasNonDirectiveGoverningScope(sentence, match.index)
+    )
+    .map((match) => ({
+      start: match.index,
+      end: match.index + match[0].length,
+    }));
   if (!commands.length) return false;
 
   const canonical = /technical-deep-dive/gi;

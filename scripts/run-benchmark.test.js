@@ -1487,6 +1487,20 @@ test("current-request invocation predicate recognizes coordinated imperative sub
   }
 });
 
+test("current-request invocation predicate preserves governing scope for coordinated subclauses", () => {
+  const scopedMentions = [
+    "I do not want you to inspect the logs and then use technical-deep-dive.",
+    "Never inspect the logs and then use technical-deep-dive.",
+    "Please review whether to inspect the logs and then use technical-deep-dive.",
+    "When should we inspect the logs and then use technical-deep-dive?",
+  ];
+
+  assert.deepEqual(
+    scopedMentions.map((content) => hasValidTechnicalDeepDiveInvocation(content)),
+    [false, false, false, false],
+  );
+});
+
 test("current-request invocation predicate finds late commands and requires a final user turn", () => {
   const longLead = "content-creator to preserve the evidence and article structure ".repeat(12);
   const longMultiSkillRequest =
