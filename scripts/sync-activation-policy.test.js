@@ -1,0 +1,340 @@
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const test = require("node:test");
+
+const {
+  applyActivationSyncPlan,
+  buildActivationSyncPlan,
+  checkActivationSyncPlan,
+  main,
+  renderActivationBenchmarkCases,
+  renderReadmeActivationTable,
+  renderSkillActivationGuard,
+  renderSkillFrontmatterDescription,
+  replaceOwnedRegion,
+} = require("./sync-activation-policy");
+
+const tempRoots = [];
+
+test.afterEach(() => {
+  for (const repoRoot of tempRoots.splice(0)) {
+    fs.rmSync(repoRoot, { recursive: true, force: true });
+  }
+});
+
+function makePolicy(entries) {
+  return {
+    schema_version: 1,
+    default_mode: "auto",
+    skills: Object.fromEntries(entries.map(([skillId, mode, autoDescription]) => [
+      skillId,
+      { mode, auto_description: autoDescription },
+    ])),
+  };
+}
+
+function skillText(description = "Old generated text.", guard = "Old generated guard.") {
+  return [
+    "---",
+    "name: demo",
+    "# activation-policy:frontmatter:start",
+    `description: ${description}`,
+    "# activation-policy:frontmatter:end",
+    "---",
+    "",
+    "# Demo",
+    "",
+    "<!-- activation-policy:guard:start -->",
+    guard,
+    "<!-- activation-policy:guard:end -->",
+    "",
+    "Human-authored method text.",
+    "",
+  ].join("\n");
+}
+
+function makeFixtureRepo(entries = [["demo", "auto", "Use automatically for demos."]]) {
+  const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-skills-policy-"));
+  tempRoots.push(repoRoot);
+  fs.mkdirSync(path.join(repoRoot, "config"), { recursive: true });
+  fs.mkdirSync(path.join(repoRoot, "benchmarks", "generated", "activation-policy"), { recursive: true });
+
+  const policy = makePolicy(entries);
+  for (const skillId of Object.keys(policy.skills)) {
+    const skillRoot = path.join(repoRoot, "skills", skillId);
+    fs.mkdirSync(skillRoot, { recursive: true });
+    fs.writeFileSync(path.join(skillRoot, "SKILL.md"), skillText(), "utf8");
+  }
+
+  const yaml = [
+    "schema_version: 1",
+    "default_mode: auto",
+    "skills:",
+    ...Object.entries(policy.skills).flatMap(([skillId, entry]) => [
+      `  ${skillId}:`,
+      `    mode: ${entry.mode}`,
+      `    auto_description: ${JSON.stringify(entry.auto_description)}`,
+    ]),
+    "",
+  ].join("\n");
+  fs.writeFileSync(path.join(repoRoot, "config", "activation-policy.yaml"), yaml, "utf8");
+  return { repoRoot, policy };
+}
+
+test("replaceOwnedRegion changes one region and preserves all authored bytes", () => {
+  const filePath = path.join("fixture", "SKILL.md");
+  const before = skillText();
+  const after = replaceOwnedRegion(before, "guard", "Generated line one.\r\nGenerated line two.", filePath);
+
+  assert.equal(after, before.replace("Old generated guard.", "Generated line one.\nGenerated line two."));
+  assert.equal(after.endsWith("\n"), true);
+  assert.equal(
+    replaceOwnedRegion(before.slice(0, -1), "guard", "Generated.", filePath).endsWith("\n"),
+    false,
+  );
+});
+
+test("replaceOwnedRegion ignores marker text embedded in authored prose", () => {
+  const filePath = path.join("fixture", "SKILL.md");
+  const prose = "This prose mentions <!-- activation-policy:guard:start --> without owning a region.\n";
+  const before = `${prose}${skillText()}`;
+
+  const after = replaceOwnedRegion(before, "guard", "Generated.", filePath);
+
+  assert.equal(after, `${prose}${skillText().replace("Old generated guard.", "Generated.")}`);
+});
+
+for (const [name, mutate] of [
+  ["missing", (text) => text.replace("<!-- activation-policy:guard:end -->", "")],
+  ["duplicate", (text) => text.replace(
+    "<!-- activation-policy:guard:start -->",
+    "<!-- activation-policy:guard:start -->\n<!-- activation-policy:guard:start -->",
+  )],
+  ["reversed", (text) => text
+    .replace("<!-- activation-policy:guard:start -->", "PLACEHOLDER")
+    .replace("<!-- activation-policy:guard:end -->", "<!-- activation-policy:guard:start -->")
+    .replace("PLACEHOLDER", "<!-- activation-policy:guard:end -->")],
+  ["nested", (text) => text.replace(
+    "Old generated guard.",
+    "<!-- activation-policy:inner:start -->\nNested.\n<!-- activation-policy:inner:end -->",
+  )],
+]) {
+  test(`replaceOwnedRegion rejects ${name} markers with file and region context`, () => {
+    const filePath = path.join("fixture", "SKILL.md");
+    assert.throws(
+      () => replaceOwnedRegion(mutate(skillText()), "guard", "Generated.", filePath),
+      (error) => error.message.includes(filePath) && error.message.includes("guard"),
+    );
+  });
+}
+
+test("renderers snapshot all activation modes and sorted EN/ZH tables", () => {
+  const auto = { mode: "auto", auto_description: "Exact automatic description." };
+  const explicit = { mode: "explicit", auto_description: "Unused." };
+  const disabled = { mode: "disabled", auto_description: "Unused." };
+
+  assert.equal(renderSkillFrontmatterDescription(auto, "alpha-skill"), "Exact automatic description.");
+  assert.equal(
+    renderSkillFrontmatterDescription(explicit, "alpha-skill"),
+    "Use only when the current user request directly invokes `$thinking-skills:alpha-skill` or combines a direct invocation command with the exact canonical name `alpha-skill`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff.",
+  );
+  assert.equal(
+    renderSkillFrontmatterDescription(disabled, "alpha-skill"),
+    "Unavailable under the current Thinking Skills activation policy. Do not select, load, follow, announce, or claim to have run `alpha-skill`.",
+  );
+
+  for (const entry of [auto, explicit, disabled]) {
+    assert.match(
+      renderSkillActivationGuard(entry, "alpha-skill"),
+      /^Generated from config\/activation-policy\.yaml\. Do not edit this block\./,
+    );
+  }
+
+  const policy = makePolicy([
+    ["zeta-skill", "disabled", "Zeta."],
+    ["alpha-skill", "auto", "Alpha."],
+    ["middle-skill", "explicit", "Middle."],
+  ]);
+  assert.equal(
+    renderReadmeActivationTable(policy, "en"),
+    [
+      "Generated from config/activation-policy.yaml. Do not edit this block.",
+      "",
+      "| Skill | Activation mode |",
+      "|---|---|",
+      "| `alpha-skill` | `auto` |",
+      "| `middle-skill` | `explicit` |",
+      "| `zeta-skill` | `disabled` |",
+    ].join("\n"),
+  );
+  assert.equal(
+    renderReadmeActivationTable(policy, "zh"),
+    [
+      "Generated from config/activation-policy.yaml. Do not edit this block.",
+      "",
+      "| Skill | 激活模式 |",
+      "|---|---|",
+      "| `alpha-skill` | `自动` |",
+      "| `middle-skill` | `显式调用` |",
+      "| `zeta-skill` | `关闭` |",
+    ].join("\n"),
+  );
+});
+
+test("generated activation fixture names are stable and sorted", () => {
+  const policy = makePolicy([
+    ["zeta-skill", "disabled", "Zeta."],
+    ["auto-skill", "auto", "Auto."],
+    ["middle-skill", "explicit", "Middle."],
+  ]);
+
+  assert.deepEqual(
+    renderActivationBenchmarkCases(policy).map((item) => item.fileName),
+    ["middle-skill-explicit.json", "zeta-skill-disabled.json"],
+  );
+});
+
+test("check mode reports sorted stale paths and performs no writes", () => {
+  const { repoRoot } = makeFixtureRepo([
+    ["zeta-skill", "auto", "Zeta restored."],
+    ["alpha-skill", "auto", "Alpha restored."],
+  ]);
+  const paths = ["alpha-skill", "zeta-skill"].map((skillId) => (
+    path.join(repoRoot, "skills", skillId, "SKILL.md")
+  ));
+  const before = paths.map((filePath) => fs.readFileSync(filePath, "utf8"));
+  const errors = [];
+
+  const exitCode = main(["--check"], {
+    repoRoot,
+    stderr: { write: (text) => errors.push(text) },
+  });
+
+  assert.equal(exitCode, 1);
+  assert.deepEqual(paths.map((filePath) => fs.readFileSync(filePath, "utf8")), before);
+  assert.equal(
+    errors.join(""),
+    `Activation policy is stale:\n${paths.map((filePath) => `- ${filePath}`).join("\n")}\n`,
+  );
+});
+
+test("planning computes every output before the first target write", () => {
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["alpha-skill", "auto", "Alpha restored."],
+    ["zeta-skill", "auto", "Zeta restored."],
+  ]);
+  const firstPath = path.join(repoRoot, "skills", "alpha-skill", "SKILL.md");
+  const secondPath = path.join(repoRoot, "skills", "zeta-skill", "SKILL.md");
+  const firstBefore = fs.readFileSync(firstPath, "utf8");
+  fs.writeFileSync(secondPath, skillText().replace("<!-- activation-policy:guard:end -->", ""), "utf8");
+
+  assert.throws(() => buildActivationSyncPlan({ repoRoot, policy }), /zeta-skill[\\/]SKILL\.md.*guard/);
+  assert.equal(fs.readFileSync(firstPath, "utf8"), firstBefore);
+});
+
+test("apply detects a source race before replacing any planned target", () => {
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["alpha-skill", "auto", "Alpha restored."],
+    ["zeta-skill", "auto", "Zeta restored."],
+  ]);
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const alphaPath = path.join(repoRoot, "skills", "alpha-skill", "SKILL.md");
+  const zetaPath = path.join(repoRoot, "skills", "zeta-skill", "SKILL.md");
+  const alphaBefore = fs.readFileSync(alphaPath, "utf8");
+  const raced = `${fs.readFileSync(zetaPath, "utf8")}Concurrent edit.\n`;
+  fs.writeFileSync(zetaPath, raced, "utf8");
+
+  assert.throws(() => applyActivationSyncPlan(plan), /changed after planning/);
+  assert.equal(fs.readFileSync(alphaPath, "utf8"), alphaBefore);
+  assert.equal(fs.readFileSync(zetaPath, "utf8"), raced);
+});
+
+test("apply rolls back every target when a prepared rename fails", () => {
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["alpha-skill", "auto", "Alpha restored."],
+    ["zeta-skill", "auto", "Zeta restored."],
+  ]);
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const before = new Map(plan.filter((item) => item.before !== null).map((item) => [
+    item.path,
+    fs.readFileSync(item.path, "utf8"),
+  ]));
+  let preparedRenameCount = 0;
+  const fsWithInjectedFailure = Object.create(fs);
+  fsWithInjectedFailure.renameSync = (source, target) => {
+    if (source.includes(".activation-policy.tmp-")) {
+      preparedRenameCount += 1;
+      if (preparedRenameCount === 2) throw new Error("injected rename failure");
+    }
+    return fs.renameSync(source, target);
+  };
+
+  assert.throws(
+    () => applyActivationSyncPlan(plan, { fsImpl: fsWithInjectedFailure }),
+    /injected rename failure/,
+  );
+  for (const [filePath, contents] of before) {
+    assert.equal(fs.readFileSync(filePath, "utf8"), contents, filePath);
+  }
+});
+
+test("generated fixture creates and deletions stay inside the exact owned directory", () => {
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["explicit-skill", "explicit", "Explicit."],
+    ["auto-skill", "auto", "Auto."],
+  ]);
+  const generatedRoot = path.join(repoRoot, "benchmarks", "generated", "activation-policy");
+  const stalePath = path.join(generatedRoot, "stale.json");
+  const siblingPath = path.join(repoRoot, "benchmarks", "generated", "outside.json");
+  fs.writeFileSync(stalePath, "{}\n", "utf8");
+  fs.writeFileSync(siblingPath, "{}\n", "utf8");
+
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const createPath = path.join(generatedRoot, "explicit-skill-explicit.json");
+  assert.deepEqual(
+    plan.filter((item) => item.before === null || item.after === null).map((item) => item.path).sort(),
+    [createPath, stalePath].sort(),
+  );
+  applyActivationSyncPlan(plan);
+  assert.equal(fs.existsSync(createPath), true);
+  assert.equal(fs.existsSync(stalePath), false);
+  assert.equal(fs.readFileSync(siblingPath, "utf8"), "{}\n");
+
+  assert.throws(
+    () => applyActivationSyncPlan([{ path: siblingPath, before: "{}\n", after: null }]),
+    /generated activation fixture directory/,
+  );
+  assert.equal(fs.readFileSync(siblingPath, "utf8"), "{}\n");
+});
+
+test("auto to explicit to auto restores bytes and a second sync is idempotent", () => {
+  const autoDescription = "Exact original automatic description.";
+  const { repoRoot } = makeFixtureRepo([["demo", "auto", autoDescription]]);
+  const skillPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
+
+  const autoPolicy = makePolicy([["demo", "auto", autoDescription]]);
+  applyActivationSyncPlan(buildActivationSyncPlan({ repoRoot, policy: autoPolicy }));
+  const originalAutoBytes = fs.readFileSync(skillPath);
+
+  const explicitPolicy = makePolicy([["demo", "explicit", autoDescription]]);
+  applyActivationSyncPlan(buildActivationSyncPlan({ repoRoot, policy: explicitPolicy }));
+  assert.notDeepEqual(fs.readFileSync(skillPath), originalAutoBytes);
+
+  applyActivationSyncPlan(buildActivationSyncPlan({ repoRoot, policy: autoPolicy }));
+  assert.deepEqual(fs.readFileSync(skillPath), originalAutoBytes);
+
+  const secondPlan = buildActivationSyncPlan({ repoRoot, policy: autoPolicy });
+  assert.deepEqual(checkActivationSyncPlan(secondPlan), []);
+  applyActivationSyncPlan(secondPlan);
+  assert.deepEqual(fs.readFileSync(skillPath), originalAutoBytes);
+});
+
+test("CLI accepts only --check and --help", () => {
+  const { repoRoot } = makeFixtureRepo();
+  const output = [];
+  assert.equal(main(["--help"], { repoRoot, stdout: { write: (text) => output.push(text) } }), 0);
+  assert.match(output.join(""), /--check/);
+  assert.throws(() => main(["--write"], { repoRoot }), /Unknown option: --write/);
+});
