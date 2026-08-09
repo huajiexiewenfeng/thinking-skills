@@ -97,22 +97,24 @@ Dolores belongs to the Reflection plane. It is not required to run after every a
 
 ### Routing and Domain Skills
 
-| Skill | Use When |
-|---|---|
-| `thinking-router` | A request needs to be routed to the right thinking mode |
-| `content-creator` | Articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure |
-| `article-visual-director` | A substantially complete Markdown article needs a cover, concept illustrations, exact technical diagrams, approval-gated generation, and non-destructive image insertion |
-| `technical-deep-dive` | Explicitly invoked technical reasoning for code, architecture, debugging, performance, APIs, systems, trade-offs, and verification paths |
-| `learning-coach` | Concept understanding, mental models, knowledge gaps, study paths, practice, and explanation review |
-| `emotional-support` | Anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps |
+| Skill | Activation | Use When |
+|---|---|---|
+| `thinking-router` | Auto | A request needs to be routed to the right thinking mode |
+| `content-creator` | Auto | Articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure |
+| `article-visual-director` | Auto | A substantially complete Markdown article needs a cover, concept illustrations, exact technical diagrams, approval-gated generation, and non-destructive image insertion |
+| `technical-deep-dive` | Explicit only | The current request directly invokes the canonical skill name for technical reasoning about code, architecture, debugging, performance, APIs, systems, trade-offs, or verification paths |
+| `learning-coach` | Auto | Concept understanding, mental models, knowledge gaps, study paths, practice, and explanation review |
+| `emotional-support` | Auto | Anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps |
 
 ### Meta and Improvement Skills
 
-| Skill | Use When |
-|---|---|
-| `conversation-review` | Dolores mode for conversation self-review, skill trace audits, failure signals, eval gaps, and improvement-loop actions |
-| `skill-evaluator` | Review failed skill responses, classify failure types, propose evals, and recommend minimal patches |
-| `benchmark-assistant` | Run benchmark commands, generate prompts, score saved responses, update the dashboard, interpret failures, and suggest benchmark-driven next actions |
+| Skill | Activation | Use When |
+|---|---|---|
+| `conversation-review` | Auto | Dolores mode for conversation self-review, skill trace audits, failure signals, eval gaps, and improvement-loop actions |
+| `skill-evaluator` | Auto | Review failed skill responses, classify failure types, propose evals, and recommend minimal patches |
+| `benchmark-assistant` | Auto | Run benchmark commands, generate prompts, score saved responses, update the dashboard, interpret failures, and suggest benchmark-driven next actions |
+
+All first-party Thinking Skills are discoverable and enabled; none are disabled. `Auto` means the skill is eligible for intent-based selection. `Explicit only` means the current user request must directly invoke the canonical skill name. A prior-turn invocation or a handoff from the router, runtime, agent, or another skill does not count. Ordinary technical work stays on the host-native path.
 
 Planned skills:
 

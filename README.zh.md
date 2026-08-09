@@ -97,22 +97,24 @@ Dolores 属于 Reflection plane，不需要每次回答后都运行。
 
 ### 路由和领域技能
 
-| Skill | 适用场景 |
-|---|---|
-| `thinking-router` | 用户请求需要先判断应该进入哪种思考模式 |
-| `content-creator` | 文章、随笔、脚本、标题、大纲、论点、受众定位和内容结构 |
-| `article-visual-director` | 已基本定稿的 Markdown 文章需要封面、概念插画、精确技术图、审批后生成，并非破坏性地插回文章副本 |
-| `technical-deep-dive` | 仅在显式调用后用于代码、架构、debug、性能、API、系统、技术权衡和验证路径 |
-| `learning-coach` | 概念理解、心智模型、知识盲区、学习路径、练习和解释校准 |
-| `emotional-support` | 焦虑、压力、自责、关系痛苦、情绪困惑、危机信号和温和的下一步 |
+| Skill | 激活方式 | 适用场景 |
+|---|---|---|
+| `thinking-router` | Auto | 用户请求需要先判断应该进入哪种思考模式 |
+| `content-creator` | Auto | 文章、随笔、脚本、标题、大纲、论点、受众定位和内容结构 |
+| `article-visual-director` | Auto | 已基本定稿的 Markdown 文章需要封面、概念插画、精确技术图、审批后生成，并非破坏性地插回文章副本 |
+| `technical-deep-dive` | Explicit only | 当前请求直接调用规范 Skill 名称，用于代码、架构、debug、性能、API、系统、技术权衡和验证路径 |
+| `learning-coach` | Auto | 概念理解、心智模型、知识盲区、学习路径、练习和解释校准 |
+| `emotional-support` | Auto | 焦虑、压力、自责、关系痛苦、情绪困惑、危机信号和温和的下一步 |
 
 ### 元技能和改进技能
 
-| Skill | 适用场景 |
-|---|---|
-| `conversation-review` | Dolores 模式，用于 conversation self-review、skill 轨迹审计、失败信号、eval 缺口和改进飞轮 |
-| `skill-evaluator` | 审查失败的 skill 回复，分类失败类型，提出 eval 和最小修改建议 |
-| `benchmark-assistant` | 运行 benchmark 命令、生成测试提示、评分保存的回答、更新 dashboard、解释失败并建议下一步 |
+| Skill | 激活方式 | 适用场景 |
+|---|---|---|
+| `conversation-review` | Auto | Dolores 模式，用于 conversation self-review、skill 轨迹审计、失败信号、eval 缺口和改进飞轮 |
+| `skill-evaluator` | Auto | 审查失败的 skill 回复，分类失败类型，提出 eval 和最小修改建议 |
+| `benchmark-assistant` | Auto | 运行 benchmark 命令、生成测试提示、评分保存的回答、更新 dashboard、解释失败并建议下一步 |
+
+所有第一方 Thinking Skills 当前都可被发现并处于启用状态，没有关闭项。`Auto` 表示可根据请求意图自动选择；`Explicit only` 表示当前用户请求必须直接调用规范 Skill 名称。上一轮调用，或 Router、runtime、agent、其他 Skill 的转交，都不能视为授权。普通技术任务继续走宿主原生能力。
 
 规划中的 skills：
 
