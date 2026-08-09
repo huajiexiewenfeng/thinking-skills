@@ -1407,6 +1407,54 @@ test("current-request invocation predicate rejects semantic false positives", ()
   }
 });
 
+test("current-request invocation predicate accepts direct wrappers but rejects reported commands", () => {
+  const requests = [
+    ["For this task: please use technical-deep-dive to analyze it.", true],
+    ["Please activate technical-deep-dive for this fault.", true],
+    ['Please use "technical-deep-dive" to analyze this fault.', true],
+    ["The documentation says, use technical-deep-dive to analyze faults.", false],
+    ["Please use technical-deep-dive to analyze this fault.", true],
+    ["Please invoke 'technical-deep-dive' to analyze this fault.", true],
+    ["The guide says, please use technical-deep-dive to analyze faults.", false],
+    ["The documentation says: use technical-deep-dive to analyze faults.", false],
+    ["$thinking-skills:technical-deep-dive Analyze this fault.", true],
+  ];
+
+  assert.deepEqual(
+    requests.map(([content]) => hasValidTechnicalDeepDiveInvocation(content)),
+    requests.map(([, expected]) => expected),
+  );
+});
+
+test("technical-deep-dive eval cases follow the explicit activation contract", () => {
+  const evalText = fs.readFileSync("evals/technical-deep-dive-cases.md", "utf8");
+  const section = (heading, nextHeading) =>
+    evalText.slice(
+      evalText.indexOf(`## ${heading}`),
+      evalText.indexOf(`## ${nextHeading}`),
+    );
+  const tableRows = (text) => [...text.matchAll(/^\|\s*"([^"]+)"\s*\|\s*(.*?)\s*\|$/gm)]
+    .map((match) => ({ prompt: match[1], expected: match[2] }));
+
+  const positiveRows = tableRows(section("Positive Cases", "Negative Cases"));
+  assert.equal(positiveRows.length, 5);
+  for (const { prompt } of positiveRows) {
+    assert.equal(hasValidTechnicalDeepDiveInvocation(prompt), true, prompt);
+  }
+
+  const mixedRows = tableRows(section("Mixed Cases", "Quality Checks"));
+  assert.equal(mixedRows.length, 3);
+  for (const { prompt, expected } of mixedRows) {
+    if (!hasValidTechnicalDeepDiveInvocation(prompt)) {
+      assert.match(expected, /\bnative\b/i, prompt);
+    }
+  }
+
+  const structuredPrompt = /\nprompt:\s*"([^"]+)"/.exec(evalText)?.[1];
+  assert.ok(structuredPrompt);
+  assert.equal(hasValidTechnicalDeepDiveInvocation(structuredPrompt), true);
+});
+
 test("current-request invocation predicate preserves raw host and CommonMark block boundaries", () => {
   const invalidRequests = [
     "Example.\nPlease use technical-deep-dive to analyze this.",

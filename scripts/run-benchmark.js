@@ -129,16 +129,21 @@ function startsBlockBoundary(line) {
   );
 }
 
+function maskLiteralUnlessCanonical(match, inner) {
+  return inner.trim().toLowerCase() === TECHNICAL_DEEP_DIVE
+    ? ` ${inner} `
+    : maskCharacters(match);
+}
+
 function maskInlineLiterals(line) {
   return line
-    .replace(/`([^`\n]*)`/g, (match, inner) =>
-      inner.trim().toLowerCase() === TECHNICAL_DEEP_DIVE
-        ? ` ${inner} `
-        : maskCharacters(match)
-    )
+    .replace(/`([^`\n]*)`/g, maskLiteralUnlessCanonical)
     .replace(
-      /"[^"\n]*"|'[^'\n]*'|“[^”\n]*”|‘[^’\n]*’/g,
-      (match) => maskCharacters(match),
+      /(?:"([^"\n]*)"|'([^'\n]*)'|“([^”\n]*)”|‘([^’\n]*)’)/g,
+      (match, ...captures) => maskLiteralUnlessCanonical(
+        match,
+        captures.slice(0, 4).find((capture) => capture !== undefined),
+      ),
     );
 }
 
@@ -237,11 +242,19 @@ function hasNonDirectiveGoverningScope(sentence, commandStart) {
   );
 }
 
+function hasReportedCommandScope(sentence, commandStart) {
+  const governingText = sentence.slice(0, commandStart).trim();
+  return /^(?:(?:according\s+to|in)\s+(?:the\s+)?(?:documentation|docs?|guide|manual)\b|(?:the\s+)?(?:documentation|docs?|guide|manual)\s+(?:says?|states?|reads?|recommends?|instructs?)\b)/i
+    .test(governingText);
+}
+
 function sentenceHasDirectInvocation(sentence) {
-  const command = /(?:^|[\n,，]|(\b(?:and(?:\s+then)?|then|also)\b\s+))[ \t]*(?:(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b|(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用))/gim;
+  const command = /(?:^|[\n,，:：]|(\b(?:and(?:\s+then)?|then|also)\b\s+))[ \t]*(?:(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply|activate)\b|(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用))/gim;
   const commands = [...sentence.matchAll(command)]
-    .filter((match) =>
-      !match[1] || !hasNonDirectiveGoverningScope(sentence, match.index)
+    .filter(
+      (match) =>
+        !hasReportedCommandScope(sentence, match.index) &&
+        (!match[1] || !hasNonDirectiveGoverningScope(sentence, match.index)),
     )
     .map((match) => ({
       start: match.index,
@@ -282,7 +295,7 @@ function sentenceHasDirectInvocation(sentence) {
       Math.max(activeCommand.end, tokenStart - 192),
       tokenStart,
     );
-    const listedObject = /(?:\b(?:and|plus)\b|(?:并且?|以及))\s*(?:(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply)\b\s*|(?:请\s*)?(?:使用|调用|运行|加载|应用|用)\s*)?(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+)?$/i
+    const listedObject = /(?:\b(?:and|plus)\b|(?:并且?|以及))\s*(?:(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply|activate)\b\s*|(?:请\s*)?(?:使用|调用|运行|加载|应用|用)\s*)?(?:(?:the\s+)?canonical\s+(?:skill\s+)?name\s+)?$/i
       .test(localPrefix);
     if (!directObject && !listedObject) continue;
 

@@ -24,9 +24,9 @@ Use these cases to test whether `technical-deep-dive` behaves like a rigorous en
 
 | User Request | Expected Behavior |
 |---|---|
-| "I want to write an article explaining why our API design failed." | Secondary technical context; primary route should be `content-creator` |
-| "I am panicking because production is down." | Emotional safety first if distress dominates; technical context second |
-| "Help me decide whether to rewrite our monolith." | Technical analysis with decision framing; may later involve `life-decision` or business context |
+| "I want to write an article explaining why our API design failed." | Primary route remains `content-creator`; technical context stays native unless `technical-deep-dive` is explicitly invoked |
+| "I am panicking because production is down." | Emotional safety first if distress dominates; production triage stays native unless `technical-deep-dive` is explicitly invoked |
+| "Help me decide whether to rewrite our monolith." | Native technical decision framing; `technical-deep-dive` applies only when explicitly invoked, with `life-decision` or business context as needed |
 
 ## Quality Checks
 
