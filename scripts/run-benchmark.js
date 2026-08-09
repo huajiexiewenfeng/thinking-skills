@@ -224,11 +224,20 @@ function hasNonDirectiveGoverningScope(sentence, commandStart) {
     sentence.lastIndexOf("，", commandStart - 1),
   ) + 1;
   const governingClause = sentence.slice(boundaryStart, commandStart).trim();
+  if (/\bnot\s+only\b[\s\S]*\bbut\s*$/i.test(governingClause)) {
+    return false;
+  }
+  const scopeWithoutAffirmativeQualifier = governingClause.replace(
+    /\bif\s+needed\b/gi,
+    " ",
+  );
   return (
-    /\b(?:not|never)\b|n['’]t\b/i.test(governingClause) ||
-    /\b(?:whether|if)\b/i.test(governingClause) ||
-    /^(?:(?:please|kindly)\s+)?(?:who|what|when|where|why|how|which|do|does|did|can|could|should|would|will|is|are|was|were|have|has|had|may|might|must)\b/i
-      .test(governingClause)
+    /\bnever\b|\b(?:do|does|did|can|could|should|would|will|may|might|must|is|are|was|were|have|has|had)\s+not\b|\b[A-Za-z]+n['’]t\b/i
+      .test(scopeWithoutAffirmativeQualifier) ||
+    /\b(?:review|decide|consider|check)\b[\s\S]{0,160}\b(?:whether|if)\b/i
+      .test(scopeWithoutAffirmativeQualifier) ||
+    /^(?:who|what|when|where|why|how|which|do|does|did|can|could|should|would|will|is|are|was|were|have|has|had|may|might|must)\b/i
+      .test(scopeWithoutAffirmativeQualifier.trim())
   );
 }
 

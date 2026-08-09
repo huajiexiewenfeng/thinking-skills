@@ -1480,11 +1480,17 @@ test("current-request invocation predicate recognizes coordinated imperative sub
   const directCommands = [
     "Inspect the logs and then use technical-deep-dive to analyze the failure.",
     "Test this API, then use technical-deep-dive to analyze the result.",
+    "Inspect the logs if needed and then use technical-deep-dive to analyze the failure.",
+    "If needed inspect the logs and then use technical-deep-dive.",
+    "Not only inspect the logs but also use technical-deep-dive to analyze the failure.",
+    "Please do inspect the logs and then use technical-deep-dive to analyze the failure.",
+    "Check the logs if needed and then use technical-deep-dive to analyze the failure.",
   ];
 
-  for (const content of directCommands) {
-    assert.equal(hasValidTechnicalDeepDiveInvocation(content), true, content);
-  }
+  assert.deepEqual(
+    directCommands.map((content) => hasValidTechnicalDeepDiveInvocation(content)),
+    [true, true, true, true, true, true, true],
+  );
 });
 
 test("current-request invocation predicate preserves governing scope for coordinated subclauses", () => {
@@ -1493,11 +1499,17 @@ test("current-request invocation predicate preserves governing scope for coordin
     "Never inspect the logs and then use technical-deep-dive.",
     "Please review whether to inspect the logs and then use technical-deep-dive.",
     "When should we inspect the logs and then use technical-deep-dive?",
+    "Please decide whether to inspect the logs and then use technical-deep-dive.",
+    "Please consider if we should inspect the logs and then use technical-deep-dive.",
+    "Please check whether to inspect the logs and then use technical-deep-dive.",
+    "Please do not inspect the logs and then use technical-deep-dive.",
+    "Please don't inspect the logs and then use technical-deep-dive.",
+    "Can you inspect the logs and then use technical-deep-dive.",
   ];
 
   assert.deepEqual(
     scopedMentions.map((content) => hasValidTechnicalDeepDiveInvocation(content)),
-    [false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
   );
 });
 
