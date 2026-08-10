@@ -85,6 +85,28 @@ for (const skillId of explicitSkillIds) {
     }
   });
 
+  test(`${skillId} distinguishes Skill metadata operations from external task objects in EN/ZH`, () => {
+    const cases = [
+      [`Please use ${skillId} to test its activation rule.`, false],
+      [`Please use ${skillId} configuration as an example.`, false],
+      [`Please use ${skillId} to evaluate the Skill's own instructions.`, false],
+      [`Please use ${skillId} to modify its configuration.`, false],
+      [`请用 ${skillId} 测试它的激活规则。`, false],
+      [`请用 ${skillId} 配置作为示例。`, false],
+      [`请用 ${skillId} 评测这个 Skill 自身的规则。`, false],
+      [`请用 ${skillId} 修改它的配置。`, false],
+      [`Please use ${skillId} to evaluate an architecture.`, true],
+      [`Please use ${skillId} to test this API.`, true],
+      [`请用 ${skillId} 评测一个架构。`, true],
+      [`请用 ${skillId} 测试这个 API。`, true],
+    ];
+
+    assert.deepEqual(
+      cases.map(([content]) => hasCurrentRequestExplicitSkillInvocation(content, skillId)),
+      cases.map(([, expected]) => expected),
+    );
+  });
+
   test(`${skillId} accepts direct wrappers but rejects reported commands`, () => {
     const requests = [
       [`For this task: please use ${skillId} to analyze it.`, true],

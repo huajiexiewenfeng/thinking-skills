@@ -12,7 +12,7 @@ function fail(sourcePath, message, lineNumber) {
   throw new Error(`${sourcePath}${location}: ${message}`);
 }
 
-function parseActivationPolicy(text, sourcePath) {
+function parseActivationPolicy(text, sourcePath = "<memory>") {
   const policy = { skills: {} };
   const seenTopLevelKeys = new Set();
   const seenSkillKeys = new Set();
@@ -155,8 +155,11 @@ function deepFreeze(value) {
   return value;
 }
 
-function loadActivationPolicy({ repoRoot = path.resolve(__dirname, "..") } = {}) {
-  const sourcePath = path.join(repoRoot, "config", "activation-policy.yaml");
+function loadActivationPolicy({
+  repoRoot = path.resolve(__dirname, ".."),
+  policyPath = path.join(repoRoot, "config", "activation-policy.yaml"),
+} = {}) {
+  const sourcePath = path.resolve(policyPath);
   const policy = parseActivationPolicy(fs.readFileSync(sourcePath, "utf8"), sourcePath);
   validateActivationPolicy(policy, discoverFirstPartySkillIds(repoRoot), sourcePath);
   return deepFreeze(policy);

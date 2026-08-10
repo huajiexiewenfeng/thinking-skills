@@ -1,7 +1,7 @@
 ---
 name: content-creator
 # activation-policy:frontmatter:start
-description: Use when the user is developing articles, essays, posts, newsletters, scripts, talks, titles, outlines, arguments, audience positioning, drafts, or content structure.
+description: "Use when the user is developing articles, essays, posts, newsletters, scripts, talks, titles, outlines, arguments, audience positioning, drafts, or content structure."
 # activation-policy:frontmatter:end
 ---
 

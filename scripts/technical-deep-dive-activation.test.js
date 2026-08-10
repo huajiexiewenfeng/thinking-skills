@@ -90,7 +90,7 @@ test("Explicit and Disabled guards enforce their generic manifest semantics", ()
 test("technical-deep-dive preserves its authored method and workflow handoff", () => {
   const skill = read("skills/technical-deep-dive/SKILL.md");
 
-  assert.match(skill, /^description: Use only when the current user request/m);
+  assert.match(skill, /^description: "Use only when the current user request/m);
   assert.match(skill, /## Purpose/);
   assert.match(skill, /After valid explicit activation, use this skill when/i);
   assert.match(skill, /## Method Bases/);
@@ -181,7 +181,7 @@ test("Router metadata and public diagrams expose the three-way primary route", (
   const frontmatter = router.match(/^---\n([\s\S]*?)\n---/)?.[1] || "";
   const purpose = router.match(/## Purpose\n([\s\S]*?)\n## /)?.[1] || "";
 
-  assert.match(frontmatter, /description: Use when a user request needs intent classification/i);
+  assert.match(frontmatter, /description: "Use when a user request needs intent classification/i);
   assert.doesNotMatch(frontmatter, /route to the most appropriate domain-specific thinking skill/i);
   assert.match(
     purpose,

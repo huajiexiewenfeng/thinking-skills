@@ -1,7 +1,7 @@
 ---
 name: thinking-router
 # activation-policy:frontmatter:start
-description: Use when a user request needs intent classification, especially when domain work, host-native technical work, or ordinary conversation could each fit.
+description: "Use when a user request needs intent classification, especially when domain work, host-native technical work, or ordinary conversation could each fit."
 # activation-policy:frontmatter:end
 ---
 

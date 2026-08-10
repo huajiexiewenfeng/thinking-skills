@@ -1,7 +1,7 @@
 ---
 name: conversation-review
 # activation-policy:frontmatter:start
-description: Use when the user asks for self-review, Dolores mode, conversation review, skill trace audit, failure analysis, eval gap detection, improvement-loop suggestions, failure case or golden case status, or skill feedback dashboard.
+description: "Use when the user asks for self-review, Dolores mode, conversation review, skill trace audit, failure analysis, eval gap detection, improvement-loop suggestions, failure case or golden case status, or skill feedback dashboard."
 # activation-policy:frontmatter:end
 ---
 

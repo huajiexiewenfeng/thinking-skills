@@ -46,6 +46,38 @@ function requireAbsoluteTarget(filePath, optionName) {
   if (!path.isAbsolute(filePath)) throw new Error(`${optionName} must be an absolute path: ${filePath}`);
 }
 
+function validateInstalledSkillsRoot(skillsRoot, disabledSkillIds, fsImpl = fs) {
+  requireAbsoluteTarget(skillsRoot, "--skills-root");
+  const lexicalRoot = path.resolve(skillsRoot);
+  let rootStats;
+  try {
+    rootStats = fsImpl.statSync(lexicalRoot);
+  } catch {
+    throw new Error(`--skills-root must name an existing directory: ${lexicalRoot}`);
+  }
+  if (!rootStats.isDirectory()) {
+    throw new Error(`--skills-root must name an existing directory: ${lexicalRoot}`);
+  }
+
+  for (const skillId of disabledSkillIds) {
+    const skillPath = path.join(lexicalRoot, skillId, "SKILL.md");
+    let skillStats;
+    try {
+      skillStats = fsImpl.lstatSync(skillPath);
+    } catch {
+      throw new Error(`${skillId}: ${skillPath} must be an existing regular file`);
+    }
+    if (!skillStats.isFile() || skillStats.isSymbolicLink()) {
+      throw new Error(`${skillId}: ${skillPath} must be an existing regular file`);
+    }
+  }
+
+  return Object.freeze({
+    lexicalRoot,
+    canonicalRoot: resolveThroughExistingAncestor(lexicalRoot, fsImpl),
+  });
+}
+
 function escapeTomlBasicString(value) {
   return value.replace(/[\u0000-\u001f\u007f"\\]/g, (character) => {
     const simple = {
@@ -257,13 +289,19 @@ function buildCodexActivationPlan({
   const resolvedRepo = resolveThroughExistingAncestor(repoRoot);
   const resolvedConfig = resolveThroughExistingAncestor(configPath);
   const absoluteSkills = path.resolve(skillsRoot);
-  const resolvedSkillsTarget = resolveThroughExistingAncestor(skillsRoot);
+  const disabledSkillIds = Object.freeze(skillIdsByMode(policy, "disabled"));
+  const skillsValidation = validateInstalledSkillsRoot(
+    absoluteSkills,
+    [],
+  );
+  const resolvedSkillsTarget = skillsValidation.canonicalRoot;
   if (isWithin(resolvedConfig, resolvedRepo)) {
     throw new Error(`--config must be outside the repository: ${resolvedConfig}`);
   }
   if (samePath(absoluteSkills, resolvedRepo) || samePath(resolvedSkillsTarget, resolvedRepo)) {
     throw new Error(`--skills-root must be outside the repository root: ${absoluteSkills}`);
   }
+  validateInstalledSkillsRoot(absoluteSkills, disabledSkillIds);
   if (!fs.existsSync(resolvedConfig) || !fs.statSync(resolvedConfig).isFile()) {
     throw new Error(`--config must name an existing file: ${resolvedConfig}`);
   }
@@ -289,6 +327,9 @@ function buildCodexActivationPlan({
     backupPath,
     before: Buffer.from(before),
     after: Buffer.from(after),
+    skillsRoot: absoluteSkills,
+    skillsTarget: resolvedSkillsTarget,
+    disabledSkillIds,
   }));
   return plan;
 }
@@ -355,6 +396,16 @@ function validateTrustedPlan(plan) {
 
 function applyCodexActivationPlan(plan, { fsImpl = fs } = {}) {
   const metadata = validateTrustedPlan(plan);
+  const skillsValidation = validateInstalledSkillsRoot(
+    metadata.skillsRoot,
+    metadata.disabledSkillIds,
+    fsImpl,
+  );
+  if (!samePath(skillsValidation.canonicalRoot, metadata.skillsTarget)) {
+    throw new Error(
+      `Codex skills root target changed after planning: ${metadata.skillsRoot} -> ${skillsValidation.canonicalRoot}`,
+    );
+  }
   const currentConfigTarget = resolveThroughExistingAncestor(metadata.configPath, fsImpl);
   if (!samePath(currentConfigTarget, metadata.configPath)) {
     throw new Error(

@@ -1,7 +1,7 @@
 ---
 name: technical-deep-dive
 # activation-policy:frontmatter:start
-description: Use only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines a direct invocation command with the exact canonical name `technical-deep-dive`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff.
+description: "Use only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines a direct invocation command with the exact canonical name `technical-deep-dive`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff."
 # activation-policy:frontmatter:end
 ---
 

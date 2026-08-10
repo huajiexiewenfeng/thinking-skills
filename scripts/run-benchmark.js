@@ -7,6 +7,9 @@ const { spawnSync } = require("node:child_process");
 const { createHash } = require("node:crypto");
 const { loadActivationPolicy, skillIdsByMode } = require("./activation-policy");
 const { hasCurrentRequestExplicitSkillInvocation } = require("./explicit-skill-invocation");
+const {
+  validateBenchmarkActivationContract,
+} = require("./activation-corpus-contract");
 
 const CASE_KINDS = new Set(["route", "response", "integration"]);
 const BENCHMARK_CONTRACT_VERSION = "3.0.0";
@@ -169,34 +172,6 @@ function validateRouteFields(item, filePath, policy = DEFAULT_ACTIVATION_POLICY)
   if (item.must_not_select.some((value) => typeof value !== "string" || !value.trim())) {
     throw new Error(`${filePath} must_not_select must contain non-empty strings`);
   }
-  validateRouteActivation(item, filePath, policy);
-}
-
-function validateRouteActivation(
-  item,
-  filePath,
-  policy = DEFAULT_ACTIVATION_POLICY,
-) {
-  const selected = [
-    item.expected_route.primary,
-    item.expected_route.secondary,
-    ...item.expected_advisory,
-  ].filter(Boolean);
-  const disabled = new Set(skillIdsByMode(policy, "disabled"));
-
-  for (const skillId of selected) {
-    if (disabled.has(skillId)) {
-      throw new Error(`${filePath} selects disabled Skill ${skillId}`);
-    }
-    if (
-      policy.skills[skillId]?.mode === "explicit" &&
-      !hasCurrentRequestExplicitSkillInvocation(item, skillId)
-    ) {
-      throw new Error(
-        `${filePath} selects explicit Skill ${skillId} without a valid current-request invocation`,
-      );
-    }
-  }
 }
 
 function validateResponseFields(item, filePath) {
@@ -306,6 +281,7 @@ function validateCase(item, filePath, policy = DEFAULT_ACTIVATION_POLICY) {
     validateRouteFields(item, filePath, policy);
     validateResponseFields(item, filePath);
   }
+  validateBenchmarkActivationContract(item, filePath, policy);
 }
 
 function loadBenchmarkCases(root = "benchmarks", policy = DEFAULT_ACTIVATION_POLICY) {

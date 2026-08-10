@@ -177,6 +177,19 @@ function hasReportedCommandScope(sentence, commandStart) {
   );
 }
 
+function hasSkillMetadataObjectScope(suffix) {
+  return (
+    /^\s*(?:skill\s+)?(?:configuration|activation\s+(?:rule|policy)|instructions?|description|manifest|implementation)\b/i
+      .test(suffix) ||
+    /^\s*to\s+(?:test|evaluate|review|inspect|modify|edit|change|update|configure)\s+(?:(?:its|this\s+skill(?:'s)?|the\s+skill(?:'s)?|skill's)\s+(?:own\s+)?)(?:activation\s+(?:rule|policy)|configuration|instructions?|description|manifest|implementation|behavior|output|response)\b/i
+      .test(suffix) ||
+    /^\s*(?:的)?(?:配置|激活规则|激活策略|说明|指令|清单|实现)(?:\s|作为|当作|$)/i
+      .test(suffix) ||
+    /^\s*(?:来|去)?(?:测试|评测|评估|审核|检查|修改|编辑|更新|配置)\s*(?:(?:它的|其)\s*(?:激活规则|激活策略|配置|说明|指令|清单|实现|行为|输出|响应)|(?:这个|该)?\s*skill\s*(?:自身)?\s*(?:的)?\s*(?:规则|激活规则|激活策略|配置|说明|指令|清单|实现|行为|输出|响应))/i
+      .test(suffix)
+  );
+}
+
 function sentenceHasDirectInvocation(sentence, patterns) {
   const command = /(?:^|[\n,，:：]|(\b(?:and(?:\s+then)?|then|also)\b\s+))[ \t]*(?:(?:(?:and|then|also)\s+)?(?:(?:please|kindly)\s+)?(?:use|invoke|run|load|apply|activate)\b|(?:(?:并且?|然后|再)\s*)?(?:请\s*)?(?:使用|调用|运行|加载|应用|用))/gim;
   const commands = [...sentence.matchAll(command)]
@@ -229,6 +242,7 @@ function sentenceHasDirectInvocation(sentence, patterns) {
 
     const localSuffix = sentence.slice(tokenEnd, tokenEnd + 192);
     if (
+      hasSkillMetadataObjectScope(localSuffix) ||
       /^\s*(?:(?:as|used\s+as|for\s+use\s+as|to\s+use\s+as)\s+(?:(?:an?\s+)?(?:data|example|sample|text|test\s+data|quoted\s+text))\b|(?:作为|当作)(?:数据|示例|样例|文本|测试数据))/i
         .test(localSuffix)
     ) {

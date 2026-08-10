@@ -21,20 +21,15 @@ const {
   buildAgentPrompt,
 } = require("./run-benchmark");
 const {
-  hasCurrentRequestExplicitSkillInvocation,
-} = require("./explicit-skill-invocation");
-const {
   buildDashboard,
   loadRunReports,
 } = require("./update-benchmark-dashboard");
-const { loadActivationPolicy, skillIdsByMode } = require("./activation-policy");
+const { loadActivationPolicy } = require("./activation-policy");
+const { validateActivationCorpus } = require("./activation-corpus-contract");
 
 const defaultActivationPolicy = loadActivationPolicy({
   repoRoot: path.resolve(__dirname, ".."),
 });
-const hasValidTechnicalDeepDiveInvocation = (item) =>
-  hasCurrentRequestExplicitSkillInvocation(item, "technical-deep-dive");
-
 function activationPolicyWithMode(skillId, mode) {
   const policy = JSON.parse(JSON.stringify(defaultActivationPolicy));
   policy.skills[skillId].mode = mode;
@@ -67,6 +62,24 @@ function writeRouteCase(directory, overrides = {}) {
     "utf8",
   );
   return routeCase;
+}
+
+function writeResponseCase(directory, overrides = {}) {
+  const responseCase = {
+    id: "policy-response-001",
+    kind: "response",
+    skill: "content-creator",
+    prompt: "Draft this article.",
+    expected: [],
+    must_not: [],
+    ...overrides,
+  };
+  fs.writeFileSync(
+    path.join(directory, "response.json"),
+    JSON.stringify(responseCase),
+    "utf8",
+  );
+  return responseCase;
 }
 
 function sha256(value) {
@@ -1054,6 +1067,88 @@ test("route validation leaves an uninvoked Auto Skill valid", () => {
   );
 });
 
+test("response gold validation follows content-creator manifest transitions", () => {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-response-policy-"));
+  writeResponseCase(tempDir);
+
+  assert.equal(
+    loadBenchmarkCases(tempDir, activationPolicyWithMode("content-creator", "auto")).length,
+    1,
+  );
+  assert.throws(
+    () => loadBenchmarkCases(
+      tempDir,
+      activationPolicyWithMode("content-creator", "explicit"),
+    ),
+    /response.*content-creator.*valid current-request invocation/i,
+  );
+
+  writeResponseCase(tempDir, {
+    prompt: "Please use content-creator to draft this article.",
+  });
+  assert.equal(
+    loadBenchmarkCases(
+      tempDir,
+      activationPolicyWithMode("content-creator", "explicit"),
+    ).length,
+    1,
+  );
+  assert.throws(
+    () => loadBenchmarkCases(
+      tempDir,
+      activationPolicyWithMode("content-creator", "disabled"),
+    ),
+    /response.*disabled Skill content-creator/i,
+  );
+
+  writeResponseCase(tempDir, {
+    skill: "no-skill",
+    prompt: "Draft this article without a Thinking Skill.",
+  });
+  assert.equal(
+    loadBenchmarkCases(
+      tempDir,
+      activationPolicyWithMode("content-creator", "disabled"),
+    ).length,
+    1,
+  );
+});
+
+test("integration selections apply manifest mode to primary, secondary, and advisory", () => {
+  for (const placement of ["primary", "secondary", "advisory"]) {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), `thinking-integration-${placement}-`));
+    const expectedRoute = {
+      primary: placement === "primary" ? "content-creator" : "emotional-support",
+      secondary: placement === "secondary" ? "content-creator" : null,
+    };
+    writeRouteCase(tempDir, {
+      id: `integration-${placement}`,
+      kind: "integration",
+      expected_route: expectedRoute,
+      expected_advisory: placement === "advisory" ? ["content-creator"] : [],
+      expected: [],
+      must_not: [],
+    });
+
+    assert.throws(
+      () => loadBenchmarkCases(
+        tempDir,
+        activationPolicyWithMode("content-creator", "explicit"),
+      ),
+      /selects explicit Skill content-creator without a valid current-request invocation/,
+      placement,
+    );
+    assert.throws(
+      () => loadBenchmarkCases(
+        tempDir,
+        activationPolicyWithMode("content-creator", "disabled"),
+      ),
+      /selects disabled Skill content-creator/,
+      placement,
+    );
+  }
+});
+
 test("integration scoring forbids policy-disabled lifecycle events without case-authored exclusions", () => {
   const benchmarkCase = {
     id: "integration-disabled-policy-001",
@@ -1515,162 +1610,11 @@ test("legacy hybrid scenarios retain separate route and response evidence", () =
   }
 });
 
-test("route golds obey configured activation modes", () => {
-  const cases = loadBenchmarkCases("benchmarks");
-  const explicitIds = skillIdsByMode(defaultActivationPolicy, "explicit");
-  const disabledIds = skillIdsByMode(defaultActivationPolicy, "disabled");
-
-  for (const benchmarkCase of cases.filter((item) => item.kind === "route")) {
-    const selected = [
-      benchmarkCase.expected_route.primary,
-      benchmarkCase.expected_route.secondary,
-      ...benchmarkCase.expected_advisory,
-    ].filter(Boolean);
-    for (const skillId of explicitIds.filter((id) => selected.includes(id))) {
-      assert.equal(
-        hasCurrentRequestExplicitSkillInvocation(benchmarkCase, skillId),
-        true,
-        `${benchmarkCase.file}: ${skillId}`,
-      );
-    }
-    for (const skillId of disabledIds) {
-      assert.equal(selected.includes(skillId), false, benchmarkCase.file);
-    }
-  }
-});
-
-test("learning-coach response golds directly invoke the configured Explicit Skill", () => {
-  const cases = loadBenchmarkCases("benchmarks/learning-coach");
-
-  assert.equal(cases.length, 2);
-  for (const benchmarkCase of cases) {
-    assert.equal(
-      hasCurrentRequestExplicitSkillInvocation(benchmarkCase, "learning-coach"),
-      true,
-      benchmarkCase.file,
-    );
-  }
-});
-
-test("learning-coach eval positives directly invoke the configured Explicit Skill", () => {
-  const tableRows = (text) => text.split(/\r?\n/)
-    .filter((line) => /^\|\s*"/.test(line))
-    .map((line) => line.trim().replace(/^\||\|$/g, "").split("|").map((cell) => cell.trim()));
-  const section = (text, heading, nextHeading) => text.slice(
-    text.indexOf(`## ${heading}`),
-    text.indexOf(`## ${nextHeading}`),
-  );
-
-  const learningText = fs.readFileSync("evals/learning-coach-cases.md", "utf8");
-  const learningCoreRows = tableRows(section(
-    learningText,
-    "Core Cases",
-    "Mixed-Intent Cases",
-  ));
-  assert.equal(learningCoreRows.length, 7);
-  for (const [request] of learningCoreRows) {
-    const prompt = request.replace(/^"|"$/g, "");
-    assert.equal(
-      hasCurrentRequestExplicitSkillInvocation(prompt, "learning-coach"),
-      true,
-      prompt,
-    );
-  }
-
-  const routingText = fs.readFileSync("evals/routing-cases.md", "utf8");
-  const routeRows = [
-    ...tableRows(section(routingText, "Clear MVP Cases", "Mixed-Intent Cases"))
-      .map(([request, primary, secondary]) => ({ request, expected: `${primary} ${secondary}` })),
-    ...tableRows(section(routingText, "Mixed-Intent Cases", "Ambiguous Cases"))
-      .map(([request, primary, secondary]) => ({ request, expected: `${primary} ${secondary}` })),
-    ...tableRows(routingText.slice(routingText.indexOf("## Anti-Cases")))
-      .map(([request, _incorrect, correct]) => ({ request, expected: correct })),
-  ];
-  for (const { request, expected } of routeRows.filter((row) => /`learning-coach`/.test(row.expected))) {
-    const prompt = request.replace(/^"|"$/g, "");
-    assert.equal(
-      hasCurrentRequestExplicitSkillInvocation(prompt, "learning-coach"),
-      true,
-      prompt,
-    );
-  }
-});
-
-test("technical-deep-dive eval cases follow the explicit activation contract", () => {
-  const evalText = fs.readFileSync("evals/technical-deep-dive-cases.md", "utf8");
-  const section = (heading, nextHeading) =>
-    evalText.slice(
-      evalText.indexOf(`## ${heading}`),
-      evalText.indexOf(`## ${nextHeading}`),
-    );
-  const tableRows = (text) => [...text.matchAll(/^\|\s*"([^"]+)"\s*\|\s*(.*?)\s*\|$/gm)]
-    .map((match) => ({ prompt: match[1], expected: match[2] }));
-
-  const positiveRows = tableRows(section("Positive Cases", "Negative Cases"));
-  assert.equal(positiveRows.length, 5);
-  for (const { prompt } of positiveRows) {
-    assert.equal(hasValidTechnicalDeepDiveInvocation(prompt), true, prompt);
-  }
-
-  const mixedRows = tableRows(section("Mixed Cases", "Quality Checks"));
-  assert.equal(mixedRows.length, 3);
-  for (const { prompt, expected } of mixedRows) {
-    if (!hasValidTechnicalDeepDiveInvocation(prompt)) {
-      assert.match(expected, /\bnative\b/i, prompt);
-    }
-  }
-
-  const structuredPrompt = /\nprompt:\s*"([^"]+)"/.exec(evalText)?.[1];
-  assert.ok(structuredPrompt);
-  assert.equal(hasValidTechnicalDeepDiveInvocation(structuredPrompt), true);
-});
-
-test("route gold validation applies the centralized current-request predicate", () => {
-  const invalidRequests = [
-    { prompt: "Please do not use technical-deep-dive for this failure." },
-    { prompt: "Example:\nPlease use technical-deep-dive to analyze this failure." },
-    { prompt: 'Review this data: "Please use technical-deep-dive here."' },
-    { prompt: "Use technical deep analysis to inspect this API." },
-    {
-      turns: [
-        { role: "user", content: "Please use technical-deep-dive for the first failure." },
-        { role: "assistant", content: "First analysis." },
-        { role: "user", content: "Continue with an ordinary Docker failure." },
-      ],
-    },
-    { prompt: "The identifier `$thinking-skills:technical-deep-dive` is only mentioned." },
-  ];
-
-  for (const [index, request] of invalidRequests.entries()) {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-invocation-route-"));
-    fs.writeFileSync(
-      path.join(tempDir, "route.json"),
-      JSON.stringify({
-        id: `invalid-invocation-${index}`,
-        kind: "route",
-        ...request,
-        expected_profile: {
-          domain: "technical",
-          objective: "explore",
-          mutation: "none",
-          artifact: "analysis",
-          artifact_sink: "chat",
-        },
-        expected_route: {
-          primary: "technical-deep-dive",
-          secondary: null,
-        },
-        expected_advisory: [],
-        must_not_select: ["native", "no-skill"],
-      }),
-      "utf8",
-    );
-
-    assert.throws(
-      () => loadBenchmarkCases(tempDir),
-      /valid current-request invocation/,
-    );
-  }
+test("checked-in benchmark and eval corpus obeys manifest activation modes", () => {
+  assert.doesNotThrow(() => validateActivationCorpus({
+    repoRoot: path.resolve(__dirname, ".."),
+    policy: defaultActivationPolicy,
+  }));
 });
 
 test("loads the optional Superpowers integration suite only when requested", () => {

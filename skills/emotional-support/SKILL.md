@@ -1,7 +1,7 @@
 ---
 name: emotional-support
 # activation-policy:frontmatter:start
-description: Use when the user expresses anxiety, sadness, shame, self-blame, burnout, overwhelm, relationship pain, emotional confusion, distress, crisis signals, or asks to understand feelings and needs.
+description: "Use when the user expresses anxiety, sadness, shame, self-blame, burnout, overwhelm, relationship pain, emotional confusion, distress, crisis signals, or asks to understand feelings and needs."
 # activation-policy:frontmatter:end
 ---
 

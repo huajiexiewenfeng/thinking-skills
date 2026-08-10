@@ -207,6 +207,72 @@ test("checked-in activation surfaces match the manifest", () => {
   assert.deepEqual(checkActivationSyncPlan(plan), []);
 });
 
+test("sync planning rejects stale content-creator gold and eval contracts across mode changes", () => {
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["content-creator", "auto", "Create content."],
+  ]);
+  const benchmarkPath = path.join(repoRoot, "benchmarks", "content-creator", "response.json");
+  const evalPath = path.join(repoRoot, "evals", "content-creator-cases.md");
+  fs.mkdirSync(path.dirname(benchmarkPath), { recursive: true });
+  fs.mkdirSync(path.dirname(evalPath), { recursive: true });
+  const writeGold = (skill, prompt) => fs.writeFileSync(
+    benchmarkPath,
+    JSON.stringify({
+      id: "content-policy-response-001",
+      kind: "response",
+      skill,
+      prompt,
+      expected: [],
+      must_not: [],
+    }),
+    "utf8",
+  );
+  const writeEval = (prompt, heading = "Positive Cases") => fs.writeFileSync(
+    evalPath,
+    [
+      "# Content Creator Cases",
+      "",
+      `## ${heading}`,
+      "",
+      "| User Request | Expected Behavior |",
+      "|---|---|",
+      `| \"${prompt}\" | Draft it. |`,
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+
+  writeGold("content-creator", "Draft this article.");
+  writeEval("Draft this article.");
+  assert.doesNotThrow(() => buildActivationSyncPlan({ repoRoot, policy }));
+
+  policy.skills["content-creator"].mode = "explicit";
+  assert.throws(
+    () => buildActivationSyncPlan({ repoRoot, policy }),
+    /response.*content-creator.*valid current-request invocation/i,
+  );
+  writeGold("content-creator", "Please use content-creator to draft this article.");
+  assert.throws(
+    () => buildActivationSyncPlan({ repoRoot, policy }),
+    /eval.*content-creator.*valid current-request invocation/i,
+  );
+  writeEval("Please use content-creator to draft this article.");
+  assert.doesNotThrow(() => buildActivationSyncPlan({ repoRoot, policy }));
+
+  policy.skills["content-creator"].mode = "disabled";
+  assert.throws(
+    () => buildActivationSyncPlan({ repoRoot, policy }),
+    /response.*disabled Skill content-creator/i,
+  );
+  writeGold("no-skill", "Draft this article without a Thinking Skill.");
+  assert.throws(
+    () => buildActivationSyncPlan({ repoRoot, policy }),
+    /eval.*disabled Skill content-creator/i,
+  );
+  writeEval("This should not target the Skill.", "Negative Cases");
+  assert.doesNotThrow(() => buildActivationSyncPlan({ repoRoot, policy }));
+});
+
 test("checked-in README activation tables exactly match all manifest Skills", () => {
   const repoRoot = path.resolve(__dirname, "..");
   const policy = loadActivationPolicy({ repoRoot });
@@ -577,14 +643,14 @@ test("renderers snapshot all activation modes and manifest-ordered EN/ZH tables"
   const explicit = { mode: "explicit", auto_description: "Unused." };
   const disabled = { mode: "disabled", auto_description: "Unused." };
 
-  assert.equal(renderSkillFrontmatterDescription(auto, "alpha-skill"), "Exact automatic description.");
+  assert.equal(renderSkillFrontmatterDescription(auto, "alpha-skill"), '"Exact automatic description."');
   assert.equal(
     renderSkillFrontmatterDescription(explicit, "alpha-skill"),
-    "Use only when the current user request directly invokes `$thinking-skills:alpha-skill` or combines a direct invocation command with the exact canonical name `alpha-skill`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff.",
+    '"Use only when the current user request directly invokes `$thinking-skills:alpha-skill` or combines a direct invocation command with the exact canonical name `alpha-skill`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff."',
   );
   assert.equal(
     renderSkillFrontmatterDescription(disabled, "alpha-skill"),
-    "Unavailable under the current Thinking Skills activation policy. Do not select, load, follow, announce, or claim to have run `alpha-skill`.",
+    '"Unavailable under the current Thinking Skills activation policy. Do not select, load, follow, announce, or claim to have run `alpha-skill`."',
   );
 
   assert.equal(
@@ -683,6 +749,24 @@ test("renderers snapshot all activation modes and manifest-ordered EN/ZH tables"
       "});",
     ].join("\n"),
   );
+});
+
+test("frontmatter descriptions are quoted single-line YAML scalars for unsafe manifest text", () => {
+  const descriptions = [
+    "Explains key: value pairs.",
+    "Keep this # literal comment marker.",
+    'Quotes "both" ways and keeps C:\\skills\\demo.',
+    "Line one\nLine two",
+  ];
+
+  for (const autoDescription of descriptions) {
+    const scalar = renderSkillFrontmatterDescription(
+      { mode: "auto", auto_description: autoDescription },
+      "alpha-skill",
+    );
+    assert.equal(JSON.parse(scalar), autoDescription);
+    assert.equal(scalar.split("\n").length, 1);
+  }
 });
 
 test("generated activation fixture names are stable and sorted", () => {

@@ -1,7 +1,7 @@
 ---
 name: learning-coach
 # activation-policy:frontmatter:start
-description: Use only when the current user request directly invokes `$thinking-skills:learning-coach` or combines a direct invocation command with the exact canonical name `learning-coach`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff.
+description: "Use only when the current user request directly invokes `$thinking-skills:learning-coach` or combines a direct invocation command with the exact canonical name `learning-coach`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff."
 # activation-policy:frontmatter:end
 ---
 

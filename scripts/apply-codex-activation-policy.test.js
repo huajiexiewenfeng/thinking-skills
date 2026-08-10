@@ -52,7 +52,14 @@ function makeFixture({ configText = `title = "保留"\r\n${oldBlock()}\r\nanswer
   fs.mkdirSync(skillsRoot, { recursive: true });
   const configPath = path.join(configRoot, "config.toml");
   fs.writeFileSync(configPath, configText, "utf8");
-  return { repoRoot, installRoot, configPath, skillsRoot, policy: makePolicy() };
+  const policy = makePolicy();
+  for (const [skillId, entry] of Object.entries(policy.skills)) {
+    if (entry.mode !== "disabled") continue;
+    const skillRoot = path.join(skillsRoot, skillId);
+    fs.mkdirSync(skillRoot, { recursive: true });
+    fs.writeFileSync(path.join(skillRoot, "SKILL.md"), `# ${skillId}\n`, "utf8");
+  }
+  return { repoRoot, installRoot, configPath, skillsRoot, policy };
 }
 
 const fixedClock = () => new Date("2026-08-09T12:34:56.789Z");
@@ -462,11 +469,50 @@ test("relative and repository-root targets are rejected", () => {
   );
 });
 
+test("planning requires the lexical skills root to already exist as a directory", () => {
+  const fixture = makeFixture();
+  assert.throws(
+    () => buildCodexActivationPlan({
+      ...fixture,
+      skillsRoot: `${fixture.skillsRoot}-typo`,
+      clock: fixedClock,
+    }),
+    /skills-root.*existing directory/i,
+  );
+
+  const fileRoot = path.join(fixture.installRoot, "skills-file");
+  fs.writeFileSync(fileRoot, "not a directory", "utf8");
+  assert.throws(
+    () => buildCodexActivationPlan({ ...fixture, skillsRoot: fileRoot, clock: fixedClock }),
+    /skills-root.*existing directory/i,
+  );
+});
+
+test("planning requires every Disabled Skill target to be a regular SKILL.md file", () => {
+  for (const replacement of ["missing", "directory"]) {
+    const fixture = makeFixture();
+    const skillPath = path.join(fixture.skillsRoot, "fixture-disabled", "SKILL.md");
+    fs.rmSync(skillPath);
+    if (replacement === "directory") fs.mkdirSync(skillPath);
+
+    assert.throws(
+      () => buildCodexActivationPlan({ ...fixture, clock: fixedClock }),
+      /fixture-disabled.*SKILL\.md.*regular file/i,
+      replacement,
+    );
+  }
+});
+
 test("an installed skills-root junction keeps its absolute install path even when source is in the repo", () => {
   const fixture = makeFixture();
   const repositorySkills = path.join(fixture.repoRoot, "skills");
-  fs.mkdirSync(repositorySkills);
-  fs.rmdirSync(fixture.skillsRoot);
+  fs.mkdirSync(path.join(repositorySkills, "fixture-disabled"), { recursive: true });
+  fs.writeFileSync(
+    path.join(repositorySkills, "fixture-disabled", "SKILL.md"),
+    "# Installed through junction\n",
+    "utf8",
+  );
+  fs.rmSync(fixture.skillsRoot, { recursive: true });
   fs.symlinkSync(repositorySkills, fixture.skillsRoot, "junction");
 
   const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
@@ -474,6 +520,20 @@ test("an installed skills-root junction keeps its absolute install path even whe
   const expectedPath = path.join(fixture.skillsRoot, "fixture-disabled", "SKILL.md")
     .replace(/\\/g, "\\\\");
   assert.match(plan.managedBlock, new RegExp(expectedPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
+
+test("apply revalidates Disabled Skill files before changing the config", () => {
+  const fixture = makeFixture();
+  const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
+  const before = fs.readFileSync(fixture.configPath);
+  fs.rmSync(path.join(fixture.skillsRoot, "fixture-disabled", "SKILL.md"));
+
+  assert.throws(
+    () => applyCodexActivationPlan(plan),
+    /fixture-disabled.*SKILL\.md.*regular file/i,
+  );
+  assert.deepEqual(fs.readFileSync(fixture.configPath), before);
+  assert.equal(fs.existsSync(plan.backupPath), false);
 });
 
 test("apply rejects a config path redirected after planning", () => {

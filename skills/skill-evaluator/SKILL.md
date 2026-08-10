@@ -1,7 +1,7 @@
 ---
 name: skill-evaluator
 # activation-policy:frontmatter:start
-description: Use when reviewing a Thinking Skills failure, golden case candidate, user feedback about a skill response, eval result, routing mistake, unsafe behavior, overly long output, too many questions, jargon exposure, regression risk, or when deciding how to improve or preserve a skill.
+description: "Use when reviewing a Thinking Skills failure, golden case candidate, user feedback about a skill response, eval result, routing mistake, unsafe behavior, overly long output, too many questions, jargon exposure, regression risk, or when deciding how to improve or preserve a skill."
 # activation-policy:frontmatter:end
 ---
 

@@ -3,6 +3,7 @@ const path = require("node:path");
 
 const { loadActivationPolicy, skillIdsByMode } = require("./activation-policy");
 const { hasCurrentRequestExplicitSkillInvocation } = require("./explicit-skill-invocation");
+const { validateActivationCorpus } = require("./activation-corpus-contract");
 
 const GENERATED_HEADER = "Generated from config/activation-policy.yaml. Do not edit this block.";
 const VALID_MODES = new Set(["auto", "explicit", "disabled"]);
@@ -182,11 +183,15 @@ function requireMode(entry, skillId) {
 
 function renderSkillFrontmatterDescription(entry, skillId) {
   requireMode(entry, skillId);
-  if (entry.mode === "auto") return entry.auto_description;
+  let description;
+  if (entry.mode === "auto") description = entry.auto_description;
   if (entry.mode === "explicit") {
-    return `Use only when the current user request directly invokes \`$thinking-skills:${skillId}\` or combines a direct invocation command with the exact canonical name \`${skillId}\`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff.`;
+    description = `Use only when the current user request directly invokes \`$thinking-skills:${skillId}\` or combines a direct invocation command with the exact canonical name \`${skillId}\`. Do not activate from ordinary domain intent, depth language, mention, evaluation, modification, quoted data, prior turns, or component handoff.`;
   }
-  return `Unavailable under the current Thinking Skills activation policy. Do not select, load, follow, announce, or claim to have run \`${skillId}\`.`;
+  if (entry.mode === "disabled") {
+    description = `Unavailable under the current Thinking Skills activation policy. Do not select, load, follow, announce, or claim to have run \`${skillId}\`.`;
+  }
+  return JSON.stringify(description);
 }
 
 function renderSkillActivationGuard(entry, skillId) {
@@ -476,6 +481,7 @@ function addRequiredOwnedRegionTarget(
 
 function buildActivationSyncPlan({ repoRoot, policy }) {
   const resolvedRoot = canonicalizeRepoRoot(repoRoot);
+  validateActivationCorpus({ repoRoot: resolvedRoot, policy });
   const recoveryRoot = path.join(resolvedRoot, ...RECOVERY_ROOT_SEGMENTS);
   const lockPath = path.join(resolvedRoot, ".superpowers", "sdd", "activation-policy-sync.lock");
   const plan = [];

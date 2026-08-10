@@ -1,5 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const os = require("node:os");
 const path = require("node:path");
 
 const {
@@ -103,4 +105,26 @@ test("top-level validation errors retain parsed source locations", () => {
     () => validateActivationPolicy(parsed, ["demo"], "parsed-fixture.yaml"),
     /parsed-fixture\.yaml: line 1: schema_version/,
   );
+});
+
+test("parseActivationPolicy defaults diagnostics to the in-memory source", () => {
+  assert.throws(
+    () => parseActivationPolicy("not yaml"),
+    /<memory>: line 1: unsupported syntax/,
+  );
+});
+
+test("loadActivationPolicy honors an explicit policyPath while preserving repo discovery", () => {
+  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-policy-path-"));
+  const policyPath = path.join(tempRoot, "alternate-policy.yaml");
+  const source = fs.readFileSync(path.join(repoRoot, "config", "activation-policy.yaml"), "utf8")
+    .replace("default_mode: auto", "default_mode: explicit");
+  fs.writeFileSync(policyPath, source, "utf8");
+
+  try {
+    const policy = loadActivationPolicy({ repoRoot, policyPath });
+    assert.equal(policy.default_mode, "explicit");
+  } finally {
+    fs.rmSync(tempRoot, { recursive: true, force: true });
+  }
 });
