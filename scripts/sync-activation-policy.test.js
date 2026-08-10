@@ -98,19 +98,32 @@ function openCodeText(policy) {
   ].join("\n");
 }
 
-function readmeText(policy, locale = "en") {
+function withEol(text, eol) {
+  return text.replace(/\r\n?|\n/g, "\n").replace(/\n/g, eol);
+}
+
+function readmeText(policy, locale = "en", eol = "\n") {
   return [
     locale === "zh" ? "# Thinking Skills 中文" : "# Thinking Skills",
     "",
     "Authored explanation.",
     "",
     "<!-- activation-policy:readme-table:start -->",
-    renderReadmeActivationTable(policy, locale),
+    withEol(renderReadmeActivationTable(policy, locale), eol),
     "<!-- activation-policy:readme-table:end -->",
     "",
     "More authored explanation.",
     "",
-  ].join("\n");
+  ].join(eol);
+}
+
+function legacyMixedReadmeText(policy, locale = "en") {
+  const text = readmeText(policy, locale, "\r\n");
+  const start = "<!-- activation-policy:readme-table:start -->";
+  const end = "<!-- activation-policy:readme-table:end -->";
+  const startIndex = text.indexOf(start);
+  const endIndex = text.indexOf(end, startIndex) + end.length;
+  return `${text.slice(0, startIndex)}${withEol(text.slice(startIndex, endIndex), "\n")}${text.slice(endIndex)}`;
 }
 
 function makeFixtureRepo(entries = [["demo", "auto", "Use automatically for demos."]]) {
@@ -158,6 +171,19 @@ function countExactLines(text, line) {
   return text.split(/\r?\n/).filter((candidate) => candidate === line).length;
 }
 
+function extractOwnedRegionBody(text, startMarker, endMarker, filePath) {
+  const startIndex = text.indexOf(startMarker);
+  assert.notEqual(startIndex, -1, `${filePath}: missing start marker`);
+  const endIndex = text.indexOf(endMarker, startIndex + startMarker.length);
+  assert.notEqual(endIndex, -1, `${filePath}: missing end marker`);
+  const ownedText = text.slice(startIndex + startMarker.length, endIndex);
+  const leadingBoundary = /^(\r\n|\n)/.exec(ownedText)?.[0];
+  const trailingBoundary = /(\r\n|\n)$/.exec(ownedText)?.[0];
+  assert.ok(leadingBoundary, `${filePath}: missing leading marker boundary`);
+  assert.ok(trailingBoundary, `${filePath}: missing trailing marker boundary`);
+  return ownedText.slice(leadingBoundary.length, -trailingBoundary.length);
+}
+
 function withoutGeneratedSkillRegions(text) {
   return text
     .replace(
@@ -197,11 +223,8 @@ test("checked-in README activation tables exactly match all manifest Skills", ()
     assert.equal(countExactLines(contents, start), 1, `${relativePath}: start marker`);
     assert.equal(countExactLines(contents, end), 1, `${relativePath}: end marker`);
 
-    const generated = contents.slice(
-      contents.indexOf(start) + start.length + 1,
-      contents.indexOf(end) - 1,
-    );
-    assert.equal(generated, renderReadmeActivationTable(policy, locale), relativePath);
+    const generated = extractOwnedRegionBody(contents, start, end, relativePath);
+    assert.equal(withEol(generated, "\n"), renderReadmeActivationTable(policy, locale), relativePath);
 
     const authored = contents.replace(
       /<!-- activation-policy:readme-table:start -->[\s\S]*?<!-- activation-policy:readme-table:end -->/,
@@ -215,6 +238,62 @@ test("checked-in README activation tables exactly match all manifest Skills", ()
       );
     }
   }
+});
+
+test("uniform-CRLF README fixtures are current and idempotent", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  applyActivationSyncPlan(buildActivationSyncPlan({ repoRoot, policy }));
+  const readmes = [
+    ["README.md", "en"],
+    ["README.zh.md", "zh"],
+  ];
+  const before = new Map();
+  for (const [relativePath, locale] of readmes) {
+    const filePath = path.join(repoRoot, relativePath);
+    const contents = readmeText(policy, locale, "\r\n");
+    fs.writeFileSync(filePath, contents, "utf8");
+    before.set(filePath, contents);
+  }
+
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  assert.deepEqual(checkActivationSyncPlan(plan), []);
+  assert.equal(main(["--check"], { repoRoot }), 0);
+  assert.deepEqual(applyActivationSyncPlan(plan), []);
+  for (const [filePath, contents] of before) {
+    assert.equal(fs.readFileSync(filePath, "utf8"), contents, filePath);
+  }
+  assert.deepEqual(
+    checkActivationSyncPlan(buildActivationSyncPlan({ repoRoot, policy })),
+    [],
+  );
+});
+
+test("legacy mixed-EOL README regions remain current and preserve every byte", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  applyActivationSyncPlan(buildActivationSyncPlan({ repoRoot, policy }));
+  const readmes = [
+    ["README.md", "en"],
+    ["README.zh.md", "zh"],
+  ];
+  const before = new Map();
+  for (const [relativePath, locale] of readmes) {
+    const filePath = path.join(repoRoot, relativePath);
+    const contents = legacyMixedReadmeText(policy, locale);
+    fs.writeFileSync(filePath, contents, "utf8");
+    before.set(filePath, contents);
+  }
+
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  assert.deepEqual(checkActivationSyncPlan(plan), []);
+  assert.equal(main(["--check"], { repoRoot }), 0);
+  assert.deepEqual(applyActivationSyncPlan(plan), []);
+  for (const [filePath, contents] of before) {
+    assert.equal(fs.readFileSync(filePath, "utf8"), contents, filePath);
+  }
+  assert.deepEqual(
+    checkActivationSyncPlan(buildActivationSyncPlan({ repoRoot, policy })),
+    [],
+  );
 });
 
 test("checked-in runtime surfaces each expose exactly one owned activation region", () => {
@@ -440,7 +519,22 @@ test("replaceOwnedRegion changes one region and preserves all authored bytes", (
   assert.equal(crlfAfter.endsWith("\r\n"), true);
   assert.equal(
     crlfAfter,
-    crlfBefore.replace("Old generated guard.", "Generated A.\nGenerated B."),
+    crlfBefore.replace("Old generated guard.", "Generated A.\r\nGenerated B."),
+  );
+
+  const legacyMixedBefore = crlfBefore.replace(
+    "Old generated guard.",
+    "Old generated\nlegacy guard.",
+  );
+  const legacyMixedAfter = replaceOwnedRegion(
+    legacyMixedBefore,
+    "guard",
+    "Generated A.\nGenerated B.",
+    filePath,
+  );
+  assert.equal(
+    legacyMixedAfter,
+    legacyMixedBefore.replace("Old generated\nlegacy guard.", "Generated A.\r\nGenerated B."),
   );
 });
 

@@ -163,10 +163,11 @@ function replaceOwnedRegion(text, regionId, generatedBody, filePath) {
 
   const startIndex = lineStartOffset(text, startLine);
   const endIndex = lineStartOffset(text, endLine);
-  const body = generatedBody.replace(/\r\n?/g, "\n").replace(/^\n+|\n+$/g, "");
+  const normalizedBody = generatedBody.replace(/\r\n?/g, "\n").replace(/^\n+|\n+$/g, "");
   const ownedText = text.slice(startIndex + startMarker.length, endIndex);
   const leadingBoundary = /^(\r\n|\n)/.exec(ownedText)?.[0] ?? "\n";
   const trailingBoundary = /(\r\n|\n)$/.exec(ownedText)?.[0] ?? leadingBoundary;
+  const body = normalizedBody.replace(/\n/g, leadingBoundary);
   const replacement = body === ""
     ? leadingBoundary
     : `${leadingBoundary}${body}${trailingBoundary}`;
