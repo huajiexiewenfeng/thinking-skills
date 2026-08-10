@@ -1027,9 +1027,9 @@ test("exclusive install preserves a concurrently recreated target and the origin
   const zetaBefore = fs.readFileSync(zetaPath, "utf8");
   const concurrent = "CONCURRENT-TARGET\n";
   const fsWithTargetRecreation = Object.create(fs);
-  fsWithTargetRecreation.unlinkSync = (filePath) => {
-    const result = fs.unlinkSync(filePath);
-    if (filePath === zetaPath) {
+  fsWithTargetRecreation.renameSync = (source, target) => {
+    const result = fs.renameSync(source, target);
+    if (source === zetaPath) {
       fs.writeFileSync(zetaPath, concurrent, "utf8");
     }
     return result;
@@ -1046,18 +1046,91 @@ test("exclusive install preserves a concurrently recreated target and the origin
   assert.match(error.message, /rollback conflict/);
   assert.equal(fs.readFileSync(alphaPath, "utf8"), alphaBefore);
   assert.equal(fs.readFileSync(zetaPath, "utf8"), concurrent);
-  const backupDirectories = fs.readdirSync(path.dirname(zetaPath), { withFileTypes: true })
-    .filter((entry) => entry.isDirectory()
-      && entry.name.startsWith(`${path.basename(zetaPath)}.activation-policy.bak-`));
-  assert.equal(backupDirectories.length, 1);
-  assert.equal(
-    fs.readFileSync(path.join(path.dirname(zetaPath), backupDirectories[0].name, "original"), "utf8"),
-    zetaBefore,
-  );
+  const recoveryPath = error.recoveryPaths.find((candidate) => (
+    path.basename(candidate).includes("skills_zeta-skill_SKILL.md-original-recovery")
+  ));
+  assert.ok(recoveryPath);
+  assert.equal(fs.readFileSync(recoveryPath, "utf8"), zetaBefore);
 });
 
-for (const lateWritePhase of ["before install", "after successful install and cleanup"]) {
-  test(`successful apply retains a named recovery path for an old-inode write ${lateWritePhase}`, () => {
+test("the final target-removal syscall cannot delete a concurrently swapped inode", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const targetPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
+  const displacedPath = `${targetPath}.authorized-displaced`;
+  const concurrent = "CONCURRENT-FINAL-SYSCALL\n";
+  let swapped = false;
+  const fsWithFinalTargetSwap = Object.create(fs);
+  const swapTarget = () => {
+    if (swapped) return;
+    fs.renameSync(targetPath, displacedPath);
+    fs.writeFileSync(targetPath, concurrent, "utf8");
+    swapped = true;
+  };
+  fsWithFinalTargetSwap.unlinkSync = (filePath) => {
+    if (filePath === targetPath) swapTarget();
+    return fs.unlinkSync(filePath);
+  };
+  fsWithFinalTargetSwap.renameSync = (source, target) => {
+    if (source === targetPath) swapTarget();
+    return fs.renameSync(source, target);
+  };
+
+  assert.throws(
+    () => applyActivationSyncPlan(plan, { fsImpl: fsWithFinalTargetSwap }),
+    /moved file identity|transaction recovery identity/,
+  );
+  assert.equal(swapped, true);
+  assert.equal(fs.readFileSync(targetPath, "utf8"), concurrent);
+  assert.equal(fs.existsSync(displacedPath), true);
+});
+
+test("a swapped recovery publication source fails closed on its planned file identity", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const targetPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
+  let swappedRecoveryPath;
+  let displacedRecoveryPath;
+  const fsWithRecoverySourceSwap = Object.create(fs);
+  fsWithRecoverySourceSwap.linkSync = (source, target) => {
+    const result = fs.linkSync(source, target);
+    if (swappedRecoveryPath === undefined
+      && source.includes(".activation-policy.bak-")
+      && target.includes(`${path.sep}activation-policy-recovery${path.sep}`)) {
+      swappedRecoveryPath = target;
+      displacedRecoveryPath = `${target}.authorized-displaced`;
+      const contents = fs.readFileSync(target, "utf8");
+      fs.renameSync(target, displacedRecoveryPath);
+      fs.writeFileSync(target, contents, "utf8");
+    }
+    return result;
+  };
+  fsWithRecoverySourceSwap.renameSync = (source, target) => {
+    const result = fs.renameSync(source, target);
+    if (source === targetPath && swappedRecoveryPath === undefined) {
+      swappedRecoveryPath = target;
+      displacedRecoveryPath = `${target}.authorized-displaced`;
+      const contents = fs.readFileSync(target, "utf8");
+      fs.renameSync(target, displacedRecoveryPath);
+      fs.writeFileSync(target, contents, "utf8");
+    }
+    return result;
+  };
+
+  assert.throws(
+    () => applyActivationSyncPlan(plan, { fsImpl: fsWithRecoverySourceSwap }),
+    /moved file identity|transaction recovery identity/,
+  );
+  assert.ok(swappedRecoveryPath);
+  assert.equal(fs.existsSync(swappedRecoveryPath), true);
+  assert.equal(fs.existsSync(displacedRecoveryPath), true);
+});
+
+for (const { lateWritePhase, expectFailure } of [
+  { lateWritePhase: "before install", expectFailure: true },
+  { lateWritePhase: "after successful install and cleanup", expectFailure: false },
+]) {
+  test(`${expectFailure ? "failed" : "successful"} apply retains a named recovery path for an old-inode write ${lateWritePhase}`, () => {
     const { repoRoot, policy } = makeFixtureRepo();
     const plan = buildActivationSyncPlan({ repoRoot, policy });
     const targetPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
@@ -1071,18 +1144,23 @@ for (const lateWritePhase of ["before install", "after successful install and cl
       wrote = true;
     };
     const fsWithLateWrite = Object.create(fs);
-    fsWithLateWrite.unlinkSync = (filePath) => {
-      const result = fs.unlinkSync(filePath);
+    fsWithLateWrite.renameSync = (source, target) => {
+      const result = fs.renameSync(source, target);
       if (lateWritePhase === "before install"
-        && filePath === targetPath) {
+        && source === targetPath) {
         writeThroughOldDescriptor();
       }
       return result;
     };
 
-    let applied;
+    let outcome;
     try {
-      applied = applyActivationSyncPlan(plan, { fsImpl: fsWithLateWrite });
+      try {
+        outcome = applyActivationSyncPlan(plan, { fsImpl: fsWithLateWrite });
+      } catch (error) {
+        if (!expectFailure) throw error;
+        outcome = error;
+      }
       if (lateWritePhase === "after successful install and cleanup") {
         writeThroughOldDescriptor();
       }
@@ -1091,14 +1169,14 @@ for (const lateWritePhase of ["before install", "after successful install and cl
     }
 
     assert.equal(wrote, true);
-    const recoveryPath = applied.recoveryPaths.find((candidate) => (
-      path.basename(candidate).startsWith("skills_demo_SKILL.md.activation-policy.recovery-")
+    if (expectFailure) {
+      assert.match(outcome.message, /moved file content changed after planning/);
+    }
+    const recoveryPath = outcome.recoveryPaths.find((candidate) => (
+      path.basename(candidate).includes("skills_demo_SKILL.md-original-recovery")
     ));
     assert.ok(recoveryPath);
-    assert.equal(
-      path.dirname(recoveryPath),
-      path.join(repoRoot, ".superpowers", "sdd", "activation-policy-recovery"),
-    );
+    assert.equal(path.basename(path.dirname(recoveryPath)).startsWith("transaction-"), true);
     assert.equal(fs.readFileSync(recoveryPath, "utf8"), `${before}${lateWrite}`);
   });
 }
@@ -1116,7 +1194,7 @@ test("apply rolls back every target when a prepared rename fails", () => {
   let preparedRenameCount = 0;
   const fsWithInjectedFailure = Object.create(fs);
   fsWithInjectedFailure.linkSync = (source, target) => {
-    if (source.includes(".activation-policy.tmp-")) {
+    if (source.includes("prepared")) {
       preparedRenameCount += 1;
       if (preparedRenameCount === 2) throw new Error("injected rename failure");
     }
@@ -1140,10 +1218,9 @@ test("failed initial target move leaves the original target untouched", () => {
   let targetUnlinks = 0;
   let backupRestoreAttempts = 0;
   const fsWithInitialMoveFailure = Object.create(fs);
-  fsWithInitialMoveFailure.linkSync = (source, target) => {
+  fsWithInitialMoveFailure.renameSync = (source, target) => {
     if (source === targetPath) throw new Error("injected initial target move failure");
-    if (source.includes(".activation-policy.bak-")) backupRestoreAttempts += 1;
-    return fs.linkSync(source, target);
+    return fs.renameSync(source, target);
   };
   fsWithInitialMoveFailure.unlinkSync = (filePath) => {
     if (filePath === targetPath) targetUnlinks += 1;
@@ -1172,7 +1249,7 @@ test("rollback preserves a concurrent user edit and its original backup", () => 
   let preparedRenameCount = 0;
   const fsWithConcurrentEdit = Object.create(fs);
   fsWithConcurrentEdit.linkSync = (source, target) => {
-    if (source.includes(".activation-policy.tmp-")) {
+    if (source.includes("prepared")) {
       preparedRenameCount += 1;
       if (preparedRenameCount === 2) {
         fs.writeFileSync(alphaPath, "USER-EDIT\n", "utf8");
@@ -1184,20 +1261,31 @@ test("rollback preserves a concurrent user edit and its original backup", () => 
 
   assert.throws(
     () => applyActivationSyncPlan(plan, { fsImpl: fsWithConcurrentEdit }),
-    (error) => error.message.includes("rollback conflict")
+    (error) => error.message.includes("rollback failed")
+      && error.message.includes("unexpected concurrent target")
       && error.message.includes(alphaPath)
-      && error.message.includes(".activation-policy.bak-"),
+      && error.recoveryPaths.some((candidate) => candidate.includes("alpha-skill")),
   );
   assert.equal(fs.readFileSync(alphaPath, "utf8"), "USER-EDIT\n");
   assert.equal(fs.readFileSync(zetaPath, "utf8"), zetaBefore);
-  const backupDirectories = fs.readdirSync(path.dirname(alphaPath), { withFileTypes: true })
-    .filter((entry) => entry.isDirectory()
-      && entry.name.startsWith(`${path.basename(alphaPath)}.activation-policy.bak-`));
-  assert.equal(backupDirectories.length, 1);
-  assert.equal(
-    fs.readFileSync(path.join(path.dirname(alphaPath), backupDirectories[0].name, "original"), "utf8"),
-    alphaBefore,
-  );
+  const recoveryDirectories = fs.readdirSync(
+    path.join(repoRoot, ".superpowers", "sdd", "activation-policy-recovery"),
+    { withFileTypes: true },
+  ).filter((entry) => entry.isDirectory() && entry.name.startsWith("transaction-"));
+  assert.ok(recoveryDirectories.length > 0);
+  const recoveryFiles = recoveryDirectories.flatMap((entry) => (
+    fs.readdirSync(path.join(repoRoot, ".superpowers", "sdd", "activation-policy-recovery", entry.name))
+      .filter((name) => name.includes("alpha-skill") && name.endsWith("original-recovery"))
+      .map((name) => path.join(
+        repoRoot,
+        ".superpowers",
+        "sdd",
+        "activation-policy-recovery",
+        entry.name,
+        name,
+      ))
+  ));
+  assert.equal(recoveryFiles.some((filePath) => fs.readFileSync(filePath, "utf8") === alphaBefore), true);
 });
 
 test("exclusive backup directories never overwrite foreign backup-like paths", () => {
@@ -1270,37 +1358,184 @@ test("failed exclusive temp open preserves a raced foreign file", () => {
   assert.equal(fs.readFileSync(targetPath, "utf8"), targetBefore);
 });
 
-test("owned temp cleanup failures are surfaced as cleanup warnings", () => {
+test("owned prepared write failures retain the named artifact without cleanup", () => {
   const { repoRoot, policy } = makeFixtureRepo();
   const plan = buildActivationSyncPlan({ repoRoot, policy });
   let ownedTempPath;
+  let preparedDescriptor;
+  let unlinks = 0;
   const fsWithTempCleanupFailure = Object.create(fs);
   fsWithTempCleanupFailure.openSync = (filePath, flags, ...rest) => {
     const descriptor = fs.openSync(filePath, flags, ...rest);
-    if (flags === "wx") ownedTempPath = filePath;
+    if (flags === "wx" && filePath.includes("prepared")) {
+      ownedTempPath = filePath;
+      preparedDescriptor = descriptor;
+    }
     return descriptor;
   };
   fsWithTempCleanupFailure.writeFileSync = (target, contents, encoding) => {
-    if (typeof target === "number") throw new Error("injected temp write failure");
+    if (target === preparedDescriptor) throw new Error("injected temp write failure");
     return fs.writeFileSync(target, contents, encoding);
   };
   fsWithTempCleanupFailure.unlinkSync = (filePath) => {
-    if (filePath === ownedTempPath) {
-      const error = new Error("injected owned temp cleanup failure");
-      error.code = "EACCES";
-      throw error;
-    }
+    unlinks += 1;
     return fs.unlinkSync(filePath);
   };
 
   assert.throws(
     () => applyActivationSyncPlan(plan, { fsImpl: fsWithTempCleanupFailure }),
     (error) => error.message.includes("injected temp write failure")
-      && error.cleanupWarnings?.length === 1
-      && error.cleanupWarnings[0].tempPath === ownedTempPath
-      && error.cleanupWarnings[0].message.includes("injected owned temp cleanup failure"),
+      && error.artifactPaths.includes(ownedTempPath),
   );
+  assert.equal(unlinks, 0);
   assert.equal(fs.existsSync(ownedTempPath), true);
+});
+
+test("successful transactions retain every private artifact without unlink or rmdir cleanup", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  let unlinks = 0;
+  let directoryRemovals = 0;
+  const fsWithCleanupAudit = Object.create(fs);
+  fsWithCleanupAudit.unlinkSync = (filePath) => {
+    unlinks += 1;
+    return fs.unlinkSync(filePath);
+  };
+  fsWithCleanupAudit.rmdirSync = (directory) => {
+    directoryRemovals += 1;
+    return fs.rmdirSync(directory);
+  };
+
+  const applied = applyActivationSyncPlan(plan, { fsImpl: fsWithCleanupAudit });
+
+  assert.equal(unlinks, 0);
+  assert.equal(directoryRemovals, 0);
+  assert.ok(applied.artifactPaths.length > applied.recoveryPaths.length);
+  for (const artifactPath of applied.artifactPaths) {
+    assert.equal(fs.existsSync(artifactPath), true, artifactPath);
+  }
+});
+
+test("failed transactions retain prepared data and private directories as named artifacts", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  let unlinks = 0;
+  let directoryRemovals = 0;
+  const fsWithInstallFailure = Object.create(fs);
+  fsWithInstallFailure.unlinkSync = (filePath) => {
+    unlinks += 1;
+    return fs.unlinkSync(filePath);
+  };
+  fsWithInstallFailure.rmdirSync = (directory) => {
+    directoryRemovals += 1;
+    return fs.rmdirSync(directory);
+  };
+  fsWithInstallFailure.linkSync = (source, target) => {
+    if (source.includes(".activation-policy.tmp-") || source.includes("prepared")) {
+      throw new Error("injected persistent-artifact install failure");
+    }
+    return fs.linkSync(source, target);
+  };
+
+  let error;
+  try {
+    applyActivationSyncPlan(plan, { fsImpl: fsWithInstallFailure });
+  } catch (caught) {
+    error = caught;
+  }
+
+  assert.ok(error);
+  assert.match(error.message, /persistent-artifact install failure/);
+  assert.equal(unlinks, 0);
+  assert.equal(directoryRemovals, 0);
+  assert.ok(error.artifactPaths.some((artifactPath) => /prepared/.test(artifactPath)));
+  for (const artifactPath of error.artifactPaths) {
+    assert.equal(fs.existsSync(artifactPath), true, artifactPath);
+  }
+});
+
+test("a repository-owned global sync lock rejects a second apply before target writes", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const targetPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
+  const targetBefore = fs.readFileSync(targetPath, "utf8");
+  const lockPath = path.join(repoRoot, ".superpowers", "sdd", "activation-policy-sync.lock");
+  fs.mkdirSync(path.dirname(lockPath), { recursive: true });
+  fs.writeFileSync(lockPath, "OTHER-SYNC\n", "utf8");
+
+  assert.throws(
+    () => applyActivationSyncPlan(plan),
+    (error) => error.code === "EEXIST" && /global activation sync lock/.test(error.message),
+  );
+  assert.equal(fs.readFileSync(targetPath, "utf8"), targetBefore);
+  assert.equal(fs.readFileSync(lockPath, "utf8"), "OTHER-SYNC\n");
+});
+
+test("a final lock-release swap preserves both lock inodes and reports manual recovery", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const lockPath = path.join(repoRoot, ".superpowers", "sdd", "activation-policy-sync.lock");
+  const displacedLockPath = path.join(repoRoot, ".superpowers", "sdd", "owned-lock-displaced");
+  const foreignLock = "CONCURRENT FOREIGN LOCK\n";
+  let lockReleaseSwapped = false;
+  let unlinks = 0;
+  const fsWithLockReleaseSwap = Object.create(fs);
+  fsWithLockReleaseSwap.unlinkSync = (filePath) => {
+    unlinks += 1;
+    return fs.unlinkSync(filePath);
+  };
+  fsWithLockReleaseSwap.renameSync = (source, target) => {
+    if (!lockReleaseSwapped && source === lockPath) {
+      lockReleaseSwapped = true;
+      fs.renameSync(source, displacedLockPath);
+      fs.writeFileSync(source, foreignLock, "utf8");
+    }
+    return fs.renameSync(source, target);
+  };
+
+  const applied = applyActivationSyncPlan(plan, { fsImpl: fsWithLockReleaseSwap });
+
+  assert.equal(lockReleaseSwapped, true);
+  assert.equal(unlinks, 0);
+  assert.equal(fs.existsSync(displacedLockPath), true);
+  const warning = applied.cleanupWarnings.find(({ kind }) => kind === "lock-release");
+  assert.ok(warning);
+  assert.match(warning.message, /identity changed|manual recovery/);
+  assert.ok(warning.releasePath);
+  assert.equal(fs.readFileSync(warning.releasePath, "utf8"), foreignLock);
+  assert.equal(applied.artifactPaths.includes(warning.releasePath), true);
+});
+
+test("failed lock-release artifact allocation retains a named stale lock and the primary failure", () => {
+  const { repoRoot, policy } = makeFixtureRepo();
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  const lockPath = path.join(repoRoot, ".superpowers", "sdd", "activation-policy-sync.lock");
+  const fsWithUnavailableArtifactDirectories = Object.create(fs);
+  fsWithUnavailableArtifactDirectories.mkdtempSync = (prefix) => {
+    if (prefix.includes("activation-policy-recovery")) {
+      throw new Error("injected transaction directory failure");
+    }
+    if (prefix.includes("activation-policy-lock-release")) {
+      throw new Error("injected lock-release directory failure");
+    }
+    return fs.mkdtempSync(prefix);
+  };
+
+  let error;
+  try {
+    applyActivationSyncPlan(plan, { fsImpl: fsWithUnavailableArtifactDirectories });
+  } catch (caught) {
+    error = caught;
+  }
+
+  assert.ok(error);
+  assert.match(error.message, /injected transaction directory failure/);
+  assert.equal(fs.existsSync(lockPath), true);
+  assert.equal(error.artifactPaths.includes(lockPath), true);
+  const warning = error.cleanupWarnings.find(({ kind }) => kind === "lock-release");
+  assert.ok(warning);
+  assert.match(warning.message, /lock-release directory failure/);
+  assert.equal(warning.releasePath, null);
 });
 
 test("create and delete ownership is bound to the plan repository root", () => {
@@ -1377,92 +1612,110 @@ test("POSIX case variants cannot be injected into a trusted generated-root plan"
   assert.throws(() => applyActivationSyncPlan([variant]), /trusted activation sync plan/);
 });
 
-test("backup cleanup failure returns a truthful warning after successful commit", () => {
+test("successful commit retains recovery artifacts and never invokes legacy backup cleanup", () => {
   const { repoRoot, policy } = makeFixtureRepo();
   const plan = buildActivationSyncPlan({ repoRoot, policy });
   const targetPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
   const expected = plan.find((item) => item.path === targetPath).after;
-  const fsWithCleanupFailure = Object.create(fs);
-  fsWithCleanupFailure.unlinkSync = (filePath) => {
-    if (filePath.includes(".activation-policy.bak-")) {
-      const error = new Error("injected backup cleanup failure");
-      error.code = "EACCES";
-      throw error;
-    }
+  let unlinks = 0;
+  const fsWithCleanupAudit = Object.create(fs);
+  fsWithCleanupAudit.unlinkSync = (filePath) => {
+    unlinks += 1;
     return fs.unlinkSync(filePath);
   };
 
-  const applied = applyActivationSyncPlan(plan, { fsImpl: fsWithCleanupFailure });
+  const applied = applyActivationSyncPlan(plan, { fsImpl: fsWithCleanupAudit });
 
   assert.deepEqual([...applied], checkActivationSyncPlan(plan));
   assert.equal(fs.readFileSync(targetPath, "utf8"), expected);
-  assert.equal(applied.cleanupWarnings.length, 1);
-  assert.match(applied.cleanupWarnings[0].message, /injected backup cleanup failure/);
-  assert.equal(fs.existsSync(applied.cleanupWarnings[0].backupPath), true);
+  assert.equal(unlinks, 0);
+  assert.equal(applied.cleanupWarnings.length, 0);
+  assert.ok(applied.recoveryPaths.some((recoveryPath) => fs.existsSync(recoveryPath)));
 });
 
-test("backup cleanup refuses a raced junction instead of deleting its outside original", () => {
+test("final target rename through a raced junction preserves the outside inode as a named artifact", () => {
   const { repoRoot, policy } = makeFixtureRepo();
   const plan = buildActivationSyncPlan({ repoRoot, policy });
   const targetPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
+  const skillRoot = path.dirname(targetPath);
+  const savedSkillRoot = `${skillRoot}-saved`;
   const outsideRoot = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-skills-policy-outside-"));
   tempRoots.push(outsideRoot);
-  const outsideOriginal = path.join(outsideRoot, "original");
+  const outsideOriginal = path.join(outsideRoot, "SKILL.md");
   fs.writeFileSync(outsideOriginal, "OUTSIDE-ORIGINAL\n", "utf8");
-  let backupDirectory;
-  let savedBackupDirectory;
-  const fsWithBackupJunctionRace = Object.create(fs);
-  fsWithBackupJunctionRace.linkSync = (source, target) => {
-    const result = fs.linkSync(source, target);
-    if (backupDirectory === undefined
-      && source.startsWith(`${targetPath}.activation-policy.bak-`)
-      && target.includes(`${path.sep}activation-policy-recovery${path.sep}`)) {
-      backupDirectory = path.dirname(source);
-      savedBackupDirectory = `${backupDirectory}-saved`;
-      fs.renameSync(backupDirectory, savedBackupDirectory);
-      fs.symlinkSync(outsideRoot, backupDirectory, process.platform === "win32" ? "junction" : "dir");
+  let swapped = false;
+  const fsWithTargetJunctionRace = Object.create(fs);
+  fsWithTargetJunctionRace.renameSync = (source, target) => {
+    if (!swapped && source === targetPath) {
+      fs.renameSync(skillRoot, savedSkillRoot);
+      fs.symlinkSync(outsideRoot, skillRoot, process.platform === "win32" ? "junction" : "dir");
+      swapped = true;
     }
-    return result;
+    return fs.renameSync(source, target);
   };
 
   try {
-    const applied = applyActivationSyncPlan(plan, { fsImpl: fsWithBackupJunctionRace });
-    assert.equal(fs.readFileSync(outsideOriginal, "utf8"), "OUTSIDE-ORIGINAL\n");
-    assert.ok(applied.cleanupWarnings.some((warning) => (
-      warning.backupDirectory === backupDirectory
-        && /symbolic link|junction|reparse point/.test(warning.message)
-    )));
-  } finally {
-    if (backupDirectory && fs.existsSync(backupDirectory)) fs.rmSync(backupDirectory, { force: true });
-    if (savedBackupDirectory && fs.existsSync(savedBackupDirectory)) {
-      fs.rmSync(savedBackupDirectory, { recursive: true, force: true });
+    let error;
+    try {
+      applyActivationSyncPlan(plan, { fsImpl: fsWithTargetJunctionRace });
+    } catch (caught) {
+      error = caught;
     }
+    assert.ok(error);
+    assert.match(error.message, /moved file identity|transaction recovery identity/);
+    assert.equal(swapped, true);
+    const retainedOutside = error.artifactPaths.find((artifactPath) => (
+      fs.existsSync(artifactPath)
+        && fs.statSync(artifactPath).isFile()
+        && fs.readFileSync(artifactPath, "utf8") === "OUTSIDE-ORIGINAL\n"
+    ));
+    assert.ok(retainedOutside);
+    assert.equal(fs.readFileSync(path.join(savedSkillRoot, "SKILL.md"), "utf8"), skillText());
+  } finally {
+    if (swapped && fs.existsSync(skillRoot)) fs.rmSync(skillRoot, { force: true });
+    if (swapped && fs.existsSync(savedSkillRoot)) fs.renameSync(savedSkillRoot, skillRoot);
   }
 });
 
-test("CLI reports cleanup warnings while returning successful apply status", () => {
+test("CLI performs no unlink cleanup and reports persistent artifacts", () => {
   const { repoRoot } = makeFixtureRepo();
   const targetPath = path.join(repoRoot, "skills", "demo", "SKILL.md");
   const stderr = [];
-  const fsWithCleanupFailure = Object.create(fs);
-  fsWithCleanupFailure.unlinkSync = (filePath) => {
-    if (filePath.includes(".activation-policy.bak-")) {
-      const error = new Error("injected CLI backup cleanup failure");
-      error.code = "EACCES";
-      throw error;
-    }
+  const stdout = [];
+  let unlinks = 0;
+  const fsWithCleanupAudit = Object.create(fs);
+  fsWithCleanupAudit.unlinkSync = (filePath) => {
+    unlinks += 1;
     return fs.unlinkSync(filePath);
   };
 
   const exitCode = main([], {
     repoRoot,
+    stdout: { write: (text) => stdout.push(text) },
     stderr: { write: (text) => stderr.push(text) },
-    fsImpl: fsWithCleanupFailure,
+    fsImpl: fsWithCleanupAudit,
   });
 
   assert.equal(exitCode, 0);
-  assert.match(stderr.join(""), /cleanup warning.*retained backup.*injected CLI backup cleanup failure/i);
+  assert.equal(unlinks, 0);
+  assert.equal(stderr.join(""), "");
+  assert.match(stdout.join(""), /Persistent activation-policy artifacts are intentionally retained/);
   assert.match(fs.readFileSync(targetPath, "utf8"), /Use automatically for demos\./);
+});
+
+test("CLI success reports every persistent recovery and artifact path", () => {
+  const { repoRoot } = makeFixtureRepo();
+  const stdout = [];
+
+  const exitCode = main([], {
+    repoRoot,
+    stdout: { write: (text) => stdout.push(text) },
+  });
+
+  assert.equal(exitCode, 0);
+  assert.match(stdout.join(""), /Persistent activation-policy artifacts are intentionally retained/);
+  assert.match(stdout.join(""), /activation-policy-recovery/);
+  assert.match(stdout.join(""), /recovery.*old inode/i);
 });
 
 test("generated fixture creates and deletions stay inside the exact owned directory", () => {

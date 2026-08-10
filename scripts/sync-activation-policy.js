@@ -101,7 +101,6 @@ const DEFAULT_ACTIVATION_BENCHMARK_PROFILE = Object.freeze({
   artifact: "activation result",
   artifact_sink: "chat",
 });
-let uniqueFileCounter = 0;
 
 function markerPair(regionId, filePath) {
   const extension = path.extname(filePath);
@@ -477,8 +476,12 @@ function addRequiredOwnedRegionTarget(
 
 function buildActivationSyncPlan({ repoRoot, policy }) {
   const resolvedRoot = canonicalizeRepoRoot(repoRoot);
+  const recoveryRoot = path.join(resolvedRoot, ...RECOVERY_ROOT_SEGMENTS);
+  const lockPath = path.join(resolvedRoot, ".superpowers", "sdd", "activation-policy-sync.lock");
   const plan = [];
   const plannedIdentities = new Map();
+  validateFilesystemPath(resolvedRoot, recoveryRoot, { expectedKind: "directory" });
+  validateFilesystemPath(resolvedRoot, lockPath, { expectedKind: "file" });
 
   for (const skillId of sortedSkillIds(policy)) {
     const filePath = path.join(resolvedRoot, "skills", skillId, "SKILL.md");
@@ -581,7 +584,8 @@ function buildActivationSyncPlan({ repoRoot, policy }) {
   PLAN_TRUST.set(plan, Object.freeze({
     repoRoot: resolvedRoot,
     generatedRoot,
-    recoveryRoot: path.join(resolvedRoot, ...RECOVERY_ROOT_SEGMENTS),
+    recoveryRoot,
+    lockPath,
     authorized,
     authorizedByItem: new Map(authorized.map((entry) => [entry.item, entry])),
     authorizedTargets: new Set(authorized.map((entry) => comparablePath(entry.path))),
@@ -622,6 +626,12 @@ function validateApplyPlan(plan, fsImpl) {
   }
   validateFilesystemPath(metadata.repoRoot, metadata.generatedRoot, {
     expectedKind: "directory",
+  }, fsImpl);
+  validateFilesystemPath(metadata.repoRoot, metadata.recoveryRoot, {
+    expectedKind: "directory",
+  }, fsImpl);
+  validateFilesystemPath(metadata.repoRoot, metadata.lockPath, {
+    expectedKind: "file",
   }, fsImpl);
 
   const seen = new Set();
@@ -666,14 +676,6 @@ function validateApplyPlan(plan, fsImpl) {
   return metadata;
 }
 
-function nextSiblingPath(targetPath, kind, fsImpl) {
-  for (;;) {
-    uniqueFileCounter += 1;
-    const candidate = `${targetPath}.activation-policy.${kind}-${process.pid}-${uniqueFileCounter}`;
-    if (!fsImpl.existsSync(candidate)) return candidate;
-  }
-}
-
 function cleanupWarning(kind, paths, error) {
   return Object.freeze({
     kind,
@@ -694,22 +696,112 @@ function attachCleanupWarnings(error, cleanupWarnings) {
   return error;
 }
 
-function prepareFile(item, metadata, fsImpl) {
-  const tempPath = nextSiblingPath(item.path, "tmp", fsImpl);
-  validateFilesystemPath(metadata.repoRoot, tempPath, { expectedKind: "file" }, fsImpl);
+function recordArtifact(artifactPaths, artifactPath) {
+  if (!artifactPaths.includes(artifactPath)) artifactPaths.push(artifactPath);
+  return artifactPath;
+}
+
+function attachPersistentPaths(value, artifactPaths, recoveryPaths) {
+  const combinedArtifacts = [...(value.artifactPaths ?? []), ...artifactPaths];
+  const combinedRecoveries = [...(value.recoveryPaths ?? []), ...recoveryPaths];
+  Object.defineProperty(value, "artifactPaths", {
+    value: Object.freeze([...new Set(combinedArtifacts)]),
+    enumerable: false,
+    configurable: true,
+  });
+  Object.defineProperty(value, "recoveryPaths", {
+    value: Object.freeze([...new Set(combinedRecoveries)]),
+    enumerable: false,
+    configurable: true,
+  });
+  return value;
+}
+
+function ensureDirectoryChain(metadata, segments, fsImpl, artifactPaths) {
+  let directory = metadata.repoRoot;
+  for (const segment of segments) {
+    directory = path.join(directory, segment);
+    const validation = validateFilesystemPath(metadata.repoRoot, directory, {
+      expectedKind: "directory",
+    }, fsImpl);
+    if (validation.exists) continue;
+    try {
+      fsImpl.mkdirSync(directory, { mode: 0o700 });
+      recordArtifact(artifactPaths, directory);
+    } catch (error) {
+      if (error.code !== "EEXIST") throw error;
+    }
+    validateFilesystemPath(metadata.repoRoot, directory, {
+      mustExist: true,
+      expectedKind: "directory",
+    }, fsImpl);
+  }
+  return directory;
+}
+
+function ensureGeneratedFixtureRoot(metadata, changes, fsImpl, artifactPaths) {
+  if (!changes.some((item) => item.before === null && item.after !== null)) return;
+  const generatedParent = path.dirname(metadata.generatedRoot);
+  const benchmarksRoot = path.dirname(generatedParent);
+  validateFilesystemPath(metadata.repoRoot, benchmarksRoot, {
+    mustExist: true,
+    expectedKind: "directory",
+  }, fsImpl);
+  for (const directory of [generatedParent, metadata.generatedRoot]) {
+    const validation = validateFilesystemPath(metadata.repoRoot, directory, {
+      expectedKind: "directory",
+    }, fsImpl);
+    if (validation.exists) continue;
+    try {
+      fsImpl.mkdirSync(directory);
+      recordArtifact(artifactPaths, directory);
+    } catch (error) {
+      if (error.code !== "EEXIST") throw error;
+    }
+    validateFilesystemPath(metadata.repoRoot, directory, {
+      mustExist: true,
+      expectedKind: "directory",
+    }, fsImpl);
+  }
+}
+
+function createTransactionDirectory(metadata, fsImpl, artifactPaths) {
+  const transactionDirectory = fsImpl.mkdtempSync(path.join(metadata.recoveryRoot, "transaction-"));
+  validateFilesystemPath(metadata.repoRoot, transactionDirectory, {
+    mustExist: true,
+    expectedKind: "directory",
+  }, fsImpl);
+  recordArtifact(artifactPaths, transactionDirectory);
+  return transactionDirectory;
+}
+
+function transactionItemPath(metadata, transactionDirectory, item, index, kind) {
+  const relativeTarget = path.relative(metadata.repoRoot, item.path)
+    .replace(/[^a-zA-Z0-9._-]+/g, "_");
+  return path.join(
+    transactionDirectory,
+    `${String(index).padStart(4, "0")}-${relativeTarget}-${kind}`,
+  );
+}
+
+function prepareFile(item, preparedPath, metadata, fsImpl, artifactPaths) {
+  validateFilesystemPath(metadata.repoRoot, preparedPath, { expectedKind: "file" }, fsImpl);
   let descriptor;
-  let ownsTemp = false;
   try {
-    descriptor = fsImpl.openSync(tempPath, "wx");
-    ownsTemp = true;
+    descriptor = fsImpl.openSync(preparedPath, "wx", 0o600);
+    recordArtifact(artifactPaths, preparedPath);
     fsImpl.writeFileSync(descriptor, item.after, "utf8");
     fsImpl.closeSync(descriptor);
     descriptor = undefined;
-    validateFilesystemPath(metadata.repoRoot, tempPath, {
+    validateFilesystemPath(metadata.repoRoot, preparedPath, {
       mustExist: true,
       expectedKind: "file",
     }, fsImpl);
-    return tempPath;
+    const identity = fileIdentityIfPresent(preparedPath, fsImpl);
+    if (fsImpl.readFileSync(preparedPath, "utf8") !== item.after) {
+      throw new Error(`${preparedPath}: prepared activation content changed after creation`);
+    }
+    return Object.freeze({ path: preparedPath, identity });
   } catch (error) {
     const cleanupWarnings = [];
     if (descriptor !== undefined) {
@@ -718,17 +810,7 @@ function prepareFile(item, metadata, fsImpl) {
       } catch (cleanupError) {
         cleanupWarnings.push(cleanupWarning("temp-close", {
           targetPath: item.path,
-          tempPath,
-        }, cleanupError));
-      }
-    }
-    if (ownsTemp) {
-      try {
-        removeIfPresent(tempPath, metadata, fsImpl);
-      } catch (cleanupError) {
-        cleanupWarnings.push(cleanupWarning("temp-file", {
-          targetPath: item.path,
-          tempPath,
+          tempPath: preparedPath,
         }, cleanupError));
       }
     }
@@ -744,176 +826,198 @@ function currentContents(item, metadata, fsImpl) {
   return fsImpl.readFileSync(item.path, "utf8");
 }
 
-function removeIfPresent(filePath, metadata, fsImpl) {
-  if (!filePath) return;
-  const validation = validateFilesystemPath(metadata.repoRoot, filePath, {
-    expectedKind: "file",
-  }, fsImpl);
-  if (!validation.exists) return;
-  fsImpl.unlinkSync(filePath);
-}
-
-function cleanupPreparedTemp(targetPath, tempPath, metadata, fsImpl, cleanupWarnings) {
+function acquireGlobalSyncLock(metadata, fsImpl) {
+  let descriptor;
   try {
-    removeIfPresent(tempPath, metadata, fsImpl);
+    descriptor = fsImpl.openSync(metadata.lockPath, "wx", 0o600);
   } catch (error) {
-    cleanupWarnings.push(cleanupWarning("temp-file", { targetPath, tempPath }, error));
+    if (error.code !== "EEXIST") throw error;
+    const lockError = new Error(`${metadata.lockPath}: global activation sync lock already exists`, {
+      cause: error,
+    });
+    lockError.code = "EEXIST";
+    throw lockError;
   }
-}
-
-function ensureGeneratedFixtureRoot(metadata, changes, fsImpl, createdDirectories) {
-  if (!changes.some((item) => item.before === null && item.after !== null)) return;
-  const generatedRoot = metadata.generatedRoot;
-  const generatedParent = path.dirname(generatedRoot);
-  const benchmarksRoot = path.dirname(generatedParent);
-  const benchmarksValidation = validateFilesystemPath(metadata.repoRoot, benchmarksRoot, {
-    mustExist: true,
-    expectedKind: "directory",
-  }, fsImpl);
-  if (!benchmarksValidation.exists) {
-    throw new Error(`${benchmarksRoot}: benchmark root is required before generating activation fixtures`);
-  }
-  for (const directory of [generatedParent, generatedRoot]) {
-    const validation = validateFilesystemPath(metadata.repoRoot, directory, {
-      expectedKind: "directory",
-    }, fsImpl);
-    if (validation.exists) continue;
-    fsImpl.mkdirSync(directory);
-    createdDirectories.push(directory);
-    validateFilesystemPath(metadata.repoRoot, directory, {
-      mustExist: true,
-      expectedKind: "directory",
-    }, fsImpl);
-  }
-}
-
-function ensureRecoveryRoot(metadata, changes, fsImpl, createdDirectories) {
-  if (!changes.some((item) => item.before !== null)) return;
-  let directory = metadata.repoRoot;
-  for (const segment of RECOVERY_ROOT_SEGMENTS) {
-    directory = path.join(directory, segment);
-    const validation = validateFilesystemPath(metadata.repoRoot, directory, {
-      expectedKind: "directory",
-    }, fsImpl);
-    if (validation.exists) continue;
-    fsImpl.mkdirSync(directory);
-    createdDirectories.push(directory);
-    validateFilesystemPath(metadata.repoRoot, directory, {
-      mustExist: true,
-      expectedKind: "directory",
-    }, fsImpl);
-  }
-}
-
-function cleanupCreatedDirectories(createdDirectories, metadata, fsImpl, cleanupWarnings) {
-  for (const directory of [...createdDirectories].reverse()) {
+  const token = `${process.pid}:${Date.now()}:${Math.random().toString(16).slice(2)}\n`;
+  try {
+    fsImpl.writeFileSync(descriptor, token, "utf8");
+    const identity = Object.freeze((() => {
+      const stats = fsImpl.fstatSync(descriptor, { bigint: true });
+      return { dev: stats.dev.toString(), ino: stats.ino.toString() };
+    })());
+    requireFileIdentity(metadata.lockPath, identity, fsImpl, "global activation sync lock identity changed during acquisition");
+    return { path: metadata.lockPath, descriptor, identity, token };
+  } catch (error) {
     try {
-      const validation = validateFilesystemPath(metadata.repoRoot, directory, {
+      fsImpl.closeSync(descriptor);
+    } catch {
+      // The named lock is intentionally retained for manual recovery.
+    }
+    throw attachPersistentPaths(error, [metadata.lockPath], []);
+  }
+}
+
+function releaseGlobalSyncLock(lock, transactionDirectory, metadata, fsImpl, artifactPaths, cleanupWarnings) {
+  if (!lock) return;
+  let releaseDirectory = transactionDirectory;
+  let releasePath = null;
+  let moved = false;
+  try {
+    if (!releaseDirectory) {
+      releaseDirectory = fsImpl.mkdtempSync(path.join(
+        path.dirname(lock.path),
+        "activation-policy-lock-release-",
+      ));
+      validateFilesystemPath(metadata.repoRoot, releaseDirectory, {
+        mustExist: true,
         expectedKind: "directory",
       }, fsImpl);
-      if (!validation.exists) continue;
-      fsImpl.rmdirSync(directory);
+      recordArtifact(artifactPaths, releaseDirectory);
+    }
+    releasePath = path.join(releaseDirectory, "sync-lock-released");
+    validateFilesystemPath(metadata.repoRoot, lock.path, {
+      mustExist: true,
+      expectedKind: "file",
+    }, fsImpl);
+    requireFileIdentity(
+      lock.path,
+      lock.identity,
+      fsImpl,
+      "global activation sync lock identity changed before release; manual recovery required",
+    );
+    if (fsImpl.readFileSync(lock.path, "utf8") !== lock.token) {
+      throw new Error(`${lock.path}: global activation sync lock content changed before release; manual recovery required`);
+    }
+    validateFilesystemPath(metadata.repoRoot, releasePath, { expectedKind: "file" }, fsImpl);
+    fsImpl.renameSync(lock.path, releasePath);
+    moved = true;
+    recordArtifact(artifactPaths, releasePath);
+    validateFilesystemPath(metadata.repoRoot, releasePath, {
+      mustExist: true,
+      expectedKind: "file",
+    }, fsImpl);
+    requireFileIdentity(
+      releasePath,
+      lock.identity,
+      fsImpl,
+      "released global activation sync lock identity changed; manual recovery required",
+    );
+    if (fsImpl.readFileSync(releasePath, "utf8") !== lock.token) {
+      throw new Error(`${releasePath}: released global activation sync lock content changed; manual recovery required`);
+    }
+  } catch (error) {
+    if (!moved) recordArtifact(artifactPaths, lock.path);
+    cleanupWarnings.push(cleanupWarning("lock-release", {
+      lockPath: lock.path,
+      releasePath: moved ? releasePath : null,
+    }, error));
+  } finally {
+    try {
+      fsImpl.closeSync(lock.descriptor);
     } catch (error) {
-      cleanupWarnings.push(cleanupWarning("generated-directory", { directory }, error));
+      cleanupWarnings.push(cleanupWarning("lock-close", {
+        lockPath: lock.path,
+        releasePath: moved ? releasePath : null,
+      }, error));
     }
   }
 }
 
-function allocateBackupDirectory(record, metadata, fsImpl) {
-  const prefix = path.join(
-    path.dirname(record.item.path),
-    `${path.basename(record.item.path)}.activation-policy.bak-`,
-  );
-  record.backupDirectory = fsImpl.mkdtempSync(prefix);
-  validateFilesystemPath(metadata.repoRoot, record.backupDirectory, {
+function moveTargetToRecovery(record, metadata, fsImpl, artifactPaths, recoveryPaths) {
+  validateFilesystemPath(metadata.repoRoot, record.recoveryPath, { expectedKind: "file" }, fsImpl);
+  fsImpl.renameSync(record.item.path, record.recoveryPath);
+  record.targetMoved = true;
+  recordArtifact(artifactPaths, record.recoveryPath);
+  validateFilesystemPath(metadata.repoRoot, record.recoveryPath, {
     mustExist: true,
-    expectedKind: "directory",
+    expectedKind: "file",
   }, fsImpl);
-  record.backupPath = path.join(record.backupDirectory, "original");
-  validateFilesystemPath(metadata.repoRoot, record.backupPath, { expectedKind: "file" }, fsImpl);
+  record.recoveryIdentity = fileIdentityIfPresent(record.recoveryPath, fsImpl);
+  if (!sameFileIdentity(record.recoveryIdentity, record.authorized.identity)) {
+    throw new Error(`${record.recoveryPath}: moved file identity does not match the transaction recovery identity`);
+  }
+  record.recoveryAuthorized = true;
+  recoveryPaths.push(record.recoveryPath);
+  if (fsImpl.readFileSync(record.recoveryPath, "utf8") !== record.item.before) {
+    throw new Error(`${record.recoveryPath}: moved file content changed after planning; recovery retained`);
+  }
 }
 
-function createRecoveryArtifact(record, metadata, fsImpl) {
-  const relativeTarget = path.relative(metadata.repoRoot, record.item.path)
-    .replace(/[^a-zA-Z0-9._-]+/g, "_");
-  const recoveryBase = path.join(metadata.recoveryRoot, relativeTarget);
-  for (;;) {
-    const recoveryPath = nextSiblingPath(recoveryBase, "recovery", fsImpl);
-    validateFilesystemPath(metadata.repoRoot, recoveryPath, { expectedKind: "file" }, fsImpl);
+function restoreArtifactLink(sourcePath, expectedIdentity, targetPath, metadata, fsImpl) {
+  validateFilesystemPath(metadata.repoRoot, sourcePath, {
+    mustExist: true,
+    expectedKind: "file",
+  }, fsImpl);
+  requireFileIdentity(
+    sourcePath,
+    expectedIdentity,
+    fsImpl,
+    "persistent rollback source identity changed; manual recovery required",
+  );
+  validateFilesystemPath(metadata.repoRoot, targetPath, { expectedKind: "file" }, fsImpl);
+  fsImpl.linkSync(sourcePath, targetPath);
+  requireFileIdentity(
+    targetPath,
+    expectedIdentity,
+    fsImpl,
+    "restored target identity does not match its persistent artifact",
+  );
+}
+
+function rollbackRecord(record, metadata, fsImpl, artifactPaths) {
+  const rollbackErrors = [];
+  if (record.installed) {
+    const rollbackPath = record.rollbackPath;
     try {
-      fsImpl.linkSync(record.backupPath, recoveryPath);
-      record.recoveryPath = recoveryPath;
-      validateFilesystemPath(metadata.repoRoot, recoveryPath, {
+      validateFilesystemPath(metadata.repoRoot, rollbackPath, { expectedKind: "file" }, fsImpl);
+      fsImpl.renameSync(record.item.path, rollbackPath);
+      recordArtifact(artifactPaths, rollbackPath);
+      validateFilesystemPath(metadata.repoRoot, rollbackPath, {
         mustExist: true,
         expectedKind: "file",
       }, fsImpl);
-      return;
+      const movedIdentity = fileIdentityIfPresent(rollbackPath, fsImpl);
+      const movedContents = fsImpl.readFileSync(rollbackPath, "utf8");
+      record.installed = false;
+      if (!sameFileIdentity(movedIdentity, record.installedIdentity)
+        || movedContents !== record.item.after) {
+        try {
+          restoreArtifactLink(rollbackPath, movedIdentity, record.item.path, metadata, fsImpl);
+        } catch (restoreError) {
+          rollbackErrors.push(`${record.item.path}: ${restoreError.message}`);
+        }
+        rollbackErrors.push(
+          `${record.item.path}: rollback moved an unexpected concurrent target; preserved at ${rollbackPath}`,
+        );
+        return rollbackErrors;
+      }
     } catch (error) {
-      if (error.code === "EEXIST") continue;
-      throw error;
+      rollbackErrors.push(`${record.item.path}: ${error.message}`);
+      return rollbackErrors;
     }
   }
-}
 
-function cleanupRecoveryArtifact(record, metadata, fsImpl, cleanupWarnings) {
-  if (!record.recoveryPath) return;
-  try {
-    removeIfPresent(record.recoveryPath, metadata, fsImpl);
-    record.recoveryPath = null;
-  } catch (error) {
-    cleanupWarnings.push(cleanupWarning("recovery-file", {
-      targetPath: record.item.path,
-      recoveryPath: record.recoveryPath,
-    }, error));
-  }
-}
-
-function cleanupBackupArtifacts(record, metadata, fsImpl, cleanupWarnings) {
-  if (!record.backupDirectory) return;
-  if (record.backupCreated) {
+  if (record.targetMoved) {
+    const sourceIdentity = record.recoveryAuthorized
+      ? record.authorized.identity
+      : record.recoveryIdentity;
     try {
-      removeIfPresent(record.backupPath, metadata, fsImpl);
-      record.backupCreated = false;
+      restoreArtifactLink(record.recoveryPath, sourceIdentity, record.item.path, metadata, fsImpl);
     } catch (error) {
-      cleanupWarnings.push(cleanupWarning("backup-file", {
-        targetPath: record.item.path,
-        backupPath: record.backupPath,
-        backupDirectory: record.backupDirectory,
-      }, error));
-      return;
+      rollbackErrors.push(
+        `rollback conflict for ${record.item.path}; persistent recovery retained at ${record.recoveryPath}: ${error.message}`,
+      );
     }
   }
-  try {
-    const validation = validateFilesystemPath(metadata.repoRoot, record.backupDirectory, {
-      expectedKind: "directory",
-    }, fsImpl);
-    if (!validation.exists) {
-      record.backupDirectory = null;
-      record.backupPath = null;
-      return;
-    }
-    fsImpl.rmdirSync(record.backupDirectory);
-    record.backupDirectory = null;
-    record.backupPath = null;
-  } catch (error) {
-    cleanupWarnings.push(cleanupWarning("backup-directory", {
-      targetPath: record.item.path,
-      backupPath: record.backupPath,
-      backupDirectory: record.backupDirectory,
-    }, error));
-  }
+  return rollbackErrors;
 }
 
-function applyResult(paths, cleanupWarnings = [], recoveryPaths = []) {
+function applyResult(paths, cleanupWarnings = [], recoveryPaths = [], artifactPaths = []) {
   Object.defineProperty(paths, "cleanupWarnings", {
     value: Object.freeze(cleanupWarnings),
     enumerable: false,
   });
-  Object.defineProperty(paths, "recoveryPaths", {
-    value: Object.freeze(recoveryPaths),
-    enumerable: false,
-  });
-  return paths;
+  return attachPersistentPaths(paths, artifactPaths, recoveryPaths);
 }
 
 function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
@@ -923,36 +1027,54 @@ function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
 
   const prepared = new Map();
   const committed = [];
-  const createdDirectories = [];
+  const artifactPaths = [];
+  const recoveryPaths = [];
+  const cleanupWarnings = [];
+  let transactionDirectory;
+  let lock;
+  let failure;
   try {
-    ensureGeneratedFixtureRoot(metadata, changes, fsImpl, createdDirectories);
-    ensureRecoveryRoot(metadata, changes, fsImpl, createdDirectories);
-    for (const item of changes) {
+    ensureDirectoryChain(metadata, RECOVERY_ROOT_SEGMENTS.slice(0, 2), fsImpl, artifactPaths);
+    lock = acquireGlobalSyncLock(metadata, fsImpl);
+    ensureDirectoryChain(metadata, RECOVERY_ROOT_SEGMENTS, fsImpl, artifactPaths);
+    transactionDirectory = createTransactionDirectory(metadata, fsImpl, artifactPaths);
+    ensureGeneratedFixtureRoot(metadata, changes, fsImpl, artifactPaths);
+    for (const [index, item] of changes.entries()) {
       validateFilesystemPath(metadata.repoRoot, item.path, {
         mustExist: item.before !== null,
         expectedKind: "file",
       }, fsImpl);
-      if (item.after !== null) prepared.set(item.path, prepareFile(item, metadata, fsImpl));
-    }
-
-    for (const item of plan) {
-      if (currentContents(item, metadata, fsImpl) !== item.before) {
-        throw new Error(`${item.path}: target changed after planning`);
+      if (item.after !== null) {
+        const preparedPath = transactionItemPath(metadata, transactionDirectory, item, index, "prepared");
+        prepared.set(item.path, prepareFile(item, preparedPath, metadata, fsImpl, artifactPaths));
       }
     }
 
-    for (const item of changes) {
+    for (const [index, item] of plan.entries()) {
+      if (currentContents(item, metadata, fsImpl) !== item.before) {
+        throw new Error(`${item.path}: target changed after planning`);
+      }
+      if (item.before !== null) {
+        requireFileIdentity(
+          item.path,
+          metadata.authorized[index].identity,
+          fsImpl,
+          "file identity changed after transaction preparation",
+        );
+      }
+    }
+
+    for (const [index, item] of changes.entries()) {
       const record = {
         item,
         authorized: metadata.authorizedByItem.get(item),
-        backupDirectory: null,
-        backupPath: null,
-        backupCreated: false,
         targetMoved: false,
+        recoveryPath: transactionItemPath(metadata, transactionDirectory, item, index, "original-recovery"),
+        recoveryIdentity: null,
+        recoveryAuthorized: false,
         installed: false,
         installedIdentity: null,
-        recoveryPath: null,
-        expectedCurrent: item.before,
+        rollbackPath: transactionItemPath(metadata, transactionDirectory, item, index, "rollback-installed"),
       };
       committed.push(record);
       if (currentContents(item, metadata, fsImpl) !== item.before) {
@@ -965,134 +1087,75 @@ function applyActivationSyncPlan(plan, { fsImpl = fs } = {}) {
           fsImpl,
           "file identity changed during activation sync",
         );
-        allocateBackupDirectory(record, metadata, fsImpl);
-        validateFilesystemPath(metadata.repoRoot, item.path, {
-          mustExist: true,
-          expectedKind: "file",
-        }, fsImpl);
-        fsImpl.linkSync(item.path, record.backupPath);
-        record.backupCreated = true;
-        validateFilesystemPath(metadata.repoRoot, record.backupPath, {
+        moveTargetToRecovery(record, metadata, fsImpl, artifactPaths, recoveryPaths);
+      }
+      if (item.after !== null) {
+        const preparedFile = prepared.get(item.path);
+        validateFilesystemPath(metadata.repoRoot, preparedFile.path, {
           mustExist: true,
           expectedKind: "file",
         }, fsImpl);
         requireFileIdentity(
-          record.backupPath,
-          record.authorized.identity,
+          preparedFile.path,
+          preparedFile.identity,
           fsImpl,
-          "transaction backup does not name the authorized file identity",
+          "prepared activation artifact identity changed before install",
         );
-        if (fsImpl.readFileSync(record.backupPath, "utf8") !== item.before) {
-          throw new Error(`${item.path}: target changed while creating its transaction backup`);
-        }
-        removeIfPresent(item.path, metadata, fsImpl);
-        record.targetMoved = true;
-        record.expectedCurrent = null;
-      }
-      if (item.after !== null) {
-        const tempPath = prepared.get(item.path);
-        validateFilesystemPath(metadata.repoRoot, tempPath, {
-          mustExist: true,
-          expectedKind: "file",
-        }, fsImpl);
         validateFilesystemPath(metadata.repoRoot, item.path, { expectedKind: "file" }, fsImpl);
-        fsImpl.linkSync(tempPath, item.path);
+        fsImpl.linkSync(preparedFile.path, item.path);
         record.installed = true;
         record.installedIdentity = fileIdentityIfPresent(item.path, fsImpl);
-        record.expectedCurrent = item.after;
-        removeIfPresent(tempPath, metadata, fsImpl);
-        prepared.delete(item.path);
-      }
-    }
-    for (const record of committed) {
-      if (record.targetMoved && record.backupCreated) {
-        createRecoveryArtifact(record, metadata, fsImpl);
+        if (!sameFileIdentity(record.installedIdentity, preparedFile.identity)) {
+          throw new Error(`${item.path}: installed target identity does not match prepared artifact`);
+        }
       }
     }
   } catch (error) {
     const rollbackErrors = [];
-    const cleanupWarnings = [];
     for (const record of committed.reverse()) {
-      try {
-        if (!record.targetMoved && !record.installed) {
-          if (!record.backupCreated) {
-            cleanupBackupArtifacts(record, metadata, fsImpl, cleanupWarnings);
-            continue;
-          }
-          const targetIdentity = fileIdentityIfPresent(record.item.path, fsImpl);
-          const backupIdentity = fileIdentityIfPresent(record.backupPath, fsImpl);
-          if (targetIdentity === null) {
-            record.targetMoved = true;
-            record.expectedCurrent = null;
-          } else if (sameFileIdentity(targetIdentity, backupIdentity)) {
-            cleanupBackupArtifacts(record, metadata, fsImpl, cleanupWarnings);
-            continue;
-          } else {
-            rollbackErrors.push(
-              `rollback conflict for ${record.item.path}; original backup preserved at ${record.backupPath}`,
-            );
-            continue;
-          }
-        }
-        const actual = currentContents(record.item, metadata, fsImpl);
-        const installedIdentityChanged = record.installed
-          && !sameFileIdentity(fileIdentityIfPresent(record.item.path, fsImpl), record.installedIdentity);
-        if (actual !== record.expectedCurrent || installedIdentityChanged) {
-          const backup = record.backupCreated ? record.backupPath : "<no transaction backup>";
-          rollbackErrors.push(
-            `rollback conflict for ${record.item.path}; original backup preserved at ${backup}`,
-          );
-          continue;
-        }
-        if (record.installed) {
-          removeIfPresent(record.item.path, metadata, fsImpl);
-          record.installed = false;
-          record.installedIdentity = null;
-          record.expectedCurrent = null;
-        }
-        if (record.targetMoved && record.backupCreated) {
-          validateFilesystemPath(metadata.repoRoot, record.backupPath, {
-            mustExist: true,
-            expectedKind: "file",
-          }, fsImpl);
-          validateFilesystemPath(metadata.repoRoot, record.item.path, { expectedKind: "file" }, fsImpl);
-          fsImpl.linkSync(record.backupPath, record.item.path);
-          removeIfPresent(record.backupPath, metadata, fsImpl);
-          record.backupCreated = false;
-          record.targetMoved = false;
-          record.expectedCurrent = record.item.before;
-        }
-        cleanupRecoveryArtifact(record, metadata, fsImpl, cleanupWarnings);
-        cleanupBackupArtifacts(record, metadata, fsImpl, cleanupWarnings);
-      } catch (rollbackError) {
-        rollbackErrors.push(`${record.item.path}: ${rollbackError.message}`);
-      }
+      rollbackErrors.push(...rollbackRecord(record, metadata, fsImpl, artifactPaths));
     }
-    for (const [targetPath, tempPath] of prepared) {
-      cleanupPreparedTemp(targetPath, tempPath, metadata, fsImpl, cleanupWarnings);
-    }
-    cleanupCreatedDirectories(createdDirectories, metadata, fsImpl, cleanupWarnings);
     if (rollbackErrors.length > 0) {
-      throw attachCleanupWarnings(
+      failure = attachCleanupWarnings(
         new Error(`${error.message}; rollback failed: ${rollbackErrors.join("; ")}`, { cause: error }),
-        [...(error.cleanupWarnings ?? []), ...cleanupWarnings],
+        error.cleanupWarnings ?? [],
+      );
+    } else {
+      failure = error;
+    }
+  } finally {
+    if (lock) {
+      releaseGlobalSyncLock(
+        lock,
+        transactionDirectory,
+        metadata,
+        fsImpl,
+        artifactPaths,
+        cleanupWarnings,
       );
     }
-    throw attachCleanupWarnings(error, cleanupWarnings);
   }
 
-  const cleanupWarnings = [];
-  for (const record of committed) {
-    cleanupBackupArtifacts(record, metadata, fsImpl, cleanupWarnings);
+  if (failure) {
+    throw attachPersistentPaths(
+      attachCleanupWarnings(failure, cleanupWarnings),
+      artifactPaths,
+      recoveryPaths,
+    );
   }
   return applyResult(
     changes.map((item) => item.path),
     cleanupWarnings,
-    committed.map((record) => record.recoveryPath).filter(Boolean),
+    recoveryPaths,
+    artifactPaths,
   );
 }
 
 function formatCleanupWarning(warning) {
+  if (warning.kind === "lock-release" || warning.kind === "lock-close") {
+    const retainedPath = warning.releasePath ?? warning.lockPath;
+    return `Activation policy lock warning: manual recovery required at ${retainedPath}: ${warning.message}`;
+  }
   if (warning.kind === "generated-directory") {
     return `Activation policy cleanup warning: retained generated directory ${warning.directory}: ${warning.message}`;
   }
@@ -1106,6 +1169,20 @@ function formatCleanupWarning(warning) {
     ? warning.backupDirectory
     : warning.backupPath;
   return `Activation policy cleanup warning: retained backup ${retainedPath} for ${warning.targetPath}: ${warning.message}`;
+}
+
+function writePersistentArtifactReport(output, recoveryPaths, artifactPaths) {
+  if (artifactPaths.length === 0 && recoveryPaths.length === 0) return;
+  output.write(
+    "Persistent activation-policy artifacts are intentionally retained; review them manually before removal.\n",
+  );
+  for (const recoveryPath of recoveryPaths) {
+    output.write(`- recovery (named old inode): ${recoveryPath}\n`);
+  }
+  const recoverySet = new Set(recoveryPaths);
+  for (const artifactPath of artifactPaths) {
+    if (!recoverySet.has(artifactPath)) output.write(`- artifact: ${artifactPath}\n`);
+  }
 }
 
 function parseCliArgs(argv) {
@@ -1148,6 +1225,7 @@ function main(
   for (const warning of applied.cleanupWarnings) {
     stderr.write(`${formatCleanupWarning(warning)}\n`);
   }
+  writePersistentArtifactReport(stdout, applied.recoveryPaths, applied.artifactPaths);
   return 0;
 }
 
@@ -1156,6 +1234,7 @@ if (require.main === module) {
     process.exitCode = main();
   } catch (error) {
     for (const warning of error.cleanupWarnings ?? []) console.error(formatCleanupWarning(warning));
+    writePersistentArtifactReport(process.stderr, error.recoveryPaths ?? [], error.artifactPaths ?? []);
     console.error(error.message);
     process.exitCode = 1;
   }
