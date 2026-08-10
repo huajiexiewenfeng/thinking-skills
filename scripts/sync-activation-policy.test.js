@@ -942,6 +942,27 @@ test("missing generated fixture directory is created from the rendered plan", ()
   );
 });
 
+test("generated activation fixtures remain current after a CRLF checkout", () => {
+  const { repoRoot, policy } = makeFixtureRepo([
+    ["learning-coach", "explicit", "Learning."],
+  ]);
+  const generatedPath = path.join(
+    repoRoot,
+    "benchmarks",
+    "generated",
+    "activation-policy",
+    "learning-coach-explicit.json",
+  );
+
+  applyActivationSyncPlan(buildActivationSyncPlan({ repoRoot, policy }));
+  const crlf = fs.readFileSync(generatedPath, "utf8").replace(/\r?\n/g, "\r\n");
+  fs.writeFileSync(generatedPath, crlf, "utf8");
+
+  const plan = buildActivationSyncPlan({ repoRoot, policy });
+  assert.deepEqual(checkActivationSyncPlan(plan), []);
+  assert.equal(plan.find((item) => item.path === generatedPath).after, crlf);
+});
+
 test("generated fixture planning rejects non-JSON entries without deleting them", () => {
   const { repoRoot, policy } = makeFixtureRepo([
     ["learning-coach", "explicit", "Learning."],

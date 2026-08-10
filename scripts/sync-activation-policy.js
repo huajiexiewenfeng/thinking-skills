@@ -175,6 +175,12 @@ function replaceOwnedRegion(text, regionId, generatedBody, filePath) {
   return `${text.slice(0, startIndex + startMarker.length)}${replacement}${text.slice(endIndex)}`;
 }
 
+function renderGeneratedFileWithExistingEol(generatedText, existingText) {
+  const normalized = generatedText.replace(/\r\n?/g, "\n");
+  const existingEol = /\r\n|\n/.exec(existingText)?.[0] ?? "\n";
+  return normalized.replace(/\n/g, existingEol);
+}
+
 function requireMode(entry, skillId) {
   if (!entry || !VALID_MODES.has(entry.mode)) {
     throw new Error(`Skill ${skillId} has unsupported activation mode: ${entry?.mode}`);
@@ -565,7 +571,11 @@ function buildActivationSyncPlan({ repoRoot, policy }) {
       }
       const before = readPlannedFile(resolvedRoot, filePath, plannedIdentities);
       if (desired.has(entry.name)) {
-        plan.push({ path: filePath, before, after: desired.get(entry.name) });
+        plan.push({
+          path: filePath,
+          before,
+          after: renderGeneratedFileWithExistingEol(desired.get(entry.name), before),
+        });
         desired.delete(entry.name);
       } else {
         plan.push({ path: filePath, before, after: null });
