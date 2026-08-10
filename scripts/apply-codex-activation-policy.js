@@ -374,12 +374,11 @@ function applyCodexActivationPlan(plan, { fsImpl = fs } = {}) {
   }
 
   const tempPath = nextSiblingPath(metadata.configPath, "tmp", fsImpl);
-  const rollbackDirectory = fsImpl.mkdtempSync(`${metadata.configPath}.thinking-skills.rollback-`);
-  const rollbackPath = path.join(rollbackDirectory, "original");
   const cleanupWarnings = [];
   let descriptor;
   let ownsTemp = false;
-  let targetMoved = false;
+  let backupCreated = false;
+  let targetRemoved = false;
   let conflictTarget = false;
   try {
     descriptor = fsImpl.openSync(tempPath, "wx");
@@ -391,22 +390,23 @@ function applyCodexActivationPlan(plan, { fsImpl = fs } = {}) {
     if (!fsImpl.readFileSync(metadata.configPath).equals(metadata.before)) {
       throw new Error(`${metadata.configPath}: config changed after planning`);
     }
-    fsImpl.copyFileSync(metadata.configPath, metadata.backupPath, fs.constants.COPYFILE_EXCL);
+    fsImpl.linkSync(metadata.configPath, metadata.backupPath);
+    backupCreated = true;
     if (!fsImpl.readFileSync(metadata.backupPath).equals(metadata.before)
       || !fsImpl.readFileSync(metadata.configPath).equals(metadata.before)) {
       throw new Error(`${metadata.configPath}: config changed while creating backup`);
     }
 
-    fsImpl.renameSync(metadata.configPath, rollbackPath);
-    targetMoved = true;
-    const rollbackBytes = fsImpl.readFileSync(rollbackPath);
-    if (!rollbackBytes.equals(metadata.before)) {
-      throw new Error(`${rollbackPath}: rollback bytes changed after move and before install`);
+    fsImpl.unlinkSync(metadata.configPath);
+    targetRemoved = true;
+    const persistentBackupBytes = fsImpl.readFileSync(metadata.backupPath);
+    if (!persistentBackupBytes.equals(metadata.before)) {
+      throw new Error(`${metadata.backupPath}: backup bytes changed after target removal and before install`);
     }
     if (fsImpl.existsSync(metadata.configPath)) {
       conflictTarget = true;
       throw new Error(
-        `rollback conflict; concurrent target retained at ${metadata.configPath}; original retained at ${rollbackPath}`,
+        `restore conflict; concurrent target retained at ${metadata.configPath}; original inode retained at ${metadata.backupPath}`,
       );
     }
     fsImpl.linkSync(tempPath, metadata.configPath);
@@ -420,49 +420,31 @@ function applyCodexActivationPlan(plan, { fsImpl = fs } = {}) {
         cleanupWarnings.push(Object.freeze({ path: tempPath, message: cleanupError.message, code: cleanupError.code }));
       }
     }
-    if (targetMoved) {
+    if (targetRemoved) {
       if (fsImpl.existsSync(metadata.configPath)) {
         conflictTarget = true;
       } else {
         try {
-          fsImpl.renameSync(rollbackPath, metadata.configPath);
-          targetMoved = false;
-        } catch (rollbackError) {
-          error.message = `${error.message}; rollback failed: ${rollbackError.message}`;
+          fsImpl.copyFileSync(metadata.backupPath, metadata.configPath, fs.constants.COPYFILE_EXCL);
+          targetRemoved = false;
+        } catch (restoreError) {
+          if (fsImpl.existsSync(metadata.configPath)) conflictTarget = true;
+          error.message = `${error.message}; restore failed: ${restoreError.message}`;
         }
       }
     }
     cleanupExactFile(ownsTemp ? tempPath : null, fsImpl, cleanupWarnings);
-    if (!targetMoved) {
-      try {
-        fsImpl.rmdirSync(rollbackDirectory);
-      } catch (cleanupError) {
-        cleanupWarnings.push(Object.freeze({
-          path: rollbackDirectory,
-          message: cleanupError.message,
-          code: cleanupError.code,
-        }));
-      }
-    }
     const retainedArtifacts = [];
-    for (const artifactPath of [metadata.backupPath, tempPath, rollbackPath]) {
+    for (const artifactPath of [backupCreated ? metadata.backupPath : null, tempPath]) {
+      if (!artifactPath) continue;
       if (fsImpl.existsSync(artifactPath)) retainedArtifacts.push(artifactPath);
     }
     if (conflictTarget && fsImpl.existsSync(metadata.configPath)) {
       retainedArtifacts.push(metadata.configPath);
     }
-    if (fsImpl.existsSync(rollbackDirectory) && !fsImpl.existsSync(rollbackPath)) {
-      retainedArtifacts.push(rollbackDirectory);
-    }
     throw attachErrorDetails(error, cleanupWarnings, retainedArtifacts);
   }
 
-  cleanupExactFile(rollbackPath, fsImpl, cleanupWarnings);
-  try {
-    fsImpl.rmdirSync(rollbackDirectory);
-  } catch (error) {
-    cleanupWarnings.push(Object.freeze({ path: rollbackDirectory, message: error.message, code: error.code }));
-  }
   return Object.freeze({
     changed: true,
     backupPath: metadata.backupPath,

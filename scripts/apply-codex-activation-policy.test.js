@@ -150,18 +150,28 @@ test("apply preserves unrelated TOML bytes and creates a sibling backup before r
   const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
   const events = [];
   const auditedFs = Object.create(fs);
-  auditedFs.copyFileSync = (...args) => {
-    events.push(["backup", args[0], args[1]]);
-    return fs.copyFileSync(...args);
+  auditedFs.linkSync = (...args) => {
+    events.push(["link", args[0], args[1]]);
+    return fs.linkSync(...args);
   };
-  auditedFs.renameSync = (...args) => {
-    events.push(["rename", args[0], args[1]]);
-    return fs.renameSync(...args);
+  auditedFs.unlinkSync = (...args) => {
+    events.push(["unlink", args[0]]);
+    return fs.unlinkSync(...args);
   };
 
   const result = applyCodexActivationPlan(plan, { fsImpl: auditedFs });
 
-  assert.equal(events[0][0], "backup");
+  const backupIndex = events.findIndex(([operation, , target]) => (
+    operation === "link" && target === plan.backupPath
+  ));
+  const removeIndex = events.findIndex(([operation, target]) => (
+    operation === "unlink" && target === fixture.configPath
+  ));
+  const installIndex = events.findIndex(([operation, , target]) => (
+    operation === "link" && target === fixture.configPath
+  ));
+  assert.ok(backupIndex >= 0 && backupIndex < removeIndex);
+  assert.ok(removeIndex < installIndex);
   assert.equal(path.dirname(result.backupPath), path.dirname(fixture.configPath));
   assert.deepEqual(fs.readFileSync(result.backupPath), original);
   assert.deepEqual(fs.readFileSync(fixture.configPath), plan.after);
@@ -175,8 +185,9 @@ test("a forced replacement failure restores the original config bytes", () => {
   const original = fs.readFileSync(fixture.configPath);
   const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
   const failingFs = Object.create(fs);
-  failingFs.linkSync = () => {
-    throw new Error("injected replacement failure");
+  failingFs.linkSync = (source, target) => {
+    if (target === fixture.configPath) throw new Error("injected replacement failure");
+    return fs.linkSync(source, target);
   };
 
   let failure;
@@ -193,18 +204,15 @@ test("a forced replacement failure restores the original config bytes", () => {
   assert.match(formatError(failure), new RegExp(plan.backupPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 });
 
-test("post-move rollback bytes are revalidated before install and safely restored when target is absent", () => {
+test("post-removal persistent backup bytes are revalidated and safely restored when target is absent", () => {
   const fixture = makeFixture();
-  const original = fs.readFileSync(fixture.configPath);
   const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
   const concurrentBytes = Buffer.from("CONCURRENT-ROLLBACK-BYTES\n", "utf8");
-  let rollbackPath;
   const racedFs = Object.create(fs);
-  racedFs.renameSync = (source, target) => {
-    const result = fs.renameSync(source, target);
-    if (source === fixture.configPath) {
-      rollbackPath = target;
-      fs.writeFileSync(target, concurrentBytes);
+  racedFs.unlinkSync = (target) => {
+    const result = fs.unlinkSync(target);
+    if (target === fixture.configPath) {
+      fs.writeFileSync(plan.backupPath, concurrentBytes);
     }
     return result;
   };
@@ -214,26 +222,23 @@ test("post-move rollback bytes are revalidated before install and safely restore
     () => applyCodexActivationPlan(plan, { fsImpl: racedFs }),
     (error) => {
       failure = error;
-      return /rollback.*changed.*before install/i.test(error.message);
+      return /backup.*changed.*before install/i.test(error.message);
     },
   );
   assert.deepEqual(fs.readFileSync(fixture.configPath), concurrentBytes);
-  assert.equal(fs.existsSync(rollbackPath), false);
-  assert.deepEqual(fs.readFileSync(plan.backupPath), original);
+  assert.deepEqual(fs.readFileSync(plan.backupPath), concurrentBytes);
   assert.deepEqual(failure.retainedArtifacts, [plan.backupPath]);
 });
 
-test("a target recreated after the original move is preserved with rollback and backup paths", () => {
+test("a target recreated after removal is preserved with the persistent backup path", () => {
   const fixture = makeFixture();
   const original = fs.readFileSync(fixture.configPath);
   const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
   const concurrentBytes = Buffer.from("CONCURRENT-TARGET\n", "utf8");
-  let rollbackPath;
   const racedFs = Object.create(fs);
-  racedFs.renameSync = (source, target) => {
-    const result = fs.renameSync(source, target);
-    if (source === fixture.configPath) {
-      rollbackPath = target;
+  racedFs.unlinkSync = (target) => {
+    const result = fs.unlinkSync(target);
+    if (target === fixture.configPath) {
       fs.writeFileSync(fixture.configPath, concurrentBytes);
     }
     return result;
@@ -244,33 +249,60 @@ test("a target recreated after the original move is preserved with rollback and 
     () => applyCodexActivationPlan(plan, { fsImpl: racedFs }),
     (error) => {
       failure = error;
-      return /rollback conflict/i.test(error.message);
+      return /restore conflict/i.test(error.message);
     },
   );
   assert.deepEqual(fs.readFileSync(fixture.configPath), concurrentBytes);
-  assert.deepEqual(fs.readFileSync(rollbackPath), original);
   assert.deepEqual(fs.readFileSync(plan.backupPath), original);
   assert.deepEqual(
     new Set(failure.retainedArtifacts),
-    new Set([fixture.configPath, rollbackPath, plan.backupPath]),
+    new Set([fixture.configPath, plan.backupPath]),
   );
   for (const retainedPath of failure.retainedArtifacts) {
     assert.match(formatError(failure), new RegExp(retainedPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   }
 });
 
-test("an initial target move failure reports the already-created backup path", () => {
+function makeLateOldInodeWriter(fixture, plan, timing, concurrentText) {
+  const racedFs = Object.create(fs);
+  racedFs.linkSync = (source, target) => {
+    if (target !== fixture.configPath) return fs.linkSync(source, target);
+    if (timing === "before-install") fs.appendFileSync(plan.backupPath, concurrentText, "utf8");
+    const result = fs.linkSync(source, target);
+    if (timing === "after-install") fs.appendFileSync(plan.backupPath, concurrentText, "utf8");
+    return result;
+  };
+  return racedFs;
+}
+
+for (const timing of ["before-install", "after-install"]) {
+  test(`late old-inode write ${timing} survives in the named persistent backup`, () => {
+    const fixture = makeFixture();
+    const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
+    const concurrentText = `LATE-OLD-INODE-WRITE-${timing}\n`;
+    const racedFs = makeLateOldInodeWriter(fixture, plan, timing, concurrentText);
+
+    const result = applyCodexActivationPlan(plan, { fsImpl: racedFs });
+
+    assert.equal(result.changed, true);
+    assert.deepEqual(fs.readFileSync(fixture.configPath), plan.after);
+    assert.equal(result.backupPath, plan.backupPath);
+    assert.match(fs.readFileSync(result.backupPath, "utf8"), new RegExp(concurrentText.trim()));
+  });
+}
+
+test("an initial target removal failure reports the already-created backup path", () => {
   const fixture = makeFixture();
   const original = fs.readFileSync(fixture.configPath);
   const plan = buildCodexActivationPlan({ ...fixture, clock: fixedClock });
   const busyFs = Object.create(fs);
-  busyFs.renameSync = (source, target) => {
-    if (source === fixture.configPath) {
+  busyFs.unlinkSync = (target) => {
+    if (target === fixture.configPath) {
       const error = new Error("injected initial EBUSY");
       error.code = "EBUSY";
       throw error;
     }
-    return fs.renameSync(source, target);
+    return fs.unlinkSync(target);
   };
   let failure;
 
