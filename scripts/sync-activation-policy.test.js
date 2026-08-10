@@ -98,6 +98,21 @@ function openCodeText(policy) {
   ].join("\n");
 }
 
+function readmeText(policy, locale = "en") {
+  return [
+    locale === "zh" ? "# Thinking Skills 中文" : "# Thinking Skills",
+    "",
+    "Authored explanation.",
+    "",
+    "<!-- activation-policy:readme-table:start -->",
+    renderReadmeActivationTable(policy, locale),
+    "<!-- activation-policy:readme-table:end -->",
+    "",
+    "More authored explanation.",
+    "",
+  ].join("\n");
+}
+
 function makeFixtureRepo(entries = [["demo", "auto", "Use automatically for demos."]]) {
   const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "thinking-skills-policy-"));
   tempRoots.push(repoRoot);
@@ -121,6 +136,8 @@ function makeFixtureRepo(entries = [["demo", "auto", "Use automatically for demo
   const openCodePath = path.join(repoRoot, ".opencode", "plugins", "thinking-skills.js");
   fs.mkdirSync(path.dirname(openCodePath), { recursive: true });
   fs.writeFileSync(openCodePath, openCodeText(policy), "utf8");
+  fs.writeFileSync(path.join(repoRoot, "README.md"), readmeText(policy, "en"), "utf8");
+  fs.writeFileSync(path.join(repoRoot, "README.zh.md"), readmeText(policy, "zh"), "utf8");
 
   const yaml = [
     "schema_version: 1",
@@ -162,6 +179,42 @@ test("checked-in activation surfaces match the manifest", () => {
   const policy = loadActivationPolicy({ repoRoot });
   const plan = buildActivationSyncPlan({ repoRoot, policy });
   assert.deepEqual(checkActivationSyncPlan(plan), []);
+});
+
+test("checked-in README activation tables exactly match all manifest Skills", () => {
+  const repoRoot = path.resolve(__dirname, "..");
+  const policy = loadActivationPolicy({ repoRoot });
+  const readmes = [
+    ["README.md", "en"],
+    ["README.zh.md", "zh"],
+  ];
+
+  for (const [relativePath, locale] of readmes) {
+    const filePath = path.join(repoRoot, relativePath);
+    const contents = fs.readFileSync(filePath, "utf8");
+    const start = "<!-- activation-policy:readme-table:start -->";
+    const end = "<!-- activation-policy:readme-table:end -->";
+    assert.equal(countExactLines(contents, start), 1, `${relativePath}: start marker`);
+    assert.equal(countExactLines(contents, end), 1, `${relativePath}: end marker`);
+
+    const generated = contents.slice(
+      contents.indexOf(start) + start.length + 1,
+      contents.indexOf(end) - 1,
+    );
+    assert.equal(generated, renderReadmeActivationTable(policy, locale), relativePath);
+
+    const authored = contents.replace(
+      /<!-- activation-policy:readme-table:start -->[\s\S]*?<!-- activation-policy:readme-table:end -->/,
+      "<!-- generated activation table -->",
+    );
+    for (const skillId of Object.keys(policy.skills)) {
+      assert.doesNotMatch(
+        authored,
+        new RegExp("^\\| `" + skillId + "` \\|", "m"),
+        `${relativePath}: ${skillId} activation row must be generated`,
+      );
+    }
+  }
 });
 
 test("checked-in runtime surfaces each expose exactly one owned activation region", () => {
@@ -425,7 +478,7 @@ for (const [name, mutate] of [
   });
 }
 
-test("renderers snapshot all activation modes and sorted EN/ZH tables", () => {
+test("renderers snapshot all activation modes and manifest-ordered EN/ZH tables", () => {
   const auto = { mode: "auto", auto_description: "Exact automatic description." };
   const explicit = { mode: "explicit", auto_description: "Unused." };
   const disabled = { mode: "disabled", auto_description: "Unused." };
@@ -463,11 +516,11 @@ test("renderers snapshot all activation modes and sorted EN/ZH tables", () => {
     [
       "Generated from config/activation-policy.yaml. Do not edit this block.",
       "",
-      "| Skill | Activation mode |",
-      "|---|---|",
-      "| `alpha-skill` | `auto` |",
-      "| `middle-skill` | `explicit` |",
-      "| `zeta-skill` | `disabled` |",
+      "| Skill | Activation mode | Behavior |",
+      "|---|---|---|",
+      "| `zeta-skill` | `disabled` | Unavailable; platform enforcement is required. |",
+      "| `alpha-skill` | `auto` | Eligible for intent-based selection. |",
+      "| `middle-skill` | `explicit` | Requires exact invocation in the current user request. |",
     ].join("\n"),
   );
   assert.equal(
@@ -475,11 +528,11 @@ test("renderers snapshot all activation modes and sorted EN/ZH tables", () => {
     [
       "Generated from config/activation-policy.yaml. Do not edit this block.",
       "",
-      "| Skill | 激活模式 |",
-      "|---|---|",
-      "| `alpha-skill` | `自动` |",
-      "| `middle-skill` | `显式调用` |",
-      "| `zeta-skill` | `关闭` |",
+      "| Skill | 激活模式 | 行为 |",
+      "|---|---|---|",
+      "| `zeta-skill` | `关闭` | 不可用；需要平台强制执行。 |",
+      "| `alpha-skill` | `自动` | 可根据请求意图选择。 |",
+      "| `middle-skill` | `显式调用` | 需要在当前用户请求中精确调用。 |",
     ].join("\n"),
   );
   assert.equal(

@@ -6,6 +6,12 @@ Thinking Skills benchmarks test whether routing and domain skills behave well on
 
 The benchmark runner is code. The benchmark standards live in docs and eval cases. Skills should not be responsible for launching tests by themselves.
 
+## Activation Policy Contract
+
+Activation is framework-level and configured in `config/activation-policy.yaml`. Under the shipped policy, ordinary technical and learning requests expect `native`; `technical-deep-dive` and `learning-coach` require valid exact invocation in the current user request; every other current first-party Skill remains Auto. Users are not asked to configure modes.
+
+Disabled requires platform enforcement, not only a Skill self-guard. Cursor and OpenCode source-mode installs fail closed when Disabled Skills are configured because their unfiltered source mode cannot enforce exclusion. Route cases and repository checks validate declared policy, not actual load behavior. Only a trusted host trace can provide load evidence.
+
 ## Structure
 
 ```text
@@ -62,7 +68,7 @@ Commands launched with `--command` run from a new temporary working directory fo
 
 ## Case Formats
 
-`expected_route.primary` may name a Domain Skill, `native`, or `no-skill`. Use `native` for ordinary task-shaped technical work without a valid current-request invocation of `technical-deep-dive`.
+`expected_route.primary` may name a Domain Skill, `native`, or `no-skill`. Use `native` for ordinary task-shaped technical or learning work without a valid current-request exact invocation of `technical-deep-dive` or `learning-coach`, respectively.
 
 ### Route
 
@@ -137,7 +143,7 @@ Objective boundaries:
 
 `mutation` and `artifact_sink` are related but not interchangeable. A repository specification can be `objective=decide`, `mutation=requested`, `artifact=spec`, `artifact_sink=workspace`; read-only repository analysis can be `mutation=none` and return to `chat`. This is why the formal-spec case is not forced into `deliver` merely because it creates a file.
 
-Secondary routes require an explicit second-domain need, not a technical noun by itself. A basic request to understand transformer attention remains `learning-coach` only. A Kafka learning request also remains `learning-coach` only unless the current user request explicitly invokes `technical-deep-dive`; topic complexity and depth wording do not create a TDD secondary.
+Secondary routes require an explicit second-domain need, not a technical noun by itself. Under the shipped policy, a basic request to understand transformer attention and an ordinary Kafka learning request both remain `native`. A valid current-request exact invocation may select `learning-coach`; topic complexity and depth wording do not activate either Explicit Skill or create a `technical-deep-dive` secondary.
 
 `advisory_components` is exhaustive for the candidate's declared route. Omitting it is a failure; absence of a name from an unreported list is never scored as proof that the Skill was not selected. This field remains self-report and cannot replace integration evidence.
 

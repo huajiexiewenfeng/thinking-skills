@@ -12,6 +12,7 @@ flowchart LR
   Router --> NoSkill["no-skill"]
   Request -.-> Explicit["当前用户请求显式调用"]
   Explicit --> TDD["technical-deep-dive"]
+  Explicit --> Learning["learning-coach"]
 ```
 
 ## 这是什么？
@@ -68,7 +69,7 @@ Thinking Skills 目前处于 Alpha 阶段。
 
 Thinking Skills 会先用 router 判断意图，再根据请求选择 Domain Skill、`native` 或 `no-skill`。
 
-普通、任务型技术请求使用宿主原生路径。只有当前用户请求直接调用 `$thinking-skills:technical-deep-dive`，或同时包含调用意图与规范名称 `technical-deep-dive` 时，才能激活该 Skill。技术主题、深入或系统分析的自然语言、仅提及、其他组件转交和上一请求的调用都不构成激活。
+在当前发布策略下，普通、任务型技术请求和学习请求都使用宿主原生路径。只有当前用户请求有效、精确地调用规范 Skill 标识符时，`technical-deep-dive` 和 `learning-coach` 才可用。主题、深度措辞、仅提及、其他组件转交和上一请求的调用都不构成激活。
 
 ## 核心架构
 
@@ -95,26 +96,44 @@ Dolores 属于 Reflection plane，不需要每次回答后都运行。
 
 ## 第一方 Skills
 
-### 路由和领域技能
+激活模式是框架级策略，统一配置在 `config/activation-policy.yaml`，而不是手工写进各个 Skill。下表由该 manifest 生成。
 
-| Skill | 激活方式 | 适用场景 |
+<!-- activation-policy:readme-table:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+| Skill | 激活模式 | 行为 |
 |---|---|---|
-| `thinking-router` | Auto | 用户请求需要先判断应该进入哪种思考模式 |
-| `content-creator` | Auto | 文章、随笔、脚本、标题、大纲、论点、受众定位和内容结构 |
-| `article-visual-director` | Auto | 已基本定稿的 Markdown 文章需要封面、概念插画、精确技术图、审批后生成，并非破坏性地插回文章副本 |
-| `technical-deep-dive` | Explicit only | 当前请求直接调用规范 Skill 名称，用于代码、架构、debug、性能、API、系统、技术权衡和验证路径 |
-| `learning-coach` | Auto | 概念理解、心智模型、知识盲区、学习路径、练习和解释校准 |
-| `emotional-support` | Auto | 焦虑、压力、自责、关系痛苦、情绪困惑、危机信号和温和的下一步 |
+| `thinking-router` | `自动` | 可根据请求意图选择。 |
+| `content-creator` | `自动` | 可根据请求意图选择。 |
+| `article-visual-director` | `自动` | 可根据请求意图选择。 |
+| `technical-deep-dive` | `显式调用` | 需要在当前用户请求中精确调用。 |
+| `learning-coach` | `显式调用` | 需要在当前用户请求中精确调用。 |
+| `emotional-support` | `自动` | 可根据请求意图选择。 |
+| `conversation-review` | `自动` | 可根据请求意图选择。 |
+| `skill-evaluator` | `自动` | 可根据请求意图选择。 |
+| `benchmark-assistant` | `自动` | 可根据请求意图选择。 |
+<!-- activation-policy:readme-table:end -->
 
-### 元技能和改进技能
+在当前发布策略下，普通技术和学习任务使用 `native`；`technical-deep-dive` 与 `learning-coach` 需要当前用户请求有效、精确地调用；其他现有第一方 Skill 均保持自动模式。目前没有关闭的 Skill。
 
-| Skill | 激活方式 | 适用场景 |
-|---|---|---|
-| `conversation-review` | Auto | Dolores 模式，用于 conversation self-review、skill 轨迹审计、失败信号、eval 缺口和改进飞轮 |
-| `skill-evaluator` | Auto | 审查失败的 skill 回复，分类失败类型，提出 eval 和最小修改建议 |
-| `benchmark-assistant` | Auto | 运行 benchmark 命令、生成测试提示、评分保存的回答、更新 dashboard、解释失败并建议下一步 |
+关闭是一种部署状态，不能只靠 Skill 自身的 guard：目标平台必须阻止发现或选择。策略包含关闭项时，Cursor 和 OpenCode 的源码模式安装会失败关闭；它们不会声称能从未过滤的源码目录强制关闭。用户无需配置激活模式。仓库检查只能验证声明的策略 surface；证明宿主实际加载了某个 Skill，必须依赖可信宿主 trace。
 
-所有第一方 Thinking Skills 当前都可被发现并处于启用状态，没有关闭项。`Auto` 表示可根据请求意图自动选择；`Explicit only` 表示当前用户请求必须直接调用规范 Skill 名称。上一轮调用，或 Router、runtime、agent、其他 Skill 的转交，都不能视为授权。普通技术任务继续走宿主原生能力。
+### 维护者工作流
+
+维护者只编辑 manifest，然后重新生成并检查 owned surfaces：
+
+```powershell
+# Edit only the policy
+config/activation-policy.yaml
+
+# Regenerate owned surfaces
+node scripts/sync-activation-policy.js
+
+# CI/read-only validation
+node scripts/sync-activation-policy.js --check
+```
+
+回滚模式变更时，恢复 manifest，再重新运行同步器。
 
 规划中的 skills：
 
@@ -225,7 +244,7 @@ self-review
 ```
 
 ```text
-使用 learning-coach 帮我理解这个概念。
+$thinking-skills:learning-coach 帮我理解这个概念。
 ```
 
 ```text

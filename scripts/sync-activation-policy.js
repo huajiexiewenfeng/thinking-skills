@@ -6,6 +6,26 @@ const { hasCurrentRequestExplicitSkillInvocation } = require("./explicit-skill-i
 
 const GENERATED_HEADER = "Generated from config/activation-policy.yaml. Do not edit this block.";
 const VALID_MODES = new Set(["auto", "explicit", "disabled"]);
+const README_MODE_PRESENTATION = Object.freeze({
+  auto: Object.freeze({
+    en: Object.freeze({ label: "auto", behavior: "Eligible for intent-based selection." }),
+    zh: Object.freeze({ label: "自动", behavior: "可根据请求意图选择。" }),
+  }),
+  explicit: Object.freeze({
+    en: Object.freeze({
+      label: "explicit",
+      behavior: "Requires exact invocation in the current user request.",
+    }),
+    zh: Object.freeze({ label: "显式调用", behavior: "需要在当前用户请求中精确调用。" }),
+  }),
+  disabled: Object.freeze({
+    en: Object.freeze({
+      label: "disabled",
+      behavior: "Unavailable; platform enforcement is required.",
+    }),
+    zh: Object.freeze({ label: "关闭", behavior: "不可用；需要平台强制执行。" }),
+  }),
+});
 const GENERATED_FIXTURE_SEGMENTS = ["benchmarks", "generated", "activation-policy"];
 const PLAN_METADATA = Symbol("activation-policy-plan-metadata");
 const ACTIVATION_BENCHMARK_PROFILES = Object.freeze({
@@ -235,14 +255,16 @@ function renderOpenCodePolicy(policy) {
 
 function renderReadmeActivationTable(policy, locale = "en") {
   if (locale !== "en" && locale !== "zh") throw new Error(`Unsupported activation table locale: ${locale}`);
-  const translations = { auto: "自动", explicit: "显式调用", disabled: "关闭" };
-  const heading = locale === "zh" ? "| Skill | 激活模式 |" : "| Skill | Activation mode |";
-  const rows = sortedSkillIds(policy).map((skillId) => {
+  const heading = locale === "zh"
+    ? "| Skill | 激活模式 | 行为 |"
+    : "| Skill | Activation mode | Behavior |";
+  const rows = Object.keys(policy.skills).map((skillId) => {
     const mode = policy.skills[skillId].mode;
     requireMode(policy.skills[skillId], skillId);
-    return `| \`${skillId}\` | \`${locale === "zh" ? translations[mode] : mode}\` |`;
+    const presentation = README_MODE_PRESENTATION[mode][locale];
+    return `| \`${skillId}\` | \`${presentation.label}\` | ${presentation.behavior} |`;
   });
-  return [GENERATED_HEADER, "", heading, "|---|---|", ...rows].join("\n");
+  return [GENERATED_HEADER, "", heading, "|---|---|---|", ...rows].join("\n");
 }
 
 function renderActivationBenchmarkCases(policy) {
@@ -365,6 +387,18 @@ function buildActivationSyncPlan({ repoRoot, policy }) {
     renderOpenCodePolicy(policy),
     "OpenCode",
   );
+  for (const [fileName, locale, targetName] of [
+    ["README.md", "en", "English README"],
+    ["README.zh.md", "zh", "Chinese README"],
+  ]) {
+    addRequiredOwnedRegionTarget(
+      plan,
+      path.join(resolvedRoot, fileName),
+      "readme-table",
+      renderReadmeActivationTable(policy, locale),
+      targetName,
+    );
+  }
 
   const generatedRoot = path.join(resolvedRoot, ...GENERATED_FIXTURE_SEGMENTS);
   const desired = new Map(renderActivationBenchmarkCases(policy).map((item) => [item.fileName, item.content]));

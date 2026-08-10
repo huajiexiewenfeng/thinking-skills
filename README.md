@@ -12,6 +12,7 @@ flowchart LR
   Router --> NoSkill["no-skill"]
   Request -.-> Explicit["Explicit user invocation"]
   Explicit --> TDD["technical-deep-dive"]
+  Explicit --> Learning["learning-coach"]
 ```
 
 ## What Is This?
@@ -68,7 +69,7 @@ If the assistant defaults to coding, the conversation is already off course.
 
 Thinking Skills starts with a router, then chooses a Domain Skill, `native`, or `no-skill` according to the request.
 
-Ordinary task-shaped technical requests use the host-native route. `technical-deep-dive` is available only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines an invocation command with the canonical name `technical-deep-dive`. Technical subject matter, requests for deep or systematic analysis, mere mention, another component's handoff, and prior-request invocation do not activate it.
+Under the shipped activation policy, ordinary task-shaped technical and learning requests use the host-native route. `technical-deep-dive` and `learning-coach` are available only after a valid exact invocation of the canonical Skill identifier in the current user request. Subject matter, depth wording, mention, another component's handoff, and prior-request invocation do not activate them.
 
 ## Core Architecture
 
@@ -95,26 +96,44 @@ Dolores belongs to the Reflection plane. It is not required to run after every a
 
 ## First-Party Skills
 
-### Routing and Domain Skills
+Activation mode is a framework-level policy, configured in `config/activation-policy.yaml` rather than hand-coded into individual Skills. The table below is generated from that manifest.
 
-| Skill | Activation | Use When |
+<!-- activation-policy:readme-table:start -->
+Generated from config/activation-policy.yaml. Do not edit this block.
+
+| Skill | Activation mode | Behavior |
 |---|---|---|
-| `thinking-router` | Auto | A request needs to be routed to the right thinking mode |
-| `content-creator` | Auto | Articles, essays, scripts, titles, outlines, arguments, audience positioning, and content structure |
-| `article-visual-director` | Auto | A substantially complete Markdown article needs a cover, concept illustrations, exact technical diagrams, approval-gated generation, and non-destructive image insertion |
-| `technical-deep-dive` | Explicit only | The current request directly invokes the canonical skill name for technical reasoning about code, architecture, debugging, performance, APIs, systems, trade-offs, or verification paths |
-| `learning-coach` | Auto | Concept understanding, mental models, knowledge gaps, study paths, practice, and explanation review |
-| `emotional-support` | Auto | Anxiety, stress, self-blame, relationship pain, emotional confusion, crisis signals, and gentle next steps |
+| `thinking-router` | `auto` | Eligible for intent-based selection. |
+| `content-creator` | `auto` | Eligible for intent-based selection. |
+| `article-visual-director` | `auto` | Eligible for intent-based selection. |
+| `technical-deep-dive` | `explicit` | Requires exact invocation in the current user request. |
+| `learning-coach` | `explicit` | Requires exact invocation in the current user request. |
+| `emotional-support` | `auto` | Eligible for intent-based selection. |
+| `conversation-review` | `auto` | Eligible for intent-based selection. |
+| `skill-evaluator` | `auto` | Eligible for intent-based selection. |
+| `benchmark-assistant` | `auto` | Eligible for intent-based selection. |
+<!-- activation-policy:readme-table:end -->
 
-### Meta and Improvement Skills
+Under the shipped policy, ordinary technical and learning work uses `native`; `technical-deep-dive` and `learning-coach` require valid exact invocation in the current user request; every other current first-party Skill remains Auto. No Skill is currently Disabled.
 
-| Skill | Activation | Use When |
-|---|---|---|
-| `conversation-review` | Auto | Dolores mode for conversation self-review, skill trace audits, failure signals, eval gaps, and improvement-loop actions |
-| `skill-evaluator` | Auto | Review failed skill responses, classify failure types, propose evals, and recommend minimal patches |
-| `benchmark-assistant` | Auto | Run benchmark commands, generate prompts, score saved responses, update the dashboard, interpret failures, and suggest benchmark-driven next actions |
+Disabled is a deployment state, not merely a self-guard: the target platform must prevent discovery or selection. Cursor and OpenCode source-mode installs fail closed when the policy contains a Disabled Skill; they do not claim to enforce Disabled from an unfiltered source tree. Users are not asked to configure activation modes. Repository checks validate declared policy surfaces, while evidence that a host actually loaded a Skill requires a trusted host trace.
 
-All first-party Thinking Skills are discoverable and enabled; none are disabled. `Auto` means the skill is eligible for intent-based selection. `Explicit only` means the current user request must directly invoke the canonical skill name. A prior-turn invocation or a handoff from the router, runtime, agent, or another skill does not count. Ordinary technical work stays on the host-native path.
+### Maintainer workflow
+
+Maintainers edit only the manifest, then regenerate and check the owned surfaces:
+
+```powershell
+# Edit only the policy
+config/activation-policy.yaml
+
+# Regenerate owned surfaces
+node scripts/sync-activation-policy.js
+
+# CI/read-only validation
+node scripts/sync-activation-policy.js --check
+```
+
+To roll back a mode change, revert the manifest and rerun the synchronizer.
 
 Planned skills:
 
@@ -225,7 +244,7 @@ Use article-visual-director to plan visuals for this final Markdown article, wai
 ```
 
 ```text
-Use learning-coach to help me understand this concept.
+$thinking-skills:learning-coach Help me understand this concept.
 ```
 
 ```text

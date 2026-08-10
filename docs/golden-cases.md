@@ -13,6 +13,12 @@ golden case  -> preserve this good pattern
 
 A golden case is not a praise archive. It records the behavior pattern that made a response useful.
 
+## Activation Contract
+
+Activation is a framework-level concern configured in `config/activation-policy.yaml`. Under the shipped policy, ordinary technical and learning work uses `native`; `technical-deep-dive` and `learning-coach` require valid exact invocation in the current user request; every other current first-party Skill remains Auto. Users are not asked to configure modes.
+
+A Disabled Skill requires platform enforcement rather than a self-guard alone. Cursor and OpenCode source-mode installs fail closed when Disabled Skills are configured. A golden case, route report, or repository test is not evidence that a host loaded a Skill; actual load evidence requires a trusted host trace.
+
 ## What Counts
 
 Create a golden case only when at least one condition is true:

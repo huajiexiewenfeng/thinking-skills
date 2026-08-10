@@ -63,3 +63,4 @@ Notes:
 - Documented the benchmark maturity plan from case library to response collection to future Codex-as-judge review.
 - Added a cross-framework failure case, eval, benchmark, and `technical-deep-dive` handoff contract for overlapping host debugging workflows.
 - Changed `technical-deep-dive` to current-request explicit user activation, routed ordinary technical work to `native`, and added route, integration, cross-Skill, and continuity regressions.
+- Added the declarative framework-level activation policy, generated English and Chinese activation tables, current-request exact invocation for `technical-deep-dive` and `learning-coach`, host-enforced Disabled semantics, fail-closed source-mode adapters, and maintainer sync/rollback guidance.

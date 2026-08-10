@@ -57,12 +57,19 @@ The framework is described as three planes, not a strict runtime stack:
 
 Dolores belongs to the Reflection plane. It is a review skill and should not be understood as a mandatory step after every answer.
 
+## Activation Policy
+
+Activation is a framework-level contract configured in `config/activation-policy.yaml`. The shipped policy sends ordinary technical and learning work to `native`; `technical-deep-dive` and `learning-coach` require valid exact invocation of their canonical identifiers in the current user request; every other current first-party Skill remains Auto. Users are not asked to configure modes.
+
+Disabled is stronger than a generated self-guard and requires platform enforcement. Cursor and OpenCode source-mode installs fail closed when the manifest contains a Disabled Skill because an unfiltered source directory cannot enforce exclusion. Repository tests and route reports validate declared behavior only. Evidence that a host actually loaded a Skill requires a trusted host trace.
+
 ## Directory Map
 
 ```text
 skills/
   thinking-router/
   content-creator/
+  article-visual-director/
   technical-deep-dive/
   learning-coach/
   emotional-support/
@@ -144,10 +151,10 @@ Important routing distinction:
 - An ordinary task-shaped request for technical diagnosis, architecture, implementation, debugging, performance, or verification routes to `native`.
 - A request that directly invokes `$thinking-skills:technical-deep-dive` routes to `technical-deep-dive`.
 - A request that explicitly invokes both `content-creator` and `technical-deep-dive` may use the latter as secondary.
-- A request to understand a concept, build intuition, find knowledge gaps, or practice recall routes to `learning-coach`.
+- An ordinary request to understand a concept, build intuition, find knowledge gaps, or practice recall routes to `native`; a valid current-request exact invocation routes to `learning-coach`.
 - A request for self-review, Dolores mode, conversation review, skill trace audit, or eval gap review routes to `conversation-review`, with `skill-evaluator` as secondary when failure classification is requested.
 
-Ordinary task-shaped technical requests use the host-native route. `technical-deep-dive` is available only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines an invocation command with the canonical name `technical-deep-dive`. Technical subject matter, requests for deep or systematic analysis, mere mention, another component's handoff, and prior-request invocation do not activate it.
+Ordinary task-shaped technical and learning requests use the host-native route. `technical-deep-dive` and `learning-coach` are available only when the current user request validly and exactly invokes the corresponding canonical Skill identifier. Subject matter, requests for deep or systematic treatment, mere mention, another component's handoff, and prior-request invocation do not activate them.
 
 `native` is task-shaped technical work owned by the host model, system and developer rules, tools, and harness; it does not load a Thinking Skills Domain Skill. `no-skill` is ordinary conversation or an explicit off-ramp and applies no domain method base.
 
@@ -227,7 +234,7 @@ Do not invent unseen code facts.
 
 ### `learning-coach`
 
-Use for:
+Available after valid current-request exact invocation for:
 
 - Concept explanation
 - Mental model building
@@ -504,9 +511,9 @@ Platform folders are thin adapters:
 .opencode/
 ```
 
-Codex has been locally verified through Skills CLI discovery. The local repository currently exposes six first-party skills, including `conversation-review`.
+Codex has been locally verified through Skills CLI discovery. The repository registers nine first-party Skills.
 
-Claude Code, Cursor, and OpenCode adapters exist, but should be treated as implemented metadata/adapters until tested in those clients.
+Claude Code, Cursor, and OpenCode adapters exist, but should be treated as implemented metadata/adapters until tested in those clients. A Disabled Skill requires effective platform exclusion; Cursor and OpenCode source-mode adapters therefore fail closed instead of claiming enforcement from an unfiltered source tree. Actual selection and loading remain unverified without a trusted host trace.
 
 ## Current Known Design Debt
 

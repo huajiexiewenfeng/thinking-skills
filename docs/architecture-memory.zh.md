@@ -55,12 +55,19 @@ Content plane:
 
 Dolores 属于 Reflection plane。它是 review skill，不应被理解成每次回答后都必须运行的一步。
 
+## 激活策略
+
+激活是框架级契约，统一配置在 `config/activation-policy.yaml`。当前发布策略让普通技术和学习任务使用 `native`；`technical-deep-dive` 与 `learning-coach` 需要当前用户请求有效、精确地调用其规范标识符；其他现有第一方 Skill 均保持自动模式。用户无需配置模式。
+
+关闭比生成的 self-guard 更强，必须由平台强制执行。manifest 包含关闭项时，Cursor 和 OpenCode 的源码模式安装会失败关闭，因为未过滤的源码目录无法强制排除。仓库测试和路由报告只能验证声明行为；证明宿主实际加载了某个 Skill，需要可信宿主 trace。
+
 ## 目录地图
 
 ```text
 skills/
   thinking-router/
   content-creator/
+  article-visual-director/
   technical-deep-dive/
   learning-coach/
   emotional-support/
@@ -144,10 +151,10 @@ cases/
 - 普通、任务型的技术诊断、架构、实现、debugging、性能或验证请求路由到 `native`。
 - 直接调用 `$thinking-skills:technical-deep-dive` 的请求路由到 `technical-deep-dive`。
 - 同时显式调用 `content-creator` 和 `technical-deep-dive` 的请求可以把后者作为 secondary。
-- 理解概念、建立直觉、发现知识盲区或练习回忆，路由到 `learning-coach`。
+- 普通的概念理解、建立直觉、发现知识盲区或练习回忆请求路由到 `native`；当前请求有效、精确调用后才路由到 `learning-coach`。
 - self-review、Dolores、对话复盘、skill 使用复盘、eval gap review 通常路由到 `conversation-review`；如果需要失败分类，`skill-evaluator` 可作为 secondary。
 
-普通、任务型技术请求使用宿主原生路径。只有当前用户请求直接调用 `$thinking-skills:technical-deep-dive`，或同时包含调用意图与规范名称 `technical-deep-dive` 时，才能激活该 Skill。技术主题、深入或系统分析的自然语言、仅提及、其他组件转交和上一请求的调用都不构成激活。
+普通、任务型技术和学习请求使用宿主原生路径。只有当前用户请求有效、精确地调用对应规范 Skill 标识符时，`technical-deep-dive` 与 `learning-coach` 才可用。主题、深入或系统处理的措辞、仅提及、其他组件转交和上一请求的调用都不构成激活。
 
 `native` 是由宿主模型、system/developer rules、工具和 harness 负责的任务型技术工作，不加载 Thinking Skills Domain Skill。`no-skill` 用于普通对话或显式 off-ramp，不应用领域方法底座。
 
@@ -227,7 +234,7 @@ cases/
 
 ### `learning-coach`
 
-适用于：
+仅在当前请求有效、精确调用后适用于：
 
 - 概念解释
 - 心智模型构建
@@ -504,9 +511,9 @@ skills/
 .opencode/
 ```
 
-Codex 已经通过 Skills CLI discovery 做过本地验证。当前本地仓库包含六个 first-party skills，包括 `conversation-review`。
+Codex 已经通过 Skills CLI discovery 做过本地验证。仓库注册了九个第一方 Skills。
 
-Claude Code、Cursor、OpenCode adapters 已存在，但在对应客户端真实测试前，只应视为已实现 metadata/adapters。
+Claude Code、Cursor、OpenCode adapters 已存在，但在对应客户端真实测试前，只应视为已实现 metadata/adapters。关闭项必须由平台有效排除；因此 Cursor 和 OpenCode 的源码模式适配会失败关闭，不会声称能从未过滤的源码目录强制执行。没有可信宿主 trace 时，实际选择和加载仍未验证。
 
 ## 当前已知设计债
 

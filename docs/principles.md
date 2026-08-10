@@ -4,7 +4,9 @@
 
 Do not assume the user is asking for software development help. Technical work is one possible domain, not the default domain.
 
-Ordinary task-shaped technical requests use the host-native route. `technical-deep-dive` is available only when the current user request directly invokes `$thinking-skills:technical-deep-dive` or combines an invocation command with the canonical name `technical-deep-dive`. Technical subject matter, requests for deep or systematic analysis, mere mention, another component's handoff, and prior-request invocation do not activate it.
+Activation is a framework-level concern configured in `config/activation-policy.yaml`. Under the shipped policy, ordinary task-shaped technical and learning requests use the host-native route. `technical-deep-dive` and `learning-coach` require valid exact invocation of the canonical Skill identifier in the current user request. Subject matter, requests for deeper treatment, mere mention, another component's handoff, and prior-request invocation do not activate them; every other current first-party Skill remains Auto.
+
+Disabled requires platform enforcement and cannot be established by a self-guard alone. Cursor and OpenCode source-mode installs fail closed when Disabled Skills are configured. Users are not asked to choose activation modes, and actual Skill-load evidence requires a trusted host trace rather than model self-report or repository tests.
 
 ## 2. Router Does Not Solve
 
