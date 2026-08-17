@@ -27,8 +27,17 @@ These are production defaults, not guarantees of current platform UI behavior. I
 - Default headline aspect ratio: approximately `2.35:1`.
 - Working export: `900 x 383`.
 - Keep the essential subject and deterministic title within a central square-safe region so alternate crops remain meaningful.
-- Extend background color and non-essential atmosphere to both sides.
+- Square-safe does not mean square-confined: preserve the semantic nucleus in the square while composing the full-width cover for the wide canvas.
+- For balanced or three-part horizontal narratives, let the intentional foreground hierarchy occupy roughly 70–90% of the canvas width. Supporting structures may extend beyond the square and crop partially in alternate thumbnails.
+- Extend background color to both sides, but do not leave both outer bands as background-only atmosphere when they are needed to express the wide composition.
 - Test the full wide crop and a central square crop before approval.
+
+Wide-cover occupancy acceptance:
+
+- The full `2.35:1` crop must read as the primary composition, not as a square poster placed on a wide blank canvas.
+- The central square crop must retain the primary title and semantic nucleus; it does not need to retain every supporting object.
+- Fail a balanced or three-part cover if the complete title and foreground system are confined to the central square and both outer side bands are uniform or near-uniform background.
+- When the concept explicitly contains left and right forces, both outer bands should contain recognizable, non-essential continuation of those forces. Decorative particles, gradients, or unrelated filler do not satisfy this check.
 
 ### Body visuals
 

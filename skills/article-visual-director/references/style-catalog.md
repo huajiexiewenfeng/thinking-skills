@@ -2,6 +2,8 @@
 
 Use these profiles as art-direction systems, not as rigid presets. Select one primary profile from the article's audience, tone, and information density. Keep one fingerprint across the entire visual set.
 
+The seven named art-direction profiles below are the available visual submodes.
+
 Never describe a profile as an imitation of a living artist. Convert user references into palette, geometry, material, lighting, perspective, and composition properties.
 
 ## Technical Editorial Minimal
@@ -32,6 +34,43 @@ Prompt fragment:
 
 ```text
 technical editorial minimalism, restrained ink-blue and cyan palette, crisp geometric hierarchy, generous negative space, subtle paper or matte texture, one clear focal metaphor, clean publication-quality composition
+```
+
+## White-Green Editorial Minimal
+
+Best for:
+
+- WeChat technology commentary and AI industry analysis;
+- a bright, rational, premium editorial tone without dark cyberpunk styling;
+- wide covers built around a clear tension, comparison, or three-part system.
+
+Fingerprint:
+
+- white or very pale mint background;
+- restrained emerald and forest-green hierarchy, with optional small cyan-green accents;
+- flat geometric forms, crisp thin-to-medium lines, soft matte depth, little or no glow;
+- one dominant semantic nucleus with supporting structures extending horizontally;
+- generous but active negative space that separates groups rather than emptying the canvas;
+- brand-neutral, publication-grade composition with no decorative UI.
+
+Wide-cover composition contract:
+
+- for a balanced or three-part `2.35:1` cover, let the intentional foreground hierarchy occupy roughly 70–90% of the canvas width;
+- keep the semantic nucleus and primary title meaningful in the central square crop, but allow supporting structures to extend beyond it;
+- use both outer bands for meaningful continuation of the article's left/right forces, not decorative filler;
+- reject a layout that confines the complete title and foreground system to the central square while leaving both sides as background-only whitespace.
+
+Avoid:
+
+- pale green elements with insufficient contrast on white;
+- ornamental leaves or generic sustainability imagery;
+- shrinking the whole composition merely to satisfy square-crop safety;
+- excessive glow, glassmorphism, dense circuitry, or tiny labels.
+
+Prompt fragment:
+
+```text
+white-green editorial minimalism, bright white or pale mint ground, restrained emerald and forest-green hierarchy, crisp flat geometric forms, subtle matte depth, one clear semantic nucleus, supporting structures spanning the wide canvas, active negative space, premium technology publication quality, no decorative UI or excessive glow
 ```
 
 ## Neon Systems
@@ -180,6 +219,7 @@ soft technical sketch on warm paper, clean ink contours, muted watercolor accent
 | Article signal | Prefer |
 |---|---|
 | Dense tutorial, broad audience | Technical Editorial Minimal |
+| WeChat technology commentary, bright rational tone | White-Green Editorial Minimal |
 | AI/runtime/infrastructure launch tone | Neon Systems |
 | Boundary or component anatomy | Blueprint Linework |
 | Cloud/service ecosystem | Isometric Infrastructure |

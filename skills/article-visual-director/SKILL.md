@@ -60,6 +60,8 @@ For a standalone technical diagram unrelated to an article, use the environment'
 
 ```text
 inspect article
+  -> present all seven bilingual visual submodes
+  -> wait for explicit style selection
   -> propose complete visual plan
   -> wait for plan approval
   -> when 3+ imagegen assets: generate one style anchor
@@ -70,6 +72,30 @@ inspect article
 ```
 
 Do not collapse these gates. A user asking to "do it all" authorizes the workflow, not silent approval of unseen prompts or an unseen style anchor.
+
+## Mandatory Style Selection Gate
+
+Every invocation that will generate article images must present this complete menu before producing the visual plan or calling an image-generation capability:
+
+1. **Technical Editorial Minimal（技术编辑简约）** — 适合技术教程和解释型文章，几何清晰、留白克制。
+2. **White-Green Editorial Minimal（白底绿色编辑简约）** — 适合微信公众号 AI 与产业分析，白底绿色、明亮理性。
+3. **Neon Systems（霓虹系统科技）** — 深色底配青绿霓虹，适合 Agent、基础设施和高能科技主题。
+4. **Blueprint Linework（蓝图线稿）** — 工程制图式线条，适合架构边界、组件结构和系统解析。
+5. **Isometric Infrastructure（等距基础设施）** — 等距模块化空间，适合云服务、部署体系和数据管线。
+6. **Cinematic Conceptual（电影感概念视觉）** — 单一强隐喻配合克制的戏剧光影，适合战略与哲学议题。
+7. **Soft Technical Sketch（柔和技术手绘）** — 纸张、墨线和淡彩质感，适合教程、入门内容和亲和解释。
+
+Use this response shape:
+
+```text
+请选择本次配图风格（回复序号、英文名或中文名均可）：
+[the complete seven-item menu]
+推荐：N. English Name（中文名）— one sentence tied to this article.
+```
+
+After inspecting an available article, mark one item as the recommendation but still show all seven. If the article is not yet available, show the menu without a recommendation. If the user named a style in the invoking message, show all seven, mark that item as their current choice, and ask them to confirm it or select another. Do not infer approval from a past invocation or a previous article.
+
+Stop after the menu and wait for an explicit selection. Do not produce the visual plan, freeze prompts, create a manifest, or call image generation before the selection arrives. Style selection approves only the visual submode; the later plan and style-anchor gates still apply.
 
 ## Workflow
 
@@ -93,7 +119,11 @@ For technical content, create a compact semantic ledger:
 - **simplification**: visually compressed but semantically faithful;
 - **unconfirmed**: must not appear as a factual connection until the user confirms it.
 
-### 2. Choose a sparse visual rhythm
+### 2. Obtain explicit style selection
+
+Apply the Mandatory Style Selection Gate. Present the complete bilingual menu and stop until the user explicitly selects one submode. No visual-rhythm decisions or other plan work begin before this selection.
+
+### 3. Choose a sparse visual rhythm
 
 Do not make one image for every heading by default. Prefer:
 
@@ -111,9 +141,9 @@ Use this renderer rule:
 
 Never send dense technical labels, source code, or a multi-step architecture to an image model. If a cover needs an exact title, generate the background without text and add title typography with a deterministic SVG/HTML layer.
 
-### 3. Recommend the visual direction
+### 4. Establish the selected visual direction
 
-Read [references/style-catalog.md](references/style-catalog.md). Recommend one primary style and two meaningfully different alternatives unless the user has already narrowed the direction. Explain the recommendation in terms of audience, article tone, technical density, and platform—not taste alone.
+Read the selected profile in [references/style-catalog.md](references/style-catalog.md). Explain its fit in terms of audience, article tone, technical density, and platform—not taste alone. Continue only with that selected profile.
 
 Create one reusable style fingerprint containing:
 
@@ -125,9 +155,16 @@ Create one reusable style fingerprint containing:
 - negative-space rule;
 - exclusions.
 
+For wide covers, also record two separate composition contracts:
+
+- **wide-canvas occupancy**: how far the intentional foreground hierarchy should extend across the full aspect ratio;
+- **crop survival**: the semantic nucleus that must remain meaningful inside alternate crops.
+
+Do not treat a square-safe crop as a container for the complete wide composition. Read the platform-specific occupancy rules before freezing a cover prompt.
+
 Read [references/platform-profiles.md](references/platform-profiles.md) before selecting aspect ratios, title safe zones, or export formats.
 
-### 4. Produce the complete plan and manifest
+### 5. Produce the complete plan and manifest
 
 Before generating anything, present:
 
@@ -147,6 +184,7 @@ Each image-generation prompt must specify:
 - style fingerprint;
 - palette and lighting;
 - aspect ratio and platform safe zone;
+- full-width occupancy target and crop-survival contract for wide covers;
 - exclusions such as no text, no logos, no watermarks, no UI gibberish;
 - continuity cues shared with the rest of the article.
 
@@ -163,7 +201,7 @@ Create the manifest described in [references/manifest-schema.md](references/mani
 
 End the planning response with one compact approval request. Do not generate images in that response.
 
-### 5. Render through the correct capability
+### 6. Render through the correct capability
 
 For raster covers and concept illustrations, load and follow the runtime's image-generation skill. Use the approved prompt verbatim except for tool-required syntax. Record any necessary variation back into the manifest before using it.
 
@@ -177,7 +215,7 @@ When the plan contains three or more `imagegen` assets:
 
 For deterministic assets, use an available Mermaid, Graphviz, SVG, HTML, or visualization renderer. Export a platform-compatible PNG when SVG support is uncertain. Preserve the editable source next to the export when practical.
 
-### 6. Validate every artifact
+### 7. Validate every artifact
 
 Inspect each rendered artifact before integration. Mark `validation_status=passed` only if it satisfies all applicable checks:
 
@@ -186,12 +224,13 @@ Inspect each rendered artifact before integration. Mark `validation_status=passe
 - labels, arrows, numbers, and boundaries are correct;
 - no garbled text, watermark, accidental logo, or obvious generation defect;
 - crop and title-safe region work for the target platform;
+- wide-cover foreground occupancy passes the platform profile; square safety has not compressed the complete subject into a small central island;
 - body illustrations remain legible at article column width;
 - alt text explains the information or purpose, not merely the appearance.
 
 If an asset fails, regenerate or revise it and validate again. Do not insert a failed asset.
 
-### 7. Integrate non-destructively
+### 8. Integrate non-destructively
 
 Run the validator before applying the plan:
 
@@ -219,7 +258,7 @@ The integration script:
 
 The skill workflow must always use a new illustrated copy. The low-level `--allow-source-overwrite` escape hatch exists for explicit operator-controlled recovery and must never be inferred from a general request to insert images.
 
-### 8. Hand off the result
+### 9. Hand off the result
 
 Report:
 
