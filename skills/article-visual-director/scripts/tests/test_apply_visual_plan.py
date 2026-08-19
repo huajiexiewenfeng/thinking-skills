@@ -56,6 +56,9 @@ class ApplyVisualPlanTests(unittest.TestCase):
         render_dir.mkdir()
         (render_dir / "cover.png").write_bytes(b"\x89")
         (render_dir / "concept.png").write_bytes(b"\x89")
+        source_dir = self.root / "sources"
+        source_dir.mkdir()
+        (source_dir / "cover-title.svg").write_text("<svg></svg>", encoding="utf-8")
 
         self.manifest_path = self.root / "visual-manifest.json"
         self.manifest = {
@@ -120,8 +123,9 @@ class ApplyVisualPlanTests(unittest.TestCase):
         alt: str,
         caption: str | None = None,
         occurrence: int = 1,
+        platforms: list[str] | None = None,
     ) -> dict:
-        return {
+        asset = {
             "id": asset_id,
             "role": "cover" if "cover" in asset_id else "concept",
             "reader_takeaway": alt,
@@ -151,6 +155,17 @@ class ApplyVisualPlanTests(unittest.TestCase):
             "validation_status": "passed",
             "insertion_status": "pending",
         }
+        if asset["role"] == "cover":
+            asset["platforms"] = platforms or ["wechat"]
+            asset["title"] = {
+                "mode": "deterministic",
+                "text_lines": ["Runtime Demo"],
+                "editable_source_path": "sources/cover-title.svg",
+                "user_opt_out": False,
+                "wide_crop_checked": True,
+                "square_crop_checked": True,
+            }
+        return asset
 
     def _write_manifest(self) -> None:
         self.manifest_path.write_text(
@@ -382,7 +397,7 @@ class ApplyVisualPlanTests(unittest.TestCase):
         for filename in ("cover-csdn.png", "cover-wechat.png", "concept.png", "architecture.png"):
             (self.root / "renders" / filename).write_bytes(b"\x89")
         source_dir = self.root / "sources"
-        source_dir.mkdir()
+        source_dir.mkdir(exist_ok=True)
         (source_dir / "architecture.svg").write_text("<svg></svg>", encoding="utf-8")
 
         assets = [
@@ -393,6 +408,7 @@ class ApplyVisualPlanTests(unittest.TestCase):
                 artifact_path="renders/cover-csdn.png",
                 markdown_path="assets/runtime-demo/cover-csdn.png",
                 alt="CSDN cover",
+                platforms=["csdn"],
             ),
             self._asset(
                 asset_id="asset-cover-wechat",
@@ -401,6 +417,7 @@ class ApplyVisualPlanTests(unittest.TestCase):
                 artifact_path="renders/cover-wechat.png",
                 markdown_path="assets/runtime-demo/cover-wechat.png",
                 alt="WeChat cover",
+                platforms=["wechat"],
             ),
             self._asset(
                 asset_id="asset-loop",

@@ -141,6 +141,19 @@ Use this renderer rule:
 
 Never send dense technical labels, source code, or a multi-step architecture to an image model. If a cover needs an exact title, generate the background without text and add title typography with a deterministic SVG/HTML layer.
 
+### WeChat headline cover title contract
+
+For a WeChat headline cover, the **final published asset includes the approved article title by default**. A text-free final cover is allowed only when the user explicitly chooses it. Approval of a plan or prompt that happens to say `no text` is not an explicit text-free choice unless that trade-off was surfaced to the user.
+
+Keep the two render stages distinct:
+
+1. `imagegen` produces the editorial background with no text.
+2. A deterministic SVG/HTML layer adds the exact approved title and exports the final raster cover.
+
+The plan and manifest must record `title.mode`, exact `title.text_lines`, the editable title-source path, and wide/square crop checks. Use `title.mode=text-free` only with `user_opt_out=true`.
+
+When a cross-platform article has separate CSDN and WeChat cover exports, record asset-level `platforms` so the WeChat title contract applies only to the intended cover.
+
 ### 4. Establish the selected visual direction
 
 Read the selected profile in [references/style-catalog.md](references/style-catalog.md). Explain its fit in terms of audience, article tone, technical density, and platform—not taste alone. Continue only with that selected profile.
@@ -176,6 +189,8 @@ Before generating anything, present:
 6. known semantic uncertainties;
 7. proposed filenames and Markdown paths.
 
+For a WeChat headline cover, also present the final title lines and identify the deterministic SVG/HTML title source. If proposing a text-free cover, ask for that choice explicitly before approving the plan.
+
 Each image-generation prompt must specify:
 
 - communicative objective;
@@ -185,7 +200,7 @@ Each image-generation prompt must specify:
 - palette and lighting;
 - aspect ratio and platform safe zone;
 - full-width occupancy target and crop-survival contract for wide covers;
-- exclusions such as no text, no logos, no watermarks, no UI gibberish;
+- exclusions such as no logos, no watermarks, and no UI gibberish; use `no text` for an image-generated cover background, not as an implicit decision that the final WeChat cover is text-free;
 - continuity cues shared with the rest of the article.
 
 Each deterministic diagram specification must list:
@@ -224,6 +239,8 @@ Inspect each rendered artifact before integration. Mark `validation_status=passe
 - labels, arrows, numbers, and boundaries are correct;
 - no garbled text, watermark, accidental logo, or obvious generation defect;
 - crop and title-safe region work for the target platform;
+- a WeChat headline cover contains the exact approved title unless `title.mode=text-free` and `user_opt_out=true`;
+- deterministic cover-title source exists, and both full-width and central-square title crops were checked;
 - wide-cover foreground occupancy passes the platform profile; square safety has not compressed the complete subject into a small central island;
 - body illustrations remain legible at article column width;
 - alt text explains the information or purpose, not merely the appearance.

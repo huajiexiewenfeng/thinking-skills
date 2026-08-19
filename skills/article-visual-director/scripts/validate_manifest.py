@@ -30,6 +30,7 @@ VALID_INSERTION_STATES = {"pending", "inserted", "skipped"}
 VALID_INTEGRATION_STATES = {"pending", "complete", "failed"}
 VALID_VERIFICATION_STATES = {"pending", "passed", "failed"}
 VALID_OUTPUT_FORMATS = {"png", "jpg", "jpeg", "svg"}
+VALID_COVER_TITLE_MODES = {"deterministic", "text-free"}
 ROLE_RENDERER = {
     "cover": "imagegen",
     "concept": "imagegen",
@@ -623,6 +624,94 @@ def _validate_asset(
     return normalized_id, markdown_path if _is_safe_relative_path(markdown_path) else None
 
 
+def _validate_wechat_cover_title(
+    asset: dict[str, Any],
+    index: int,
+    manifest_path: Path,
+    phase: str,
+    errors: list[dict[str, str]],
+) -> None:
+    base = f"assets[{index}].title"
+    title = asset.get("title")
+    if not isinstance(title, dict):
+        _add_error(
+            errors,
+            "missing_cover_title",
+            base,
+            "WeChat cover assets require a title contract",
+        )
+        return
+
+    mode = title.get("mode")
+    if mode not in VALID_COVER_TITLE_MODES:
+        _add_error(
+            errors,
+            "invalid_cover_title_mode",
+            f"{base}.mode",
+            f"title.mode must be one of {sorted(VALID_COVER_TITLE_MODES)}",
+        )
+        return
+
+    if mode == "text-free":
+        if title.get("user_opt_out") is not True:
+            _add_error(
+                errors,
+                "text_free_without_user_opt_out",
+                f"{base}.user_opt_out",
+                "text-free WeChat covers require an explicit user opt-out",
+            )
+        return
+
+    text_lines = title.get("text_lines")
+    if (
+        not isinstance(text_lines, list)
+        or not text_lines
+        or any(not _is_nonempty_string(line) for line in text_lines)
+    ):
+        _add_error(
+            errors,
+            "missing_cover_title_text",
+            f"{base}.text_lines",
+            "deterministic WeChat cover titles require non-empty text_lines",
+        )
+
+    editable_source = title.get("editable_source_path")
+    if not _is_safe_relative_path(editable_source):
+        _add_error(
+            errors,
+            "missing_cover_title_source",
+            f"{base}.editable_source_path",
+            "deterministic WeChat cover titles require a platform-safe editable SVG or HTML source path",
+        )
+
+    if phase == "integration":
+        for field in ("wide_crop_checked", "square_crop_checked"):
+            if title.get(field) is not True:
+                _add_error(
+                    errors,
+                    "cover_title_crop_not_checked",
+                    f"{base}.{field}",
+                    "deterministic cover titles require verified wide and square crops",
+                )
+        if _is_safe_relative_path(editable_source):
+            manifest_root = manifest_path.parent.resolve()
+            absolute_source = (manifest_root / editable_source).resolve()
+            if not _resolved_is_under(absolute_source, manifest_root):
+                _add_error(
+                    errors,
+                    "cover_title_source_escape",
+                    f"{base}.editable_source_path",
+                    "resolved cover title source escapes the manifest directory",
+                )
+            elif not absolute_source.is_file():
+                _add_error(
+                    errors,
+                    "cover_title_source_missing",
+                    f"{base}.editable_source_path",
+                    f"cover title source does not exist: {editable_source}",
+                )
+
+
 def validate_manifest(
     data: dict[str, Any], manifest_path: Path, phase: str
 ) -> list[dict[str, str]]:
@@ -702,10 +791,36 @@ def validate_manifest(
     asset_ids: set[str] = set()
     markdown_paths: set[str] = set()
     raster_count = 0
+    platforms = data.get("platforms")
     for index, asset in enumerate(assets):
         asset_id, markdown_path = _validate_asset(
             asset, index, manifest_path, phase, asset_directory, errors
         )
+        effective_platforms = platforms
+        if isinstance(asset, dict) and "platforms" in asset:
+            asset_platforms = asset.get("platforms")
+            if (
+                not isinstance(asset_platforms, list)
+                or not asset_platforms
+                or any(platform not in VALID_PLATFORMS for platform in asset_platforms)
+                or len(set(asset_platforms)) != len(asset_platforms)
+            ):
+                _add_error(
+                    errors,
+                    "invalid_asset_platforms",
+                    f"assets[{index}].platforms",
+                    f"asset platforms must be a non-empty unique subset of {sorted(VALID_PLATFORMS)}",
+                )
+                effective_platforms = []
+            else:
+                effective_platforms = asset_platforms
+        if (
+            isinstance(asset, dict)
+            and asset.get("role") == "cover"
+            and isinstance(effective_platforms, list)
+            and "wechat" in effective_platforms
+        ):
+            _validate_wechat_cover_title(asset, index, manifest_path, phase, errors)
         if asset_id in asset_ids:
             _add_error(
                 errors,

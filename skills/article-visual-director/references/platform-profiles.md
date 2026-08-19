@@ -26,6 +26,8 @@ These are production defaults, not guarantees of current platform UI behavior. I
 
 - Default headline aspect ratio: approximately `2.35:1`.
 - Working export: `900 x 383`.
+- The final published cover includes the approved article title by default. A text-free cover requires an explicit user opt-out recorded in the manifest.
+- Generate the image background without text, then add exact title typography through a deterministic SVG/HTML layer. Do not treat an image model's approximate Chinese text as the final title layer.
 - Keep the essential subject and deterministic title within a central square-safe region so alternate crops remain meaningful.
 - Square-safe does not mean square-confined: preserve the semantic nucleus in the square while composing the full-width cover for the wide canvas.
 - For balanced or three-part horizontal narratives, let the intentional foreground hierarchy occupy roughly 70–90% of the canvas width. Supporting structures may extend beyond the square and crop partially in alternate thumbnails.
@@ -60,6 +62,7 @@ When one article targets both platforms:
 
 - Does the focal subject survive a thumbnail?
 - Does a central square crop retain the main idea?
+- Does the final WeChat headline cover contain the exact approved title, unless the user explicitly opted out?
 - Is exact title text rendered outside the image model?
 - Are labels readable without opening the image full-screen?
 - Are arrows distinguishable by more than color alone?
