@@ -2,7 +2,7 @@
 
 Use these profiles as art-direction systems, not as rigid presets. Select one primary profile from the article's audience, tone, and information density. Keep one fingerprint across the entire visual set.
 
-The seven named art-direction profiles below are the available visual submodes.
+The eight named art-direction profiles below are the available visual submodes.
 
 Never describe a profile as an imitation of a living artist. Convert user references into palette, geometry, material, lighting, perspective, and composition properties.
 
@@ -214,6 +214,36 @@ Prompt fragment:
 soft technical sketch on warm paper, clean ink contours, muted watercolor accents, approachable visual metaphor, disciplined hand-drawn texture, low density, generous margins, no handwritten labels
 ```
 
+## Handwritten Systems Explainer
+
+Best for:
+
+- Agent, runtime, retrieval, context-window, and tool-boundary explanations;
+- before/after comparisons and compact system trade-offs;
+- technical articles that need approachable diagrams without losing engineering precision;
+- covers and body visuals built around one operational idea plus a few short value points.
+
+Fingerprint:
+
+- warm off-white paper ground with slightly imperfect black ink contours;
+- rounded boxes, simple diamonds, direct arrows, and one- or two-panel compositions;
+- restrained orange for pressure or payload, blue for references or context, and green for durable destinations or available capacity;
+- sparse handwritten-feeling typography rendered deterministically for exact wording;
+- visible human imperfection in strokes, but disciplined alignment and generous margins.
+
+Avoid:
+
+- asking an image model to spell titles or technical labels;
+- dense architecture maps, tiny annotations, decorative doodles, or faux notebook clutter;
+- more than one primary comparison or process per visual;
+- using hand-drawn looseness to imply unconfirmed relationships.
+
+Prompt fragment:
+
+```text
+handwritten systems explainer on warm off-white paper, imperfect black ink contours, rounded boxes and direct arrows, restrained orange blue and green fills, one compact operational idea, generous margins, friendly engineering clarity, text-free background for deterministic labels, no decorative doodles or dense UI
+```
+
 ## Selection Heuristic
 
 | Article signal | Prefer |
@@ -225,5 +255,6 @@ soft technical sketch on warm paper, clean ink contours, muted watercolor accent
 | Cloud/service ecosystem | Isometric Infrastructure |
 | Thesis-led strategic essay | Cinematic Conceptual |
 | Beginner-friendly teaching | Soft Technical Sketch |
+| Agent/runtime trade-off, before/after system explanation | Handwritten Systems Explainer |
 
 When two signals conflict, prefer the lower-density profile for body illustrations. Covers may be more expressive, but they must retain the same palette and geometry cues as the body set.

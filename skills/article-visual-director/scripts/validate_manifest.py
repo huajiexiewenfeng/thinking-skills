@@ -11,7 +11,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 
-VALID_PLATFORMS = {"csdn", "wechat"}
+VALID_PLATFORMS = {"csdn", "wechat", "x-article"}
 VALID_RENDERERS = {"imagegen", "deterministic-diagram", "deterministic-chart"}
 VALID_ROLES = {
     "cover",
@@ -624,22 +624,25 @@ def _validate_asset(
     return normalized_id, markdown_path if _is_safe_relative_path(markdown_path) else None
 
 
-def _validate_wechat_cover_title(
+def _validate_cover_title(
     asset: dict[str, Any],
     index: int,
     manifest_path: Path,
     phase: str,
+    require_title: bool,
+    require_square_crop: bool,
     errors: list[dict[str, str]],
 ) -> None:
     base = f"assets[{index}].title"
     title = asset.get("title")
     if not isinstance(title, dict):
-        _add_error(
-            errors,
-            "missing_cover_title",
-            base,
-            "WeChat cover assets require a title contract",
-        )
+        if require_title:
+            _add_error(
+                errors,
+                "missing_cover_title",
+                base,
+                "WeChat cover assets require a title contract",
+            )
         return
 
     mode = title.get("mode")
@@ -658,7 +661,7 @@ def _validate_wechat_cover_title(
                 errors,
                 "text_free_without_user_opt_out",
                 f"{base}.user_opt_out",
-                "text-free WeChat covers require an explicit user opt-out",
+                "a text-free cover title contract requires an explicit user opt-out",
             )
         return
 
@@ -672,7 +675,20 @@ def _validate_wechat_cover_title(
             errors,
             "missing_cover_title_text",
             f"{base}.text_lines",
-            "deterministic WeChat cover titles require non-empty text_lines",
+            "deterministic cover titles require non-empty text_lines",
+        )
+
+    supporting_points = title.get("supporting_points")
+    if supporting_points is not None and (
+        not isinstance(supporting_points, list)
+        or not 1 <= len(supporting_points) <= 4
+        or any(not _is_nonempty_string(point) for point in supporting_points)
+    ):
+        _add_error(
+            errors,
+            "invalid_cover_supporting_points",
+            f"{base}.supporting_points",
+            "supporting_points must contain one to four non-empty strings when present",
         )
 
     editable_source = title.get("editable_source_path")
@@ -681,20 +697,53 @@ def _validate_wechat_cover_title(
             errors,
             "missing_cover_title_source",
             f"{base}.editable_source_path",
-            "deterministic WeChat cover titles require a platform-safe editable SVG or HTML source path",
+            "deterministic cover titles require a platform-safe editable SVG or HTML source path",
+        )
+    elif Path(editable_source).suffix.lower() not in {".svg", ".html", ".htm"}:
+        _add_error(
+            errors,
+            "invalid_cover_title_source_format",
+            f"{base}.editable_source_path",
+            "cover title source must be SVG or HTML",
+        )
+
+    background_artifact = title.get("background_artifact_path")
+    if not _is_safe_relative_path(background_artifact):
+        _add_error(
+            errors,
+            "missing_cover_background",
+            f"{base}.background_artifact_path",
+            "deterministic cover titles require a platform-safe text-free background artifact path",
+        )
+    elif Path(background_artifact).suffix.lower() not in {".png", ".jpg", ".jpeg"}:
+        _add_error(
+            errors,
+            "invalid_cover_background_format",
+            f"{base}.background_artifact_path",
+            "cover background artifact must be PNG or JPEG",
+        )
+    elif background_artifact == asset.get("artifact_path"):
+        _add_error(
+            errors,
+            "cover_background_final_collision",
+            f"{base}.background_artifact_path",
+            "text-free cover background must differ from the final composed artifact",
         )
 
     if phase == "integration":
-        for field in ("wide_crop_checked", "square_crop_checked"):
+        crop_fields = ["wide_crop_checked"]
+        if require_square_crop:
+            crop_fields.append("square_crop_checked")
+        for field in crop_fields:
             if title.get(field) is not True:
                 _add_error(
                     errors,
                     "cover_title_crop_not_checked",
                     f"{base}.{field}",
-                    "deterministic cover titles require verified wide and square crops",
+                    "deterministic cover titles require the platform's verified crop checks",
                 )
+        manifest_root = manifest_path.parent.resolve()
         if _is_safe_relative_path(editable_source):
-            manifest_root = manifest_path.parent.resolve()
             absolute_source = (manifest_root / editable_source).resolve()
             if not _resolved_is_under(absolute_source, manifest_root):
                 _add_error(
@@ -709,6 +758,22 @@ def _validate_wechat_cover_title(
                     "cover_title_source_missing",
                     f"{base}.editable_source_path",
                     f"cover title source does not exist: {editable_source}",
+                )
+        if _is_safe_relative_path(background_artifact):
+            absolute_background = (manifest_root / background_artifact).resolve()
+            if not _resolved_is_under(absolute_background, manifest_root):
+                _add_error(
+                    errors,
+                    "cover_background_escape",
+                    f"{base}.background_artifact_path",
+                    "resolved cover background escapes the manifest directory",
+                )
+            elif not absolute_background.is_file():
+                _add_error(
+                    errors,
+                    "cover_background_missing",
+                    f"{base}.background_artifact_path",
+                    f"cover background does not exist: {background_artifact}",
                 )
 
 
@@ -814,13 +879,21 @@ def validate_manifest(
                 effective_platforms = []
             else:
                 effective_platforms = asset_platforms
-        if (
-            isinstance(asset, dict)
-            and asset.get("role") == "cover"
-            and isinstance(effective_platforms, list)
-            and "wechat" in effective_platforms
-        ):
-            _validate_wechat_cover_title(asset, index, manifest_path, phase, errors)
+        if isinstance(asset, dict) and asset.get("role") == "cover":
+            has_wechat = (
+                isinstance(effective_platforms, list)
+                and "wechat" in effective_platforms
+            )
+            if has_wechat or "title" in asset:
+                _validate_cover_title(
+                    asset,
+                    index,
+                    manifest_path,
+                    phase,
+                    require_title=has_wechat,
+                    require_square_crop=has_wechat,
+                    errors=errors,
+                )
         if asset_id in asset_ids:
             _add_error(
                 errors,

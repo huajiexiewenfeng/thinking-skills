@@ -55,6 +55,7 @@ class ApplyVisualPlanTests(unittest.TestCase):
         render_dir = self.root / "renders"
         render_dir.mkdir()
         (render_dir / "cover.png").write_bytes(b"\x89")
+        (render_dir / "cover-background.png").write_bytes(b"\x89")
         (render_dir / "concept.png").write_bytes(b"\x89")
         source_dir = self.root / "sources"
         source_dir.mkdir()
@@ -161,6 +162,7 @@ class ApplyVisualPlanTests(unittest.TestCase):
                 "mode": "deterministic",
                 "text_lines": ["Runtime Demo"],
                 "editable_source_path": "sources/cover-title.svg",
+                "background_artifact_path": "renders/cover-background.png",
                 "user_opt_out": False,
                 "wide_crop_checked": True,
                 "square_crop_checked": True,
