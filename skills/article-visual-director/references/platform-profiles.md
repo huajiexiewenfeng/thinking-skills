@@ -26,6 +26,8 @@ These are production defaults, not guarantees of current platform UI behavior. I
 
 - Default headline aspect ratio: approximately `2.35:1`.
 - Working export: `900 x 383`.
+- The final published cover includes the approved article title by default. A text-free cover requires an explicit user opt-out recorded in the manifest.
+- Generate the image background without text, then add exact title typography through a deterministic SVG/HTML layer. Do not treat an image model's approximate Chinese text as the final title layer.
 - Keep the essential subject and deterministic title within a central square-safe region so alternate crops remain meaningful.
 - Square-safe does not mean square-confined: preserve the semantic nucleus in the square while composing the full-width cover for the wide canvas.
 - For balanced or three-part horizontal narratives, let the intentional foreground hierarchy occupy roughly 70–90% of the canvas width. Supporting structures may extend beyond the square and crop partially in alternate thumbnails.
@@ -47,12 +49,31 @@ Wide-cover occupancy acceptance:
 - Prefer PNG for diagrams and JPEG/PNG for illustration according to texture and file size.
 - Avoid small captions baked into images; place explanatory text in Markdown whenever possible.
 
+## X Articles
+
+These are working production defaults rather than official fixed dimensions; verify the current X editor when exact crop behavior matters.
+
+### Cover
+
+- Default working aspect ratio: `16:9`.
+- Working export: `1600 x 900` PNG or high-quality JPEG.
+- A title inside the image is optional because the article UI also presents the article title. Add deterministic cover text when the image must communicate the thesis while detached from the article card.
+- When using cover text, generate a text-free background first, then add the exact title and up to four short supporting points through an editable SVG/HTML layer.
+- Keep the title, supporting points, and semantic nucleus inside the central 80% width and 75% height. Verify the full-width crop and thumbnail readability before integration.
+- Prefer one thesis plus two or three value points; do not turn the cover into an abstract, table of contents, or API surface.
+
+### Body visuals
+
+- Prefer `16:9` or `8:5` for visuals expected to circulate independently in the feed.
+- Use large labels, strong grouping, and useful alt text; assume readers may first see the visual outside the article body.
+- Keep deterministic diagrams exact and rasterize to PNG if SVG handling is uncertain.
+
 ## Cross-Platform Plan
 
 When one article targets both platforms:
 
 1. Create one master visual concept and style fingerprint.
-2. Produce separate cover crops when the wide WeChat crop would weaken the CSDN thumbnail or vice versa.
+2. Produce separate cover crops when WeChat's wide/square requirements would weaken a CSDN or X thumbnail, or when X needs a self-contained title layer.
 3. Keep body visuals shared where their legibility survives both editors.
 4. Record platform-specific exports as separate manifest assets only when the files actually differ.
 
@@ -60,7 +81,9 @@ When one article targets both platforms:
 
 - Does the focal subject survive a thumbnail?
 - Does a central square crop retain the main idea?
+- Does the final WeChat headline cover contain the exact approved title, unless the user explicitly opted out?
 - Is exact title text rendered outside the image model?
+- If a CSDN or X cover includes supporting points, are there no more than four and are they readable at thumbnail size?
 - Are labels readable without opening the image full-screen?
 - Are arrows distinguishable by more than color alone?
 - Is there sufficient empty space around the visual hierarchy?
@@ -73,6 +96,7 @@ Use stable, ordered, lowercase filenames:
 ```text
 01-cover-csdn.png
 01-cover-wechat.png
+01-cover-x-article.png
 02-concept-runtime-loop.png
 03-diagram-approval-flow.png
 04-architecture-policy-boundaries.png

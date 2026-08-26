@@ -23,7 +23,7 @@ The scripts use JSON and the Python standard library only.
 | `manifest_version` | integer | Must be `1` |
 | `source` | object | Approved source identity and byte format |
 | `article_slug` | string | Lowercase ASCII kebab-case |
-| `platforms` | array | One or both of `csdn`, `wechat` |
+| `platforms` | array | One or more of `csdn`, `wechat`, `x-article` |
 | `outputs` | object | Illustrated Markdown path and published asset directory |
 | `style` | object | Approved profile and reusable fingerprint |
 | `approvals` | object | Plan and style-anchor gates |
@@ -49,6 +49,7 @@ Paths reject absolute paths, `..`, control characters, colons, trailing dots/spa
 |---|---|
 | `id` | Stable lowercase kebab-case ID |
 | `role` | `cover`, `concept`, `process`, `architecture`, `comparison`, `timeline`, or `chart` |
+| `platforms` | Optional non-empty subset of `csdn`, `wechat`, and `x-article`; when omitted, inherits the top-level platforms |
 | `reader_takeaway` | What the reader should understand or remember |
 | `visual_purpose` | Why this visual earns its place in the article |
 | `renderer` | `imagegen`, `deterministic-diagram`, or `deterministic-chart` |
@@ -56,6 +57,7 @@ Paths reject absolute paths, `..`, control characters, colons, trailing dots/spa
 | `dimensions` | Positive integer `width` and `height` |
 | `aspect_ratio` | Numeric `width:height`, for example `16:9` or `2.35:1` |
 | `safe_area` | Explicit crop and margin rule |
+| `title` | Required for a WeChat `cover`, optional for CSDN/X covers; records deterministic text delivery or an explicit text-free choice |
 | `anchor` | Exact heading, one-based occurrence, placement, and section hash |
 | `prompt` | Required for `imagegen`; freeze after approval |
 | `diagram_spec` | Required for deterministic assets |
@@ -79,6 +81,49 @@ A deterministic `diagram_spec` includes `nodes`, `edges`, and `blocked_unconfirm
 
 `anchor.placement` is `after_heading` or `section_end`. The latter inserts before the next heading of the same or higher level, or at end of file.
 
+### Cover Title Object
+
+Every asset with `role=cover` whose effective platforms contain `wechat` must include `title`. CSDN and X Article covers may omit it. When any cover includes an exact title or supporting value points, it uses this same deterministic contract. Effective platforms come from `asset.platforms` when present, otherwise from the top-level `platforms`.
+
+Deterministic title delivery is the default:
+
+```json
+{
+  "mode": "deterministic",
+  "text_lines": ["From Skill Memory", "to Shared Agent Knowledge"],
+  "supporting_points": ["Deterministic retrieval", "Shared access", "Auditable writes"],
+  "editable_source_path": "visual-sources/01-cover-title.svg",
+  "background_artifact_path": "visual-renders/01-cover-background.png",
+  "user_opt_out": false,
+  "wide_crop_checked": false,
+  "square_crop_checked": false
+}
+```
+
+- `text_lines` must contain the exact approved title split into non-empty display lines.
+- `supporting_points` is optional. When present, it contains one to four approved, non-empty strings; keep them short enough to remain readable at thumbnail size.
+- `editable_source_path` must be a safe relative SVG or HTML path. The editable source must exist before integration.
+- `background_artifact_path` must be a safe relative PNG or JPEG path for the text-free image-generation result. It must exist before integration and must differ from the final `artifact_path`.
+- `wide_crop_checked` remains `false` during planning and must be `true` before integration for every deterministic cover. `square_crop_checked` must additionally be `true` for WeChat.
+- The image-generation prompt may request a text-free background; the final published artifact still includes the deterministic title layer.
+
+A text-free final cover is allowed only after an explicit user choice:
+
+```json
+{
+  "mode": "text-free",
+  "text_lines": [],
+  "supporting_points": [],
+  "editable_source_path": null,
+  "background_artifact_path": null,
+  "user_opt_out": true,
+  "wide_crop_checked": false,
+  "square_crop_checked": false
+}
+```
+
+Plan approval alone does not count as a text-free opt-out when the choice was not surfaced explicitly.
+
 `anchor.context_sha256` hashes the matched heading through the end of that section. Normalize newlines to LF and remove trailing newlines first. Frontmatter and fenced-code headings do not count.
 
 Generate a context hash:
@@ -94,6 +139,7 @@ python -c "from pathlib import Path; import sys; sys.path.insert(0, 'skills/arti
 - Fewer than three `imagegen` assets may use `style_anchor=not_required`.
 - Three or more `imagegen` assets require `style_anchor=approved` for integration.
 - Generation does not imply validation. Inspect the artifact before `validation_status=passed`.
+- WeChat cover integration requires a valid `title` contract. Any deterministic cover text requires an existing text-free background, an existing editable source, and a completed wide-crop check; WeChat additionally requires the square-crop check. A declared text-free title contract requires `user_opt_out=true`.
 - Only successful Markdown insertion sets every asset to `inserted`, `integration.status=complete`, and `integration.verification_status=passed`.
 
 ## Complete Single-Asset Example
@@ -108,7 +154,7 @@ python -c "from pathlib import Path; import sys; sys.path.insert(0, 'skills/arti
     "line_ending": "lf"
   },
   "article_slug": "agent-runtime",
-  "platforms": ["csdn", "wechat"],
+  "platforms": ["csdn", "wechat", "x-article"],
   "outputs": {
     "illustrated_markdown": "article-illustrated.md",
     "actual_illustrated_markdown": null,

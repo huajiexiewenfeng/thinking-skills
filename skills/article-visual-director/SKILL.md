@@ -60,7 +60,7 @@ For a standalone technical diagram unrelated to an article, use the environment'
 
 ```text
 inspect article
-  -> present all seven bilingual visual submodes
+  -> present all eight bilingual visual submodes
   -> wait for explicit style selection
   -> propose complete visual plan
   -> wait for plan approval
@@ -84,16 +84,17 @@ Every invocation that will generate article images must present this complete me
 5. **Isometric Infrastructure（等距基础设施）** — 等距模块化空间，适合云服务、部署体系和数据管线。
 6. **Cinematic Conceptual（电影感概念视觉）** — 单一强隐喻配合克制的戏剧光影，适合战略与哲学议题。
 7. **Soft Technical Sketch（柔和技术手绘）** — 纸张、墨线和淡彩质感，适合教程、入门内容和亲和解释。
+8. **Handwritten Systems Explainer（手写系统解释图）** — 米白纸面、手绘框线和少量高亮色，适合解释 Agent、Runtime、检索边界与前后对比。
 
 Use this response shape:
 
 ```text
 请选择本次配图风格（回复序号、英文名或中文名均可）：
-[the complete seven-item menu]
+[the complete eight-item menu]
 推荐：N. English Name（中文名）— one sentence tied to this article.
 ```
 
-After inspecting an available article, mark one item as the recommendation but still show all seven. If the article is not yet available, show the menu without a recommendation. If the user named a style in the invoking message, show all seven, mark that item as their current choice, and ask them to confirm it or select another. Do not infer approval from a past invocation or a previous article.
+After inspecting an available article, mark one item as the recommendation but still show all eight. If the article is not yet available, show the menu without a recommendation. If the user named a style in the invoking message, show all eight, mark that item as their current choice, and ask them to confirm it or select another. Do not infer approval from a past invocation or a previous article.
 
 Stop after the menu and wait for an explicit selection. Do not produce the visual plan, freeze prompts, create a manifest, or call image generation before the selection arrives. Style selection approves only the visual submode; the later plan and style-anchor gates still apply.
 
@@ -108,7 +109,7 @@ Read the Markdown and record:
 - LF versus CRLF;
 - frontmatter boundaries;
 - heading hierarchy, existing images, tables, and fenced code blocks;
-- target platform: `csdn`, `wechat`, or both;
+- target platform: `csdn`, `wechat`, `x-article`, or a combination;
 - article thesis, audience, tone, and the few sections where a visual materially improves comprehension.
 
 If the source file or target platform is missing and cannot be discovered, ask one short question. Otherwise recommend a default and continue.
@@ -140,6 +141,19 @@ Use this renderer rule:
 | Quantitative relationship backed by data | `deterministic-chart` | Values and scales must be reproducible |
 
 Never send dense technical labels, source code, or a multi-step architecture to an image model. If a cover needs an exact title, generate the background without text and add title typography with a deterministic SVG/HTML layer.
+
+### Cover title and value-point contract
+
+For a WeChat headline cover, the **final published asset includes the approved article title by default**. A text-free final cover is allowed only when the user explicitly chooses it. CSDN and X Article covers may omit a title contract; when they include exact title text or core value points, use the same deterministic two-stage delivery contract.
+
+Keep the two render stages distinct:
+
+1. `imagegen` produces the editorial background with no text.
+2. A deterministic SVG/HTML layer adds the exact approved title plus up to four short supporting points and exports the final raster cover.
+
+For deterministic cover text, the plan and manifest record `title.mode`, exact `title.text_lines`, optional `title.supporting_points`, the text-free `title.background_artifact_path`, the editable `title.editable_source_path`, and crop checks. Wide-crop verification is required for every deterministic cover; square-crop verification is additionally required for WeChat. Use `title.mode=text-free` only with `user_opt_out=true`.
+
+When a cross-platform article has separate cover exports, record asset-level `platforms` so each export receives only its applicable crop and title requirements.
 
 ### 4. Establish the selected visual direction
 
@@ -176,6 +190,8 @@ Before generating anything, present:
 6. known semantic uncertainties;
 7. proposed filenames and Markdown paths.
 
+For any cover with deterministic text, also present the final title lines, optional supporting points, text-free background path, and deterministic SVG/HTML source. For a WeChat cover that would be text-free, ask for that choice explicitly before approving the plan.
+
 Each image-generation prompt must specify:
 
 - communicative objective;
@@ -185,7 +201,7 @@ Each image-generation prompt must specify:
 - palette and lighting;
 - aspect ratio and platform safe zone;
 - full-width occupancy target and crop-survival contract for wide covers;
-- exclusions such as no text, no logos, no watermarks, no UI gibberish;
+- exclusions such as no logos, no watermarks, and no UI gibberish; use `no text` for an image-generated cover background, then deliver approved cover wording through the deterministic layer;
 - continuity cues shared with the rest of the article.
 
 Each deterministic diagram specification must list:
@@ -224,6 +240,9 @@ Inspect each rendered artifact before integration. Mark `validation_status=passe
 - labels, arrows, numbers, and boundaries are correct;
 - no garbled text, watermark, accidental logo, or obvious generation defect;
 - crop and title-safe region work for the target platform;
+- a WeChat headline cover contains the exact approved title unless `title.mode=text-free` and `user_opt_out=true`;
+- deterministic cover text matches the approved title and supporting points; its text-free background and editable title source both exist;
+- every deterministic cover passed a full-width crop check, and WeChat covers also passed a central-square crop check;
 - wide-cover foreground occupancy passes the platform profile; square safety has not compressed the complete subject into a small central island;
 - body illustrations remain legible at article column width;
 - alt text explains the information or purpose, not merely the appearance.

@@ -72,6 +72,25 @@ def make_manifest() -> dict:
     }
 
 
+def make_wechat_cover_manifest() -> dict:
+    data = make_manifest()
+    asset = data["assets"][0]
+    asset["role"] = "cover"
+    asset["dimensions"] = {"width": 900, "height": 383}
+    asset["aspect_ratio"] = "2.35:1"
+    asset["title"] = {
+        "mode": "deterministic",
+        "text_lines": ["Agent Runtime", "让 AI 长期可靠地工作"],
+        "supporting_points": ["Identity", "Retrieval", "Authority"],
+        "editable_source_path": "visual-sources/01-cover-title.svg",
+        "background_artifact_path": "visual-renders/01-cover-background.png",
+        "user_opt_out": False,
+        "wide_crop_checked": False,
+        "square_crop_checked": False,
+    }
+    return data
+
+
 def matching_error(errors: list[dict], code: str) -> dict:
     return next(error for error in errors if error["code"] == code)
 
@@ -192,6 +211,214 @@ class ValidateManifestTests(unittest.TestCase):
 
         error = matching_error(errors, "missing_editable_source")
         self.assertEqual("assets[0].editable_source_path", error["path"])
+
+    def test_wechat_cover_requires_title_contract(self) -> None:
+        data = make_wechat_cover_manifest()
+        del data["assets"][0]["title"]
+
+        errors = validate_manifest(data, self.manifest_path, "plan")
+
+        error = matching_error(errors, "missing_cover_title")
+        self.assertEqual("assets[0].title", error["path"])
+
+    def test_deterministic_cover_title_requires_text_lines(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["assets"][0]["title"]["text_lines"] = []
+
+        errors = validate_manifest(data, self.manifest_path, "plan")
+
+        error = matching_error(errors, "missing_cover_title_text")
+        self.assertEqual("assets[0].title.text_lines", error["path"])
+
+    def test_text_free_wechat_cover_requires_explicit_user_opt_out(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["assets"][0]["title"] = {
+            "mode": "text-free",
+            "text_lines": [],
+            "user_opt_out": False,
+            "wide_crop_checked": False,
+            "square_crop_checked": False,
+        }
+
+        errors = validate_manifest(data, self.manifest_path, "plan")
+
+        error = matching_error(errors, "text_free_without_user_opt_out")
+        self.assertEqual("assets[0].title.user_opt_out", error["path"])
+
+    def test_deterministic_cover_title_requires_crop_checks_for_integration(
+        self,
+    ) -> None:
+        data = make_wechat_cover_manifest()
+        artifact = self.root / data["assets"][0]["artifact_path"]
+        artifact.parent.mkdir(parents=True)
+        artifact.write_bytes(b"image")
+
+        errors = validate_manifest(data, self.manifest_path, "integration")
+
+        self.assertEqual(
+            "assets[0].title.wide_crop_checked",
+            matching_error(errors, "cover_title_crop_not_checked")["path"],
+        )
+        crop_errors = [
+            error for error in errors if error["code"] == "cover_title_crop_not_checked"
+        ]
+        self.assertEqual(
+            {
+                "assets[0].title.wide_crop_checked",
+                "assets[0].title.square_crop_checked",
+            },
+            {error["path"] for error in crop_errors},
+        )
+
+    def test_deterministic_cover_title_requires_editable_source(self) -> None:
+        data = make_wechat_cover_manifest()
+        del data["assets"][0]["title"]["editable_source_path"]
+
+        errors = validate_manifest(data, self.manifest_path, "plan")
+
+        error = matching_error(errors, "missing_cover_title_source")
+        self.assertEqual("assets[0].title.editable_source_path", error["path"])
+
+    def test_integration_requires_existing_cover_title_source(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["assets"][0]["title"]["wide_crop_checked"] = True
+        data["assets"][0]["title"]["square_crop_checked"] = True
+        artifact = self.root / data["assets"][0]["artifact_path"]
+        artifact.parent.mkdir(parents=True)
+        artifact.write_bytes(b"image")
+
+        errors = validate_manifest(data, self.manifest_path, "integration")
+
+        error = matching_error(errors, "cover_title_source_missing")
+        self.assertEqual("assets[0].title.editable_source_path", error["path"])
+
+    def test_valid_deterministic_wechat_cover_passes_plan(self) -> None:
+        data = make_wechat_cover_manifest()
+
+        self.assertEqual([], validate_manifest(data, self.manifest_path, "plan"))
+
+    def test_explicit_text_free_wechat_cover_passes_plan(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["assets"][0]["title"] = {
+            "mode": "text-free",
+            "text_lines": [],
+            "editable_source_path": None,
+            "user_opt_out": True,
+            "wide_crop_checked": False,
+            "square_crop_checked": False,
+        }
+
+        self.assertEqual([], validate_manifest(data, self.manifest_path, "plan"))
+
+    def test_csdn_only_cover_does_not_require_wechat_title_contract(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["platforms"] = ["csdn"]
+        del data["assets"][0]["title"]
+
+        self.assertEqual([], validate_manifest(data, self.manifest_path, "plan"))
+
+    def test_asset_platforms_scope_wechat_cover_title_contract(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["assets"][0]["platforms"] = ["csdn"]
+        del data["assets"][0]["title"]
+
+        self.assertEqual([], validate_manifest(data, self.manifest_path, "plan"))
+
+    def test_x_article_is_a_supported_platform(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["platforms"] = ["x-article"]
+
+        self.assertEqual([], validate_manifest(data, self.manifest_path, "plan"))
+
+    def test_x_article_cover_may_omit_title_contract(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["platforms"] = ["x-article"]
+        del data["assets"][0]["title"]
+
+        self.assertEqual([], validate_manifest(data, self.manifest_path, "plan"))
+
+    def test_x_article_deterministic_title_requires_background_artifact(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["platforms"] = ["x-article"]
+        del data["assets"][0]["title"]["background_artifact_path"]
+
+        errors = validate_manifest(data, self.manifest_path, "plan")
+
+        error = matching_error(errors, "missing_cover_background")
+        self.assertEqual(
+            "assets[0].title.background_artifact_path", error["path"]
+        )
+
+    def test_cover_supporting_points_must_be_one_to_four_nonempty_strings(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["platforms"] = ["x-article"]
+        data["assets"][0]["title"]["supporting_points"] = ["Identity", ""]
+
+        errors = validate_manifest(data, self.manifest_path, "plan")
+
+        error = matching_error(errors, "invalid_cover_supporting_points")
+        self.assertEqual("assets[0].title.supporting_points", error["path"])
+
+    def test_cover_background_must_differ_from_final_artifact(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["platforms"] = ["x-article"]
+        data["assets"][0]["title"]["background_artifact_path"] = data["assets"][0][
+            "artifact_path"
+        ]
+
+        errors = validate_manifest(data, self.manifest_path, "plan")
+
+        error = matching_error(errors, "cover_background_final_collision")
+        self.assertEqual(
+            "assets[0].title.background_artifact_path", error["path"]
+        )
+
+    def test_x_article_integration_requires_wide_but_not_square_crop_check(
+        self,
+    ) -> None:
+        data = make_wechat_cover_manifest()
+        data["platforms"] = ["x-article"]
+        data["assets"][0]["title"]["square_crop_checked"] = False
+        for relative_path in (
+            data["assets"][0]["artifact_path"],
+            data["assets"][0]["title"]["editable_source_path"],
+            data["assets"][0]["title"]["background_artifact_path"],
+        ):
+            path = self.root / relative_path
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"verified")
+
+        errors = validate_manifest(data, self.manifest_path, "integration")
+
+        crop_errors = [
+            error for error in errors if error["code"] == "cover_title_crop_not_checked"
+        ]
+        self.assertEqual(
+            ["assets[0].title.wide_crop_checked"],
+            [error["path"] for error in crop_errors],
+        )
+
+        data["assets"][0]["title"]["wide_crop_checked"] = True
+        self.assertEqual([], validate_manifest(data, self.manifest_path, "integration"))
+
+    def test_integration_requires_existing_cover_background(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["platforms"] = ["x-article"]
+        data["assets"][0]["title"]["wide_crop_checked"] = True
+        for relative_path in (
+            data["assets"][0]["artifact_path"],
+            data["assets"][0]["title"]["editable_source_path"],
+        ):
+            path = self.root / relative_path
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"verified")
+
+        errors = validate_manifest(data, self.manifest_path, "integration")
+
+        error = matching_error(errors, "cover_background_missing")
+        self.assertEqual(
+            "assets[0].title.background_artifact_path", error["path"]
+        )
 
 
 if __name__ == "__main__":
