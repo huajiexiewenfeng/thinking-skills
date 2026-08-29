@@ -1,0 +1,76 @@
+{
+  "profile_id": "soft-technical-sketch",
+  "style_pack_version": 3,
+  "roles": {
+    "cover": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one approachable teaching metaphor across roughly sixty-five to seventy-eight percent of the wide canvas",
+        "preserve a generous deterministic title-safe zone and calm warm-paper margins",
+        "preserve fine graphite-brown contour muted blue and sage washes and at most one ochre emphasis"
+      ],
+      "may_vary": [
+        "the metaphor may use notebooks bridges containers paths shelves tools or simple craft mechanisms",
+        "a small human figure may appear only when scale or learning action requires it",
+        "the camera may vary between front and gentle shallow-oblique while proportions remain consistent"
+      ],
+      "must_not_include": [
+        "do not add readable generated labels dense notes formulas black tabs bold frames or thick arrows",
+        "do not introduce high saturation corporate cards childish doodles mascots by default or notebook clutter",
+        "do not allow Style 8 annotation density or systems-whiteboard structure to replace the quiet teaching metaphor"
+      ],
+      "acceptance_checks": [
+        "the metaphor is understandable at thumbnail size without text",
+        "the warm paper title-safe zone remains useful and the complete picture retains balanced proportions",
+        "the result feels calm approachable and teachable rather than dense playful or corporate"
+      ]
+    },
+    "concept": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one mental model expressed through one to three familiar objects and one gentle relation",
+        "preserve low density generous margins consistent proportions and spatial explanation instead of boxes",
+        "preserve warm paper fine contour translucent muted washes and one optional ochre emphasis"
+      ],
+      "may_vary": [
+        "the relation may use containment crossing sorting balancing stacking or guided movement",
+        "object scale and shallow overlap may vary while remaining physically plausible",
+        "one small figure may clarify learning action but never becomes a mascot"
+      ],
+      "must_not_include": [
+        "do not turn the mental model into a card row dense architecture or annotation board",
+        "do not add black tabs thick arrows high saturation faux notebook clutter or decorative doodles",
+        "do not invent technical stages labels numbers or unsupported relationships"
+      ],
+      "acceptance_checks": [
+        "one mental model and one gentle relation dominate the concept illustration",
+        "one to three familiar objects remain readable and consistently proportioned",
+        "watercolor stays translucent and subordinate to fine soft contours"
+      ]
+    },
+    "diagram": {
+      "stability": "strict",
+      "must_preserve": [
+        "preserve the frozen graph exactly including every node edge direction group and blocked relationship",
+        "preserve fine two-pixel slightly imperfect graphite-brown strokes and a strict underlying twenty-four-pixel grid",
+        "preserve open captions translucent low-opacity concept washes and generous warm-paper margins"
+      ],
+      "may_vary": [
+        "node count labels and group sizes may vary only as the frozen graph requires",
+        "muted blue sage and one supported ochre emphasis may map to article semantics",
+        "simple node silhouettes may vary while edge direction and spacing remain strict"
+      ],
+      "must_not_include": [
+        "no people faces hands characters instructors narrators mascots or stock imagery",
+        "no black tabs bold frames thick direct arrows high saturation or dense handwritten annotation",
+        "do not invent omit reverse merge or reroute any frozen semantic relationship",
+        "do not copy golden labels numbers nodes topology boundaries or example story"
+      ],
+      "acceptance_checks": [
+        "every visible node edge direction boundary and emphasis matches the frozen graph",
+        "the diagram remains human-free calm fine-lined and free of Style 8 black tabs or annotation density",
+        "the deterministic diagram looks related to the watercolor series without sacrificing topology"
+      ]
+    }
+  }
+}

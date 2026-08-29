@@ -1,0 +1,192 @@
+{
+  "probe_suite_version": 1,
+  "profile_id": "soft-technical-sketch",
+  "style_pack_version": 3,
+  "purpose": "Cross-topic stability and Style 7 versus Style 8 discrimination without copying golden example content.",
+  "probes": [
+    {
+      "id": "style7-cover-protected-focus",
+      "request": {
+        "profile_id": "soft-technical-sketch",
+        "asset_role": "cover",
+        "objective": "Show focused work as one open page kept calm beneath a simple umbrella while a few interruption droplets remain outside the protected area.",
+        "semantics": {
+          "confirmed": [
+            "Reducing simultaneous interruptions can protect a period of focused work.",
+            "The umbrella and page form an approachable metaphor rather than a literal productivity mechanism."
+          ],
+          "simplifications": [
+            "Use one small open page beneath one gently tilted umbrella as the complete central metaphor.",
+            "Use only a few muted blue interruption droplets outside the umbrella and one restrained ochre bookmark on the protected page."
+          ],
+          "blocked": [
+            "Do not imply guaranteed productivity, an optimal interruption count, or a universal focus method.",
+            "Do not copy the golden cover loom, thread, woven ribbon, transformation topology, or object positions."
+          ]
+        },
+        "composition": {
+          "structure": "one complete low-density warm-paper teaching picture with an umbrella sheltering an open page, occupying roughly seventy percent with a quiet title-safe band",
+          "hierarchy": "fine graphite-brown contours define the two familiar objects; translucent dusty blue carries interruptions, sage supports the protected area, and one ochre bookmark provides emphasis",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title overlay",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the coherent umbrella-page metaphor occupies roughly seventy percent with generous calm margins",
+          "crop_rules": "umbrella, protected page, bookmark, and representative outside droplets remain legible in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": ["soft-technical-sketch-cover-v1"],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "warm watercolor paper, fine soft graphite-brown contours, translucent dusty blue and sage washes, and one restrained ochre emphasis",
+        "one complete approachable physical metaphor, consistent object proportions, low density, and generous margins"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"],
+      "acceptance_checks": [
+        "The sheltering relationship reads clearly without text and the picture has enough subject matter to feel complete.",
+        "The result remains a quiet watercolor teaching sketch rather than a dense annotated systems whiteboard."
+      ]
+    },
+    {
+      "id": "style7-concept-evidence-revision",
+      "request": {
+        "profile_id": "soft-technical-sketch",
+        "asset_role": "concept",
+        "objective": "Explain one relation: a provisional route marker may move when one new piece of evidence changes which path is better supported.",
+        "semantics": {
+          "confirmed": [
+            "A conclusion may be revised when relevant new evidence changes what is supported.",
+            "Revision is represented as a gentle spatial relation and does not claim that every new input should change the conclusion."
+          ],
+          "simplifications": [
+            "Use one shallow forked track, one small movable marker, and one distinct ochre evidence token near the newly supported branch.",
+            "Use muted blue and sage washes to distinguish the provisional and revised branches without labels or arrows."
+          ],
+          "blocked": [
+            "Do not invent confidence scores, probability values, evidence weights, or a guarantee of correctness.",
+            "Do not copy the golden concept tray, inclusion boundary, three-inside-one-outside count, or object arrangement."
+          ]
+        },
+        "composition": {
+          "structure": "one gentle low-density relation built from a forked wooden track, one marker, and one evidence token on fully opaque warm paper",
+          "hierarchy": "fine contour makes the fork and marker readable; translucent muted washes distinguish the paths; the restrained ochre token is the only strong emphasis",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "label-free objects with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete fork-marker-evidence relation occupies roughly sixty-eight percent with open silhouettes and balanced margins",
+          "crop_rules": "both branches, the marker, and the evidence token remain in the central safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": ["soft-technical-sketch-concept-v1"],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "one gentle causal relation through one to three familiar object families, fine contour, translucent watercolor restraint, and consistent shallow perspective",
+        "quiet low-density spatial explanation with fully opaque warm paper and generous margins"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"],
+      "acceptance_checks": [
+        "The possibility of revision is understandable without numerical or textual claims.",
+        "No tray containment story, dense annotation, black label tab, or corporate card grid appears."
+      ]
+    },
+    {
+      "id": "style7-diagram-reviewed-publication",
+      "request": {
+        "profile_id": "soft-technical-sketch",
+        "asset_role": "diagram",
+        "objective": "Render a human-free five-node publication flow in which a draft combines with source notes, passes through review, then reaches publication, while a failed review returns only to the draft.",
+        "semantics": {
+          "confirmed": [
+            "Draft and source notes both enter review.",
+            "A passed review leads to publication.",
+            "A failed review returns to the draft for revision."
+          ],
+          "simplifications": [
+            "Show exactly five nodes using open captions and a calm two-group arrangement.",
+            "Use one restrained ochre review node and one dashed muted return edge for revision."
+          ],
+          "blocked": [
+            "Do not add authors, editors, tools, scores, approval authorities, archives, distribution systems, or undeclared nodes and edges.",
+            "Do not copy the golden diagram learning nodes, three-to-one convergence story, labels, or topology."
+          ],
+          "frozen_graph": {
+            "nodes": ["draft", "source-notes", "review", "publication", "revision-needed"],
+            "edges": [
+              {"id": "edge-draft-review", "from": "draft", "to": "review", "type": "primary"},
+              {"id": "edge-sources-review", "from": "source-notes", "to": "review", "type": "primary"},
+              {"id": "edge-review-publication", "from": "review", "to": "publication", "type": "primary"},
+              {"id": "edge-review-revision", "from": "review", "to": "revision-needed", "type": "exception"},
+              {"id": "edge-revision-draft", "from": "revision-needed", "to": "draft", "type": "return"}
+            ],
+            "groups": [
+              {"id": "preparation", "members": ["draft", "source-notes"]},
+              {"id": "decision-and-result", "members": ["review", "publication", "revision-needed"]}
+            ],
+            "invariants": [
+              "Publication is reachable only through review.",
+              "A failed review returns to draft through revision-needed and never directly to publication."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict human-free front-orthogonal warm-paper diagram with two preparation nodes at left, review at center, publication at right, and revision-needed below center",
+          "hierarchy": "fine graphite-brown primary edges carry the exact graph; a muted dashed return distinguishes revision; translucent blue and sage groups remain open and one ochre wash emphasizes review",
+          "human_elements": "none; no people, faces, hands, characters, instructors, narrators, mascots, or stock imagery"
+        },
+        "text_policy": {
+          "mode": "deterministic open captions and labels",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete five-node graph occupies roughly seventy-four percent with generous warm-paper margins",
+          "crop_rules": "all five nodes and every arrowhead stay inside the outer eight percent safe area",
+          "output_count": 1
+        },
+        "golden_reference_ids": ["soft-technical-sketch-diagram-v1"],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "strict human-free topology, fine graphite-brown edges, open captions, translucent muted groups, and generous margins",
+        "calm low-density presentation without black tabs, bold frames, or annotation swarms"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"],
+      "acceptance_checks": [
+        "Exactly five nodes and five declared directed edges appear with correct direction and edge type.",
+        "The diagram remains Style 7 and does not become a Style 8 systems whiteboard."
+      ]
+    }
+  ],
+  "neighbor_discrimination": {
+    "compare_profile_id": "handwritten-systems-explainer",
+    "style_7_expected": [
+      "quiet low-density composition",
+      "fine soft graphite-brown contours",
+      "broad translucent watercolor washes",
+      "minimal open captions and one restrained ochre emphasis"
+    ],
+    "style_8_expected": [
+      "organized high-density teaching composition",
+      "fine lively handwritten ink",
+      "compact technical annotations and black section tabs",
+      "systems-oriented reading path"
+    ]
+  }
+}

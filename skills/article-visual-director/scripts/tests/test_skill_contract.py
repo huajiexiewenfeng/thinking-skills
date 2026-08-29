@@ -374,6 +374,32 @@ class SkillContractTests(unittest.TestCase):
         for reference in matrix["references"]:
             self.assertIn("topology", reference["must_not_copy"])
 
+    def test_style_7_v3_candidate_stays_soft_and_distinct_from_style_8(self) -> None:
+        root = SKILL_ROOT / "assets" / "style-anchors" / "soft-technical-sketch"
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "warm watercolor paper",
+            "fine soft",
+            "translucent watercolor",
+            "low density",
+            "no black label tabs",
+            "Style 8",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["cover"]["stability"])
+        self.assertEqual("strict", roles["diagram"]["stability"])
+        self.assertIn("no people", " ".join(roles["diagram"]["must_not_include"]))
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
 
 if __name__ == "__main__":
     unittest.main()

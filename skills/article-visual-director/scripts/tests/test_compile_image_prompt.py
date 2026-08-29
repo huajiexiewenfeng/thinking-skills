@@ -351,5 +351,48 @@ class Style2ProbeSuiteTests(unittest.TestCase):
         )
 
 
+class Style7ProbeSuiteTests(unittest.TestCase):
+    def test_all_style_7_probes_compile_lint_and_discriminate_style_8(self) -> None:
+        skill_root = SCRIPT_DIR.parent
+        suite_path = (
+            skill_root.parents[1]
+            / "evals"
+            / "style-pack-probes"
+            / "07-soft-technical-sketch.json"
+        )
+        suite = json.loads(suite_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(3, len(suite["probes"]))
+        self.assertEqual(
+            {"cover", "concept", "diagram"},
+            {probe["request"]["asset_role"] for probe in suite["probes"]},
+        )
+        for probe in suite["probes"]:
+            with self.subTest(probe=probe["id"]):
+                prompt_ir = compile_prompt_ir(skill_root, probe["request"])
+                self.assertEqual([], lint_prompt_ir(prompt_ir))
+                rendered = render_gpt_image_prompt(prompt_ir)
+                for block in REQUIRED_PROMPT_BLOCKS:
+                    self.assertEqual(1, rendered.count(f"[{block}]"))
+                self.assertTrue(
+                    {"labels", "numbers", "nodes", "topology", "example_story"}
+                    <= set(prompt_ir["reference_contract"]["must_not_copy"])
+                )
+
+        discrimination = suite["neighbor_discrimination"]
+        self.assertEqual(
+            "handwritten-systems-explainer",
+            discrimination["compare_profile_id"],
+        )
+        self.assertIn(
+            "low-density",
+            " ".join(discrimination["style_7_expected"]),
+        )
+        self.assertIn(
+            "high-density",
+            " ".join(discrimination["style_8_expected"]),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

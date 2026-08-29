@@ -1,1 +1,55 @@
-{"golden_set_version":1,"profile_id":"soft-technical-sketch","protocol_version":2,"status":"candidate","user_approval":{"status":"pending","revision_notes":[]},"assets":[]}
+{
+  "golden_set_version": 1,
+  "profile_id": "soft-technical-sketch",
+  "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "6e769e0b837f90776f1313b25bef4e97a6d3233254830914410a13b5dec57f11",
+  "role_contracts_sha256": "3e34bdad6024b2460289d074a5f8d8ccb712d9820be118ec6e85683cb62f4f3f",
+  "reference_matrix_sha256": "72a72785b00b0bd92e070f42998a7abb1e6880763d83d34ade34cf94bfc11bab",
+  "qualification": {
+    "prompt_compile_status": "passed",
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed"
+  },
+  "status": "approved",
+  "user_approval": {
+    "status": "approved",
+    "revision_notes": [
+      "The user approved the fully opaque thread-loom-ribbon cover by asking to continue; its example content is non-authoritative and it anchors warm paper fine contour translucent wash and low density.",
+      "The user explicitly approved the fully opaque tray-boundary concept; it retained Style 7 grammar without copying the cover metaphor.",
+      "The user approved the fully opaque human-free learning-flow diagram after its input spacing was corrected; its six-node example graph is style-only and non-authoritative for future article semantics."
+    ]
+  },
+  "assets": [
+    {
+      "id": "soft-technical-sketch-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "artifact_path": "golden-cover.png",
+      "artifact_sha256": "692059e88f552adfe95087b4294f53fe030c38d7f5a7a290627c09b97f920c4c",
+      "prompt_path": "golden-cover.prompt.md",
+      "prompt_sha256": "2e843bed8de2a119865c3085bd0ca3a1cd68292a1545856e5690dfdab13d4d7a",
+      "reference_role": "warm-paper-fine-contour-translucent-wash-and-low-density-cover-anchor"
+    },
+    {
+      "id": "soft-technical-sketch-concept-v1",
+      "role": "concept",
+      "renderer": "imagegen",
+      "artifact_path": "golden-concept.png",
+      "artifact_sha256": "8257d32b6b60fac3a6d2561147c964e6aaf4b3f1c198ab179eede9f06a59eaa1",
+      "prompt_path": "golden-concept.prompt.md",
+      "prompt_sha256": "899ab37316288ce3a91bac732f0a82e1360c5daf2fe568cb77c6b95628a2cb92",
+      "reference_role": "gentle-boundary-relation-and-consistent-object-proportion-concept-anchor"
+    },
+    {
+      "id": "soft-technical-sketch-diagram-v1",
+      "role": "diagram",
+      "renderer": "deterministic-diagram",
+      "artifact_path": "golden-diagram.png",
+      "artifact_sha256": "413c299450fa0d874de58b76f0eb998552c7a7fc5b2d9cbbf9944826ace87955",
+      "editable_source_path": "golden-diagram.svg",
+      "editable_source_sha256": "482f5d2b10097688d7ecc17a4d82b70da54dd77881ba3defbc3f4fca50274d32",
+      "reference_role": "style-only-human-free-soft-watercolor-architecture-anchor"
+    }
+  ]
+}
