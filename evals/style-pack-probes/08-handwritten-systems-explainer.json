@@ -1,0 +1,224 @@
+{
+  "probe_suite_version": 1,
+  "profile_id": "handwritten-systems-explainer",
+  "style_pack_version": 3,
+  "purpose": "Cross-topic stability and Style 7 versus Style 8 discrimination without copying golden example content.",
+  "probes": [
+    {
+      "id": "style8-cover-context-budget",
+      "request": {
+        "profile_id": "handwritten-systems-explainer",
+        "asset_role": "cover",
+        "objective": "Show that usable context budget narrows as tool output grows, while keeping the relationship conceptual rather than numerical.",
+        "semantics": {
+          "confirmed": [
+            "Tool output consumes part of the available context budget.",
+            "As accumulated tool output grows, less context space remains for instructions, evidence, and reasoning."
+          ],
+          "simplifications": [
+            "Represent the total context budget as one bounded horizontal workspace.",
+            "Represent growing tool output as an expanding orange region and remaining usable context as a narrowing blue region."
+          ],
+          "blocked": [
+            "Do not invent token counts, percentages, model limits, or a universal failure threshold.",
+            "Do not imply that every tool call consumes the same amount of context."
+          ]
+        },
+        "composition": {
+          "structure": "wide teaching cover with one bounded context workspace, three growth stages, a narrowing blue remainder, and one underlined takeaway zone",
+          "hierarchy": "the context boundary and narrowing remainder form the central crop-safe nucleus; compact annotations occupy the outer bands",
+          "human_elements": "one optional miniature instructor may point at the narrowing remainder"
+        },
+        "text_policy": {
+          "mode": "blank annotation zones with deterministic overlay",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "intentional foreground hierarchy spans roughly 82 percent of the wide canvas",
+          "crop_rules": "the context boundary, growth direction, and narrowing remainder survive the central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "handwritten-systems-explainer-cover-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "warm ivory paper, fine lively ink, controlled pastel-to-medium semantic color, and organized teaching density",
+        "wide cover hierarchy with a clear technical thesis and crop-safe nucleus"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "The image communicates shrinking usable context without relying on exact numbers.",
+        "The result is visibly Style 8 rather than a sparse watercolor metaphor or corporate card layout."
+      ]
+    },
+    {
+      "id": "style8-concept-retrieval-evidence-answer",
+      "request": {
+        "profile_id": "handwritten-systems-explainer",
+        "asset_role": "concept",
+        "objective": "Explain how a retrieval query becomes evidence and then a bounded answer without claiming that retrieval guarantees correctness.",
+        "semantics": {
+          "confirmed": [
+            "A retrieval query selects candidate evidence from an available knowledge source.",
+            "The answer is bounded by the evidence that was selected and supplied to the reasoning step.",
+            "Retrieval support does not itself guarantee that the final answer is correct."
+          ],
+          "simplifications": [
+            "Show one representative query, a small evidence bundle, and one bounded answer object.",
+            "Use a dashed caution loop to distinguish verification from the primary retrieval path."
+          ],
+          "blocked": [
+            "Do not imply that the knowledge source is complete, current, or error-free.",
+            "Do not invent ranking scores, citations, confidence values, or hidden processing stages."
+          ]
+        },
+        "composition": {
+          "structure": "one continuous left-to-right causal teaching sequence from query to evidence bundle to bounded answer, ending in an underlined caution",
+          "hierarchy": "three semantic objects are connected by direct arrows; compact handwritten side notes explain the boundary",
+          "human_elements": "one miniature narrator may ask what evidence supports the answer"
+        },
+        "text_policy": {
+          "mode": "minimal generated marks with deterministic technical labels",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the causal sequence spans roughly 78 percent of the canvas with generous internal whitespace",
+          "crop_rules": "query, evidence, and bounded answer remain together inside the article-column safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "handwritten-systems-explainer-concept-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "causal teaching rhythm, compact annotations, restrained narrator use, and underlined takeaway",
+        "warm ivory paper, fine lively ink, controlled semantic fills, and organized whitespace"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "The query-evidence-answer relationship is clear and the correctness limitation remains visible.",
+        "The composition does not repeat the golden communication-relay story or a symmetric card grid."
+      ]
+    },
+    {
+      "id": "style8-diagram-read-only-knowledge-access",
+      "request": {
+        "profile_id": "handwritten-systems-explainer",
+        "asset_role": "diagram",
+        "objective": "Render a human-free five-node read-only knowledge access flow with an explicitly blocked direct-write edge.",
+        "semantics": {
+          "confirmed": [
+            "Agent intent enters a policy check before any knowledge access.",
+            "An allowed request receives bounded context and may read from a read-only knowledge view.",
+            "Evidence from the read-only view supports the final answer.",
+            "A direct write from the final answer back into the knowledge view is blocked."
+          ],
+          "simplifications": [
+            "Show exactly five nodes in two grouped levels.",
+            "Show the blocked direct-write relationship as a restrained coral dashed return edge with a clear stop mark."
+          ],
+          "blocked": [
+            "Do not add a directory integration, identity authority, cache, fallback database, or write-capable store.",
+            "Do not reverse, merge, omit, or invent any declared edge."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "agent-intent",
+              "policy-check",
+              "bounded-context",
+              "read-only-knowledge-view",
+              "final-answer"
+            ],
+            "edges": [
+              {"id": "edge-intent-policy", "from": "agent-intent", "to": "policy-check", "type": "primary"},
+              {"id": "edge-policy-context", "from": "policy-check", "to": "bounded-context", "type": "primary"},
+              {"id": "edge-context-read", "from": "bounded-context", "to": "read-only-knowledge-view", "type": "primary"},
+              {"id": "edge-evidence-answer", "from": "read-only-knowledge-view", "to": "final-answer", "type": "primary"},
+              {"id": "edge-blocked-direct-write", "from": "final-answer", "to": "read-only-knowledge-view", "type": "blocked"}
+            ],
+            "groups": [
+              {"id": "request-boundary", "members": ["agent-intent", "policy-check", "bounded-context"]},
+              {"id": "read-only-result-boundary", "members": ["read-only-knowledge-view", "final-answer"]}
+            ],
+            "invariants": [
+              "Every knowledge read passes through policy-check and bounded-context.",
+              "No edge grants write capability to read-only-knowledge-view."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict human-free two-level architecture with three request nodes above two read-only result nodes",
+          "hierarchy": "number the five nodes, use direct black primary arrows, and isolate the blocked return as one coral dashed exception",
+          "human_elements": "none; no people, faces, hands, characters, instructors, narrators, or mascots"
+        },
+        "text_policy": {
+          "mode": "deterministic labels and edge annotations",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the two architecture groups span roughly 84 percent of the canvas",
+          "crop_rules": "all five nodes, every arrowhead, and the blocked edge remain inside the outer eight percent safe area",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "handwritten-systems-explainer-diagram-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "strict human-free architecture grammar, rounded nodes, grouped boundaries, and underlined conclusion rhythm",
+        "direct black primary arrows, restrained coral dashed exceptions, warm paper, and fine lively ink"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "Exactly five nodes and five declared edges are visible with correct direction and edge type.",
+        "The diagram contains no human element and copies no topology from the golden architecture example."
+      ]
+    }
+  ],
+  "neighbor_discrimination": {
+    "compare_profile_id": "soft-technical-sketch",
+    "style_7_expected": [
+      "quiet low-density composition",
+      "fine soft contours",
+      "broad watercolor washes",
+      "minimal annotation"
+    ],
+    "style_8_expected": [
+      "organized high-density teaching composition",
+      "fine lively handwritten ink",
+      "compact technical annotations",
+      "systems-oriented reading path"
+    ]
+  }
+}

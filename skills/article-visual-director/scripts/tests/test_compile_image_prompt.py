@@ -168,5 +168,42 @@ class CompileImagePromptTests(unittest.TestCase):
         self.assertTrue(any(error["code"] == "PROMPT_BLOCK_MISSING" for error in errors))
 
 
+class Style8ProbeSuiteTests(unittest.TestCase):
+    def test_all_style_8_probes_compile_and_lint(self) -> None:
+        skill_root = SCRIPT_DIR.parent
+        suite_path = (
+            skill_root.parents[1]
+            / "evals"
+            / "style-pack-probes"
+            / "08-handwritten-systems-explainer.json"
+        )
+        suite = json.loads(suite_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(3, len(suite["probes"]))
+        self.assertEqual(
+            {"cover", "concept", "diagram"},
+            {probe["request"]["asset_role"] for probe in suite["probes"]},
+        )
+        for probe in suite["probes"]:
+            with self.subTest(probe=probe["id"]):
+                request = probe["request"]
+                self.assertNotIn("publication_theme", request)
+                prompt_ir = compile_prompt_ir(skill_root, request)
+                self.assertEqual([], lint_prompt_ir(prompt_ir))
+                rendered = render_gpt_image_prompt(prompt_ir)
+                for block in REQUIRED_PROMPT_BLOCKS:
+                    self.assertEqual(1, rendered.count(f"[{block}]"))
+                self.assertTrue(
+                    {
+                        "labels",
+                        "numbers",
+                        "nodes",
+                        "topology",
+                        "example_story",
+                    }
+                    <= set(prompt_ir["reference_contract"]["must_not_copy"])
+                )
+
+
 if __name__ == "__main__":
     unittest.main()
