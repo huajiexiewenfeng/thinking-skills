@@ -4,11 +4,13 @@ Read this reference when preparing Chinese technical WeChat layouts or technical
 
 ## Technical Minimal Green
 
-Use this as the default style for Chinese technical WeChat articles unless the user requests another style. Also use it when the user asks for a WeChat article similar to "技术极简", "绿色标题", or "一小段一小段但不要一句一行", or provides screenshots with green heading bars, left green rule headings, gray inline code pills, and compact technical prose.
+Use this as the default style for Chinese technical WeChat articles unless the user requests another style. Also use it when the user asks for a WeChat article similar to "技术极简", "绿色标题", or "一小段一小段但不要一句一行", or provides screenshots with lightweight green-underlined headings, green heading bars, left green rule headings, gray inline code pills, and compact technical prose.
 
 If additional named WeChat styles are available and the requested style is not obvious, ask which style to use before drafting. Offer Technical Minimal Green as the recommended default for technical articles.
 
-- Use green section headings for major sections: inline `h2` with white text on `#009b72`, compact padding, and moderate top margin.
+- Use lightweight green-underlined section headings for major sections. The default `h2` is centered, with green text on white, regular-to-medium weight, and a short bottom rule that follows the title width. Use this exact mobile-safe baseline: `<h2 style="display:table;max-width:100%;box-sizing:border-box;color:#009b72;font-size:21px;line-height:1.5;font-weight:400;letter-spacing:0.02em;text-align:center;padding:0 0 7px;margin:30px auto 16px;border-bottom:2px solid #009b72;word-break:break-word;">...</h2>`.
+- Keep the heading only modestly larger than the `18px` body text: `21px` by default (about `1.17x` the body size). This lighter scale and `font-weight:400` match phone-first screenshots where the heading should orient the reader without dominating the screen.
+- Treat the former white-on-solid-green `h2` bar as an optional high-emphasis variant, not the Technical Minimal Green default. Use it only when the user explicitly requests filled green bars, label-like headings, or stronger visual segmentation.
 - Use left green rule headings for secondary sections: `border-left:5px solid #009b72`, gray or black title text, and compact spacing.
 - Use body paragraphs of 2-3 connected sentences. Do not make every sentence its own paragraph.
 - For the "段落分明但不要一句一行" style, use connected 2-3 sentence paragraphs, with occasional one-sentence emphasis only. Do not mistake mobile readability for breaking every clause into a separate paragraph.

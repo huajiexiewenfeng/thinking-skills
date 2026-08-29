@@ -33,6 +33,8 @@ Notes:
 
 ## Unreleased
 
+- Added a `content-creator` output artifact contract and regression coverage so Green WeChat revisions preserve Markdown, require explicit approval for standalone HTML, and leave confirmed images unchanged.
+- Refined Technical Minimal Green headings toward a lightweight centered green underline while keeping filled green bars as an explicit high-emphasis variant.
 - Added multi-turn collaboration guidance to `content-creator`, including stage detection, a running content brief, lightweight approval gates, and evidence planning.
 - Added multi-turn eval cases for preserving accepted writing decisions, transitioning from outline to draft, and handling production metrics as evidence.
 - Added an initial idea gate to `content-creator` so early article seeds produce editorial positioning options before full drafts.

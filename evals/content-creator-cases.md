@@ -112,6 +112,33 @@ quality_checks:
   - "The opening has a concrete tension and preserves the user's desired voice."
 ```
 
+### content-wechat-green-markdown-artifact-001
+
+```yaml
+id: content-wechat-green-markdown-artifact-001
+skill: content-creator
+type:
+  - MODE_MISMATCH
+  - EVAL_GAP
+prompt: "微信公众号没问题，风格换成 green。"
+context:
+  - "The accepted current artifact is article-wechat-illustrated.md."
+  - "The article already contains user-approved images."
+  - "The user asks only to change the WeChat article style and does not request image changes or HTML."
+expected:
+  - "Keep the output as a .md artifact."
+  - "Apply Technical Minimal Green to the Markdown article layout."
+  - "Preserve the confirmed image files, image references, and image content."
+  - "Do not create additional artifact types without approval."
+must_not:
+  - "Create a standalone .html or sibling *-publish.html file."
+  - "Recolor, regenerate, replace, or reinterpret the confirmed images."
+  - "Treat green as an image-generation profile when the request refers to article or WeChat layout."
+quality_checks:
+  - "The artifact type is preserved across the revision turn."
+  - "The response distinguishes article publishing style from visual profile."
+```
+
 ### content-evidence-planning-001
 
 ```yaml
