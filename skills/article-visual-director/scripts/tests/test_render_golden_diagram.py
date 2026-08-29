@@ -39,10 +39,24 @@ class RenderGoldenDiagramTests(unittest.TestCase):
 
         for label in EXPECTED_LABELS:
             self.assertIn(label, svg)
-        for color in ("#171717", "#F59E0B", "#66AEE8", "#58B978"):
+        for color in (
+            "#242321",
+            "#F3D39A",
+            "#BFDDEE",
+            "#CFE8C7",
+            "#D9C8EA",
+            "#F4E59C",
+        ):
             self.assertIn(color, svg)
         self.assertIn('width="1600"', svg)
         self.assertIn('height="900"', svg)
+        self.assertNotIn('class="instructor"', svg)
+        self.assertIn('class="architecture-boundary"', svg)
+        self.assertIn('class="failure-path"', svg)
+        self.assertIn('class="annotation"', svg)
+        self.assertIn('stroke-linecap="round"', svg)
+        self.assertIn("起点结构", svg)
+        self.assertIn("同一个 AI 乘数", svg)
 
     def test_png_is_1600_by_900_and_uses_external_temp_output(self) -> None:
         from PIL import Image

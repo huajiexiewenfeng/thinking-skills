@@ -5,55 +5,57 @@
 - `profile_id`: `handwritten-systems-explainer`
 - Protocol version: `2`
 - 中文名: 手写系统解释图
-- Promise: explain one operational system idea with confident imperfect black ink, warm paper, saturated semantic fills, black label tabs, and direct arrows.
+- Promise: turn a dense technical idea into an annotation-led technical whiteboard with lively ink, pastel-to-medium semantic color, formulas, and small teaching moments.
 
 ## Use When
 
-Use for agents, runtimes, retrieval, context windows, tool boundaries, before/after comparisons, compact trade-offs, and engineering ideas that should feel handmade without losing precision.
+Use for AI internals, agents, runtimes, retrieval, context windows, performance trade-offs, before/after systems, mathematical relationships, and engineering explanations that benefit from labels, formulas, arrows, and a visible narrator.
 
 ## Do Not Use When
 
-Do not use for gentle beginner watercolor, corporate editorial cards, photorealism, cinematic atmosphere, or large architecture maps with many simultaneous relationships.
+Do not use for text-free atmospheric covers, low-density emotional metaphors, corporate card layouts, photorealism, or architecture whose exact topology cannot be confirmed.
 
 ## Mode Boundary
 
-The nearest neighbor is Soft Technical Sketch. Style 8 requires bold variable 4 px near-black ink, high-accent orange/blue/green semantic fills, black tabs with reversed labels, direct arrows, and disciplined notebook geometry. Style 7 is fine, pale, soft, open-captioned, and metaphor-led. If the page resembles pastel watercolor, it is Style 7—not Style 8.
+The nearest neighbor is Soft Technical Sketch. Style 7 is a quiet, low-density metaphor illustration with fine contours, broad watercolor washes, minimal annotation, and no handwritten technical labels. Style 8 is an organized, high-density teaching whiteboard: handwritten formulas, compact side notes, underlined conclusions, highlighted headings, meters/tables, and miniature instructor figures are first-class elements. Soft color does not make the two modes interchangeable; annotation density and technical teaching grammar decide the boundary.
 
 ## Required Visual Traits
 
-- Warm `#F4F1E6` paper with subtle dot texture and confident imperfect `#171717` contours.
-- Rounded boxes, simple diamonds, dashed system boundaries, direct arrows, one or two panels, 12 px corners, and generous 24 px-grid spacing.
-- Orange means pressure/payload, blue means reference/context, green means durable destination/available capacity, and red means risk/failure.
-- Black label tabs carry short deterministic labels in white; exact Chinese uses KaiTi/STKaiti-compatible rendering.
+- Warm ivory technical-whiteboard paper with subtle grain and lively near-black `#242321` ink around 2 px at 1600×900.
+- A controlled pastel-to-medium palette: soft blue, mint, lavender, butter yellow, and warm sand for annotations; clearer blue, green, and orange for primary semantic nodes; restrained coral for exceptions.
+- One explicit reading path composed from formula boxes, arrows, brackets, dashed boundaries, small tables, meters, tokens, caches, speech bubbles, and underlined summary statements.
+- Handwritten formulas and short technical annotations remain compact but legible; exact wording is rendered deterministically when correctness matters.
+- Miniature instructor figures may point, question, compare, or react in covers and concept illustrations. They support explanation and never become decorative mascots.
+- Layout is information-dense but organized into two or three groups with generous internal whitespace and no ornamental UI chrome.
 
 ## Allowed Variation
 
-Boxes may become containers, windows, stacks, gates, or simple human/tool icons. Stroke wobble and small registration offsets are allowed, but alignment, semantic color roles, margins, and reading order remain disciplined.
+The layout may be radial, two-column, two-lane, or left-to-right. Headings may sit on pastel highlight swatches or compact black section tabs; formulas may use soft or medium blue/green/orange/lavender boxes; small cartoon hands, faces, clocks, gauges, magnifiers, cubes, and trash/cache icons may clarify meaning in narrative assets. Architecture diagrams contain no people, faces, hands, or narrator figures. Slight line wobble, irregular underline length, and offset color washes are desirable.
 
 ## Forbidden Traits
 
-No pastel watercolor, pale green corporate flowchart, 3D prism, glassmorphism, page-theme green takeover, thin gray lines, generic card stack, decorative doodles, dense UI, generated title text, or more than one primary process/comparison.
+No black tabs on every node, uncontrolled high-saturation blocks, generic corporate flowchart cards, 3D prism, isometric infrastructure, glassmorphism, page-theme green takeover, uniform vector-perfect strokes, dense decorative doodle clutter, or generated gibberish presented as real formulas.
 
 ## Cover Contract
 
-Build one strong operational metaphor or two-sided comparison with bold black framing and saturated semantic objects. The subject spans the wide canvas; a deterministic title and at most four short value points use the same handwritten family and black-tab grammar. Preserve meaningful central-square crop content without shrinking the entire scene.
+Use a wide 16:9 or platform-specific canvas with one strong technical thesis and two to four explanatory groups. The visual nucleus survives the central crop, while annotations and small teaching figures activate the outer bands. A title may be added deterministically over a pastel swatch or clean paper zone. A cover can be information-rich, but the reading order must remain obvious at thumbnail size.
 
 ## Concept Contract
 
-Explain one causal idea using two to five bold objects and direct arrows. Prefer before/after, pressure/release, context/reference, or local/shared contrasts. Use color only according to semantic roles, never as decoration.
+Explain one technical mechanism or contrast with a visible narrator, formula/object boxes, semantic pastel fills, and a concluding underline or short takeaway. Prefer a causal teaching sequence over a generic collection of cards. Use one compact analogy only when it clarifies a real relationship.
 
 ## Deterministic Diagram Contract
 
-Map paper to `surface.background`, all outlines/arrows/text to `boundary_and_text`, payload/pressure to `pressure_or_payload`, references/context to `reference_or_context`, durable/available states to `durable_or_available`, risks to `risk_or_failure`, labels to the `black-tab` style, and placement to the 24 px grid. Use 4 px variable-looking strokes, 12 px rounded boxes, black arrowheads, dashed black boundaries, no shadows, and subtle dot paper.
+Map paper to `surface.background`, all contours/arrows/text to `boundary_and_text`, transient/pressure work to `pressure_or_payload`, query/reference/context to `reference_or_context`, persistent/reused/output states to `durable_or_available`, warnings to `risk_or_failure`, secondary concepts to `secondary_concept`, and headings/conclusions to `emphasis_highlight`. Use 2 px variable-looking strokes, 10 px rounded nodes or formula boxes, soft annotation swatches, optional black section tabs for group headings only, numbered stages, dashed architecture boundaries, direct primary arrows, restrained coral dashed exception or fallback paths, small annotation text, and an underlined conclusion. Do not use people, faces, hands, mascots, or narrator figures in this asset type. Render exact numbers, formulas, and labels with KaiTi/STKaiti-compatible fonts.
 
 ## Imagegen Prompt Contract
 
-State the operational objective, exact subject or comparison, one/two-panel reading order, bold imperfect black ink, warm notebook paper, saturated orange/blue/green semantic roles with red only for risk, black-tab zones left text-free, direct arrows, generous margins, target aspect ratio, and text-free output. Attach approved references and explicitly preserve stroke weight, paper tone, color saturation, label-tab geometry, flat depth, and object scale. Negatives: pastel, watercolor wash, pale corporate green, flowchart cards, 3D prism, glass, shadows, thin gray line, doodle clutter, and any readable generated title.
+State the lesson objective, exact technical mechanism, audience, grouping, reading path, formulas or objects, asset-type figure policy, pastel-to-medium semantic mapping, warm paper, fine lively ink, annotation density, target aspect ratio, and deterministic-text plan. Attach the approved references and preserve their line weight, controlled marker-fill behavior, formula-box/node grammar, arrows, underlines, density, and whitespace. Narrative covers and concept illustrations may use miniature figures; architecture and process diagrams must explicitly request no people. Request blank annotation zones when exact text will be overlaid. Negatives: black tabs on every node, uncontrolled saturation, generic corporate flowchart styling, 3D/isometric, glass, vector-perfect lines, decorative doodles, fake formulas, logos, and watermarks.
 
 ## Reference Use Contract
 
-Use all three approved anchors when practical: cover anchors bold wide composition and title integration; concept anchors object vocabulary, semantic colors, and direct arrows; deterministic diagram anchors exact ink, paper, dot pattern, tabs, font, spacing, and boundary treatment. For the initial golden set, the user's older warm-paper agent-system images are the primary evidence. Preserve their visual grammar, not their article-specific objects or words.
+Use the approved cover to anchor wide teaching composition, the concept image to anchor narrator/formula/annotation vocabulary, and the deterministic diagram to anchor exact typography, semantic pastel roles, line behavior, spacing, and conclusion treatment. Article-specific references may influence the technical objects but may not replace these profile invariants. Preserve visual grammar, never copy a reference's proprietary wording or unsupported relationships.
 
 ## Validation Rubric
 
-Pass only if black ink is visibly bold and imperfect, warm paper is dominant, orange/blue/green retain their fixed meanings, black label tabs appear where short labels are needed, the idea reads in one glance, generated and deterministic assets feel like one set, no pastel/corporate/3D drift appears, and the result is recognizably closer to the approved old references than to a generic green flowchart.
+Pass only if the result reads like an annotated technical whiteboard; uses fine lively ink and warm paper; keeps pastel-to-medium semantic color controlled; contains a clear technical reading path; keeps formulas/labels accurate or blank for deterministic overlay; limits figures to narrative assets and keeps architecture diagrams human-free; stays dense but organized; aligns generated and deterministic assets; and contains no every-node black-tab, corporate-card, 3D, or theme-bleed drift.

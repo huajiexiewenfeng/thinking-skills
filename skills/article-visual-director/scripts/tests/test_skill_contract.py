@@ -168,13 +168,36 @@ class SkillContractTests(unittest.TestCase):
         handwritten = self.load_tokens("handwritten-systems-explainer")
 
         self.assertEqual("low", soft["palette"]["saturation"])
-        self.assertEqual("high-accent", handwritten["palette"]["saturation"])
+        self.assertEqual("controlled-variable", handwritten["palette"]["saturation"])
         self.assertEqual("fine-soft", soft["line"]["weight_class"])
-        self.assertEqual("bold-variable", handwritten["line"]["weight_class"])
+        self.assertEqual("fine-variable", handwritten["line"]["weight_class"])
+        self.assertEqual("high", handwritten["geometry"]["annotation_density"])
+        self.assertEqual(
+            "highlight-or-section-tab", handwritten["geometry"]["label_style"]
+        )
+        self.assertEqual("#6CAFE0", handwritten["palette"]["blue"])
+        self.assertEqual("#65BD82", handwritten["palette"]["green"])
+        self.assertEqual("#BFDDEE", handwritten["palette"]["pastel_blue"])
+        self.assertEqual("#CFE8C7", handwritten["palette"]["pastel_green"])
+        self.assertEqual("#D9C8EA", handwritten["palette"]["lavender"])
+        self.assertEqual("#F4E59C", handwritten["palette"]["yellow"])
         self.assertNotEqual(
             soft["geometry"]["label_style"],
             handwritten["geometry"]["label_style"],
         )
+
+        protocol = (
+            SKILL_ROOT
+            / "references"
+            / "styles"
+            / "08-handwritten-systems-explainer.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("miniature instructor figures", protocol)
+        self.assertIn("handwritten formulas", protocol)
+        self.assertIn("annotation-led technical whiteboard", protocol)
+        self.assertIn("black section tabs", protocol)
+        self.assertIn("pastel-to-medium", protocol)
+        self.assertIn("Architecture diagrams contain no people", protocol)
 
     def test_workflow_loads_protocol_and_separates_style_responsibilities(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")

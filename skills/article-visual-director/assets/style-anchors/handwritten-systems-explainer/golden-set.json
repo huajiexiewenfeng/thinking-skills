@@ -1,1 +1,45 @@
-{"golden_set_version":1,"profile_id":"handwritten-systems-explainer","protocol_version":2,"status":"candidate","user_approval":{"status":"pending","revision_notes":[]},"assets":[]}
+{
+  "golden_set_version": 1,
+  "profile_id": "handwritten-systems-explainer",
+  "protocol_version": 2,
+  "status": "approved",
+  "user_approval": {
+    "status": "approved",
+    "revision_notes": [
+      "User approved the capability-gap cover and communication-relay concept anchors.",
+      "User approved the third anchor as a human-free architecture/process diagram."
+    ]
+  },
+  "assets": [
+    {
+      "id": "handwritten-systems-explainer-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "artifact_path": "golden-cover.png",
+      "artifact_sha256": "0cb0eb428922d292c2f9cf5820226bad37a9cc0521b773459d93788b0642cd27",
+      "prompt_path": "golden-cover.prompt.md",
+      "prompt_sha256": "d954bbc68cd241c665af8e04037b9efdd9f3c1be47b0c08d68ec3fb6ad9eae59",
+      "reference_role": "wide-composition-and-capability-gap-anchor"
+    },
+    {
+      "id": "handwritten-systems-explainer-concept-v1",
+      "role": "concept",
+      "renderer": "imagegen",
+      "artifact_path": "golden-concept.png",
+      "artifact_sha256": "9449c9f9583d6b65cbcc65d1204f9eeba544d0764e371304af2fc4dc5c4530e0",
+      "prompt_path": "golden-concept.prompt.md",
+      "prompt_sha256": "dcca0d8f5cfa5663885cbac84916f725e5da3b08db026adb680c11381417b7c9",
+      "reference_role": "narrative-relay-and-annotation-anchor"
+    },
+    {
+      "id": "handwritten-systems-explainer-diagram-v1",
+      "role": "diagram",
+      "renderer": "imagegen",
+      "artifact_path": "golden-diagram.png",
+      "artifact_sha256": "eda0b1582f3398502493808a2090a81b9955edba3b664f211360a9c5c746579e",
+      "prompt_path": "golden-diagram.prompt.md",
+      "prompt_sha256": "54ad08360181289eccd243de013fe54d925e1d4728ead69244414e385fe77411",
+      "reference_role": "human-free-architecture-and-flow-anchor"
+    }
+  ]
+}
