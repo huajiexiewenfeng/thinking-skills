@@ -8,8 +8,8 @@
   "reference_matrix_sha256": "2e8bea4e99b5593202943507ec50d32fb07b95642f465b2706b84c3742325b56",
   "qualification": {
     "prompt_compile_status": "passed",
-    "cross_topic_probe_status": "pending",
-    "neighbor_discrimination_status": "pending"
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed"
   },
   "status": "approved",
   "user_approval": {
@@ -17,7 +17,8 @@
     "revision_notes": [
       "User approved the capability-gap cover and communication-relay concept anchors.",
       "User approved the third anchor as a human-free architecture/process diagram.",
-      "User explicitly replaced the third anchor with the richer two-level architecture image and declared its example content non-authoritative; future AI must derive and validate article-specific topology before rendering."
+      "User explicitly replaced the third anchor with the richer two-level architecture image and declared its example content non-authoritative; future AI must derive and validate article-specific topology before rendering.",
+      "User confirmed the cross-topic context-budget result as Style 8 and declared Style 8 complete; remaining golden-production work moves to Styles 1 through 7."
     ]
   },
   "assets": [
