@@ -7,7 +7,8 @@
     "status": "approved",
     "revision_notes": [
       "User approved the capability-gap cover and communication-relay concept anchors.",
-      "User approved the third anchor as a human-free architecture/process diagram."
+      "User approved the third anchor as a human-free architecture/process diagram.",
+      "User explicitly replaced the third anchor with the richer two-level architecture image and declared its example content non-authoritative; future AI must derive and validate article-specific topology before rendering."
     ]
   },
   "assets": [
@@ -36,10 +37,10 @@
       "role": "diagram",
       "renderer": "imagegen",
       "artifact_path": "golden-diagram.png",
-      "artifact_sha256": "eda0b1582f3398502493808a2090a81b9955edba3b664f211360a9c5c746579e",
+      "artifact_sha256": "3ca5905dea427b769028e38178046f8e0cdc34f46e65ba96fe02514a8fb8b977",
       "prompt_path": "golden-diagram.prompt.md",
-      "prompt_sha256": "54ad08360181289eccd243de013fe54d925e1d4728ead69244414e385fe77411",
-      "reference_role": "human-free-architecture-and-flow-anchor"
+      "prompt_sha256": "5f7d8286c94f3df5734beb33077aafc4bdee5e10afb9197192f10149aab96e3d",
+      "reference_role": "style-only-human-free-architecture-and-flow-anchor"
     }
   ]
 }

@@ -209,6 +209,22 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("any imagegen asset", skill_text)
         self.assertNotIn("when 3+ imagegen assets", skill_text)
 
+    def test_golden_diagram_style_never_supplies_article_topology(self) -> None:
+        skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        protocol = (
+            SKILL_ROOT
+            / "references"
+            / "styles"
+            / "08-handwritten-systems-explainer.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("golden content is non-authoritative", skill_text)
+        self.assertIn("article-specific semantic graph", skill_text)
+        self.assertIn("Never infer article-specific nodes or edges", skill_text)
+        self.assertIn("style-only reference", protocol)
+        self.assertIn("golden topology is non-authoritative", protocol)
+        self.assertIn("semantic graph", protocol)
+
 
 if __name__ == "__main__":
     unittest.main()

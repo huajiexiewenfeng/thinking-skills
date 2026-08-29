@@ -36,6 +36,7 @@ Supporting:
 Safety:
 
 - Never invent a node, edge, boundary, sequence, data flow, or causal relationship that the article does not support.
+- For reference use, `golden content is non-authoritative`: golden assets define visual grammar, never article facts or topology.
 - Separate article facts, reasonable visual simplifications, and unresolved assumptions.
 - Do not imitate a living artist. Translate a style request into general visual properties.
 - Do not overwrite the source Markdown. Do not integrate unapproved or unvalidated assets.
@@ -161,13 +162,17 @@ When a cross-platform article has separate cover exports, record asset-level `pl
 
 Read [references/style-registry.json](references/style-registry.json), locate the exact selected profile, then read only that entry's protocol, token file, and golden-set metadata. Do not load or blend the other seven protocols. Explain the selected mode's fit in terms of audience, article tone, technical density, and platform—not taste alone.
 
-The selected golden set must have `status=approved`, explicit user approval, and exactly three verified anchors: cover, concept, and deterministic diagram. If it is missing or still `candidate`, stop article production with `golden_set_pending`. Explain that this visual mode has no approved permanent style anchors yet and enter the golden-production flow only after the user agrees. Golden-production order is cover, concept, then deterministic comparison diagram; candidates become golden only after explicit user approval and release validation.
+The selected golden set must have `status=approved`, explicit user approval, and exactly three verified anchors: cover, concept, and diagram style anchor. If it is missing or still `candidate`, stop article production with `golden_set_pending`. Explain that this visual mode has no approved permanent style anchors yet and enter the golden-production flow only after the user agrees. Golden-production order is cover, concept, then architecture/process style anchor; candidates become golden only after explicit user approval and release validation.
 
 Keep three responsibilities separate in the plan and Manifest v2:
 
 - `publication_theme`: page/channel context such as green, dark, or festive; it may influence deterministic page/title layers only;
 - `visual_profile`: the selected registered protocol, permanent golden references, and token invariants;
 - `asset_semantics`: the article-specific entities, relations, numbers, metaphors, reading order, and claims shown by each asset.
+
+Golden references are visual evidence only. Their example titles, labels, nodes, arrows, numbers, group membership, and fallback paths are never semantic source material. Never infer article-specific nodes or edges from a golden image, even when its subject appears similar to the current article.
+
+For every process, architecture, boundary, comparison, or timeline diagram, the AI must first build an `article-specific semantic graph` from the current article and confirmed sources. Freeze that graph before rendering; the golden diagram may influence only surface, palette, stroke, node geometry, spacing, annotation density, and arrow appearance.
 
 A page theme must not recolor the profile palette, replace its line language, alter its geometry/depth, or turn Style 8 into a green corporate flowchart. Any approved theme override must be listed explicitly in the visual plan and `style.approved_overrides` of Manifest v2. With `theme_override_policy=title-layer-only`, only deterministic `title.*` fields may be overridden.
 
@@ -225,6 +230,8 @@ Each deterministic diagram specification must list:
 - confirmed source for each non-obvious relationship;
 - explicitly blocked unconfirmed relationships.
 
+Treat this specification as the semantic graph and source of truth. Assign every node and directed edge a stable ID; record edge type (`primary`, `fallback`, `exception`, or `return`), direction, group membership, and evidence status. Before rendering, reject dangling edges, contradictory directions, invalid shortcuts, and any path that violates a stated invariant. After rendering, compare every visible node, label, boundary, and arrow against the frozen graph. A visually attractive diagram with a topology mismatch fails validation and must be corrected before insertion.
+
 Create Manifest v2 as described in [references/manifest-schema.md](references/manifest-schema.md). Treat it as the source of truth. Record the selected profile/version, Skill-relative protocol and golden-set paths, their current SHA-256 values, the three golden reference IDs, `publication_theme`, override policy, article-specific references, and per-asset `style_validation`. Set approvals to `pending` until the user confirms the plan. After confirmation, freeze prompts/specifications and set the relevant approvals to `approved`.
 
 End the planning response with one compact approval request. Do not generate images in that response.
@@ -243,7 +250,7 @@ When an article anchor is required:
 4. record its asset ID and set `approvals.article_style_anchor` to `approved`;
 5. use the approved article anchor together with the permanent golden references for the remaining assets.
 
-Every remaining imagegen asset must receive the approved golden cover/concept/diagram references that are relevant to its semantic job plus the article anchor. The prompt states which visible properties are invariant: surface, palette roles, stroke/material behavior, geometry, depth, spacing, and forbidden traits. Do not rely on a profile name alone.
+Every remaining imagegen asset must receive the approved golden cover/concept/diagram references that are relevant to its semantic job plus the article anchor. The prompt states which visible properties are invariant: surface, palette roles, stroke/material behavior, geometry, depth, spacing, and forbidden traits. It must also state that any visible example content in a golden reference is non-authoritative and must not be copied. Do not rely on a profile name alone.
 
 For deterministic assets, load the matching token JSON and use an available SVG, HTML, Mermaid, Graphviz, or visualization renderer. Map semantic roles to tokens rather than sampling colors by eye. Export a platform-compatible PNG when SVG support is uncertain, preserve the editable source, and visually compare the result with both the permanent diagram anchor and the approved article anchor.
 
