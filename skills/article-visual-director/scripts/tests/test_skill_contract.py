@@ -344,6 +344,36 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("flat", " ".join(roles["diagram"]["must_preserve"]))
         self.assertIn("no perspective", " ".join(roles["diagram"]["must_not_include"]))
 
+    def test_style_2_v3_candidate_preserves_green_led_wide_identity(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "white-green-editorial-minimal"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "emerald-led",
+            "both outer bands",
+            "pale mint",
+            "no leaves",
+            "empty outer bands",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["cover"]["stability"])
+        self.assertEqual("strict", roles["diagram"]["stability"])
+        self.assertIn("no people", " ".join(roles["diagram"]["must_not_include"]))
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
 
 if __name__ == "__main__":
     unittest.main()

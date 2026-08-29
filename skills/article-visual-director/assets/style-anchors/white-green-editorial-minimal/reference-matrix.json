@@ -1,0 +1,48 @@
+{
+  "profile_id": "white-green-editorial-minimal",
+  "style_pack_version": 3,
+  "references": [
+    {
+      "golden_asset_id": "white-green-editorial-minimal-cover-v1",
+      "role": "cover",
+      "must_preserve": [
+        "preserve the emerald-led wide hierarchy central semantic nucleus and meaningful content in both outer bands",
+        "preserve bright opaque matte surface forest boundaries pale mint support and active seventy-to-ninety-percent occupancy",
+        "preserve square-crop survival without shrinking the complete composition into the center"
+      ],
+      "may_vary": [
+        "replace the nucleus and outer forces with the approved article thesis",
+        "vary title-safe placement and left-right asymmetry while retaining meaningful full-width content"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    },
+    {
+      "golden_asset_id": "white-green-editorial-minimal-concept-v1",
+      "role": "concept",
+      "must_preserve": [
+        "preserve one emerald-led tension transition or three-part system with an obvious semantic nucleus",
+        "preserve active space-led grouping bright matte geometry and meaningful side structures",
+        "preserve forest emerald pale-mint and optional cyan-green semantic roles"
+      ],
+      "may_vary": [
+        "replace the complete mechanism and object shapes with independently confirmed article semantics",
+        "vary scale asymmetry and secondary signal without adding non-green competing accents"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    },
+    {
+      "golden_asset_id": "white-green-editorial-minimal-diagram-v1",
+      "role": "diagram",
+      "must_preserve": [
+        "preserve strict grid alignment crisp forest boundaries emerald primary paths pale-mint support and cyan-green secondary paths",
+        "preserve full-width active grouping central crop survival and absence of ornamental containers",
+        "preserve human-free deterministic architecture and exact frozen-graph rendering"
+      ],
+      "may_vary": [
+        "replace the complete example graph with the validated article-specific frozen graph",
+        "vary node count grouping and secondary paths only as the graph requires"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    }
+  ]
+}

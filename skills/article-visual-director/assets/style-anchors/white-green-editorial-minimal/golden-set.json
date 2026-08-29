@@ -1,1 +1,56 @@
-{"golden_set_version":1,"profile_id":"white-green-editorial-minimal","protocol_version":2,"status":"candidate","user_approval":{"status":"pending","revision_notes":[]},"assets":[]}
+{
+  "golden_set_version": 1,
+  "profile_id": "white-green-editorial-minimal",
+  "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "72978d4481d93119904b52e39eae1bbbbd3b7848cd8882aacc9b5df8aa38b6f8",
+  "role_contracts_sha256": "333b89b0c3141a85f009ce1251423ad373d71dce0a8df61ce2ef662911f7bcaf",
+  "reference_matrix_sha256": "b444b3f7e5f4e5fac44b0c47672941847d0c4afdcf56503062b4b9b674738209",
+  "qualification": {
+    "prompt_compile_status": "passed",
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed"
+  },
+  "status": "approved",
+  "user_approval": {
+    "status": "approved",
+    "revision_notes": [
+      "The user approved the first opaque ultra-wide emerald coordination cover by asking to continue; its content remains non-authoritative for later articles.",
+      "The user approved the fully opaque speed-versus-structure coordination concept by asking to continue; it preserved the Style 2 grammar without copying the cover topology.",
+      "The user approved the human-free six-node coordination diagram by asking to continue; the editable SVG preserves six nodes and six exact directed edges.",
+      "All three cross-topic probes compile and lint, and the Style 2 versus Style 1 discrimination contract preserves emerald-led active wide identity."
+    ]
+  },
+  "assets": [
+    {
+      "id": "white-green-editorial-minimal-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "artifact_path": "golden-cover.png",
+      "artifact_sha256": "3eaae6252c4076c03e26309505825f9d13255726e987965217ef255356d875cd",
+      "prompt_path": "golden-cover.prompt.md",
+      "prompt_sha256": "ff28743e583e4a7adc2070aa6928062011d38c2fd05559383dd43d09d1bf8787",
+      "reference_role": "emerald-led-ultra-wide-occupancy-and-square-crop-nucleus-anchor"
+    },
+    {
+      "id": "white-green-editorial-minimal-concept-v1",
+      "role": "concept",
+      "renderer": "imagegen",
+      "artifact_path": "golden-concept.png",
+      "artifact_sha256": "86b0eb37ed0a7aafa9463cf6ddbfaf760bdb9062129c61c87842684d7f599c59",
+      "prompt_path": "golden-concept.prompt.md",
+      "prompt_sha256": "c6f46377b0dd6ef2c7733b75512d57c53b3f6cae57daaff4c39e55c6c1077639",
+      "reference_role": "emerald-led-tension-and-coordinated-result-concept-anchor"
+    },
+    {
+      "id": "white-green-editorial-minimal-diagram-v1",
+      "role": "diagram",
+      "renderer": "deterministic-diagram",
+      "artifact_path": "golden-diagram.png",
+      "artifact_sha256": "1f5fe7a74c553f1c0bedf92a0434cf1949a184fcbb8b12e8f8b70b85a407d65d",
+      "editable_source_path": "golden-diagram.svg",
+      "editable_source_sha256": "2115de7e03c701ddaf5f15444aa665f20f78925eb991f22c40c61a7d456a09e2",
+      "reference_role": "human-free-green-led-wide-coordination-topology-anchor"
+    }
+  ]
+}

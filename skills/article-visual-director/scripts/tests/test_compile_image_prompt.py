@@ -308,5 +308,48 @@ class Style1ProbeSuiteTests(unittest.TestCase):
         )
 
 
+class Style2ProbeSuiteTests(unittest.TestCase):
+    def test_all_style_2_probes_compile_lint_and_discriminate_style_1(self) -> None:
+        skill_root = SCRIPT_DIR.parent
+        suite_path = (
+            skill_root.parents[1]
+            / "evals"
+            / "style-pack-probes"
+            / "02-white-green-editorial-minimal.json"
+        )
+        suite = json.loads(suite_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(3, len(suite["probes"]))
+        self.assertEqual(
+            {"cover", "concept", "diagram"},
+            {probe["request"]["asset_role"] for probe in suite["probes"]},
+        )
+        for probe in suite["probes"]:
+            with self.subTest(probe=probe["id"]):
+                prompt_ir = compile_prompt_ir(skill_root, probe["request"])
+                self.assertEqual([], lint_prompt_ir(prompt_ir))
+                rendered = render_gpt_image_prompt(prompt_ir)
+                for block in REQUIRED_PROMPT_BLOCKS:
+                    self.assertEqual(1, rendered.count(f"[{block}]"))
+                self.assertTrue(
+                    {"labels", "numbers", "nodes", "topology", "example_story"}
+                    <= set(prompt_ir["reference_contract"]["must_not_copy"])
+                )
+
+        discrimination = suite["neighbor_discrimination"]
+        self.assertEqual(
+            "technical-editorial-minimal",
+            discrimination["compare_profile_id"],
+        )
+        self.assertIn(
+            "emerald-led",
+            " ".join(discrimination["style_2_expected"]),
+        )
+        self.assertIn(
+            "ink-blue",
+            " ".join(discrimination["style_1_expected"]),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
