@@ -62,6 +62,10 @@ An approved v3 golden set records SHA-256 values for the three pack JSON files a
 
 Protocol validation accepts a v3 pack whose probe fields are pending. Release validation fails closed until all three statuses are `passed`, all three permanent golden roles are approved, and every declared hash matches.
 
+## Golden Candidate Bootstrap
+
+Before a candidate profile has permanent role goldens, its first cover is compiled from Visual DNA and the cover role contract without an image reference. After that cover is explicitly approved, one prior same-profile candidate may temporarily anchor the concept; after concept approval, one prior same-profile candidate may temporarily anchor the diagram. These temporary links declare `bootstrap_reference: true` and `semantic_authority: false`. Cross-profile bootstrap and article-anchor bootstrap are invalid.
+
 ## Theme and Semantic Boundary
 
 `publication_theme` may affect only fields allowed by the selected theme override policy. It cannot mutate Visual DNA. `asset_semantics` and a frozen diagram graph are the only sources for article-specific subjects, claims, labels, nodes, edges, numbers, groups, or topology.

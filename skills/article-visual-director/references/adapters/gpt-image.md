@@ -8,6 +8,8 @@ Attach the permanent same-role golden image by default. Attach the approved arti
 
 For every attached reference, render its `must_preserve`, `may_vary`, and `must_not_copy` rules explicitly. State that visible example content is non-authoritative.
 
+During candidate golden production only, the first cover may have no image reference. A later same-profile bootstrap candidate may be attached only when its record says `approval: approved`, `bootstrap_reference: true`, and `semantic_authority: false`. Treat it as temporary visual evidence, never as article facts. Never use another profile's golden or candidate to start a mode.
+
 ## Block Rendering
 
 Render the eight Prompt IR blocks in their declared order. Use concrete, observable language for composition, palette roles, material, line behavior, geometry, spacing, camera, and forbidden traits. Keep article semantics separate from visual instructions.

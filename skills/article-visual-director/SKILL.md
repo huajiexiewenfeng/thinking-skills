@@ -164,6 +164,8 @@ Read [references/style-registry.json](references/style-registry.json), locate th
 
 The selected golden set must have `status=approved`, explicit user approval, and exactly three verified anchors: cover, concept, and diagram style anchor. If it is missing or still `candidate`, stop article production with `golden_set_pending`. Explain that this visual mode has no approved permanent style anchors yet and enter the golden-production flow only after the user agrees. Golden-production order is cover, concept, then architecture/process style anchor; candidates become golden only after explicit user approval and release validation.
 
+In golden production for a registered candidate profile, compile the first cover from that profile's Visual DNA and cover role contract without an image reference. After explicit cover approval, the concept may use exactly that same-profile approved candidate as a temporary `bootstrap_reference`; after concept approval, the diagram may use exactly the latest same-profile approved candidate. Every bootstrap reference has `semantic_authority=false`. Never bootstrap from another profile, an article anchor, or unapproved candidate content.
+
 For Style Pack v3, release production additionally requires `prompt_compile_status`, `cross_topic_probe_status`, and `neighbor_discrimination_status` to be `passed`. Otherwise stop with `style_pack_not_qualified`; do not bypass the pack with a legacy or free-form prompt.
 
 Keep three responsibilities separate in the plan and Manifest v2:

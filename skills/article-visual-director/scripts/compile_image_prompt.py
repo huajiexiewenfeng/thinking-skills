@@ -245,25 +245,49 @@ def lint_prompt_ir(prompt_ir: dict[str, Any]) -> list[dict[str, str]]:
     reference = prompt_ir.get("reference_contract")
     if isinstance(reference, dict):
         required = reference.get("required_references")
-        same_role_goldens = (
-            [
-                item
-                for item in required
-                if isinstance(item, dict)
-                and item.get("kind") == "golden"
-                and item.get("role") == role
-            ]
-            if isinstance(required, list)
-            else []
-        )
-        if len(same_role_goldens) != 1:
-            errors.append(
-                _error(
-                    "SERIES_CONTINUITY_DRIFT",
-                    "reference_contract.required_references",
-                    "Exactly one same-role golden reference is required.",
+        if reference.get("bootstrap_reference") is True:
+            bootstrap_references = required if isinstance(required, list) else []
+            if (
+                prompt_ir.get("profile_status") != "candidate"
+                or reference.get("semantic_authority") is not False
+                or (role != "cover" and len(bootstrap_references) != 1)
+                or (role == "cover" and bootstrap_references)
+                or any(
+                    not isinstance(item, dict)
+                    or item.get("kind") != "bootstrap_candidate"
+                    or item.get("profile_id") != prompt_ir.get("profile_id")
+                    or item.get("approval") != "approved"
+                    or item.get("semantic_authority") is not False
+                    for item in bootstrap_references
                 )
+            ):
+                errors.append(
+                    _error(
+                        "SERIES_CONTINUITY_DRIFT",
+                        "reference_contract.required_references",
+                        "Candidate bootstrap references must be same-profile, approved, non-semantic, and stage-appropriate.",
+                    )
+                )
+        else:
+            same_role_goldens = (
+                [
+                    item
+                    for item in required
+                    if isinstance(item, dict)
+                    and item.get("kind") == "golden"
+                    and item.get("role") == role
+                ]
+                if isinstance(required, list)
+                else []
             )
+            if len(same_role_goldens) != 1:
+                errors.append(
+                    _error(
+                        "SERIES_CONTINUITY_DRIFT",
+                        "reference_contract.required_references",
+                        "Exactly one same-role golden reference is required.",
+                    )
+                )
         must_not_copy = reference.get("must_not_copy")
         if not isinstance(must_not_copy, list) or not REQUIRED_NON_COPY_FIELDS.issubset(
             must_not_copy
@@ -329,12 +353,96 @@ def compile_prompt_ir(skill_root: Path, request: dict[str, Any]) -> dict[str, An
     role_reference = role_references[0]
     golden_id = role_reference.get("golden_asset_id")
     requested_goldens = request.get("golden_reference_ids")
-    if requested_goldens != [golden_id]:
-        _raise_compile_error(
-            "SERIES_CONTINUITY_DRIFT",
-            "golden_reference_ids",
-            "The request must attach only the registered same-role golden reference.",
-        )
+    golden_production = request.get("golden_production")
+    bootstrap_mode = isinstance(golden_production, dict)
+    required_references: list[dict[str, Any]]
+    if bootstrap_mode:
+        if profile.get("style_pack_status") != "candidate":
+            _raise_compile_error(
+                "SERIES_CONTINUITY_DRIFT",
+                "golden_production",
+                "Bootstrap generation is restricted to candidate Style Packs.",
+            )
+        if golden_production.get("stage") != role:
+            _raise_compile_error(
+                "ROLE_LAYOUT_DRIFT",
+                "golden_production.stage",
+                "Golden-production stage must match the requested asset role.",
+            )
+        if golden_production.get("semantic_authority") is not False:
+            _raise_compile_error(
+                "GOLDEN_CONTENT_COPY",
+                "golden_production.semantic_authority",
+                "Bootstrap references must never provide semantic authority.",
+            )
+        if requested_goldens != []:
+            _raise_compile_error(
+                "SERIES_CONTINUITY_DRIFT",
+                "golden_reference_ids",
+                "Candidate bootstrap generation cannot claim a permanent golden reference.",
+            )
+        bootstrap_references = golden_production.get("bootstrap_references")
+        if not isinstance(bootstrap_references, list):
+            _raise_compile_error(
+                "SERIES_CONTINUITY_DRIFT",
+                "golden_production.bootstrap_references",
+                "bootstrap_references must be an explicit array.",
+            )
+        if role == "cover" and bootstrap_references:
+            _raise_compile_error(
+                "SERIES_CONTINUITY_DRIFT",
+                "golden_production.bootstrap_references",
+                "The first cover candidate must bootstrap from Visual DNA without another style reference.",
+            )
+        if role != "cover" and len(bootstrap_references) != 1:
+            _raise_compile_error(
+                "SERIES_CONTINUITY_DRIFT",
+                "golden_production.bootstrap_references",
+                "Concept and diagram candidates require exactly one previously approved same-profile candidate.",
+            )
+        required_references = []
+        for reference in bootstrap_references:
+            if not isinstance(reference, dict):
+                _raise_compile_error(
+                    "STYLE_IDENTITY_DRIFT",
+                    "golden_production.bootstrap_references",
+                    "Every bootstrap reference must be an object.",
+                )
+            if reference.get("profile_id") != profile.get("profile_id"):
+                _raise_compile_error(
+                    "STYLE_IDENTITY_DRIFT",
+                    "golden_production.bootstrap_references.profile_id",
+                    "Bootstrap references cannot cross visual profiles.",
+                )
+            if (
+                not isinstance(reference.get("id"), str)
+                or not reference["id"].strip()
+                or reference.get("role") not in VALID_ASSET_ROLES
+                or reference.get("approval") != "approved"
+                or reference.get("semantic_authority") is not False
+            ):
+                _raise_compile_error(
+                    "SERIES_CONTINUITY_DRIFT",
+                    "golden_production.bootstrap_references",
+                    "Bootstrap references must be approved same-profile candidates with semantic_authority=false.",
+                )
+            required_references.append({
+                "id": reference["id"],
+                "kind": "bootstrap_candidate",
+                "profile_id": reference["profile_id"],
+                "role": reference["role"],
+                "approval": "approved",
+                "bootstrap_reference": True,
+                "semantic_authority": False,
+            })
+    else:
+        if requested_goldens != [golden_id]:
+            _raise_compile_error(
+                "SERIES_CONTINUITY_DRIFT",
+                "golden_reference_ids",
+                "The request must attach only the registered same-role golden reference.",
+            )
+        required_references = [{"id": golden_id, "kind": "golden", "role": role}]
 
     semantics = request.get("semantics")
     if not isinstance(semantics, dict):
@@ -362,14 +470,20 @@ def compile_prompt_ir(skill_root: Path, request: dict[str, Any]) -> dict[str, An
             "article_anchor_reference_ids",
             "Article anchor reference IDs must be an array of IDs.",
         )
+    if bootstrap_mode and anchors:
+        _raise_compile_error(
+            "SERIES_CONTINUITY_DRIFT",
+            "article_anchor_reference_ids",
+            "Golden candidate bootstrap cannot use an article style anchor.",
+        )
 
-    required_references = [{"id": golden_id, "kind": "golden", "role": role}]
     required_references.extend(
         {"id": anchor, "kind": "article_anchor", "role": role}
         for anchor in anchors
     )
     prompt_ir = {
         "profile_id": profile["profile_id"],
+        "profile_status": profile.get("style_pack_status", "approved"),
         "style_pack_version": STYLE_PACK_VERSION,
         "adapter_id": "gpt-image",
         "adapter_version": 1,
@@ -392,6 +506,9 @@ def compile_prompt_ir(skill_root: Path, request: dict[str, Any]) -> dict[str, An
         "visual_dna": visual_dna,
         "reference_contract": {
             "required_references": required_references,
+            "bootstrap_reference": bootstrap_mode,
+            "semantic_authority": False,
+            "target_golden_asset_id": golden_id,
             "must_preserve": role_reference.get("must_preserve"),
             "may_vary": role_reference.get("may_vary"),
             "must_not_copy": role_reference.get("must_not_copy"),

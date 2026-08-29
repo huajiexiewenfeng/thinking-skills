@@ -45,8 +45,18 @@ The default permanent reference is the same-role golden asset. An approved artic
 
 The compiler merges, but never weakens, the selected golden reference matrix. Golden labels, numbers, nodes, topology, and example story remain blocked.
 
+### Candidate Golden Bootstrap
+
+Formal article production always requires the permanent same-role golden. A profile whose registry entry has `style_pack_status: candidate` may compile its own golden candidates through `golden_production` without pretending that a permanent golden already exists.
+
+- The first cover candidate uses no image reference and derives identity from Visual DNA plus the cover role contract.
+- A concept or diagram candidate uses exactly one previously approved candidate from the same profile as a temporary reference.
+- Every temporary reference is rendered with `bootstrap_reference: true`, `approval: approved`, and `semantic_authority: false`.
+- Bootstrap never accepts a cross-profile reference, article anchor, permanent `golden_reference_ids`, or example content as semantic evidence.
+- After three permanent role goldens are approved, normal same-role reference rules replace bootstrap.
+
 ## Lint Rules
 
-Generation stops when any required block or field is missing; profile or role identity conflicts; the same-role golden reference is absent; inheritance constraints are vague; a diagram lacks a frozen graph; exact title text is incorrectly delegated to image generation; a publication theme mutates Visual DNA; platform aspect ratio, occupancy, or crop rules are missing; or an undeclared cross-profile/cross-role reference appears.
+Generation stops when any required block or field is missing; profile or role identity conflicts; the same-role golden reference is absent outside an explicit candidate bootstrap; inheritance constraints are vague; a diagram lacks a frozen graph; exact title text is incorrectly delegated to image generation; a publication theme mutates Visual DNA; platform aspect ratio, occupancy, or crop rules are missing; or an undeclared cross-profile/cross-role reference appears.
 
 Lint failures use the shared drift codes and never fall back to a free-form prompt.

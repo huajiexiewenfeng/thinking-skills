@@ -1,0 +1,75 @@
+{
+  "profile_id": "technical-editorial-minimal",
+  "style_pack_version": 3,
+  "roles": {
+    "cover": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one dominant geometric thesis across sixty to eighty percent of the wide canvas",
+        "preserve an explicit deterministic title-safe zone and large negative-space hierarchy",
+        "preserve off-white ink-blue clear-blue and at most one warm semantic exception"
+      ],
+      "may_vary": [
+        "the focal metaphor may be abstract literal comparative or boundary-based",
+        "the canvas may invert to deep ink-blue while retaining the same restrained palette roles",
+        "article-specific geometry may vary while remaining flat crisp and editorial"
+      ],
+      "must_not_include": [
+        "do not add readable generated labels title copy dashboards or interface chrome",
+        "do not introduce hand-drawn texture glossy depth decorative circuitry or stock-photo people",
+        "do not allow emerald or multiple accent colors to dominate the hierarchy"
+      ],
+      "acceptance_checks": [
+        "the main thesis remains understandable at thumbnail size",
+        "the deterministic title-safe zone remains visibly usable",
+        "the result reads as a quiet technical editorial cover rather than a dashboard"
+      ]
+    },
+    "concept": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one causal relationship expressed through two to four crisp objects",
+        "preserve spatial grouping without a pile of cards or decorative containers",
+        "preserve restrained ink-blue blue warm and neutral semantic roles"
+      ],
+      "may_vary": [
+        "the causal mechanism may use balance transfer narrowing separation or comparison",
+        "object scale and alignment may vary on the twenty-four-pixel grid",
+        "one warm object may identify the article-specific exception or pressure"
+      ],
+      "must_not_include": [
+        "do not turn the mechanism into a multi-widget dashboard or process-card row",
+        "do not add hand-drawn marks people atmospheric scenery or ornamental detail",
+        "do not invent technical stages labels numbers or unsupported relationships"
+      ],
+      "acceptance_checks": [
+        "exactly one causal relationship dominates the concept illustration",
+        "two to four objects remain crisp subordinate and easy to scan",
+        "negative space performs the grouping instead of decorative frames"
+      ]
+    },
+    "diagram": {
+      "stability": "strict",
+      "must_preserve": [
+        "preserve the frozen graph exactly including every node edge direction group and blocked relationship",
+        "preserve straight or single-elbow three-pixel arrows and a strict twenty-four-pixel grid",
+        "preserve flat eight-pixel nodes quiet captions and restrained semantic color roles"
+      ],
+      "may_vary": [
+        "node count labels and group sizes may vary only as the frozen graph requires",
+        "the one warm exception path may appear only when supported by article semantics",
+        "neutral node proportions may adapt while alignment and spacing remain strict"
+      ],
+      "must_not_include": [
+        "no people faces hands characters instructors narrators mascots or stock imagery",
+        "do not invent omit reverse merge or reroute any frozen semantic relationship",
+        "do not copy golden labels numbers nodes topology boundaries or example story"
+      ],
+      "acceptance_checks": [
+        "every visible node edge direction boundary and exception matches the frozen graph",
+        "the diagram remains human-free flat crisp and free of dashboard chrome",
+        "the palette contains only ink-blue one blue signal neutral gray and one supported warm exception"
+      ]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "profile_id": "technical-editorial-minimal",
+  "style_pack_version": 3,
+  "surface": {
+    "background": "off-white matte editorial surface with no visible decorative pattern",
+    "alternate": "deep ink-blue canvas is reserved for an occasional inverted cover",
+    "finish": "quiet low-texture paper or matte print finish"
+  },
+  "palette_roles": {
+    "foundation": "ink-blue carries structure boundaries and the dominant editorial weight",
+    "primary_signal": "one restrained clear blue marks the main signal or causal path",
+    "human_or_exception": "at most one warm orange accent marks the exception pressure or human factor",
+    "neutral": "cool pale gray supports subordinate objects without creating another accent",
+    "background": "off-white remains the dominant field and preserves negative space"
+  },
+  "line_language": {
+    "primary": "uniform crisp three-pixel edges with mechanically consistent alignment",
+    "arrows": "straight or single-elbow arrows without glow texture or sketch wobble",
+    "boundaries": "flat precise boundaries with no ornamental circuitry or dashboard chrome"
+  },
+  "material_and_texture": {
+    "surface": "off-white matte editorial paper with extremely subtle texture",
+    "objects": "flat opaque geometry without glass gloss or volumetric material",
+    "depth": "no depth except an optional restrained two-pixel offset shadow"
+  },
+  "geometry": {
+    "grid": "flat twenty-four-pixel editorial grid with disciplined alignment",
+    "nodes": "simple geometric objects with eight-pixel corners and crisp silhouettes",
+    "grouping": "space rather than cards or frames groups two to four supporting objects",
+    "focal_rule": "one dominant metaphor or comparison occupies the hierarchy"
+  },
+  "depth_and_camera": {
+    "mode": "front orthogonal flat editorial composition",
+    "perspective": "no isometric perspective three-dimensional extrusion or cinematic camera"
+  },
+  "typography": {
+    "voice": "modern sans-serif hierarchy with quiet captions",
+    "exact_text": "titles labels and technical copy are applied deterministically",
+    "generated_text": "image generation keeps supporting shapes label-free and reserves a title-safe zone"
+  },
+  "density_and_spacing": {
+    "density": "low-to-medium object density with one obvious focal relationship",
+    "spacing": "large deliberate negative space and ninety-six-pixel outer breathing zones",
+    "rhythm": "subordinate objects remain quiet and never compete with the focal thesis"
+  },
+  "required_traits": [
+    "off-white matte field and large deliberate negative space dominate the composition",
+    "ink-blue structure and one clear blue signal establish the editorial hierarchy",
+    "uniform crisp geometry remains flat aligned and mechanically controlled",
+    "one focal metaphor or comparison is readable at thumbnail size",
+    "no more than one warm semantic exception appears in the composition"
+  ],
+  "forbidden_traits": [
+    "no hand-drawn strokes watercolor washes marker texture or playful doodles",
+    "no dashboard chrome card pile tiny interface text or ornamental frame system",
+    "no glossy three-dimensional module glass surface glow or decorative circuitry",
+    "no stock-photo people crowd scene or multiple competing visual accents",
+    "no emerald-led hierarchy because dominant emerald belongs to Style 2"
+  ],
+  "neighbor_boundaries": [
+    {
+      "profile_id": "white-green-editorial-minimal",
+      "difference": "Style 1 is neutral off-white and ink-blue with one blue signal and one warm exception; Style 2 is emerald-led wider and more active across the canvas"
+    }
+  ]
+}

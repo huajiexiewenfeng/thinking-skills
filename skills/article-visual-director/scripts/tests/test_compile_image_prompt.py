@@ -167,6 +167,60 @@ class CompileImagePromptTests(unittest.TestCase):
         errors = lint_prompt_ir(ir)
         self.assertTrue(any(error["code"] == "PROMPT_BLOCK_MISSING" for error in errors))
 
+    def test_candidate_cover_can_bootstrap_without_cross_profile_reference(self) -> None:
+        registry_path = self.skill_root / "references" / "style-registry.json"
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        registry["profiles"][0]["style_pack_status"] = "candidate"
+        registry_path.write_text(json.dumps(registry), encoding="utf-8")
+        request = self.valid_request("cover")
+        request["golden_reference_ids"] = []
+        request["golden_production"] = {
+            "stage": "cover",
+            "bootstrap_references": [],
+            "semantic_authority": False,
+        }
+
+        prompt_ir = compile_prompt_ir(self.skill_root, request)
+
+        reference = prompt_ir["reference_contract"]
+        self.assertTrue(reference["bootstrap_reference"])
+        self.assertFalse(reference["semantic_authority"])
+        self.assertEqual([], reference["required_references"])
+
+    def test_approved_pack_cannot_skip_same_role_golden(self) -> None:
+        request = self.valid_request("cover")
+        request["golden_reference_ids"] = []
+        request["golden_production"] = {
+            "stage": "cover",
+            "bootstrap_references": [],
+            "semantic_authority": False,
+        }
+
+        with self.assertRaisesRegex(PromptCompileError, "SERIES_CONTINUITY_DRIFT"):
+            compile_prompt_ir(self.skill_root, request)
+
+    def test_candidate_bootstrap_reference_must_be_same_profile_and_approved(self) -> None:
+        registry_path = self.skill_root / "references" / "style-registry.json"
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        registry["profiles"][0]["style_pack_status"] = "candidate"
+        registry_path.write_text(json.dumps(registry), encoding="utf-8")
+        request = self.valid_request("concept")
+        request["golden_reference_ids"] = []
+        request["golden_production"] = {
+            "stage": "concept",
+            "bootstrap_references": [{
+                "id": "other-cover",
+                "profile_id": "other-profile",
+                "role": "cover",
+                "approval": "approved",
+                "semantic_authority": False,
+            }],
+            "semantic_authority": False,
+        }
+
+        with self.assertRaisesRegex(PromptCompileError, "STYLE_IDENTITY_DRIFT"):
+            compile_prompt_ir(self.skill_root, request)
+
 
 class Style8ProbeSuiteTests(unittest.TestCase):
     def test_all_style_8_probes_compile_and_lint(self) -> None:

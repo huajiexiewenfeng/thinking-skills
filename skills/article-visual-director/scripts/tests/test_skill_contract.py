@@ -241,11 +241,14 @@ class SkillContractTests(unittest.TestCase):
                 "TEXT POLICY",
                 "NEGATIVE CONSTRAINTS",
                 "ACCEPTANCE CHECK",
+                "bootstrap_reference",
+                "semantic_authority",
             ],
             "references/adapters/gpt-image.md": [
                 "same-role golden",
                 "must_preserve",
                 "must_not_copy",
+                "bootstrap candidate",
             ],
         }
         for relative, phrases in required.items():
@@ -292,6 +295,36 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("never delete a failing block", skill_text)
         self.assertIn("PROMPT_BLOCK_MISSING", cases_text)
         self.assertIn("REFERENCE CONTRACT", cases_text)
+
+    def test_style_1_v3_candidate_preserves_editorial_minimal_identity(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "technical-editorial-minimal"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "off-white matte",
+            "ink-blue",
+            "uniform crisp",
+            "negative space",
+            "one warm",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["roles"]["cover"]["stability"])
+        self.assertEqual("strict", roles["roles"]["diagram"]["stability"])
+        self.assertIn("emerald", joined)
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
 
 
 if __name__ == "__main__":
