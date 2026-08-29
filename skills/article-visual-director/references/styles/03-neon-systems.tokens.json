@@ -1,0 +1,14 @@
+{
+  "profile_id": "neon-systems",
+  "protocol_version": 2,
+  "surface": {"background": "#07111F", "alternate": "#0E2238", "finish": "dark-technical"},
+  "palette": {"ink": "#D8F7FF", "primary": "#27D8FF", "accent": "#B8FF3D", "muted": "#18334D", "saturation": "controlled-neon"},
+  "line": {"primary": "#66E3FF", "width_px": 3, "weight_class": "luminous-precise", "behavior": "controlled-emission"},
+  "typography": {"family_zh": "Microsoft YaHei, PingFang SC, sans-serif", "family_en": "IBM Plex Mono, Consolas, monospace", "label_treatment": "dark-module-caption"},
+  "geometry": {"corner_radius_px": 10, "shape_language": "modular-dark-system", "label_style": "signal-tag", "camera": "front-layered"},
+  "depth": {"mode": "layered-dark", "shadow": "deep-soft", "glow": "controlled-6px"},
+  "texture": {"pattern": "faint-grid", "intensity": "low"},
+  "spacing": {"grid_px": 24, "outer_margin_px": 88, "node_gap_px": 44, "density": "medium"},
+  "semantic_color_roles": {"base_module": "#18334D", "signal_path": "#27D8FF", "active_route": "#B8FF3D", "label": "#D8F7FF"},
+  "forbidden_traits": ["cyberpunk city", "HUD text", "rainbow neon", "uncontrolled magenta", "random code"]
+}

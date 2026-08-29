@@ -32,9 +32,53 @@ EXPECTED_PROFILES = [
         "手写系统解释图",
     ),
 ]
+REQUIRED_PROTOCOL_HEADINGS = [
+    "Identity",
+    "Use When",
+    "Do Not Use When",
+    "Mode Boundary",
+    "Required Visual Traits",
+    "Allowed Variation",
+    "Forbidden Traits",
+    "Cover Contract",
+    "Concept Contract",
+    "Deterministic Diagram Contract",
+    "Imagegen Prompt Contract",
+    "Reference Use Contract",
+    "Validation Rubric",
+]
+REQUIRED_TOKEN_KEYS = {
+    "profile_id",
+    "protocol_version",
+    "surface",
+    "palette",
+    "line",
+    "typography",
+    "geometry",
+    "depth",
+    "texture",
+    "spacing",
+    "semantic_color_roles",
+    "forbidden_traits",
+}
 
 
 class SkillContractTests(unittest.TestCase):
+    def load_registry(self) -> dict:
+        return json.loads(
+            (SKILL_ROOT / "references" / "style-registry.json").read_text(
+                encoding="utf-8"
+            )
+        )
+
+    def load_tokens(self, profile_id: str) -> dict:
+        registry = self.load_registry()
+        item = next(
+            profile for profile in registry["profiles"]
+            if profile["profile_id"] == profile_id
+        )
+        return json.loads((SKILL_ROOT / item["tokens_path"]).read_text(encoding="utf-8"))
+
     def test_registry_locks_profile_identity_and_declared_paths(self) -> None:
         registry = json.loads(
             (SKILL_ROOT / "references" / "style-registry.json").read_text(
@@ -101,6 +145,36 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("`x-article`", skill_text)
         self.assertIn("## X Articles", platform_text)
         self.assertIn("`x-article`", schema_text)
+
+    def test_every_registered_protocol_and_token_file_satisfies_schema(self) -> None:
+        for item in self.load_registry()["profiles"]:
+            with self.subTest(profile_id=item["profile_id"]):
+                protocol_path = SKILL_ROOT / item["protocol_path"]
+                tokens_path = SKILL_ROOT / item["tokens_path"]
+                self.assertTrue(protocol_path.is_file())
+                self.assertTrue(tokens_path.is_file())
+
+                protocol_text = protocol_path.read_text(encoding="utf-8")
+                headings = re.findall(r"^## (.+)$", protocol_text, flags=re.MULTILINE)
+                self.assertEqual(REQUIRED_PROTOCOL_HEADINGS, headings)
+
+                tokens = json.loads(tokens_path.read_text(encoding="utf-8"))
+                self.assertEqual(REQUIRED_TOKEN_KEYS, set(tokens))
+                self.assertEqual(item["profile_id"], tokens["profile_id"])
+                self.assertEqual(item["protocol_version"], tokens["protocol_version"])
+
+    def test_soft_sketch_and_handwritten_explainer_remain_visibly_distinct(self) -> None:
+        soft = self.load_tokens("soft-technical-sketch")
+        handwritten = self.load_tokens("handwritten-systems-explainer")
+
+        self.assertEqual("low", soft["palette"]["saturation"])
+        self.assertEqual("high-accent", handwritten["palette"]["saturation"])
+        self.assertEqual("fine-soft", soft["line"]["weight_class"])
+        self.assertEqual("bold-variable", handwritten["line"]["weight_class"])
+        self.assertNotEqual(
+            soft["geometry"]["label_style"],
+            handwritten["geometry"]["label_style"],
+        )
 
 
 if __name__ == "__main__":

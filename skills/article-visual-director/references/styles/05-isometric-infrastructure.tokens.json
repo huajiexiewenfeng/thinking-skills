@@ -1,0 +1,14 @@
+{
+  "profile_id": "isometric-infrastructure",
+  "protocol_version": 2,
+  "surface": {"background": "#EEF2F4", "alternate": "#DDE5E9", "finish": "matte-ground-plane"},
+  "palette": {"ink": "#243746", "primary": "#4B8FD8", "accent": "#E8A43A", "muted": "#AABAC5", "saturation": "moderate"},
+  "line": {"primary": "#243746", "width_px": 3, "weight_class": "crisp-medium", "behavior": "consistent-isometric-edge"},
+  "typography": {"family_zh": "Microsoft YaHei, PingFang SC, sans-serif", "family_en": "Inter, Arial, sans-serif", "label_treatment": "grounded-caption"},
+  "geometry": {"corner_radius_px": 8, "shape_language": "isometric-modular", "label_style": "platform-plaque", "camera": "isometric-30deg"},
+  "depth": {"mode": "isometric-30deg", "shadow": "soft-directional", "glow": "none"},
+  "texture": {"pattern": "matte-material", "intensity": "low"},
+  "spacing": {"grid_px": 32, "outer_margin_px": 96, "node_gap_px": 56, "density": "medium-spatial"},
+  "semantic_color_roles": {"module": "#4B8FD8", "active_transition": "#E8A43A", "edge": "#243746", "inactive": "#AABAC5"},
+  "forbidden_traits": ["random perspective", "miniature server clutter", "unsupported topology", "vendor logos", "mixed camera angles"]
+}

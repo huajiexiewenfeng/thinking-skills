@@ -1,0 +1,14 @@
+{
+  "profile_id": "handwritten-systems-explainer",
+  "protocol_version": 2,
+  "surface": {"background": "#F4F1E6", "alternate": "#ECE7D7", "finish": "warm-notebook-paper"},
+  "palette": {"ink": "#171717", "orange": "#F59E0B", "blue": "#66AEE8", "green": "#58B978", "red": "#D75A4A", "saturation": "high-accent"},
+  "line": {"primary": "#171717", "width_px": 4, "weight_class": "bold-variable", "behavior": "imperfect-confident-ink"},
+  "typography": {"family_zh": "KaiTi, STKaiti, serif", "family_en": "Segoe Print, Comic Sans MS, cursive", "label_treatment": "deterministic-handwritten"},
+  "geometry": {"corner_radius_px": 12, "shape_language": "rounded-box-diamond-arrow", "label_style": "black-tab", "camera": "front-notebook"},
+  "depth": {"mode": "flat-notebook", "shadow": "none", "glow": "none"},
+  "texture": {"pattern": "subtle-dot-paper", "intensity": "low"},
+  "spacing": {"grid_px": 24, "outer_margin_px": 88, "node_gap_px": 44, "density": "low-medium"},
+  "semantic_color_roles": {"boundary_and_text": "#171717", "pressure_or_payload": "#F59E0B", "reference_or_context": "#66AEE8", "durable_or_available": "#58B978", "risk_or_failure": "#D75A4A"},
+  "forbidden_traits": ["pastel watercolor", "corporate flowchart", "three-dimensional prism", "page-theme green takeover", "thin gray lines", "decorative doodles"]
+}
