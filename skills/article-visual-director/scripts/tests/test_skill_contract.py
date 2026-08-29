@@ -176,6 +176,16 @@ class SkillContractTests(unittest.TestCase):
             handwritten["geometry"]["label_style"],
         )
 
+    def test_workflow_loads_protocol_and_separates_style_responsibilities(self) -> None:
+        skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn("load selected protocol and approved golden set", skill_text)
+        self.assertIn("publication_theme", skill_text)
+        self.assertIn("visual_profile", skill_text)
+        self.assertIn("asset_semantics", skill_text)
+        self.assertIn("any imagegen asset", skill_text)
+        self.assertNotIn("when 3+ imagegen assets", skill_text)
+
 
 if __name__ == "__main__":
     unittest.main()

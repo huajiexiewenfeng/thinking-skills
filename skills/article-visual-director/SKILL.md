@@ -60,18 +60,20 @@ For a standalone technical diagram unrelated to an article, use the environment'
 
 ```text
 inspect article
-  -> present all eight bilingual visual submodes
+  -> present the existing eight bilingual modes
   -> wait for explicit style selection
+  -> load selected protocol and approved golden set
+  -> separate publication theme, visual profile, and asset semantics
   -> propose complete visual plan
   -> wait for plan approval
-  -> when 3+ imagegen assets: generate one style anchor
-  -> wait for style-anchor approval
+  -> evaluate article-style-anchor requirement
+  -> generate and approve the anchor when required
   -> render remaining assets
-  -> validate every asset
+  -> validate semantics, visual contract, and series continuity
   -> create a new illustrated Markdown copy
 ```
 
-Do not collapse these gates. A user asking to "do it all" authorizes the workflow, not silent approval of unseen prompts or an unseen style anchor.
+Do not collapse these gates. A user asking to "do it all" authorizes the workflow, not silent approval of unseen prompts, an unapproved permanent golden set, or an unseen article anchor.
 
 ## Mandatory Style Selection Gate
 
@@ -157,17 +159,26 @@ When a cross-platform article has separate cover exports, record asset-level `pl
 
 ### 4. Establish the selected visual direction
 
-Read the selected profile in [references/style-catalog.md](references/style-catalog.md). Explain its fit in terms of audience, article tone, technical density, and platform—not taste alone. Continue only with that selected profile.
+Read [references/style-registry.json](references/style-registry.json), locate the exact selected profile, then read only that entry's protocol, token file, and golden-set metadata. Do not load or blend the other seven protocols. Explain the selected mode's fit in terms of audience, article tone, technical density, and platform—not taste alone.
 
-Create one reusable style fingerprint containing:
+The selected golden set must have `status=approved`, explicit user approval, and exactly three verified anchors: cover, concept, and deterministic diagram. If it is missing or still `candidate`, stop article production with `golden_set_pending`. Explain that this visual mode has no approved permanent style anchors yet and enter the golden-production flow only after the user agrees. Golden-production order is cover, concept, then deterministic comparison diagram; candidates become golden only after explicit user approval and release validation.
 
-- palette;
-- lighting and contrast;
-- geometry and line language;
-- material or texture;
-- camera/perspective;
-- negative-space rule;
-- exclusions.
+Keep three responsibilities separate in the plan and Manifest v2:
+
+- `publication_theme`: page/channel context such as green, dark, or festive; it may influence deterministic page/title layers only;
+- `visual_profile`: the selected registered protocol, permanent golden references, and token invariants;
+- `asset_semantics`: the article-specific entities, relations, numbers, metaphors, reading order, and claims shown by each asset.
+
+A page theme must not recolor the profile palette, replace its line language, alter its geometry/depth, or turn Style 8 into a green corporate flowchart. Any approved theme override must be listed explicitly in the visual plan and `style.approved_overrides` of Manifest v2. With `theme_override_policy=title-layer-only`, only deterministic `title.*` fields may be overridden.
+
+The selected protocol—not a free-form fingerprint—is the normative source for:
+
+- palette and semantic color roles;
+- lighting, contrast, and depth;
+- geometry, line language, labels, and arrows;
+- material, surface, and texture;
+- camera/perspective and spacing;
+- required traits, allowed variation, and forbidden traits.
 
 For wide covers, also record two separate composition contracts:
 
@@ -182,7 +193,7 @@ Read [references/platform-profiles.md](references/platform-profiles.md) before s
 
 Before generating anything, present:
 
-1. visual thesis and recommended style;
+1. visual thesis, selected `visual_profile`, and separate `publication_theme`;
 2. visual rhythm map;
 3. one brief per asset;
 4. exact image-generation prompt or deterministic diagram specification;
@@ -197,12 +208,13 @@ Each image-generation prompt must specify:
 - communicative objective;
 - subject and visual metaphor;
 - composition and hierarchy;
-- style fingerprint;
-- palette and lighting;
+- selected protocol and approved golden-reference IDs;
+- required line/material behavior and semantic palette roles from the protocol;
 - aspect ratio and platform safe zone;
 - full-width occupancy target and crop-survival contract for wide covers;
 - exclusions such as no logos, no watermarks, and no UI gibberish; use `no text` for an image-generated cover background, then deliver approved cover wording through the deterministic layer;
-- continuity cues shared with the rest of the article.
+- exact forbidden traits from the selected protocol;
+- continuity cues shared with the permanent golden set and planned article anchor.
 
 Each deterministic diagram specification must list:
 
@@ -213,7 +225,7 @@ Each deterministic diagram specification must list:
 - confirmed source for each non-obvious relationship;
 - explicitly blocked unconfirmed relationships.
 
-Create the manifest described in [references/manifest-schema.md](references/manifest-schema.md). Treat it as the source of truth. Set approvals to `pending` until the user confirms the plan. After confirmation, freeze prompts/specifications and set the relevant approvals to `approved`.
+Create Manifest v2 as described in [references/manifest-schema.md](references/manifest-schema.md). Treat it as the source of truth. Record the selected profile/version, Skill-relative protocol and golden-set paths, their current SHA-256 values, the three golden reference IDs, `publication_theme`, override policy, article-specific references, and per-asset `style_validation`. Set approvals to `pending` until the user confirms the plan. After confirmation, freeze prompts/specifications and set the relevant approvals to `approved`.
 
 End the planning response with one compact approval request. Do not generate images in that response.
 
@@ -221,21 +233,28 @@ End the planning response with one compact approval request. Do not generate ima
 
 For raster covers and concept illustrations, load and follow the runtime's image-generation skill. Use the approved prompt verbatim except for tool-required syntax. Record any necessary variation back into the manifest before using it.
 
-When the plan contains three or more `imagegen` assets:
+An article style anchor is required for any imagegen asset, any article-specific reference image, or a plan containing more than one deterministic asset. The only `not_required` case is exactly one deterministic asset, no article references, and current matching protocol/golden versions and hashes.
+
+When an article anchor is required:
 
 1. render one representative style anchor, normally the cover or strongest concept image;
 2. show it to the user;
 3. wait for approval or correction;
-4. set `approvals.style_anchor` to `approved`;
-5. use the approved image as the visual reference for the remaining raster assets.
+4. record its asset ID and set `approvals.article_style_anchor` to `approved`;
+5. use the approved article anchor together with the permanent golden references for the remaining assets.
 
-For deterministic assets, use an available Mermaid, Graphviz, SVG, HTML, or visualization renderer. Export a platform-compatible PNG when SVG support is uncertain. Preserve the editable source next to the export when practical.
+Every remaining imagegen asset must receive the approved golden cover/concept/diagram references that are relevant to its semantic job plus the article anchor. The prompt states which visible properties are invariant: surface, palette roles, stroke/material behavior, geometry, depth, spacing, and forbidden traits. Do not rely on a profile name alone.
+
+For deterministic assets, load the matching token JSON and use an available SVG, HTML, Mermaid, Graphviz, or visualization renderer. Map semantic roles to tokens rather than sampling colors by eye. Export a platform-compatible PNG when SVG support is uncertain, preserve the editable source, and visually compare the result with both the permanent diagram anchor and the approved article anchor.
 
 ### 7. Validate every artifact
 
 Inspect each rendered artifact before integration. Mark `validation_status=passed` only if it satisfies all applicable checks:
 
-- matches the approved brief and style fingerprint;
+- matches the approved brief, selected protocol, cited golden references, and article anchor;
+- passes every required visual trait and contains none of the protocol's forbidden traits;
+- preserves `visual_profile` invariants without `publication_theme` bleed;
+- remains visibly continuous with earlier assets in the series across surface, color roles, line/material behavior, geometry, depth, and spacing;
 - contains no invented technical relationships;
 - labels, arrows, numbers, and boundaries are correct;
 - no garbled text, watermark, accidental logo, or obvious generation defect;
@@ -247,7 +266,7 @@ Inspect each rendered artifact before integration. Mark `validation_status=passe
 - body illustrations remain legible at article column width;
 - alt text explains the information or purpose, not merely the appearance.
 
-If an asset fails, regenerate or revise it and validate again. Do not insert a failed asset.
+Record the result in Manifest v2 `style_validation`: `status`, cited golden IDs, required-trait result, forbidden traits found, theme bleed, series continuity, and review notes. If an asset fails, regenerate or revise only that asset and validate again. Do not insert a failed asset.
 
 ### 8. Integrate non-destructively
 
@@ -292,6 +311,8 @@ Report:
 
 Stop and explain the blocking evidence when:
 
+- the selected profile's golden set is missing, candidate, hash-drifted, or not explicitly user-approved (`golden_set_pending`);
+- the stored protocol or golden-set identity/version/hash no longer matches the current Skill contract;
 - the article changed after plan approval;
 - an exact heading or section context no longer matches;
 - a diagram depends on an unconfirmed relationship;
