@@ -2,6 +2,15 @@
   "golden_set_version": 1,
   "profile_id": "handwritten-systems-explainer",
   "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "48b8f28ef43e1cfd01cf483969c66c54985560ba86b8e53c6de298db9687a6f1",
+  "role_contracts_sha256": "1734787b3e5c3bdc6adbcb14e08bf58d7e2628d63f6ebb6a7923a59843f8d0a0",
+  "reference_matrix_sha256": "2e8bea4e99b5593202943507ec50d32fb07b95642f465b2706b84c3742325b56",
+  "qualification": {
+    "prompt_compile_status": "passed",
+    "cross_topic_probe_status": "pending",
+    "neighbor_discrimination_status": "pending"
+  },
   "status": "approved",
   "user_approval": {
     "status": "approved",

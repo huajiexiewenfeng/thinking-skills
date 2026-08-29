@@ -1,0 +1,75 @@
+{
+  "profile_id": "handwritten-systems-explainer",
+  "style_pack_version": 3,
+  "roles": {
+    "cover": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve a wide teaching composition with one strong technical thesis",
+        "preserve two to four organized explanatory groups and a clear thumbnail reading order",
+        "preserve the warm paper fine ink controlled semantic palette and handwritten hierarchy"
+      ],
+      "may_vary": [
+        "article-specific subject geometry and group arrangement may vary",
+        "a miniature instructor may appear only when it clarifies the lesson",
+        "the nucleus may use comparison radial or left-to-right composition"
+      ],
+      "must_not_include": [
+        "do not invent unsupported article facts formulas labels or causal relationships",
+        "do not turn the cover into generic corporate cards or an atmospheric poster",
+        "do not let publication-theme colors replace the registered semantic palette"
+      ],
+      "acceptance_checks": [
+        "the technical nucleus survives the intended platform crop",
+        "the result reads as the same handwritten systems visual family",
+        "the central thesis remains obvious at thumbnail size"
+      ]
+    },
+    "concept": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one causal teaching sequence rather than an unrelated card collection",
+        "preserve formula or object boxes semantic marker fills and a concluding underline",
+        "preserve warm paper fine ink organized annotation density and internal whitespace"
+      ],
+      "may_vary": [
+        "article-specific mechanisms analogies and object placement may vary",
+        "one miniature narrator may point compare question or react when useful",
+        "the reading path may be diagonal radial two-lane or left-to-right"
+      ],
+      "must_not_include": [
+        "do not invent unsupported article facts numbers mechanisms or relationships",
+        "do not use a generic row of corporate process cards",
+        "do not copy the golden communication relay story or its people count"
+      ],
+      "acceptance_checks": [
+        "one real technical mechanism is understandable without decorative filler",
+        "the result reads as the same handwritten systems visual family",
+        "any narrator supports explanation and never becomes a decorative mascot"
+      ]
+    },
+    "diagram": {
+      "stability": "strict",
+      "must_preserve": [
+        "preserve the frozen graph exactly node-for-node edge-for-edge and boundary-for-boundary",
+        "preserve dense organized architecture grouping rounded nodes and explicit arrow grammar",
+        "preserve warm ivory paper fine lively ink semantic fills and underlined conclusion rhythm"
+      ],
+      "may_vary": [
+        "only article-supported node labels groups and topology may replace the golden example",
+        "group dimensions may adapt to the frozen graph while keeping the registered spacing system",
+        "technical non-human icons may vary when they clarify confirmed node roles"
+      ],
+      "must_not_include": [
+        "no people faces hands characters instructors narrators or mascots",
+        "do not invent omit reverse merge or reroute any frozen semantic relationship",
+        "do not copy golden labels numbers nodes topology boundaries or example story"
+      ],
+      "acceptance_checks": [
+        "every visible node edge direction group and blocked path matches the frozen graph",
+        "the architecture remains human-free and uses only non-human technical icons",
+        "the result reads as the strict diagram role of the same handwritten systems family"
+      ]
+    }
+  }
+}

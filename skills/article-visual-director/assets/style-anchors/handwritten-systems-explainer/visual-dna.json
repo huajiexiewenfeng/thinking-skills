@@ -1,0 +1,68 @@
+{
+  "profile_id": "handwritten-systems-explainer",
+  "style_pack_version": 3,
+  "surface": {
+    "background": "warm ivory technical-whiteboard paper remains visibly present",
+    "finish": "subtle warm paper grain with flat marker registration"
+  },
+  "palette_roles": {
+    "boundary_and_text": "near-black ink defines contours arrows labels and conclusions",
+    "pressure_or_payload": "controlled orange marks workload pressure or active payload",
+    "reference_or_context": "clear blue marks queries references and contextual inputs",
+    "durable_or_available": "clear green marks reusable state verified output or availability",
+    "risk_or_failure": "restrained coral marks exceptions loss blocked paths or rework",
+    "secondary_concept": "soft lavender separates supporting concepts without taking over",
+    "emphasis_highlight": "butter yellow highlights headings formulas and conclusions",
+    "annotation_washes": "pastel blue mint sand lavender and yellow support compact notes"
+  },
+  "line_language": {
+    "primary": "fine lively near-black handwritten ink with slight natural wobble",
+    "arrows": "direct black primary arrows with restrained coral dashed exception paths",
+    "boundaries": "irregular dashed group boundaries and hand-drawn underlines"
+  },
+  "material_and_texture": {
+    "paper": "low-intensity warm ivory paper grain",
+    "fills": "flat pastel-to-medium marker or watercolor fills with slight offsets",
+    "depth": "flat paper treatment with no glossy dimensional interface surfaces"
+  },
+  "geometry": {
+    "nodes": "rounded formula boxes and teaching nodes with compact technical icons",
+    "grouping": "two or three organized explanatory groups with generous internal whitespace",
+    "tabs": "compact black section tabs appear only on group headings",
+    "reading_path": "one explicit path built from arrows brackets formulas tables or meters"
+  },
+  "depth_and_camera": {
+    "mode": "flat front-facing orthographic technical-whiteboard composition",
+    "shadow": "at most a restrained pencil offset without photographic depth"
+  },
+  "typography": {
+    "voice": "compact handwritten technical annotations and irregular underlined summaries",
+    "exact_text": "exact formulas numbers titles and dense labels use deterministic overlay",
+    "generated_text": "generation reserves blank zones instead of inventing readable content"
+  },
+  "density_and_spacing": {
+    "density": "organized high information density rather than a sparse metaphor scene",
+    "spacing": "generous whitespace inside groups despite dense cross-page teaching content",
+    "rhythm": "highlighted headings compact notes and underlined conclusion create hierarchy"
+  },
+  "required_traits": [
+    "warm ivory paper remains visible across the full composition",
+    "fine lively handwritten ink creates an annotated technical whiteboard",
+    "controlled pastel-to-medium semantic color keeps every role distinguishable",
+    "one obvious technical reading path organizes dense explanatory information",
+    "handwritten annotations and underlined conclusions remain compact and legible"
+  ],
+  "forbidden_traits": [
+    "no glossy three-dimensional cards isometric infrastructure or glass surfaces",
+    "no generic corporate flowchart made from uniform vector-perfect components",
+    "no page-theme green takeover or uncontrolled high-saturation color blocks",
+    "no black section tab repeated mechanically on every individual node",
+    "no fake formulas generated gibberish logos watermarks or ornamental UI chrome"
+  ],
+  "neighbor_boundaries": [
+    {
+      "profile_id": "soft-technical-sketch",
+      "difference": "Style 8 is an organized high-density systems whiteboard with handwritten technical annotations; Style 7 is a quiet low-density watercolor-led metaphor with minimal labeling"
+    }
+  ]
+}

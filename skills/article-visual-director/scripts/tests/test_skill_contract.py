@@ -254,6 +254,33 @@ class SkillContractTests(unittest.TestCase):
                 for phrase in phrases:
                     self.assertIn(phrase, text)
 
+    def test_style_8_v3_preserves_approved_identity(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "handwritten-systems-explainer"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in ("warm ivory", "fine lively", "pastel", "handwritten"):
+            self.assertIn(phrase, joined)
+        self.assertEqual("strict", roles["roles"]["diagram"]["stability"])
+        self.assertEqual("family", roles["roles"]["cover"]["stability"])
+        self.assertIn(
+            "no people",
+            " ".join(roles["roles"]["diagram"]["must_not_include"]),
+        )
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
 
 if __name__ == "__main__":
     unittest.main()

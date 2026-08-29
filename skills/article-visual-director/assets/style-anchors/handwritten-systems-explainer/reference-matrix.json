@@ -1,0 +1,66 @@
+{
+  "profile_id": "handwritten-systems-explainer",
+  "style_pack_version": 3,
+  "references": [
+    {
+      "golden_asset_id": "handwritten-systems-explainer-cover-v1",
+      "role": "cover",
+      "must_preserve": [
+        "preserve the wide teaching-whiteboard composition and disciplined outer annotations",
+        "preserve fine lively ink controlled marker fills formula-box grammar and whitespace",
+        "preserve the clear technical thesis and central-crop survival behavior"
+      ],
+      "may_vary": [
+        "replace all subject matter with independently confirmed article semantics",
+        "vary comparison groups technical objects and instructor pose when useful"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ]
+    },
+    {
+      "golden_asset_id": "handwritten-systems-explainer-concept-v1",
+      "role": "concept",
+      "must_preserve": [
+        "preserve the causal narrative rhythm compact annotations and restrained reaction figures",
+        "preserve fine lively ink pastel-to-medium semantic color and underlined takeaway",
+        "preserve organized density with generous whitespace inside the teaching sequence"
+      ],
+      "may_vary": [
+        "replace the relay mechanism with the current article mechanism",
+        "vary technical objects narrator presence and path direction as the mechanism requires"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ]
+    },
+    {
+      "golden_asset_id": "handwritten-systems-explainer-diagram-v1",
+      "role": "diagram",
+      "must_preserve": [
+        "preserve the human-free two-level architecture grammar and rounded technical nodes",
+        "preserve direct black primary arrows restrained coral dashed exceptions and grouped boundaries",
+        "preserve fine lively ink semantic fills compact legend and underlined conclusion rhythm"
+      ],
+      "may_vary": [
+        "replace the entire example graph with the validated article-specific frozen graph",
+        "vary node count group size and path placement only as the frozen graph requires"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ]
+    }
+  ]
+}
