@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="864" viewBox="0 0 1536 864" role="img" aria-labelledby="title desc">
+  <title id="title">Validation flow style anchor</title>
+  <desc id="desc">A deterministic five-node process. Input flows to Transform, Verify, and Publish. Failed verification flows to Rework, which returns to Verify.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L11,6 L1,11 Z" fill="#2A7FFF"/>
+    </marker>
+    <marker id="arrow-warm" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L11,6 L1,11 Z" fill="#F2A65A"/>
+    </marker>
+    <marker id="arrow-ink" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L11,6 L1,11 Z" fill="#162536"/>
+    </marker>
+    <filter id="offset" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="0" flood-color="#162536" flood-opacity="0.10"/>
+    </filter>
+    <style>
+      .heading { font-family: Inter, Arial, sans-serif; fill: #162536; font-size: 34px; font-weight: 700; letter-spacing: 1.5px; }
+      .subhead { font-family: Inter, Arial, sans-serif; fill: #5D6C7A; font-size: 18px; font-weight: 400; }
+      .node-label { font-family: Inter, Arial, sans-serif; fill: #162536; font-size: 25px; font-weight: 700; letter-spacing: 0.7px; text-anchor: middle; }
+      .node-note { font-family: Inter, Arial, sans-serif; fill: #5D6C7A; font-size: 16px; font-weight: 400; text-anchor: middle; }
+      .edge-label { font-family: Inter, Arial, sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.4px; }
+      .badge { font-family: Inter, Arial, sans-serif; fill: #F7F5EF; font-size: 15px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; }
+      .node { stroke: #162536; stroke-width: 3; filter: url(#offset); }
+      .primary-edge { fill: none; stroke: #2A7FFF; stroke-width: 6; stroke-linecap: round; marker-end: url(#arrow-blue); }
+      .exception-edge { fill: none; stroke: #F2A65A; stroke-width: 6; stroke-linecap: round; marker-end: url(#arrow-warm); }
+      .return-edge { fill: none; stroke: #162536; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 10 10; marker-end: url(#arrow-ink); }
+    </style>
+  </defs>
+
+  <rect width="1536" height="864" fill="#F7F5EF"/>
+
+  <g id="diagram-heading" transform="translate(104 92)">
+    <rect x="0" y="0" width="10" height="74" rx="5" fill="#2A7FFF"/>
+    <text class="heading" x="32" y="34">VALIDATION FLOW</text>
+    <text class="subhead" x="32" y="67">One primary path. One explicit exception. One controlled return.</text>
+  </g>
+
+  <g id="primary-path" aria-label="Primary path from input to publication">
+    <path id="edge-input-transform" data-edge-type="primary" class="primary-edge" d="M350 388 H420"/>
+    <path id="edge-transform-verify" data-edge-type="primary" class="primary-edge" d="M660 388 H730"/>
+    <path id="edge-verify-publish" data-edge-type="primary" class="primary-edge" d="M970 388 H1040"/>
+  </g>
+
+  <g id="node-input" data-node-id="input" transform="translate(110 318)">
+    <rect class="node" width="240" height="140" rx="8" fill="#EEF1F3"/>
+    <circle cx="36" cy="34" r="18" fill="#162536"/>
+    <text class="badge" x="36" y="34">1</text>
+    <g transform="translate(96 27)" fill="none" stroke="#162536" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0 22 H48"/>
+      <path d="M34 8 L49 22 L34 36"/>
+    </g>
+    <text class="node-label" x="120" y="91">INPUT</text>
+    <text class="node-note" x="120" y="119">confirmed source</text>
+  </g>
+
+  <g id="node-transform" data-node-id="transform" transform="translate(420 318)">
+    <rect class="node" width="240" height="140" rx="8" fill="#D8DEE4"/>
+    <circle cx="36" cy="34" r="18" fill="#162536"/>
+    <text class="badge" x="36" y="34">2</text>
+    <g transform="translate(100 14) scale(0.76)" fill="none" stroke="#162536" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="0" y="0" width="25" height="25" rx="3"/>
+      <rect x="42" y="0" width="25" height="25" rx="3"/>
+      <rect x="21" y="34" width="25" height="25" rx="3"/>
+      <path d="M12 26 L28 35 M54 26 L40 35"/>
+    </g>
+    <text class="node-label" x="120" y="91">TRANSFORM</text>
+    <text class="node-note" x="120" y="119">prepare candidate</text>
+  </g>
+
+  <g id="node-verify" data-node-id="verify" transform="translate(730 318)">
+    <rect class="node" width="240" height="140" rx="8" fill="#E7F1FF"/>
+    <circle cx="36" cy="34" r="18" fill="#2A7FFF"/>
+    <text class="badge" x="36" y="34">3</text>
+    <g transform="translate(91 18)" fill="none" stroke="#2A7FFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="26" cy="26" r="21"/>
+      <path d="M42 42 L64 64"/>
+      <path d="M16 26 L24 34 L37 17"/>
+    </g>
+    <text class="node-label" x="120" y="91">VERIFY</text>
+    <text class="node-note" x="120" y="119">check before release</text>
+  </g>
+
+  <g id="node-publish" data-node-id="publish" transform="translate(1040 318)">
+    <rect class="node" width="240" height="140" rx="8" fill="#EEF1F3"/>
+    <circle cx="36" cy="34" r="18" fill="#162536"/>
+    <text class="badge" x="36" y="34">4</text>
+    <g transform="translate(90 21)" fill="none" stroke="#162536" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M0 9 H41 V52 H0 Z"/>
+      <path d="M41 19 H60 M41 31 H68 M41 43 H60"/>
+    </g>
+    <text class="node-label" x="120" y="91">PUBLISH</text>
+    <text class="node-note" x="120" y="119">verified result</text>
+  </g>
+
+  <g id="exception-path" aria-label="Failed verification moves to rework and returns to verification">
+    <path id="edge-verify-rework" data-edge-type="exception" class="exception-edge" d="M850 458 V578"/>
+    <text class="edge-label" x="870" y="526" fill="#B46D23">CHECK FAILED</text>
+    <path id="edge-rework-verify" data-edge-type="return" class="return-edge" d="M730 648 H650 V474 H730"/>
+    <text class="edge-label" x="558" y="573" fill="#162536">RECHECK</text>
+  </g>
+
+  <g id="node-rework" data-node-id="rework" transform="translate(730 578)">
+    <rect class="node" width="240" height="140" rx="8" fill="#FFF0DF" stroke="#F2A65A"/>
+    <circle cx="36" cy="34" r="18" fill="#F2A65A"/>
+    <text class="badge" x="36" y="34">5</text>
+    <g transform="translate(92 21)" fill="none" stroke="#B46D23" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 16 A26 26 0 1 1 10 50"/>
+      <path d="M4 34 L9 51 L25 45"/>
+    </g>
+    <text class="node-label" x="120" y="91">REWORK</text>
+    <text class="node-note" x="120" y="119">refine and return</text>
+  </g>
+
+  <g id="legend" transform="translate(104 754)">
+    <line x1="0" y1="0" x2="56" y2="0" stroke="#2A7FFF" stroke-width="6" stroke-linecap="round"/>
+    <text class="subhead" x="72" y="6">PRIMARY</text>
+    <line x1="210" y1="0" x2="266" y2="0" stroke="#F2A65A" stroke-width="6" stroke-linecap="round"/>
+    <text class="subhead" x="282" y="6">EXCEPTION</text>
+    <line x1="446" y1="0" x2="502" y2="0" stroke="#162536" stroke-width="4" stroke-dasharray="10 10" stroke-linecap="round"/>
+    <text class="subhead" x="518" y="6">RETURN</text>
+  </g>
+
+  <text x="1432" y="782" text-anchor="end" class="subhead">Style reference only — example topology is non-authoritative</text>
+</svg>

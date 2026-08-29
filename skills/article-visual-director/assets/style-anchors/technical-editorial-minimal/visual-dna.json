@@ -2,7 +2,7 @@
   "profile_id": "technical-editorial-minimal",
   "style_pack_version": 3,
   "surface": {
-    "background": "off-white matte editorial surface with no visible decorative pattern",
+    "background": "off-white matte editorial surface with no visible decorative pattern; an isolated transparent subject plate is allowed only when it will be deterministically composited onto that surface",
     "alternate": "deep ink-blue canvas is reserved for an occasional inverted cover",
     "finish": "quiet low-texture paper or matte print finish"
   },
@@ -16,22 +16,22 @@
   "line_language": {
     "primary": "uniform crisp three-pixel edges with mechanically consistent alignment",
     "arrows": "straight or single-elbow arrows without glow texture or sketch wobble",
-    "boundaries": "flat precise boundaries with no ornamental circuitry or dashboard chrome"
+    "boundaries": "precise technical boundaries; cover and concept may use sparse functional connector lines while diagrams remain flat and free of ornamental circuitry or dashboard chrome"
   },
   "material_and_texture": {
     "surface": "off-white matte editorial paper with extremely subtle texture",
-    "objects": "flat opaque geometry without glass gloss or volumetric material",
-    "depth": "no depth except an optional restrained two-pixel offset shadow"
+    "objects": "crisp matte or satin technical modules; cover and concept may use restrained layered panels rings and baffles while diagrams use flat opaque geometry",
+    "depth": "role-sensitive depth: cover and concept may use shallow editorial 2.5D with restrained bevels and soft contact shadows; diagrams remain strictly flat"
   },
   "geometry": {
-    "grid": "flat twenty-four-pixel editorial grid with disciplined alignment",
-    "nodes": "simple geometric objects with eight-pixel corners and crisp silhouettes",
-    "grouping": "space rather than cards or frames groups two to four supporting objects",
+    "grid": "disciplined twenty-four-pixel editorial alignment",
+    "nodes": "simple technical modules with crisp silhouettes; deterministic diagram nodes keep eight-pixel corners",
+    "grouping": "one connected visual mechanism groups cover and concept objects; space rather than cards or frames groups diagram nodes",
     "focal_rule": "one dominant metaphor or comparison occupies the hierarchy"
   },
   "depth_and_camera": {
-    "mode": "front orthogonal flat editorial composition",
-    "perspective": "no isometric perspective three-dimensional extrusion or cinematic camera"
+    "mode": "role-sensitive editorial camera: front-biased shallow 2.5D for cover and concept; front orthogonal flat composition for diagrams",
+    "perspective": "cover and concept may use restrained shallow perspective to explain a mechanism; no dramatic cinematic perspective or deep isometric scene; diagrams use no perspective"
   },
   "typography": {
     "voice": "modern sans-serif hierarchy with quiet captions",
@@ -46,14 +46,15 @@
   "required_traits": [
     "off-white matte field and large deliberate negative space dominate the composition",
     "ink-blue structure and one clear blue signal establish the editorial hierarchy",
-    "uniform crisp geometry remains flat aligned and mechanically controlled",
+    "uniform crisp modular geometry remains aligned and mechanically controlled; shallow 2.5D is role-limited to cover and concept while diagrams stay flat",
     "one focal metaphor or comparison is readable at thumbnail size",
     "no more than one warm semantic exception appears in the composition"
   ],
   "forbidden_traits": [
     "no hand-drawn strokes watercolor washes marker texture or playful doodles",
     "no dashboard chrome card pile tiny interface text or ornamental frame system",
-    "no glossy three-dimensional module glass surface glow or decorative circuitry",
+    "no neon science-fiction glow transparent glass photorealistic metal or dense decorative circuitry",
+    "no deep isometric environment exploded hardware assembly or uncontrolled pile of machinery",
     "no stock-photo people crowd scene or multiple competing visual accents",
     "no emerald-led hierarchy because dominant emerald belongs to Style 2"
   ],

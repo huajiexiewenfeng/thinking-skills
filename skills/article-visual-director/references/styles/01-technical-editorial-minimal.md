@@ -22,16 +22,16 @@ The nearest neighbor is White-Green Editorial Minimal. This mode is ink-blue and
 ## Required Visual Traits
 
 - Off-white matte surface, ink-blue structure, one blue signal, and at most one warm semantic exception.
-- Flat grid, crisp 3 px edges, 8 px corners, low-to-medium density, and large unoccupied breathing zones.
+- Crisp mechanical alignment, low-to-medium density, and large unoccupied breathing zones. Cover and concept illustrations may use restrained shallow technical 2.5D; deterministic diagrams remain flat.
 - One focal metaphor or comparison; supporting shapes remain subordinate and label-free when generated.
 
 ## Allowed Variation
 
-The canvas may invert to deep ink for a cover, and the focal object may be abstract or literal. Keep the same grid, flat depth, restrained palette, and modern sans hierarchy.
+The canvas may invert to deep ink for a cover, and the focal object may be abstract or literal. Cover and concept roles may use shallow editorial 2.5D when it makes the mechanism more legible. Keep the restrained palette and modern sans hierarchy; keep diagrams front-orthogonal and flat.
 
 ## Forbidden Traits
 
-No hand-drawn strokes, dashboard chrome, glossy 3D modules, decorative circuitry, tiny UI text, stock-photo people, or multiple competing accents.
+No hand-drawn strokes, dashboard chrome, neon science-fiction glow, transparent glass, photorealistic metal, dense decorative circuitry, deep isometric environments, tiny UI text, stock-photo people, or multiple competing accents.
 
 ## Cover Contract
 
@@ -47,7 +47,7 @@ Map paper to `surface.background`, boundaries and text to `line.primary`, primar
 
 ## Imagegen Prompt Contract
 
-State the article objective and one subject/metaphor; require a flat editorial grid, crisp matte geometry, restrained ink-blue/blue/warm semantic roles, generous negative space, and the target aspect ratio. Attach approved references and preserve their hierarchy, edge behavior, density, and surface. Request a text-free background. Negatives: hand drawing, dashboard, 3D, decorative circuitry, crowd, readable labels, and extra accent colors.
+State the article objective and one subject/metaphor; require crisp mechanically aligned editorial geometry, restrained ink-blue/blue/warm semantic roles, generous negative space, and the target aspect ratio. For cover or concept, allow restrained shallow technical 2.5D when it clarifies the mechanism; for diagrams, require flat front-orthogonal geometry. Attach approved references and preserve their hierarchy, edge behavior, density, and surface. Request a text-free background. Negatives: hand drawing, dashboard, neon glow, glass, photorealistic metal, deep isometric machinery, crowd, readable labels, and extra accent colors.
 
 ## Reference Use Contract
 
@@ -55,4 +55,4 @@ Use the approved cover to anchor wide hierarchy, the concept image to anchor abs
 
 ## Validation Rubric
 
-Pass only if the thesis is readable at thumbnail size, the palette uses no more than one cool and one warm accent, edges are crisp and flat, the layout is not a dashboard, deterministic and generated assets look related, and all forbidden traits are absent.
+Pass only if the thesis is readable at thumbnail size, the palette uses no more than one cool and one warm accent, edges are crisp and mechanically controlled, role-specific depth is respected, the layout is not a dashboard, deterministic and generated assets look related, and all forbidden traits are absent.

@@ -1,0 +1,224 @@
+{
+  "golden_production_version": 1,
+  "profile_id": "technical-editorial-minimal",
+  "style_pack_version": 3,
+  "status": "approved",
+  "mode_boundary": {
+    "must_read_as": "neutral ink-blue technical editorial minimalism with one clear blue signal, one optional warm exception, crisp mechanically controlled geometry, role-sensitive depth, and deliberate negative space",
+    "must_not_read_as": "emerald-led active editorial layout, dashboard, card grid, hand drawing, neon science-fiction machinery, photorealistic hardware, or dense decorative circuitry",
+    "nearest_profile_id": "white-green-editorial-minimal"
+  },
+  "candidates": [
+    {
+      "id": "technical-editorial-minimal-cover-v1",
+      "role": "cover",
+      "revision": 3,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/technical-editorial-minimal/golden-cover.png",
+      "user_feedback": "Revision 1 color identity passed but content and proportions failed. The user accepted revision 2's connected technical mechanism and balanced wide proportions, but rejected its transparent background. Revision 3 preserved that subject language, replaced transparency with an opaque off-white matte editorial surface, and was approved when the user asked to continue.",
+      "visual_thesis": "A connected technical filtering mechanism turns a noisy input into one clear blue output while a single warm control element marks the exception.",
+      "request": {
+        "profile_id": "technical-editorial-minimal",
+        "asset_role": "cover",
+        "objective": "Create a complete text-free wide technical editorial illustration in which a noisy input is focused, filtered, controlled, and released as one clear blue output through a connected shallow 2.5D mechanism.",
+        "semantics": {
+          "confirmed": [
+            "One primary signal travels continuously from input to output.",
+            "The system is represented by one connected filtering and control mechanism rather than scattered decoration or a row of cards.",
+            "One warm control element marks the only exception or intervention."
+          ],
+          "simplifications": [
+            "Represent the input as a restrained cloud of neutral particles entering one focusing mouth.",
+            "Represent processing as a connected series of ink-blue and pale-gray baffles around one central control module.",
+            "Represent the output as one clear blue signal leaving a circular terminal, with one small warm diversion below the primary path."
+          ],
+          "blocked": [
+            "Do not imply a specific technical architecture, product workflow, metric, or performance claim.",
+            "Do not add readable labels, numbers, people, interface widgets, multiple warm exceptions, neon glow, transparent glass, photorealistic metal, dense decorative circuitry, deep isometric scenery, or an exploded hardware assembly."
+          ]
+        },
+        "composition": {
+          "structure": "wide connected technical editorial mechanism occupying roughly eighty-two percent of the canvas; shallow front-biased 2.5D modules form one continuous horizontal picture; outer breathing space remains available for deterministic title composition",
+          "hierarchy": "the clear blue signal creates the dominant left-to-right reading path; ink-blue and pale-gray filters support it; one warm orange control element near the center is the only exception",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title-safe zone",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete connected mechanism occupies roughly eighty-two percent of the wide canvas with balanced outer breathing space",
+          "crop_rules": "the central control module, clear blue primary path, one warm exception, and output terminal survive a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "cover",
+          "bootstrap_references": [],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "The result reads as one complete technical editorial picture rather than an empty background with scattered decoration.",
+        "The connected filtering mechanism fills roughly eighty-two percent of the canvas with balanced subject-to-canvas proportions.",
+        "Shallow 2.5D depth remains restrained and mechanically coherent without neon glow, transparent glass, photorealistic metal, or deep isometric scenery.",
+        "The thesis is readable at thumbnail size without any text.",
+        "The result uses off-white, ink-blue, one clear blue signal, pale gray neutral geometry, and no more than one warm exception.",
+        "The result contains deliberate outer breathing space and no green-led hierarchy, dashboard chrome, card pile, hand drawing, or multiple competing mechanisms."
+      ]
+    },
+    {
+      "id": "technical-editorial-minimal-concept-v1",
+      "role": "concept",
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/technical-editorial-minimal/golden-concept.png",
+      "user_feedback": "The user approved the opaque off-white verification concept by asking to continue. The cover reference supplied visual grammar only; its example mechanism and topology were not copied.",
+      "visual_thesis": "A complete verification mechanism converts a fluid blue candidate signal into one stable trusted result while a single warm unverified fragment is physically stopped.",
+      "request": {
+        "profile_id": "technical-editorial-minimal",
+        "asset_role": "concept",
+        "objective": "Create one complete content-rich concept illustration explaining a single causal relationship: a fluid blue candidate signal passes through a restrained shallow 2.5D verification mechanism and becomes one stable trusted result, while one warm unverified fragment is visibly stopped.",
+        "semantics": {
+          "confirmed": [
+            "A primary output enters a verification step before it becomes a trusted result.",
+            "One unverified branch is blocked rather than published."
+          ],
+          "simplifications": [
+            "Use exactly four semantic objects: a fluid blue candidate signal, one inspection ring or verification gate, one stable ink-blue result held in a pale-gray frame, and one small warm rejected fragment stopped at a barrier.",
+            "Connect the four objects into one coherent mechanism rather than a row of boxes or cards.",
+            "Use one continuous blue primary direction and one short warm blocked branch."
+          ],
+          "blocked": [
+            "Do not add scores, percentages, labels, people, retries, tools, or hidden processing stages.",
+            "Do not imply that verification guarantees universal correctness."
+          ]
+        },
+        "composition": {
+          "structure": "one connected left-to-right causal mechanism occupying roughly seventy-six percent of the wide canvas; use front-biased restrained shallow 2.5D and large clean outer breathing space; no row of cards",
+          "hierarchy": "the fluid blue candidate signal visibly changes into one stable ink-blue result through the central inspection gate; the small warm rejected fragment and stopper are subordinate",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "label-free objects with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete four-object causal mechanism occupies roughly seventy-six percent of the canvas with balanced outer breathing space",
+          "crop_rules": "source, verification gate, trusted result, and blocked branch stay within the central safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "concept",
+          "bootstrap_references": [
+            {
+              "id": "technical-editorial-minimal-cover-v1",
+              "profile_id": "technical-editorial-minimal",
+              "role": "cover",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly one causal relationship and four semantic objects form one complete editorial picture.",
+        "The central inspection gate visibly converts a fluid candidate signal into a stable trusted result while one warm fragment is stopped.",
+        "The result is a connected restrained shallow 2.5D mechanism rather than cards, a dashboard, or a generic process-box row.",
+        "The cover candidate influences only surface, palette, modular edge behavior, role-sensitive depth, density, and spacing; its example objects and topology are not copied."
+      ]
+    },
+    {
+      "id": "technical-editorial-minimal-diagram-v1",
+      "role": "diagram",
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/technical-editorial-minimal/golden-diagram.png",
+      "user_feedback": "The user explicitly confirmed the human-free deterministic architecture/process candidate. The PNG is fully opaque and the editable SVG preserves stable IDs for all five nodes and five directed edges.",
+      "visual_thesis": "A human-free five-node validation flow uses three blue primary edges, one warm exception edge, and one ink-blue dashed return edge.",
+      "request": {
+        "profile_id": "technical-editorial-minimal",
+        "asset_role": "diagram",
+        "objective": "Render a strict human-free five-node validation flow with three blue primary edges, one warm exception edge from verification to rework, and one ink-blue dashed return edge from rework to verification, using crisp flat editorial geometry.",
+        "semantics": {
+          "confirmed": [
+            "Input proceeds to transform, verification, and publication in that order.",
+            "A failed verification moves to rework and then returns to verification.",
+            "Publication has no direct edge back to input or transform."
+          ],
+          "simplifications": [
+            "Show exactly five nodes in two spatial groups.",
+            "Use one warm single-elbow return path for the exception loop."
+          ],
+          "blocked": [
+            "Do not add tools, people, databases, caches, dashboards, metrics, or undeclared edges.",
+            "Do not copy object positions or causal content from the concept candidate."
+          ],
+          "frozen_graph": {
+            "nodes": ["input", "transform", "verify", "rework", "publish"],
+            "edges": [
+              {"id": "edge-input-transform", "from": "input", "to": "transform", "type": "primary"},
+              {"id": "edge-transform-verify", "from": "transform", "to": "verify", "type": "primary"},
+              {"id": "edge-verify-publish", "from": "verify", "to": "publish", "type": "primary"},
+              {"id": "edge-verify-rework", "from": "verify", "to": "rework", "type": "exception"},
+              {"id": "edge-rework-verify", "from": "rework", "to": "verify", "type": "return"}
+            ],
+            "groups": [
+              {"id": "primary-flow", "members": ["input", "transform", "verify", "publish"]},
+              {"id": "exception-flow", "members": ["rework"]}
+            ],
+            "invariants": [
+              "The primary path is input to transform to verify to publish.",
+              "Rework is reachable only from verify and returns only to verify."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict front-orthogonal diagram with four primary nodes aligned on one twenty-four-pixel grid row and one subordinate rework node below verification",
+          "hierarchy": "three straight blue primary arrows dominate; one warm downward exception arrow leads from verification to rework; one ink-blue dashed return arrow leads from rework back to verification; group by space without ornamental containers",
+          "human_elements": "none; no people, faces, hands, characters, instructors, narrators, mascots, or stock imagery"
+        },
+        "text_policy": {
+          "mode": "deterministic sans labels and captions",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the five-node diagram occupies roughly sixty-eight percent with ninety-six-pixel outer margins",
+          "crop_rules": "all five nodes and every arrowhead remain inside the outer eight percent safe area",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "diagram",
+          "bootstrap_references": [
+            {
+              "id": "technical-editorial-minimal-concept-v1",
+              "profile_id": "technical-editorial-minimal",
+              "role": "concept",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly five nodes and five declared edges appear with correct direction and edge type.",
+        "The diagram is human-free, crisp, flat, aligned, and free of dashboard or card-grid styling.",
+        "The concept candidate influences only surface, palette, edge behavior, density, and spacing."
+      ]
+    }
+  ]
+}

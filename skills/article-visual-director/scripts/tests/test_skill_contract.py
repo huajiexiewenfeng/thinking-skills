@@ -326,6 +326,24 @@ class SkillContractTests(unittest.TestCase):
         for reference in matrix["references"]:
             self.assertIn("topology", reference["must_not_copy"])
 
+    def test_style_1_separates_editorial_2_5d_from_flat_diagram_depth(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "technical-editorial-minimal"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+
+        self.assertIn("role-sensitive", dna["material_and_texture"]["depth"])
+        self.assertIn("2.5D", " ".join(roles["cover"]["may_vary"]))
+        self.assertIn("2.5D", " ".join(roles["concept"]["may_vary"]))
+        self.assertIn("flat", " ".join(roles["diagram"]["must_preserve"]))
+        self.assertIn("no perspective", " ".join(roles["diagram"]["must_not_include"]))
+
 
 if __name__ == "__main__":
     unittest.main()

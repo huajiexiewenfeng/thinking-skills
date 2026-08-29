@@ -1,0 +1,190 @@
+{
+  "probe_suite_version": 1,
+  "profile_id": "technical-editorial-minimal",
+  "style_pack_version": 3,
+  "purpose": "Cross-topic stability and Style 1 versus Style 2 discrimination without copying golden example content.",
+  "probes": [
+    {
+      "id": "style1-cover-context-pressure",
+      "request": {
+        "profile_id": "technical-editorial-minimal",
+        "asset_role": "cover",
+        "objective": "Show that accumulated tool output reduces the context space available for instructions and evidence without inventing a numerical limit.",
+        "semantics": {
+          "confirmed": [
+            "Accumulated tool output consumes part of the available context space.",
+            "Less context space remains for instructions and evidence as accumulated output grows."
+          ],
+          "simplifications": [
+            "Use one bounded context chamber whose neutral input region expands while one clear blue usable region narrows.",
+            "Use one warm pressure marker at the boundary between accumulated output and remaining context."
+          ],
+          "blocked": [
+            "Do not invent token counts, percentages, model limits, or a universal failure threshold.",
+            "Do not copy the golden cover's filtering machinery, baffles, funnel, output terminal, or topology."
+          ]
+        },
+        "composition": {
+          "structure": "one wide content-rich editorial chamber spanning roughly seventy-eight percent of the canvas with a compact deterministic title-safe zone",
+          "hierarchy": "the narrowing blue usable region is the focal relationship and the single warm pressure marker remains subordinate",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title overlay",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the coherent context chamber occupies roughly seventy-eight percent of the wide canvas",
+          "crop_rules": "the boundary, accumulated region, narrowing blue remainder, and warm pressure marker survive a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": ["technical-editorial-minimal-cover-v1"],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "opaque off-white surface, ink-blue foundation, one clear blue relationship, and at most one warm exception",
+        "crisp mechanically controlled geometry, balanced wide occupancy, and restrained role-sensitive depth"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"],
+      "acceptance_checks": [
+        "The relationship remains understandable without numbers.",
+        "The result reads as neutral ink-blue Style 1 rather than an emerald-led Style 2 layout."
+      ]
+    },
+    {
+      "id": "style1-concept-cache-validity",
+      "request": {
+        "profile_id": "technical-editorial-minimal",
+        "asset_role": "concept",
+        "objective": "Explain one causal relationship: a valid cache shortens repeated work while one stale entry is stopped before reuse.",
+        "semantics": {
+          "confirmed": [
+            "A valid cached result can reduce repeated work.",
+            "A stale cached result should not be reused as though it were current."
+          ],
+          "simplifications": [
+            "Use one repeated request ribbon, one compact cache ring, one short blue reuse path, and one small warm stale fragment stopped at a barrier.",
+            "Connect the objects into one coherent mechanism rather than a row of cards."
+          ],
+          "blocked": [
+            "Do not invent cache hit rates, expiration durations, database stages, or universal correctness claims.",
+            "Do not copy the golden concept's verification ring, trusted-result frame, object positions, or topology."
+          ]
+        },
+        "composition": {
+          "structure": "one compact connected causal mechanism occupying roughly seventy-two percent of an opaque off-white canvas",
+          "hierarchy": "the short blue reuse path dominates and the single warm stale fragment remains visibly blocked and subordinate",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "label-free objects with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete reuse mechanism occupies roughly seventy-two percent with balanced outer breathing space",
+          "crop_rules": "request ribbon, cache ring, reuse path, and stopped stale fragment stay in the central safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": ["technical-editorial-minimal-concept-v1"],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "one content-rich causal mechanism, crisp modular geometry, restrained shallow 2.5D, and quiet explanatory hierarchy",
+        "opaque off-white, ink-blue, one clear blue signal, pale gray, and one warm exception"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"],
+      "acceptance_checks": [
+        "Valid reuse and blocked stale reuse form one obvious causal relationship.",
+        "No cover or concept golden example topology is repeated."
+      ]
+    },
+    {
+      "id": "style1-diagram-policy-tool-verification",
+      "request": {
+        "profile_id": "technical-editorial-minimal",
+        "asset_role": "diagram",
+        "objective": "Render a human-free five-node policy and tool flow with an exact verification return path.",
+        "semantics": {
+          "confirmed": [
+            "A request passes through policy before tool execution.",
+            "Tool output is verified before final delivery.",
+            "Failed verification returns to tool execution and then re-enters verification."
+          ],
+          "simplifications": [
+            "Place four primary nodes on one row and one correction node below verification.",
+            "Use one warm exception edge and one ink-blue dashed return edge."
+          ],
+          "blocked": [
+            "Do not add users, databases, caches, metrics, hidden tools, or undeclared edges.",
+            "Do not copy golden diagram labels, node positions, example graph, or topology."
+          ],
+          "frozen_graph": {
+            "nodes": ["request", "policy", "tool", "verify", "deliver"],
+            "edges": [
+              {"id": "edge-request-policy", "from": "request", "to": "policy", "type": "primary"},
+              {"id": "edge-policy-tool", "from": "policy", "to": "tool", "type": "primary"},
+              {"id": "edge-tool-verify", "from": "tool", "to": "verify", "type": "primary"},
+              {"id": "edge-verify-deliver", "from": "verify", "to": "deliver", "type": "primary"},
+              {"id": "edge-verify-tool", "from": "verify", "to": "tool", "type": "return"}
+            ],
+            "groups": [
+              {"id": "controlled-execution", "members": ["request", "policy", "tool"]},
+              {"id": "verified-delivery", "members": ["verify", "deliver"]}
+            ],
+            "invariants": [
+              "Tool execution is unreachable without policy.",
+              "Delivery is unreachable without verification."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict human-free front-orthogonal diagram with crisp flat nodes, three-pixel edges, and exact frozen-graph rendering",
+          "hierarchy": "blue primary arrows dominate while one restrained dashed return edge remains secondary",
+          "human_elements": "none; no people, faces, hands, characters, instructors, narrators, or mascots"
+        },
+        "text_policy": {
+          "mode": "deterministic labels and edge annotations",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the exact five-node graph occupies roughly seventy-two percent with disciplined outer margins",
+          "crop_rules": "all five nodes and every arrowhead remain inside the outer eight percent safe area",
+          "output_count": 1
+        },
+        "golden_reference_ids": ["technical-editorial-minimal-diagram-v1"],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "strict flat diagram depth, crisp alignment, restrained semantic palette, and human-free rendering",
+        "exact frozen-graph node, edge, direction, group, and invariant fidelity"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"],
+      "acceptance_checks": [
+        "Exactly five nodes and five declared edges appear with the specified directions.",
+        "No visual content from the golden diagram is treated as semantic authority."
+      ]
+    }
+  ],
+  "neighbor_discrimination": {
+    "compare_profile_id": "white-green-editorial-minimal",
+    "style_1_expected": [
+      "neutral off-white and ink-blue hierarchy",
+      "one clear blue signal and at most one warm exception",
+      "restrained role-sensitive 2.5D for cover and concept with flat deterministic diagrams"
+    ],
+    "style_2_expected": [
+      "emerald-led high-key editorial hierarchy",
+      "wider and more active composition across the canvas",
+      "green semantic emphasis rather than neutral ink-blue foundation"
+    ]
+  }
+}

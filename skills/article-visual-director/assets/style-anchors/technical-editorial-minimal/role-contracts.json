@@ -12,11 +12,12 @@
       "may_vary": [
         "the focal metaphor may be abstract literal comparative or boundary-based",
         "the canvas may invert to deep ink-blue while retaining the same restrained palette roles",
-        "article-specific geometry may vary while remaining flat crisp and editorial"
+        "article-specific geometry may vary between flat editorial geometry and restrained shallow technical 2.5D"
       ],
       "must_not_include": [
         "do not add readable generated labels title copy dashboards or interface chrome",
-        "do not introduce hand-drawn texture glossy depth decorative circuitry or stock-photo people",
+        "do not introduce hand-drawn texture neon glow transparent glass photorealistic metal dense decorative circuitry or stock-photo people",
+        "do not turn shallow editorial depth into a deep isometric environment exploded hardware assembly or machinery pile",
         "do not allow emerald or multiple accent colors to dominate the hierarchy"
       ],
       "acceptance_checks": [
@@ -35,6 +36,7 @@
       "may_vary": [
         "the causal mechanism may use balance transfer narrowing separation or comparison",
         "object scale and alignment may vary on the twenty-four-pixel grid",
+        "the mechanism may use restrained shallow technical 2.5D when depth materially explains the causal relationship",
         "one warm object may identify the article-specific exception or pressure"
       ],
       "must_not_include": [
@@ -62,6 +64,7 @@
       ],
       "must_not_include": [
         "no people faces hands characters instructors narrators mascots or stock imagery",
+        "no perspective extrusion bevel volumetric shading or 2.5D depth; deterministic diagrams remain flat",
         "do not invent omit reverse merge or reroute any frozen semantic relationship",
         "do not copy golden labels numbers nodes topology boundaries or example story"
       ],
