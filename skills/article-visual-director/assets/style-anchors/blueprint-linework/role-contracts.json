@@ -1,0 +1,76 @@
+{
+  "profile_id": "blueprint-linework",
+  "style_pack_version": 3,
+  "roles": {
+    "cover": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one large content-rich orthographic construction or cutaway across seventy-six to eighty-four percent of the wide canvas",
+        "preserve fully opaque deep blueprint-blue ground low-intensity grid uniform pale linework and one semantic cyan feature",
+        "preserve one clean deterministic title-safe zone without shrinking the technical subject"
+      ],
+      "may_vary": [
+        "the real article-supported boundary component or cutaway subject may change completely",
+        "the title-safe side and orthographic elevation plan section or cutaway arrangement may vary",
+        "one ghost construction layer may clarify alignment without creating volumetric scenery"
+      ],
+      "must_not_include": [
+        "do not generate dimensions labels tolerances identifiers captions or unsupported engineering details",
+        "do not use isometric perspective shadows glow gloss photorealistic material or decorative machinery",
+        "do not create an empty grid with a small ornamental schematic or use multiple cyan accents"
+      ],
+      "acceptance_checks": [
+        "the supported technical thesis is understandable at thumbnail size without text",
+        "the large orthographic subject and title-safe zone remain balanced on a fully opaque canvas",
+        "the result reads as blueprint linework rather than isometric infrastructure or cinematic technology art"
+      ]
+    },
+    "concept": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve exactly one boundary layer interface or component relation through one main orthographic outline",
+        "preserve uniform pale two-pixel lines one optional ghost construction layer and one semantic cyan emphasis",
+        "preserve disciplined occupancy measured spacing and label-free generation"
+      ],
+      "may_vary": [
+        "the confirmed article subject and relation may replace the complete golden example",
+        "the view may vary among elevation plan section cutaway and exploded alignment",
+        "the cyan role may identify a supported boundary layer interface or transition"
+      ],
+      "must_not_include": [
+        "do not invent components layers dimensions interfaces ports labels or causal relationships",
+        "do not repeat the cover object family story topology or positions",
+        "do not introduce isometric volume watercolor softness dense hatching multiple highlights or engineering theater"
+      ],
+      "acceptance_checks": [
+        "one relationship is legible through line hierarchy and spatial arrangement without generated text",
+        "the concept remains a complete article image rather than a sparse decorative fragment",
+        "the cover reference contributes only projection surface line grid density and annotation-zone behavior"
+      ]
+    },
+    "diagram": {
+      "stability": "strict",
+      "must_preserve": [
+        "preserve the frozen graph exactly including every node edge direction group invariant and exception",
+        "preserve a fully human-free front-orthographic layout with uniform two-pixel lines and orthogonal arrows",
+        "preserve deep blueprint-blue ground deterministic drafting captions measured spacing and one supported cyan thesis feature"
+      ],
+      "may_vary": [
+        "node count labels groups and edge types may vary only as the validated frozen graph requires",
+        "one cyan boundary node or path may appear only when article semantics supports it",
+        "the grid-aligned layout may adapt to the graph while every element remains inside the safe region"
+      ],
+      "must_not_include": [
+        "no people faces hands characters instructors narrators mascots or stock imagery",
+        "do not invent omit reverse merge split or reroute any frozen semantic relationship",
+        "do not copy golden labels numbers nodes topology boundaries groups or example story",
+        "no isometric camera perspective extrusion shadow glow fake dimension decorative machinery or dense hatching"
+      ],
+      "acceptance_checks": [
+        "every visible node edge direction group and exception matches the frozen graph",
+        "the diagram remains human-free flat orthographic opaque and legible at article width",
+        "the golden diagram contributes only surface projection line grid spacing caption and semantic-color grammar"
+      ]
+    }
+  }
+}

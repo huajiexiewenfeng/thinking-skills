@@ -1,0 +1,73 @@
+{
+  "profile_id": "blueprint-linework",
+  "style_pack_version": 3,
+  "surface": {
+    "background": "fully opaque deep blueprint-blue drafting ground based on #123B66",
+    "alternate": "warm drafting paper inversion is allowed for non-golden article variants only",
+    "finish": "matte technical drafting surface with one low-intensity construction grid"
+  },
+  "palette_roles": {
+    "final_structure": "pale blue-white based on #E6F4FF defines final orthographic structure",
+    "construction": "muted steel blue based on #82A8C8 defines ghost and construction lines",
+    "thesis_highlight": "a single cyan based on #72D5FF identifies exactly one supported boundary layer or transition",
+    "secondary_boundary": "deep muted blue based on #2A5278 separates subordinate drafting regions without creating a second accent",
+    "ground": "deep blueprint-blue remains the dominant visual field"
+  },
+  "line_language": {
+    "primary": "uniform two-pixel pale lines with disciplined mechanical continuity",
+    "construction": "uniform two-pixel or visually lighter dashed construction lines aligned to the drafting grid",
+    "arrows": "orthogonal two-pixel arrows with small unglowed heads and no perspective foreshortening",
+    "boundaries": "flat orthographic outlines sections cutaways and exploded alignment guides"
+  },
+  "material_and_texture": {
+    "surface": "opaque matte blueprint ground with a restrained low-contrast square grid",
+    "objects": "line-led technical structures with no glossy solid material rendering",
+    "depth": "almost volumeless flat cutaway; ghost layers clarify alignment without creating spatial scenery"
+  },
+  "geometry": {
+    "grid": "twenty-pixel drafting grid with measured spacing and seventy-two-pixel outer margins",
+    "projection": "orthographic elevation plan section cutaway or exploded alignment only",
+    "nodes": "flat two-pixel technical outlines with two-pixel corners and open drafting captions",
+    "grouping": "construction boundaries and measured spacing group content without cards dashboards or decorative containers",
+    "focal_rule": "one large supported boundary layer component relation or frozen-graph path carries the thesis"
+  },
+  "depth_and_camera": {
+    "mode": "strict orthographic camera with no perspective convergence",
+    "volume": "almost no volume; section offsets and ghost layers remain coplanar",
+    "lighting": "none; no glow cast shadow dramatic light or material highlight"
+  },
+  "typography": {
+    "voice": "restrained monospace drafting captions in deterministic annotation zones",
+    "exact_text": "titles labels dimensions and technical prose are applied deterministically only after semantics are confirmed",
+    "generated_text": "image generation leaves annotation zones blank and never invents dimensions identifiers or labels"
+  },
+  "density_and_spacing": {
+    "density": "medium-disciplined line density with one complete technical subject rather than an empty grid or decorative machinery",
+    "spacing": "measured grid-aligned gaps and generous outer margins keep every boundary legible at article width",
+    "occupancy": "cover and concept subjects occupy roughly seventy-six to eighty-four percent while deterministic diagrams preserve all graph elements inside the outer eight percent safe region"
+  },
+  "required_traits": [
+    "deep blueprint-blue ground dominates every golden reference",
+    "strict orthographic projection and uniform two-pixel pale linework remain visible at article width",
+    "a single cyan highlight carries one confirmed semantic boundary layer or transition",
+    "low-intensity drafting grid construction hierarchy and measured spacing create technical discipline",
+    "complete subject occupancy prevents empty blueprint paper with tiny decorative line art"
+  ],
+  "forbidden_traits": [
+    "no fake dimensions tolerances pseudo-engineering identifiers decorative measurements or invented technical labels",
+    "no isometric camera perspective distortion matte spatial solids directional shadows glossy materials photorealism or cinematic lighting",
+    "no dense crosshatching decorative machinery dashboard chrome card grids neon glow or multiple cyan accents",
+    "no loose graphite wobble translucent watercolor wash familiar-object teaching metaphor or playful doodle contour",
+    "no unsupported nodes edges ports layers connections or article topology"
+  ],
+  "neighbor_boundaries": [
+    {
+      "profile_id": "isometric-infrastructure",
+      "difference": "Style 4 is flat orthographic line-led and almost volumeless; Style 5 uses a fixed 30-degree isometric camera matte spatial solids ecosystem scale and directional shadows"
+    },
+    {
+      "profile_id": "soft-technical-sketch",
+      "difference": "Style 4 keeps uniform mechanically controlled drafting lines and a strict grid; Style 7 uses fine soft variable contours translucent watercolor washes warm paper and approachable physical metaphors"
+    }
+  ]
+}
