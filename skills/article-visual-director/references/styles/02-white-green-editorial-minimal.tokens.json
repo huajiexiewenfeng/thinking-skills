@@ -1,0 +1,14 @@
+{
+  "profile_id": "white-green-editorial-minimal",
+  "protocol_version": 2,
+  "surface": {"background": "#FAFFFC", "alternate": "#DDF4E8", "finish": "clean-matte"},
+  "palette": {"ink": "#173B2A", "primary": "#168A55", "mint": "#DDF4E8", "accent": "#46B98A", "saturation": "restrained-green"},
+  "line": {"primary": "#173B2A", "width_px": 3, "weight_class": "crisp-medium", "behavior": "uniform-crisp"},
+  "typography": {"family_zh": "Microsoft YaHei, PingFang SC, sans-serif", "family_en": "Inter, Arial, sans-serif", "label_treatment": "emerald-hierarchy"},
+  "geometry": {"corner_radius_px": 12, "shape_language": "wide-flat-editorial", "label_style": "integrated-caption", "camera": "front-orthogonal"},
+  "depth": {"mode": "matte-flat", "shadow": "soft-4px", "glow": "none"},
+  "texture": {"pattern": "clean-paper", "intensity": "minimal"},
+  "spacing": {"grid_px": 24, "outer_margin_px": 80, "node_gap_px": 40, "density": "medium-active"},
+  "semantic_color_roles": {"hierarchy": "#173B2A", "active_system": "#168A55", "support": "#DDF4E8", "secondary_signal": "#46B98A"},
+  "forbidden_traits": ["leaf motifs", "sustainability symbolism", "pale card piles", "glassmorphism", "empty outer bands"]
+}

@@ -1,0 +1,14 @@
+{
+  "profile_id": "soft-technical-sketch",
+  "protocol_version": 2,
+  "surface": {"background": "#F6F0E3", "alternate": "#EFE5D3", "finish": "warm-watercolor-paper"},
+  "palette": {"ink": "#524A43", "primary": "#91AFC4", "sage": "#A9B99A", "ochre": "#C9A56A", "saturation": "low"},
+  "line": {"primary": "#524A43", "width_px": 2, "weight_class": "fine-soft", "behavior": "imperfect-pencil-ink"},
+  "typography": {"family_zh": "Source Han Sans SC, Microsoft YaHei, sans-serif", "family_en": "Aptos, Arial, sans-serif", "label_treatment": "friendly-readable"},
+  "geometry": {"corner_radius_px": 14, "shape_language": "simple-teaching-object", "label_style": "open-caption", "camera": "front-or-gentle-oblique"},
+  "depth": {"mode": "flat-paper", "shadow": "watercolor-wash", "glow": "none"},
+  "texture": {"pattern": "fine-paper-fiber", "intensity": "medium-low"},
+  "spacing": {"grid_px": 24, "outer_margin_px": 104, "node_gap_px": 52, "density": "low"},
+  "semantic_color_roles": {"outline": "#524A43", "concept_a": "#91AFC4", "concept_b": "#A9B99A", "emphasis": "#C9A56A"},
+  "forbidden_traits": ["childish doodles", "corporate cards", "bold black frame", "high saturation", "black label tabs"]
+}

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -180,7 +181,7 @@ def _validate_source(data: dict[str, Any], errors: list[dict[str, str]]) -> None
         )
 
 
-def _validate_top_level(data: dict[str, Any], errors: list[dict[str, str]]) -> None:
+def _validate_top_level_v1(data: dict[str, Any], errors: list[dict[str, str]]) -> None:
     if data.get("manifest_version") != 1:
         _add_error(
             errors,
@@ -322,6 +323,235 @@ def _validate_top_level(data: dict[str, Any], errors: list[dict[str, str]]) -> N
             "integration.verification_status",
             "integration.verification_status must be pending, passed, or failed",
         )
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _resolve_skill_file(
+    skill_root: Path,
+    value: Any,
+    field_path: str,
+    errors: list[dict[str, str]],
+) -> Path | None:
+    if not _is_safe_relative_path(value):
+        _add_error(
+            errors,
+            "unsafe_relative_path",
+            field_path,
+            f"{field_path} must be a platform-safe Skill-relative path",
+        )
+        return None
+    target = (skill_root / value).resolve()
+    if not _resolved_is_under(target, skill_root):
+        _add_error(
+            errors,
+            "style_contract_path_escape",
+            field_path,
+            "Style contract path escapes the Skill root",
+        )
+        return None
+    if not target.is_file():
+        _add_error(
+            errors,
+            "style_contract_missing",
+            field_path,
+            f"Style contract file does not exist: {value}",
+        )
+        return None
+    return target
+
+
+def _validate_style_v2(
+    data: dict[str, Any], skill_root: Path, errors: list[dict[str, str]]
+) -> bool:
+    style = _require_mapping(data, "style", errors, "style")
+    required_strings = (
+        "profile_id",
+        "protocol_path",
+        "protocol_sha256",
+        "golden_set_path",
+        "golden_set_sha256",
+        "publication_theme",
+        "theme_override_policy",
+    )
+    for field in required_strings:
+        if not _is_nonempty_string(style.get(field)):
+            _add_error(
+                errors,
+                "missing_style_field",
+                f"style.{field}",
+                f"style.{field} must be a non-empty string",
+            )
+    if not isinstance(style.get("profile_version"), int) or isinstance(
+        style.get("profile_version"), bool
+    ):
+        _add_error(
+            errors,
+            "protocol_version_mismatch",
+            "style.profile_version",
+            "profile_version must be an integer matching the selected protocol",
+        )
+    for field in ("protocol_sha256", "golden_set_sha256"):
+        if not _is_sha256(style.get(field)):
+            _add_error(
+                errors,
+                "invalid_sha256",
+                f"style.{field}",
+                f"style.{field} must contain 64 hexadecimal characters",
+            )
+
+    golden_ids = style.get("golden_reference_ids")
+    if (
+        not isinstance(golden_ids, list)
+        or len(golden_ids) != 3
+        or len(set(golden_ids)) != 3
+        or any(not _is_nonempty_string(item) for item in golden_ids)
+    ):
+        _add_error(
+            errors,
+            "invalid_golden_references",
+            "style.golden_reference_ids",
+            "golden_reference_ids must contain three unique approved IDs",
+        )
+
+    overrides = style.get("approved_overrides")
+    if not isinstance(overrides, list):
+        _add_error(
+            errors,
+            "theme_override_not_allowed",
+            "style.approved_overrides",
+            "approved_overrides must be an array",
+        )
+    elif style.get("theme_override_policy") == "title-layer-only":
+        for index, override in enumerate(overrides):
+            if not isinstance(override, str) or not override.startswith("title."):
+                _add_error(
+                    errors,
+                    "theme_override_not_allowed",
+                    f"style.approved_overrides[{index}]",
+                    "Publication theme may override deterministic title-layer fields only",
+                )
+    elif overrides:
+        _add_error(
+            errors,
+            "theme_override_not_allowed",
+            "style.approved_overrides",
+            "Selected theme policy does not allow overrides",
+        )
+
+    references = style.get("article_reference_paths")
+    if not isinstance(references, list) or any(
+        not _is_safe_relative_path(item) for item in references
+    ):
+        _add_error(
+            errors,
+            "invalid_article_references",
+            "style.article_reference_paths",
+            "article_reference_paths must be an array of safe relative paths",
+        )
+
+    contract_drift = False
+    protocol = _resolve_skill_file(
+        skill_root, style.get("protocol_path"), "style.protocol_path", errors
+    )
+    if protocol is not None and _is_sha256(style.get("protocol_sha256")):
+        if _sha256_file(protocol) != style["protocol_sha256"].lower():
+            contract_drift = True
+            _add_error(
+                errors,
+                "protocol_hash_mismatch",
+                "style.protocol_sha256",
+                "Selected protocol changed after plan approval",
+            )
+    golden_path = _resolve_skill_file(
+        skill_root, style.get("golden_set_path"), "style.golden_set_path", errors
+    )
+    if golden_path is not None and _is_sha256(style.get("golden_set_sha256")):
+        if _sha256_file(golden_path) != style["golden_set_sha256"].lower():
+            contract_drift = True
+            _add_error(
+                errors,
+                "golden_set_hash_mismatch",
+                "style.golden_set_sha256",
+                "Selected golden set changed after plan approval",
+            )
+        try:
+            golden = load_manifest(golden_path)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            _add_error(
+                errors,
+                "golden_set_invalid",
+                "style.golden_set_path",
+                str(exc),
+            )
+        else:
+            if golden.get("status") != "approved":
+                _add_error(
+                    errors,
+                    "golden_set_not_approved",
+                    "style.golden_set_path",
+                    "Manifest v2 requires an approved golden set",
+                )
+            if (
+                golden.get("profile_id") != style.get("profile_id")
+                or golden.get("protocol_version") != style.get("profile_version")
+            ):
+                _add_error(
+                    errors,
+                    "protocol_version_mismatch",
+                    "style.profile_version",
+                    "Profile identity/version must match the approved golden set",
+                )
+            actual_ids = {
+                asset.get("id")
+                for asset in golden.get("assets", [])
+                if isinstance(asset, dict)
+            }
+            if isinstance(golden_ids, list) and set(golden_ids) != actual_ids:
+                _add_error(
+                    errors,
+                    "invalid_golden_references",
+                    "style.golden_reference_ids",
+                    "Manifest references must match the approved golden-set asset IDs",
+                )
+    return contract_drift
+
+
+def _validate_top_level(
+    data: dict[str, Any], skill_root: Path, errors: list[dict[str, str]]
+) -> bool:
+    version = data.get("manifest_version")
+    if version == 1:
+        _validate_top_level_v1(data, errors)
+        return False
+    if version != 2:
+        _add_error(
+            errors,
+            "unsupported_manifest_version",
+            "manifest_version",
+            "manifest_version must be 1 or 2",
+        )
+        return False
+
+    compatibility = dict(data)
+    compatibility["manifest_version"] = 1
+    compatibility["style"] = {
+        "profile_id": data.get("style", {}).get("profile_id", "invalid")
+        if isinstance(data.get("style"), dict)
+        else "invalid",
+        "fingerprint": "manifest-v2-style-contract",
+    }
+    compatibility_approvals = dict(data.get("approvals", {}))
+    compatibility_approvals.setdefault("style_anchor", "not_required")
+    compatibility["approvals"] = compatibility_approvals
+    _validate_top_level_v1(compatibility, errors)
+    return _validate_style_v2(data, skill_root, errors)
 
 
 def _validate_dimensions(
@@ -777,8 +1007,102 @@ def _validate_cover_title(
                 )
 
 
+def _validate_asset_style_v2(
+    asset: dict[str, Any],
+    index: int,
+    phase: str,
+    approved_reference_ids: set[str],
+    errors: list[dict[str, str]],
+) -> None:
+    base = f"assets[{index}].style_validation"
+    validation = asset.get("style_validation")
+    if not isinstance(validation, dict):
+        _add_error(
+            errors,
+            "missing_style_validation",
+            base,
+            "Manifest v2 assets require a style_validation object",
+        )
+        return
+    references = validation.get("golden_reference_ids")
+    if (
+        not isinstance(references, list)
+        or not references
+        or any(item not in approved_reference_ids for item in references)
+    ):
+        _add_error(
+            errors,
+            "invalid_golden_references",
+            f"{base}.golden_reference_ids",
+            "Asset style validation must cite approved golden reference IDs",
+        )
+    forbidden = validation.get("forbidden_traits_found")
+    if not isinstance(forbidden, list):
+        _add_error(
+            errors,
+            "invalid_style_validation",
+            f"{base}.forbidden_traits_found",
+            "forbidden_traits_found must be an array",
+        )
+        forbidden = []
+    if validation.get("theme_bleed") not in {True, False}:
+        _add_error(
+            errors,
+            "invalid_style_validation",
+            f"{base}.theme_bleed",
+            "theme_bleed must be boolean",
+        )
+    if phase != "integration":
+        if validation.get("status") not in {"planned", "pending", "passed", "failed"}:
+            _add_error(
+                errors,
+                "invalid_style_validation",
+                f"{base}.status",
+                "Style validation status is invalid",
+            )
+        return
+    if validation.get("status") != "passed":
+        _add_error(
+            errors,
+            "style_validation_not_passed",
+            f"{base}.status",
+            "Integration requires style_validation.status=passed",
+        )
+    if validation.get("required_traits_passed") is not True:
+        _add_error(
+            errors,
+            "required_style_trait_missing",
+            f"{base}.required_traits_passed",
+            "Integration requires all required profile traits to pass",
+        )
+    if forbidden:
+        _add_error(
+            errors,
+            "forbidden_style_trait",
+            f"{base}.forbidden_traits_found",
+            "Forbidden visual traits were detected",
+        )
+    if validation.get("theme_bleed") is True:
+        _add_error(
+            errors,
+            "style_theme_bleed",
+            f"{base}.theme_bleed",
+            "Publication theme has overridden the selected visual profile",
+        )
+    if validation.get("series_continuity") != "passed":
+        _add_error(
+            errors,
+            "series_continuity_not_passed",
+            f"{base}.series_continuity",
+            "Integration requires series_continuity=passed",
+        )
+
+
 def validate_manifest(
-    data: dict[str, Any], manifest_path: Path, phase: str
+    data: dict[str, Any],
+    manifest_path: Path,
+    phase: str,
+    skill_root: Path | None = None,
 ) -> list[dict[str, str]]:
     """Return structured validation errors; an empty list means valid."""
     errors: list[dict[str, str]] = []
@@ -799,7 +1123,12 @@ def validate_manifest(
             }
         ]
 
-    _validate_top_level(data, errors)
+    effective_skill_root = (
+        Path(skill_root).resolve()
+        if skill_root is not None
+        else Path(__file__).resolve().parents[1]
+    )
+    contract_drift = _validate_top_level(data, effective_skill_root, errors)
     if phase == "integration":
         manifest_root = manifest_path.parent.resolve()
         source = data.get("source")
@@ -857,6 +1186,13 @@ def validate_manifest(
     markdown_paths: set[str] = set()
     raster_count = 0
     platforms = data.get("platforms")
+    version = data.get("manifest_version")
+    style = data.get("style")
+    approved_reference_ids = (
+        set(style.get("golden_reference_ids", []))
+        if version == 2 and isinstance(style, dict)
+        else set()
+    )
     for index, asset in enumerate(assets):
         asset_id, markdown_path = _validate_asset(
             asset, index, manifest_path, phase, asset_directory, errors
@@ -914,16 +1250,73 @@ def validate_manifest(
             markdown_paths.add(markdown_path)
         if isinstance(asset, dict) and asset.get("renderer") == "imagegen":
             raster_count += 1
+        if version == 2 and isinstance(asset, dict):
+            _validate_asset_style_v2(
+                asset, index, phase, approved_reference_ids, errors
+            )
 
     approvals = data.get("approvals")
     style_anchor = approvals.get("style_anchor") if isinstance(approvals, dict) else None
-    if phase == "integration" and raster_count >= 3 and style_anchor != "approved":
+    if version == 1 and phase == "integration" and raster_count >= 3 and style_anchor != "approved":
         _add_error(
             errors,
             "style_anchor_not_approved",
             "approvals.style_anchor",
             "three or more imagegen assets require an approved style anchor",
         )
+    if version == 2:
+        article_approval = (
+            approvals.get("article_style_anchor")
+            if isinstance(approvals, dict)
+            else None
+        )
+        references = style.get("article_reference_paths") if isinstance(style, dict) else []
+        deterministic_exception = (
+            len(assets) == 1
+            and raster_count == 0
+            and not references
+            and not contract_drift
+            and all(
+                isinstance(asset, dict)
+                and asset.get("renderer")
+                in {"deterministic-diagram", "deterministic-chart"}
+                for asset in assets
+            )
+        )
+        requires_anchor = not deterministic_exception
+        if article_approval not in {"approved", "not_required"}:
+            _add_error(
+                errors,
+                "invalid_approval_state",
+                "approvals.article_style_anchor",
+                "article_style_anchor must be approved or not_required",
+            )
+        if requires_anchor and article_approval != "approved":
+            _add_error(
+                errors,
+                "article_style_anchor_required",
+                "approvals.article_style_anchor",
+                "Imagegen, article references, or contract drift require an approved article style anchor",
+            )
+        anchor_id = (
+            style.get("article_style_anchor_asset_id")
+            if isinstance(style, dict)
+            else None
+        )
+        if anchor_id is not None and anchor_id not in asset_ids:
+            _add_error(
+                errors,
+                "unknown_style_anchor_asset",
+                "style.article_style_anchor_asset_id",
+                "article_style_anchor_asset_id must name an asset in this manifest",
+            )
+        if requires_anchor and anchor_id is None:
+            _add_error(
+                errors,
+                "unknown_style_anchor_asset",
+                "style.article_style_anchor_asset_id",
+                "An approved article style anchor must name its anchor asset",
+            )
     return errors
 
 

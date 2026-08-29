@@ -1,6 +1,8 @@
 # Visual Manifest Schema
 
-`visual-manifest.json` is the only persisted plan between visual planning, rendering, validation, and Markdown integration. Keep it beside the source Markdown so every path remains relative to one article root without `..` traversal.
+`visual-manifest.json` is the only persisted plan between visual planning, rendering, validation, and Markdown integration. Keep it beside the source Markdown so article paths remain relative to one article root without `..` traversal. Style protocol and golden-set paths are Skill-relative and resolve under the `article-visual-director` Skill root.
+
+Manifest v2 is the default for new work. Manifest v1 remains accepted without reinterpretation so existing approved plans continue to validate.
 
 Recommended layout:
 
@@ -20,17 +22,81 @@ The scripts use JSON and the Python standard library only.
 
 | Field | Type | Rule |
 |---|---|---|
-| `manifest_version` | integer | Must be `1` |
+| `manifest_version` | integer | `2` for new plans; legacy `1` remains accepted |
 | `source` | object | Approved source identity and byte format |
 | `article_slug` | string | Lowercase ASCII kebab-case |
 | `platforms` | array | One or more of `csdn`, `wechat`, `x-article` |
 | `outputs` | object | Illustrated Markdown path and published asset directory |
-| `style` | object | Approved profile and reusable fingerprint |
-| `approvals` | object | Plan and style-anchor gates |
+| `style` | object | v1 fingerprint or v2 versioned protocol/golden-set contract |
+| `approvals` | object | Plan and version-specific style-anchor gates |
 | `integration` | object | Final integration and verification state |
 | `assets` | array | Ordered visual plan; IDs and Markdown destinations must be unique |
 
 `outputs.illustrated_markdown` is the requested safe relative `.md` path and must differ from the source. `outputs.actual_illustrated_markdown` starts as `null`; after integration it records the real output, including a `-v2` or later suffix. `outputs.asset_directory` must be `assets/{article_slug}`. Integration uses `pending`, `complete`, or `failed`; verification uses `pending`, `passed`, or `failed`.
+
+## Version 1 Legacy Contract
+
+Version 1 keeps the original `style.profile_id`, free-form `style.fingerprint`, and count-based `approvals.style_anchor` behavior. Fewer than three imagegen assets may use `not_required`; three or more require `approved` during integration. Do not migrate or reinterpret an already approved v1 manifest implicitly.
+
+## Version 2 Style Contract
+
+Version 2 separates publication context from visual identity:
+
+- `publication_theme` describes page or channel context and never replaces the selected profile palette;
+- `profile_id` and `profile_version` select one registered visual protocol;
+- protocol and golden-set paths plus SHA-256 values freeze the exact approved visual contract;
+- `approved_overrides` may only contain deterministic title-layer fields when `theme_override_policy` is `title-layer-only`;
+- `article_reference_paths` records article-specific reference images separately from permanent golden anchors;
+- `article_style_anchor_asset_id` identifies the approved asset that anchors continuity for this article.
+
+Required v2 `style` object:
+
+```json
+{
+  "profile_id": "handwritten-systems-explainer",
+  "profile_version": 2,
+  "protocol_path": "references/styles/08-handwritten-systems-explainer.md",
+  "protocol_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "golden_set_path": "assets/style-anchors/handwritten-systems-explainer/golden-set.json",
+  "golden_set_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "golden_reference_ids": ["hse-cover", "hse-concept", "hse-diagram"],
+  "publication_theme": "green",
+  "theme_override_policy": "title-layer-only",
+  "approved_overrides": [],
+  "article_reference_paths": [],
+  "article_style_anchor_asset_id": "asset-cover"
+}
+```
+
+The two hashes must equal the current files, and the golden set must be approved with matching profile identity/version and the same three reference IDs.
+
+### Article Style Anchor Decision Table
+
+| v2 plan | `approvals.article_style_anchor` | Anchor asset ID |
+|---|---|---|
+| Any imagegen asset | `approved` | Must name an asset in this manifest |
+| Any article-specific reference path | `approved` | Must name an asset in this manifest |
+| Two or more deterministic assets | `approved` | Must name an asset in this manifest |
+| Protocol or golden-set hash drift | Invalid until refreshed and re-approved | Must be reselected after refresh |
+| Exactly one deterministic asset, no references, current hashes | `not_required` permitted | May be `null` |
+
+Every v2 asset also carries a style review:
+
+```json
+{
+  "style_validation": {
+    "status": "planned",
+    "golden_reference_ids": ["hse-diagram"],
+    "required_traits_passed": false,
+    "forbidden_traits_found": [],
+    "theme_bleed": false,
+    "series_continuity": "planned",
+    "review_notes": null
+  }
+}
+```
+
+Integration requires `status=passed`, `required_traits_passed=true`, no forbidden traits, `theme_bleed=false`, and `series_continuity=passed`.
 
 ## Source Object
 
@@ -136,13 +202,13 @@ python -c "from pathlib import Path; import sys; sys.path.insert(0, 'skills/arti
 
 - `approvals.plan` stays `pending` until the complete visual plan is approved.
 - Every asset stays `approval=pending` until its prompt or diagram specification is approved.
-- Fewer than three `imagegen` assets may use `style_anchor=not_required`.
-- Three or more `imagegen` assets require `style_anchor=approved` for integration.
+- In v1, fewer than three `imagegen` assets may use `style_anchor=not_required`; three or more require `style_anchor=approved` for integration.
+- In v2, follow the article-style-anchor decision table; the single deterministic asset case is the only `not_required` exception.
 - Generation does not imply validation. Inspect the artifact before `validation_status=passed`.
 - WeChat cover integration requires a valid `title` contract. Any deterministic cover text requires an existing text-free background, an existing editable source, and a completed wide-crop check; WeChat additionally requires the square-crop check. A declared text-free title contract requires `user_opt_out=true`.
 - Only successful Markdown insertion sets every asset to `inserted`, `integration.status=complete`, and `integration.verification_status=passed`.
 
-## Complete Single-Asset Example
+## Legacy Version 1 Single-Asset Example
 
 ```json
 {
@@ -200,6 +266,138 @@ python -c "from pathlib import Path; import sys; sys.path.insert(0, 'skills/arti
       "generation_status": "complete",
       "validation_status": "passed",
       "insertion_status": "pending"
+    }
+  ]
+}
+```
+
+## Version 2 Mixed-Renderer Example
+
+The hashes below illustrate the required 64-character shape; a real plan stores hashes computed from the selected protocol and approved golden-set files.
+
+```json
+{
+  "manifest_version": 2,
+  "source": {
+    "path": "article.md",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "encoding": "utf-8",
+    "line_ending": "lf"
+  },
+  "article_slug": "ai-amplifies-capability",
+  "platforms": ["csdn"],
+  "outputs": {
+    "illustrated_markdown": "article-illustrated.md",
+    "actual_illustrated_markdown": null,
+    "asset_directory": "assets/ai-amplifies-capability"
+  },
+  "style": {
+    "profile_id": "handwritten-systems-explainer",
+    "profile_version": 2,
+    "protocol_path": "references/styles/08-handwritten-systems-explainer.md",
+    "protocol_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "golden_set_path": "assets/style-anchors/handwritten-systems-explainer/golden-set.json",
+    "golden_set_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "golden_reference_ids": ["hse-cover", "hse-concept", "hse-diagram"],
+    "publication_theme": "green",
+    "theme_override_policy": "title-layer-only",
+    "approved_overrides": [],
+    "article_reference_paths": [],
+    "article_style_anchor_asset_id": "asset-capability-gap"
+  },
+  "approvals": {
+    "plan": "approved",
+    "article_style_anchor": "approved"
+  },
+  "integration": {
+    "status": "pending",
+    "verification_status": "pending"
+  },
+  "assets": [
+    {
+      "id": "asset-capability-gap",
+      "role": "concept",
+      "reader_takeaway": "Equal AI multipliers widen the absolute gap between unequal base capabilities.",
+      "visual_purpose": "Make 10×100 versus 1×100 memorable.",
+      "renderer": "imagegen",
+      "output_format": "png",
+      "dimensions": {"width": 1600, "height": 900},
+      "aspect_ratio": "16:9",
+      "safe_area": "Keep the two capability paths inside the outer 8 percent.",
+      "anchor": {
+        "heading": "## AI 放大的不只是效率",
+        "occurrence": 1,
+        "placement": "section_end",
+        "context_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      },
+      "prompt": "Text-free handwritten systems explainer showing two starting capabilities amplified by the same AI multiplier, bold imperfect black ink, warm paper, saturated orange blue and green semantic roles, direct arrows, no pastel corporate cards or 3D",
+      "diagram_spec": null,
+      "approval": "approved",
+      "editable_source_path": null,
+      "artifact_path": "visual-renders/01-capability-gap.png",
+      "markdown_path": "assets/ai-amplifies-capability/01-capability-gap.png",
+      "alt": "Two unequal starting capabilities become a much larger absolute gap after the same AI multiplier",
+      "caption": null,
+      "generation_status": "planned",
+      "validation_status": "planned",
+      "insertion_status": "pending",
+      "style_validation": {
+        "status": "planned",
+        "golden_reference_ids": ["hse-cover", "hse-concept"],
+        "required_traits_passed": false,
+        "forbidden_traits_found": [],
+        "theme_bleed": false,
+        "series_continuity": "planned",
+        "review_notes": null
+      }
+    },
+    {
+      "id": "asset-human-ai-loop",
+      "role": "process",
+      "reader_takeaway": "AI reduces execution cost while human communication remains a separate coordination cost.",
+      "visual_purpose": "Separate tool acceleration from collaboration overhead.",
+      "renderer": "deterministic-diagram",
+      "output_format": "png",
+      "dimensions": {"width": 1600, "height": 900},
+      "aspect_ratio": "16:9",
+      "safe_area": "Keep labels and arrowheads inside the outer 8 percent.",
+      "anchor": {
+        "heading": "## 为什么越来越多人更愿意和 AI 交流",
+        "occurrence": 1,
+        "placement": "section_end",
+        "context_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      },
+      "prompt": null,
+      "diagram_spec": {
+        "nodes": [
+          {"id": "person", "label": "一个人"},
+          {"id": "ai", "label": "AI 执行回路"},
+          {"id": "team", "label": "多人沟通"}
+        ],
+        "edges": [
+          {"from": "person", "to": "ai", "label": "低协调成本"},
+          {"from": "person", "to": "team", "label": "高沟通成本"}
+        ],
+        "blocked_unconfirmed_edges": []
+      },
+      "approval": "approved",
+      "editable_source_path": "visual-sources/02-human-ai-loop.svg",
+      "artifact_path": "visual-renders/02-human-ai-loop.png",
+      "markdown_path": "assets/ai-amplifies-capability/02-human-ai-loop.png",
+      "alt": "A person chooses between a direct AI execution loop and a higher-cost human coordination path",
+      "caption": null,
+      "generation_status": "planned",
+      "validation_status": "planned",
+      "insertion_status": "pending",
+      "style_validation": {
+        "status": "planned",
+        "golden_reference_ids": ["hse-diagram"],
+        "required_traits_passed": false,
+        "forbidden_traits_found": [],
+        "theme_bleed": false,
+        "series_continuity": "planned",
+        "review_notes": null
+      }
     }
   ]
 }

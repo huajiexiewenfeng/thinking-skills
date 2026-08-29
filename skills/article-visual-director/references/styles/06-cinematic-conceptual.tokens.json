@@ -1,0 +1,14 @@
+{
+  "profile_id": "cinematic-conceptual",
+  "protocol_version": 2,
+  "surface": {"background": "#10151D", "alternate": "#253142", "finish": "atmospheric"},
+  "palette": {"ink": "#DCE6F2", "primary": "#596C85", "accent": "#E59A3A", "shadow": "#090D12", "saturation": "single-accent"},
+  "line": {"primary": "#DCE6F2", "width_px": 2, "weight_class": "silhouette", "behavior": "edge-light-not-diagram"},
+  "typography": {"family_zh": "Source Han Serif SC, SimSun, serif", "family_en": "Georgia, serif", "label_treatment": "title-safe-editorial"},
+  "geometry": {"corner_radius_px": 0, "shape_language": "organic-symbolic", "label_style": "minimal-overlay", "camera": "cinematic-perspective"},
+  "depth": {"mode": "atmospheric", "shadow": "deep-volumetric", "glow": "accent-only"},
+  "texture": {"pattern": "subtle-film-grain", "intensity": "low"},
+  "spacing": {"grid_px": 32, "outer_margin_px": 112, "node_gap_px": 64, "density": "very-low"},
+  "semantic_color_roles": {"environment": "#10151D", "subject": "#DCE6F2", "thesis_accent": "#E59A3A", "distance": "#596C85"},
+  "forbidden_traits": ["multi-module infographic", "spectacle without thesis", "default face", "embedded title text", "dashboard layout"]
+}

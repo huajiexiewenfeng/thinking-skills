@@ -183,6 +183,15 @@ Use when drafting, revising, or preparing content for WeChat Official Account ar
 
 Goal: preserve the article's argument while making it stable, readable, and visually comfortable on mobile. This is a publishing and layout adaptation mode, not just a tone adjustment.
 
+### Output Artifact Contract
+
+During revision and publishing turns, preserve the existing artifact type unless the user explicitly changes it. If the accepted source or current deliverable is Markdown, the revised deliverable remains a `.md` file.
+
+- Technical Minimal Green may use inline HTML styling inside Markdown, but the artifact is still Markdown and keeps the `.md` extension.
+- Create a standalone HTML document, browser copy page, or sibling `*-publish.html` only when the user explicitly asks for HTML, a browser preview, or a copy page. Naming a platform or asking for a final publishable version is not sufficient.
+- A layout-only or writing-style request does not authorize visual changes. When images are already confirmed, do not recolor, regenerate, or replace confirmed images unless the user explicitly asks to change the visuals.
+- In mixed article-and-visual workflows, interpret `green` as the article publishing style when the user refers to the article, WeChat layout, or Markdown. Treat it as a visual-profile request only when the user explicitly refers to images, illustrations, cover art, or the visual profile.
+
 Prefer:
 
 - Use short natural paragraphs, usually 1-3 sentences per paragraph.

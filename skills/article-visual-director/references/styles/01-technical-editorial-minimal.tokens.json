@@ -1,0 +1,14 @@
+{
+  "profile_id": "technical-editorial-minimal",
+  "protocol_version": 2,
+  "surface": {"background": "#F7F5EF", "alternate": "#162536", "finish": "matte-editorial"},
+  "palette": {"ink": "#162536", "primary": "#2A7FFF", "warm": "#F2A65A", "muted": "#D8DEE4", "saturation": "restrained"},
+  "line": {"primary": "#162536", "width_px": 3, "weight_class": "crisp-medium", "behavior": "uniform-crisp"},
+  "typography": {"family_zh": "Microsoft YaHei, PingFang SC, sans-serif", "family_en": "Inter, Arial, sans-serif", "label_treatment": "clean-sans"},
+  "geometry": {"corner_radius_px": 8, "shape_language": "flat-grid", "label_style": "quiet-caption", "camera": "front-orthogonal"},
+  "depth": {"mode": "flat", "shadow": "none-or-2px", "glow": "none"},
+  "texture": {"pattern": "subtle-matte-paper", "intensity": "low"},
+  "spacing": {"grid_px": 24, "outer_margin_px": 96, "node_gap_px": 48, "density": "low-medium"},
+  "semantic_color_roles": {"foundation": "#162536", "primary_signal": "#2A7FFF", "human_or_exception": "#F2A65A", "neutral": "#D8DEE4"},
+  "forbidden_traits": ["hand-drawn strokes", "dashboard chrome", "three-dimensional modules", "decorative circuitry"]
+}

@@ -1,0 +1,14 @@
+{
+  "profile_id": "blueprint-linework",
+  "protocol_version": 2,
+  "surface": {"background": "#123B66", "alternate": "#E8E0CF", "finish": "drafting-ground"},
+  "palette": {"ink": "#E6F4FF", "primary": "#72D5FF", "construction": "#82A8C8", "muted": "#2A5278", "saturation": "technical-limited"},
+  "line": {"primary": "#E6F4FF", "width_px": 2, "weight_class": "thin-uniform", "behavior": "orthographic-construction"},
+  "typography": {"family_zh": "Microsoft YaHei, PingFang SC, sans-serif", "family_en": "IBM Plex Mono, Consolas, monospace", "label_treatment": "drafting-caption"},
+  "geometry": {"corner_radius_px": 2, "shape_language": "orthographic-cutaway", "label_style": "annotation-zone", "camera": "orthographic"},
+  "depth": {"mode": "flat-cutaway", "shadow": "none", "glow": "none"},
+  "texture": {"pattern": "blueprint-grid", "intensity": "low"},
+  "spacing": {"grid_px": 20, "outer_margin_px": 72, "node_gap_px": 36, "density": "medium-disciplined"},
+  "semantic_color_roles": {"primary_structure": "#E6F4FF", "construction_line": "#82A8C8", "highlight": "#72D5FF", "boundary": "#2A5278"},
+  "forbidden_traits": ["fake dimensions", "photorealism", "isometric camera", "dense crosshatching", "pseudo-engineering labels"]
+}

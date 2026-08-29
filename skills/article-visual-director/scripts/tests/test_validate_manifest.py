@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import sys
 import tempfile
@@ -419,6 +420,149 @@ class ValidateManifestTests(unittest.TestCase):
         self.assertEqual(
             "assets[0].title.background_artifact_path", error["path"]
         )
+
+
+class ValidateManifestV2Tests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self.root = Path(self.temp_dir.name)
+        self.skill_root = self.root / "skill"
+        self.manifest_path = self.root / "visual-plan.json"
+        profile_root = self.skill_root / "assets" / "style-anchors" / "fixture-profile"
+        protocol_root = self.skill_root / "references" / "styles"
+        profile_root.mkdir(parents=True)
+        protocol_root.mkdir(parents=True)
+        self.protocol_path = protocol_root / "01-fixture-profile.md"
+        self.golden_path = profile_root / "golden-set.json"
+        self.protocol_path.write_text("# Fixture Protocol\n", encoding="utf-8")
+        self.golden_path.write_text(
+            json.dumps({
+                "golden_set_version": 1,
+                "profile_id": "fixture-profile",
+                "protocol_version": 2,
+                "status": "approved",
+                "user_approval": {"status": "approved", "revision_notes": []},
+                "assets": [
+                    {"id": "fixture-cover", "role": "cover"},
+                    {"id": "fixture-concept", "role": "concept"},
+                    {"id": "fixture-diagram", "role": "diagram"},
+                ],
+            }),
+            encoding="utf-8",
+        )
+
+    def tearDown(self) -> None:
+        self.temp_dir.cleanup()
+
+    def _sha(self, path: Path) -> str:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+
+    def make_v2_manifest(
+        self, renderer: str = "imagegen", phase_ready: bool = False
+    ) -> dict:
+        data = make_manifest()
+        data["manifest_version"] = 2
+        asset = data["assets"][0]
+        if renderer == "deterministic-diagram":
+            asset["role"] = "process"
+            asset["renderer"] = renderer
+            asset["prompt"] = None
+            asset["diagram_spec"] = {
+                "nodes": [], "edges": [], "blocked_unconfirmed_edges": []
+            }
+            asset["editable_source_path"] = "visual-renders/process.svg"
+        asset["style_validation"] = {
+            "status": "passed" if phase_ready else "planned",
+            "golden_reference_ids": ["fixture-diagram"],
+            "required_traits_passed": phase_ready,
+            "forbidden_traits_found": [],
+            "theme_bleed": False,
+            "series_continuity": "passed" if phase_ready else "planned",
+            "review_notes": None,
+        }
+        data["style"] = {
+            "profile_id": "fixture-profile",
+            "profile_version": 2,
+            "protocol_path": "references/styles/01-fixture-profile.md",
+            "protocol_sha256": self._sha(self.protocol_path),
+            "golden_set_path": "assets/style-anchors/fixture-profile/golden-set.json",
+            "golden_set_sha256": self._sha(self.golden_path),
+            "golden_reference_ids": [
+                "fixture-cover", "fixture-concept", "fixture-diagram"
+            ],
+            "publication_theme": "green",
+            "theme_override_policy": "title-layer-only",
+            "approved_overrides": [],
+            "article_reference_paths": [],
+            "article_style_anchor_asset_id": asset["id"],
+        }
+        data["approvals"]["article_style_anchor"] = (
+            "approved" if renderer == "imagegen" else "not_required"
+        )
+        if phase_ready:
+            for relative in (asset["artifact_path"], asset.get("editable_source_path")):
+                if relative:
+                    path = self.root / relative
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_bytes(b"verified")
+        return data
+
+    def assert_error(
+        self, data: dict, code: str, phase: str = "plan"
+    ) -> None:
+        errors = validate_manifest(
+            data, self.manifest_path, phase, skill_root=self.skill_root
+        )
+        self.assertTrue(any(error["code"] == code for error in errors), errors)
+
+    def test_v1_fixture_remains_valid(self) -> None:
+        self.assertEqual([], validate_manifest(make_manifest(), self.manifest_path, "plan"))
+
+    def test_v2_imagegen_requires_approved_article_style_anchor(self) -> None:
+        data = self.make_v2_manifest(renderer="imagegen")
+        data["approvals"]["article_style_anchor"] = "not_required"
+        self.assert_error(data, "article_style_anchor_required")
+
+    def test_v2_single_deterministic_asset_may_skip_anchor(self) -> None:
+        data = self.make_v2_manifest(renderer="deterministic-diagram")
+        data["style"]["article_style_anchor_asset_id"] = None
+        self.assertEqual(
+            [],
+            validate_manifest(
+                data, self.manifest_path, "plan", skill_root=self.skill_root
+            ),
+        )
+
+    def test_v2_rejects_theme_override_outside_policy(self) -> None:
+        data = self.make_v2_manifest()
+        data["style"]["approved_overrides"] = ["palette.primary"]
+        self.assert_error(data, "theme_override_not_allowed")
+
+    def test_v2_rejects_protocol_or_golden_hash_drift(self) -> None:
+        data = self.make_v2_manifest()
+        data["style"]["golden_set_sha256"] = "0" * 64
+        self.assert_error(data, "golden_set_hash_mismatch")
+
+    def test_v2_integration_requires_passed_style_validation(self) -> None:
+        data = self.make_v2_manifest(phase_ready=True)
+        data["assets"][0]["style_validation"]["status"] = "pending"
+        self.assert_error(data, "style_validation_not_passed", phase="integration")
+
+    def test_v2_rejects_forbidden_traits_and_theme_bleed(self) -> None:
+        data = self.make_v2_manifest(phase_ready=True)
+        validation = data["assets"][0]["style_validation"]
+        validation["forbidden_traits_found"] = ["corporate-card-grid"]
+        validation["theme_bleed"] = True
+        errors = validate_manifest(
+            data, self.manifest_path, "integration", skill_root=self.skill_root
+        )
+        self.assertTrue(any(error["code"] == "forbidden_style_trait" for error in errors))
+        self.assertTrue(any(error["code"] == "style_theme_bleed" for error in errors))
+
+    def test_v2_anchor_asset_id_must_exist(self) -> None:
+        data = self.make_v2_manifest()
+        data["style"]["article_style_anchor_asset_id"] = "missing-asset"
+        self.assert_error(data, "unknown_style_anchor_asset")
 
 
 if __name__ == "__main__":
