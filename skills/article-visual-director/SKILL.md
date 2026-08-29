@@ -160,9 +160,11 @@ When a cross-platform article has separate cover exports, record asset-level `pl
 
 ### 4. Establish the selected visual direction
 
-Read [references/style-registry.json](references/style-registry.json), locate the exact selected profile, then read only that entry's protocol, token file, and golden-set metadata. Do not load or blend the other seven protocols. Explain the selected mode's fit in terms of audience, article tone, technical density, and platform—not taste alone.
+Read [references/style-registry.json](references/style-registry.json), locate the exact selected profile, then read only that entry's protocol, token file, and golden-set metadata. If that entry declares `style_pack_version=3`, also load its Visual DNA, role contracts, reference matrix, and registered adapter contract. Do not load or blend the other seven protocols. Explain the selected mode's fit in terms of audience, article tone, technical density, and platform—not taste alone.
 
 The selected golden set must have `status=approved`, explicit user approval, and exactly three verified anchors: cover, concept, and diagram style anchor. If it is missing or still `candidate`, stop article production with `golden_set_pending`. Explain that this visual mode has no approved permanent style anchors yet and enter the golden-production flow only after the user agrees. Golden-production order is cover, concept, then architecture/process style anchor; candidates become golden only after explicit user approval and release validation.
+
+For Style Pack v3, release production additionally requires `prompt_compile_status`, `cross_topic_probe_status`, and `neighbor_discrimination_status` to be `passed`. Otherwise stop with `style_pack_not_qualified`; do not bypass the pack with a legacy or free-form prompt.
 
 Keep three responsibilities separate in the plan and Manifest v2:
 
@@ -234,6 +236,8 @@ Treat this specification as the semantic graph and source of truth. Assign every
 
 Create Manifest v2 as described in [references/manifest-schema.md](references/manifest-schema.md). Treat it as the source of truth. Record the selected profile/version, Skill-relative protocol and golden-set paths, their current SHA-256 values, the three golden reference IDs, `publication_theme`, override policy, article-specific references, and per-asset `style_validation`. Set approvals to `pending` until the user confirms the plan. After confirmation, freeze prompts/specifications and set the relevant approvals to `approved`.
 
+For a Style Pack v3 imagegen asset, compile the approved brief through `scripts/compile_image_prompt.py` after plan approval and before generating the article style anchor. The model-neutral Prompt IR must contain, in order, `OUTPUT CONTRACT`, `ARTICLE SEMANTICS`, `ROLE COMPOSITION`, `VISUAL DNA`, `REFERENCE CONTRACT`, `TEXT POLICY`, `NEGATIVE CONSTRAINTS`, and `ACCEPTANCE CHECK`. Run preflight lint, store the Prompt IR and GPT Image prompt as UTF-8 files, and record their paths and SHA-256 values together with the three Style Pack contract paths and hashes in Manifest v2. Any lint error stops generation; never delete a failing block, weaken the same-role golden contract, or fall back to a free-form prompt.
+
 End the planning response with one compact approval request. Do not generate images in that response.
 
 ### 6. Render through the correct capability
@@ -273,7 +277,7 @@ Inspect each rendered artifact before integration. Mark `validation_status=passe
 - body illustrations remain legible at article column width;
 - alt text explains the information or purpose, not merely the appearance.
 
-Record the result in Manifest v2 `style_validation`: `status`, cited golden IDs, required-trait result, forbidden traits found, theme bleed, series continuity, and review notes. If an asset fails, regenerate or revise only that asset and validate again. Do not insert a failed asset.
+Record the result in Manifest v2 `style_validation`: `status`, cited golden IDs, required-trait result, forbidden traits found, theme bleed, series continuity, v3 `drift_codes` when applicable, and review notes. If an asset fails, regenerate or revise only that asset and validate again. Do not insert a failed asset. For v3, map the failure to the responsible Prompt IR or Style Pack field and recompile; do not rewrite the whole prompt freely.
 
 ### 8. Integrate non-destructively
 

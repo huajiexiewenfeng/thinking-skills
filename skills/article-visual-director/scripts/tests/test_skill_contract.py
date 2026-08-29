@@ -281,6 +281,18 @@ class SkillContractTests(unittest.TestCase):
         for reference in matrix["references"]:
             self.assertIn("topology", reference["must_not_copy"])
 
+    def test_v3_workflow_compiles_and_fails_closed(self) -> None:
+        skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        cases_text = (
+            SKILL_ROOT.parents[1] / "evals" / "article-visual-director-cases.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("scripts/compile_image_prompt.py", skill_text)
+        self.assertIn("style_pack_not_qualified", skill_text)
+        self.assertIn("never delete a failing block", skill_text)
+        self.assertIn("PROMPT_BLOCK_MISSING", cases_text)
+        self.assertIn("REFERENCE CONTRACT", cases_text)
+
 
 if __name__ == "__main__":
     unittest.main()

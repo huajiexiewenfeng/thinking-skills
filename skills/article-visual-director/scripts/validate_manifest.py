@@ -32,6 +32,16 @@ VALID_INTEGRATION_STATES = {"pending", "complete", "failed"}
 VALID_VERIFICATION_STATES = {"pending", "passed", "failed"}
 VALID_OUTPUT_FORMATS = {"png", "jpg", "jpeg", "svg"}
 VALID_COVER_TITLE_MODES = {"deterministic", "text-free"}
+VALID_DRIFT_CODES = {
+    "PROMPT_BLOCK_MISSING",
+    "STYLE_IDENTITY_DRIFT",
+    "ROLE_LAYOUT_DRIFT",
+    "PUBLICATION_THEME_BLEED",
+    "GOLDEN_CONTENT_COPY",
+    "SEMANTIC_TOPOLOGY_DRIFT",
+    "SERIES_CONTINUITY_DRIFT",
+    "TEXT_POLICY_VIOLATION",
+}
 ROLE_RENDERER = {
     "cover": "imagegen",
     "concept": "imagegen",
@@ -523,8 +533,153 @@ def _validate_style_v2(
     return contract_drift
 
 
+def _validate_trace_file(
+    *,
+    errors: list[dict[str, str]],
+    style: dict[str, Any],
+    field: str,
+    hash_field: str,
+    root: Path,
+    root_label: str,
+) -> None:
+    value = style.get(field)
+    field_path = f"style.{field}"
+    if not _is_safe_relative_path(value):
+        _add_error(
+            errors,
+            "unsafe_relative_path",
+            field_path,
+            f"{field_path} must be a safe {root_label}-relative path",
+        )
+        return
+    target = (root / value).resolve()
+    if not _resolved_is_under(target, root):
+        _add_error(
+            errors,
+            "style_contract_path_escape",
+            field_path,
+            f"{field_path} escapes the {root_label} root",
+        )
+        return
+    if not target.is_file():
+        _add_error(
+            errors,
+            "style_contract_missing",
+            field_path,
+            f"Traceability file does not exist: {value}",
+        )
+        return
+    expected = style.get(hash_field)
+    if _is_sha256(expected) and _sha256_file(target) != expected.lower():
+        code = (
+            "prompt_trace_hash_mismatch"
+            if field in {"prompt_ir_path", "compiled_prompt_path"}
+            else "style_pack_hash_mismatch"
+        )
+        _add_error(
+            errors,
+            code,
+            f"style.{hash_field}",
+            f"Traceability hash drift detected for {value}",
+        )
+
+
+def _validate_style_pack_v3_manifest(
+    data: dict[str, Any],
+    skill_root: Path,
+    manifest_path: Path,
+    errors: list[dict[str, str]],
+) -> None:
+    style = data.get("style")
+    if not isinstance(style, dict):
+        return
+    style_pack_version = style.get("style_pack_version")
+    if style_pack_version is None:
+        return
+    if style_pack_version != 3:
+        _add_error(
+            errors,
+            "unsupported_style_pack_version",
+            "style.style_pack_version",
+            "style_pack_version must be 3 when the v3 extension is present",
+        )
+        return
+
+    path_hash_pairs = (
+        ("visual_dna_path", "visual_dna_sha256"),
+        ("role_contracts_path", "role_contracts_sha256"),
+        ("reference_matrix_path", "reference_matrix_sha256"),
+        ("prompt_ir_path", "prompt_ir_sha256"),
+        ("compiled_prompt_path", "compiled_prompt_sha256"),
+    )
+    required_fields = {
+        field for pair in path_hash_pairs for field in pair
+    } | {"adapter_id", "adapter_version"}
+    for field in sorted(required_fields):
+        if style.get(field) in (None, ""):
+            _add_error(
+                errors,
+                "missing_style_pack_field",
+                f"style.{field}",
+                f"Style Pack v3 requires style.{field}",
+            )
+
+    for _, hash_field in path_hash_pairs:
+        value = style.get(hash_field)
+        if value is not None and not _is_sha256(value):
+            _add_error(
+                errors,
+                "invalid_sha256",
+                f"style.{hash_field}",
+                f"style.{hash_field} must contain 64 hexadecimal characters",
+            )
+    if style.get("adapter_id") not in {None, "gpt-image"}:
+        _add_error(
+            errors,
+            "unsupported_style_adapter",
+            "style.adapter_id",
+            "This manifest extension currently requires the gpt-image adapter",
+        )
+    adapter_version = style.get("adapter_version")
+    if adapter_version is not None and not (
+        (isinstance(adapter_version, int) and not isinstance(adapter_version, bool) and adapter_version > 0)
+        or _is_nonempty_string(adapter_version)
+    ):
+        _add_error(
+            errors,
+            "invalid_adapter_version",
+            "style.adapter_version",
+            "adapter_version must be a positive integer or non-empty string",
+        )
+
+    for field, hash_field in path_hash_pairs[:3]:
+        if style.get(field) is not None:
+            _validate_trace_file(
+                errors=errors,
+                style=style,
+                field=field,
+                hash_field=hash_field,
+                root=skill_root,
+                root_label="Skill",
+            )
+    manifest_root = manifest_path.parent.resolve()
+    for field, hash_field in path_hash_pairs[3:]:
+        if style.get(field) is not None:
+            _validate_trace_file(
+                errors=errors,
+                style=style,
+                field=field,
+                hash_field=hash_field,
+                root=manifest_root,
+                root_label="manifest",
+            )
+
+
 def _validate_top_level(
-    data: dict[str, Any], skill_root: Path, errors: list[dict[str, str]]
+    data: dict[str, Any],
+    skill_root: Path,
+    manifest_path: Path,
+    errors: list[dict[str, str]],
 ) -> bool:
     version = data.get("manifest_version")
     if version == 1:
@@ -551,7 +706,9 @@ def _validate_top_level(
     compatibility_approvals.setdefault("style_anchor", "not_required")
     compatibility["approvals"] = compatibility_approvals
     _validate_top_level_v1(compatibility, errors)
-    return _validate_style_v2(data, skill_root, errors)
+    contract_drift = _validate_style_v2(data, skill_root, errors)
+    _validate_style_pack_v3_manifest(data, skill_root, manifest_path, errors)
+    return contract_drift
 
 
 def _validate_dimensions(
@@ -1012,6 +1169,7 @@ def _validate_asset_style_v2(
     index: int,
     phase: str,
     approved_reference_ids: set[str],
+    style_pack_version: int | None,
     errors: list[dict[str, str]],
 ) -> None:
     base = f"assets[{index}].style_validation"
@@ -1052,6 +1210,24 @@ def _validate_asset_style_v2(
             f"{base}.theme_bleed",
             "theme_bleed must be boolean",
         )
+    if style_pack_version == 3:
+        drift_codes = validation.get("drift_codes")
+        if not isinstance(drift_codes, list):
+            _add_error(
+                errors,
+                "missing_style_pack_field",
+                f"{base}.drift_codes",
+                "Style Pack v3 assets require a drift_codes array",
+            )
+        else:
+            for drift_index, drift_code in enumerate(drift_codes):
+                if drift_code not in VALID_DRIFT_CODES:
+                    _add_error(
+                        errors,
+                        "invalid_drift_code",
+                        f"{base}.drift_codes[{drift_index}]",
+                        "drift_codes must use the approved Style Pack v3 error codes",
+                    )
     if phase != "integration":
         if validation.get("status") not in {"planned", "pending", "passed", "failed"}:
             _add_error(
@@ -1128,7 +1304,9 @@ def validate_manifest(
         if skill_root is not None
         else Path(__file__).resolve().parents[1]
     )
-    contract_drift = _validate_top_level(data, effective_skill_root, errors)
+    contract_drift = _validate_top_level(
+        data, effective_skill_root, manifest_path, errors
+    )
     if phase == "integration":
         manifest_root = manifest_path.parent.resolve()
         source = data.get("source")
@@ -1188,6 +1366,9 @@ def validate_manifest(
     platforms = data.get("platforms")
     version = data.get("manifest_version")
     style = data.get("style")
+    style_pack_version = (
+        style.get("style_pack_version") if isinstance(style, dict) else None
+    )
     approved_reference_ids = (
         set(style.get("golden_reference_ids", []))
         if version == 2 and isinstance(style, dict)
@@ -1252,7 +1433,12 @@ def validate_manifest(
             raster_count += 1
         if version == 2 and isinstance(asset, dict):
             _validate_asset_style_v2(
-                asset, index, phase, approved_reference_ids, errors
+                asset,
+                index,
+                phase,
+                approved_reference_ids,
+                style_pack_version,
+                errors,
             )
 
     approvals = data.get("approvals")
