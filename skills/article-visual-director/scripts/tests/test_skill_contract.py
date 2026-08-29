@@ -225,6 +225,35 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("golden topology is non-authoritative", protocol)
         self.assertIn("semantic graph", protocol)
 
+    def test_style_pack_v3_reference_contracts_exist(self) -> None:
+        required = {
+            "references/style-pack-schema.md": [
+                "visual-dna.json",
+                "role-contracts.json",
+                "reference-matrix.json",
+            ],
+            "references/prompt-ir-schema.md": [
+                "OUTPUT CONTRACT",
+                "ARTICLE SEMANTICS",
+                "ROLE COMPOSITION",
+                "VISUAL DNA",
+                "REFERENCE CONTRACT",
+                "TEXT POLICY",
+                "NEGATIVE CONSTRAINTS",
+                "ACCEPTANCE CHECK",
+            ],
+            "references/adapters/gpt-image.md": [
+                "same-role golden",
+                "must_preserve",
+                "must_not_copy",
+            ],
+        }
+        for relative, phrases in required.items():
+            with self.subTest(relative=relative):
+                text = (SKILL_ROOT / relative).read_text(encoding="utf-8")
+                for phrase in phrases:
+                    self.assertIn(phrase, text)
+
 
 if __name__ == "__main__":
     unittest.main()
