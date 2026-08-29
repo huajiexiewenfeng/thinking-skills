@@ -9,6 +9,49 @@ from typing import Any
 
 VALID_PHASES = {"protocol", "release"}
 REQUIRED_GOLDEN_ROLES = {"cover", "concept", "diagram"}
+STYLE_PACK_VERSION = 3
+STYLE_PACK_PATH_FIELDS = (
+    "visual_dna_path",
+    "role_contracts_path",
+    "reference_matrix_path",
+)
+REQUIRED_VISUAL_DNA_KEYS = {
+    "profile_id",
+    "style_pack_version",
+    "surface",
+    "palette_roles",
+    "line_language",
+    "material_and_texture",
+    "geometry",
+    "depth_and_camera",
+    "typography",
+    "density_and_spacing",
+    "required_traits",
+    "forbidden_traits",
+    "neighbor_boundaries",
+}
+REQUIRED_ROLE_KEYS = {
+    "stability",
+    "must_preserve",
+    "may_vary",
+    "must_not_include",
+    "acceptance_checks",
+}
+REQUIRED_NON_COPY_FIELDS = {"labels", "numbers", "nodes", "topology", "example_story"}
+REQUIRED_QUALIFICATION_KEYS = {
+    "prompt_compile_status",
+    "cross_topic_probe_status",
+    "neighbor_discrimination_status",
+}
+VAGUE_VISUAL_TRAITS = {
+    "attractive",
+    "beautiful",
+    "clean",
+    "good",
+    "modern",
+    "nice",
+    "professional",
+}
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -163,6 +206,281 @@ def _validate_release_set(
             )
 
 
+def _observable_list(value: object) -> bool:
+    return (
+        isinstance(value, list)
+        and bool(value)
+        and all(isinstance(item, str) and len(item.strip()) >= 8 for item in value)
+    )
+
+
+def _observable_visual_traits(value: object) -> bool:
+    return _observable_list(value) and all(
+        item.strip().lower() not in VAGUE_VISUAL_TRAITS for item in value
+    )
+
+
+def _load_pack_file(
+    errors: list[dict[str, str]],
+    skill_root: Path,
+    profile_prefix: str,
+    registry_item: dict[str, Any],
+    field: str,
+    invalid_code: str,
+) -> tuple[Path | None, dict[str, Any] | None]:
+    relative = registry_item.get(field)
+    if not isinstance(relative, str) or not relative:
+        _add_error(
+            errors,
+            "style_pack_path_missing",
+            f"{profile_prefix}.{field}",
+            "Style Pack v3 profiles must declare every pack contract path.",
+        )
+        return None, None
+    target = _safe_child(skill_root, relative)
+    if target is None:
+        _add_error(
+            errors,
+            "registry_path_invalid",
+            f"{profile_prefix}.{field}",
+            "Registry paths must be relative and remain under the Skill root.",
+        )
+        return None, None
+    if not target.is_file():
+        _add_error(
+            errors,
+            "contract_file_missing",
+            f"{profile_prefix}.{field}",
+            f"Contract file does not exist: {relative}",
+        )
+        return target, None
+    try:
+        return target, load_json(target)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        _add_error(errors, invalid_code, f"{profile_prefix}.{field}", str(exc))
+        return target, None
+
+
+def _validate_style_pack_v3(
+    errors: list[dict[str, str]],
+    skill_root: Path,
+    profile_index: int,
+    registry_item: dict[str, Any],
+    golden: dict[str, Any],
+    phase: str,
+) -> None:
+    if registry_item.get("style_pack_version") != STYLE_PACK_VERSION:
+        return
+
+    prefix = f"profiles[{profile_index}]"
+    expected_id = registry_item.get("profile_id")
+    adapter_ids = registry_item.get("adapter_ids")
+    if not isinstance(adapter_ids, list) or not adapter_ids or not all(
+        isinstance(adapter_id, str) and adapter_id.strip() for adapter_id in adapter_ids
+    ):
+        _add_error(
+            errors,
+            "style_pack_adapter_invalid",
+            f"{prefix}.adapter_ids",
+            "Style Pack v3 profiles require at least one named model adapter.",
+        )
+
+    loaded: dict[str, tuple[Path | None, dict[str, Any] | None]] = {}
+    invalid_codes = {
+        "visual_dna_path": "visual_dna_invalid",
+        "role_contracts_path": "role_contracts_invalid",
+        "reference_matrix_path": "reference_matrix_invalid",
+    }
+    for field in STYLE_PACK_PATH_FIELDS:
+        loaded[field] = _load_pack_file(
+            errors,
+            skill_root,
+            prefix,
+            registry_item,
+            field,
+            invalid_codes[field],
+        )
+
+    for field, (_, document) in loaded.items():
+        if document is not None and (
+            document.get("profile_id") != expected_id
+            or document.get("style_pack_version") != STYLE_PACK_VERSION
+        ):
+            _add_error(
+                errors,
+                "profile_identity_mismatch",
+                f"{prefix}.{field}",
+                "Style Pack identity/version must match the registry.",
+            )
+
+    _, visual_dna = loaded["visual_dna_path"]
+    visual_dna_valid = isinstance(visual_dna, dict)
+    if visual_dna_valid:
+        visual_dna_valid = REQUIRED_VISUAL_DNA_KEYS.issubset(visual_dna)
+    if visual_dna_valid:
+        structured_fields = (
+            "surface",
+            "palette_roles",
+            "line_language",
+            "material_and_texture",
+            "geometry",
+            "depth_and_camera",
+            "typography",
+            "density_and_spacing",
+        )
+        visual_dna_valid = all(
+            isinstance(visual_dna.get(field), dict) and bool(visual_dna[field])
+            for field in structured_fields
+        )
+    if visual_dna_valid:
+        boundaries = visual_dna.get("neighbor_boundaries")
+        visual_dna_valid = (
+            _observable_visual_traits(visual_dna.get("required_traits"))
+            and _observable_visual_traits(visual_dna.get("forbidden_traits"))
+            and isinstance(boundaries, list)
+            and bool(boundaries)
+            and all(
+                isinstance(boundary, dict)
+                and isinstance(boundary.get("profile_id"), str)
+                and bool(boundary["profile_id"].strip())
+                and isinstance(boundary.get("difference"), str)
+                and len(boundary["difference"].strip()) >= 8
+                for boundary in boundaries
+            )
+        )
+    if visual_dna is not None and not visual_dna_valid:
+        _add_error(
+            errors,
+            "visual_dna_invalid",
+            f"{prefix}.visual_dna_path",
+            "Visual DNA must contain observable traits and explicit neighbor boundaries.",
+        )
+
+    _, role_contracts = loaded["role_contracts_path"]
+    role_contracts_valid = isinstance(role_contracts, dict)
+    roles = role_contracts.get("roles") if role_contracts_valid else None
+    role_contracts_valid = (
+        role_contracts_valid
+        and isinstance(roles, dict)
+        and set(roles) == REQUIRED_GOLDEN_ROLES
+    )
+    if role_contracts_valid:
+        for role, contract in roles.items():
+            expected_stability = "strict" if role == "diagram" else "family"
+            if (
+                not isinstance(contract, dict)
+                or not REQUIRED_ROLE_KEYS.issubset(contract)
+                or contract.get("stability") != expected_stability
+                or not all(
+                    _observable_list(contract.get(field))
+                    for field in (
+                        "must_preserve",
+                        "may_vary",
+                        "must_not_include",
+                        "acceptance_checks",
+                    )
+                )
+            ):
+                role_contracts_valid = False
+                break
+    if role_contracts is not None and not role_contracts_valid:
+        _add_error(
+            errors,
+            "role_contracts_invalid",
+            f"{prefix}.role_contracts_path",
+            "Role contracts must define family-stable cover/concept and a strict diagram contract.",
+        )
+
+    _, reference_matrix = loaded["reference_matrix_path"]
+    references = (
+        reference_matrix.get("references")
+        if isinstance(reference_matrix, dict)
+        else None
+    )
+    reference_matrix_valid = (
+        isinstance(references, list)
+        and len(references) == 3
+        and {
+            reference.get("role")
+            for reference in references
+            if isinstance(reference, dict)
+        }
+        == REQUIRED_GOLDEN_ROLES
+    )
+    golden_assets = golden.get("assets")
+    golden_ids_by_role = (
+        {
+            asset.get("role"): asset.get("id")
+            for asset in golden_assets
+            if isinstance(asset, dict)
+        }
+        if isinstance(golden_assets, list)
+        else {}
+    )
+    if reference_matrix_valid:
+        for reference in references:
+            role = reference.get("role")
+            non_copy = reference.get("must_not_copy")
+            if (
+                not isinstance(reference.get("golden_asset_id"), str)
+                or not reference["golden_asset_id"].strip()
+                or not _observable_list(reference.get("must_preserve"))
+                or not _observable_list(reference.get("may_vary"))
+                or not isinstance(non_copy, list)
+                or not REQUIRED_NON_COPY_FIELDS.issubset(non_copy)
+                or (
+                    golden_ids_by_role
+                    and reference.get("golden_asset_id") != golden_ids_by_role.get(role)
+                )
+            ):
+                reference_matrix_valid = False
+                break
+    if reference_matrix is not None and not reference_matrix_valid:
+        _add_error(
+            errors,
+            "reference_matrix_invalid",
+            f"{prefix}.reference_matrix_path",
+            "Reference matrix must map one golden per role and separate preserved style from copied content.",
+        )
+
+    if golden.get("style_pack_version") != STYLE_PACK_VERSION:
+        _add_error(
+            errors,
+            "style_pack_metadata_invalid",
+            f"{prefix}.golden_set.style_pack_version",
+            "Style Pack v3 goldens must declare style_pack_version 3.",
+        )
+    hash_fields = {
+        "visual_dna_path": "visual_dna_sha256",
+        "role_contracts_path": "role_contracts_sha256",
+        "reference_matrix_path": "reference_matrix_sha256",
+    }
+    for field, hash_field in hash_fields.items():
+        target, _ = loaded[field]
+        if target is not None and target.is_file():
+            expected_hash = golden.get(hash_field)
+            if not isinstance(expected_hash, str) or expected_hash.lower() != sha256_file(target):
+                _add_error(
+                    errors,
+                    "style_pack_hash_mismatch",
+                    f"{prefix}.golden_set.{hash_field}",
+                    f"SHA-256 drift detected for {registry_item.get(field)}.",
+                )
+
+    if phase == "release":
+        qualification = golden.get("qualification")
+        if not isinstance(qualification, dict) or any(
+            qualification.get(field) != "passed"
+            for field in REQUIRED_QUALIFICATION_KEYS
+        ):
+            _add_error(
+                errors,
+                "style_pack_not_qualified",
+                f"{prefix}.golden_set.qualification",
+                "Release requires prompt compile, cross-topic, and neighbor-discrimination qualification.",
+            )
+
+
 def validate_style_contract(
     skill_root: Path, phase: str, profile_id: str | None = None
 ) -> list[dict[str, str]]:
@@ -209,7 +527,13 @@ def validate_style_contract(
     declared_paths = [
         item.get(field)
         for item in profiles if isinstance(item, dict)
-        for field in ("protocol_path", "tokens_path", "golden_set_path")
+        for field in (
+            "protocol_path",
+            "tokens_path",
+            "golden_set_path",
+            *STYLE_PACK_PATH_FIELDS,
+        )
+        if item.get(field) is not None
     ]
     if len(ids) != len(set(ids)) or len(declared_paths) != len(set(declared_paths)):
         _add_error(
@@ -275,6 +599,9 @@ def validate_style_contract(
                 f"{prefix}.golden_set_path",
                 "Golden-set identity/version must match the registry.",
             )
+        _validate_style_pack_v3(
+            errors, skill_root, profile_index, item, golden, phase
+        )
         if phase == "protocol":
             if golden.get("status") not in {"candidate", "approved"}:
                 _add_error(
