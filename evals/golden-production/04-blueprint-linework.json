@@ -2,7 +2,8 @@
   "golden_production_version": 1,
   "profile_id": "blueprint-linework",
   "style_pack_version": 3,
-  "status": "planned",
+  "status": "rejected",
+  "program_outcome": "The user rejected the Style 4 visual language as aesthetically unattractive after reviewing multiple cover and concept variants. No candidate remains qualified as a golden reference, and production stops rather than weakening or repeatedly tuning the style contract.",
   "mode_boundary": {
     "must_read_as": "deep blueprint-blue orthographic technical linework with uniform pale construction lines a restrained grid one cyan semantic boundary and almost no volume",
     "must_not_read_as": "isometric infrastructure scene cinematic technology art neon system dashboard watercolor teaching sketch photorealistic engineering render or pseudo-technical drawing with invented measurements",
@@ -75,9 +76,9 @@
       "id": "blueprint-linework-cover-v1",
       "role": "cover",
       "revision": 2,
-      "approval": "approved",
-      "approved_artifact_path": "assets/style-anchors/blueprint-linework/golden-cover.png",
-      "user_feedback": "After rejecting the symmetric empty CAD-room revision, the user approved revision 2 by asking to continue. The approved image uses one asymmetric exploded module, a calm left title band, one broad cyan boundary membrane, compact filled core regions, and a fully opaque deep-blue blueprint ground.",
+      "approval": "rejected",
+      "rejected_artifact_path": "assets/style-anchors/blueprint-linework/golden-cover.png",
+      "user_feedback": "The user initially advanced revision 2, then rejected Style 4 overall after reviewing the concept direction, stating that the style as a whole is aesthetically unattractive. This later style-level decision supersedes the earlier provisional cover approval.",
       "visual_thesis": "One asymmetric exploded orthographic module exposes a broad cyan boundary membrane and a compact protected core, creating a clear technical focal hierarchy without labels or pseudo-engineering detail.",
       "request": {
         "profile_id": "blueprint-linework",
@@ -131,6 +132,147 @@
         "The view is strictly front-orthographic flat and fully opaque with a low-intensity grid and disciplined pale line hierarchy.",
         "The left title-safe band remains calm while the center-right module feels complete and visually substantial.",
         "No labels dimensions pseudo-engineering identifiers room-plan symmetry perspective isometric depth shadows glow gloss dense hatching people or decorative machinery appear."
+      ]
+    },
+    {
+      "id": "blueprint-linework-concept-v1",
+      "role": "concept",
+      "revision": 1,
+      "approval": "rejected",
+      "review_feedback": "Rejected during internal acceptance before the user gate. The image reduced the relation to three oversized flat slabs with almost no technical hierarchy, so it read as a placeholder diagram rather than a complete editorial blueprint concept.",
+      "failure_analysis": "The combination of exactly three objects, substantial filled profiles, and aggressive decorative-detail bans removed every relationship-bearing internal layer. The semantic grouping was correct but the visual information density was too low.",
+      "visual_thesis": "Two distinct orthographic interface profiles remain separate until one cyan coupling key aligns with both boundaries, explaining compatibility through one exact spatial relation.",
+      "request": {
+        "profile_id": "blueprint-linework",
+        "asset_role": "concept",
+        "objective": "Create one elegant text-free wide blueprint concept image showing exactly one interface relation: two large pale orthographic boundary profiles face each other across a controlled gap, and one clearly shaped cyan coupling key aligns with both profiles to create a supported connection.",
+        "semantics": {
+          "confirmed": [
+            "Two separate components require a compatible interface before they can connect.",
+            "One coupling element aligns with both component boundaries.",
+            "The geometry is a generic teaching relation and does not describe a real hardware standard or protocol."
+          ],
+          "simplifications": [
+            "Use exactly three semantic objects: one left boundary profile, one right boundary profile, and one cyan coupling key centered in the gap.",
+            "Make the two pale profiles visually different but complementary, using large filled blueprint regions with clean outline notches rather than empty frames.",
+            "Use a few muted construction guides to show alignment through the gap without arrows labels or dimensions."
+          ],
+          "blocked": [
+            "Do not imply a named connector protocol compatibility guarantee security property performance benefit or physical manufacturing specification.",
+            "Do not copy the cover outer shell offset panel cyan membrane protected core vertical module or right-heavy composition.",
+            "Do not add labels titles numbers dimensions tolerances identifiers pins ports arrows people shadows glow gloss perspective isometric depth dense hatching decorative machinery or repeated nested frames."
+          ]
+        },
+        "composition": {
+          "structure": "balanced horizontal front-orthographic blueprint relation spanning roughly seventy-four percent of a wide 16:9 canvas; place one substantial pale filled boundary profile left one substantial pale filled boundary profile right and one cyan coupling key in the central gap; preserve measured outer margins without a title zone",
+          "hierarchy": "the cyan coupling key is the only saturated focal feature; the two complementary pale boundary masses are equal supporting anchors; quieter dashed construction guides establish alignment across the gap",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "label-free objects with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete three-object interface relation occupies roughly seventy-four percent with measured balanced margins",
+          "crop_rules": "both boundary profiles the central gap and the complete cyan coupling key remain visible in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "concept",
+          "bootstrap_references": [
+            {
+              "id": "blueprint-linework-cover-v1",
+              "profile_id": "blueprint-linework",
+              "role": "cover",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly three semantic objects form one complete interface relation: two complementary pale boundary profiles and one cyan coupling key.",
+        "The result does not reuse the cover shell core membrane offset panel vertical module or right-heavy composition.",
+        "The two boundary profiles are substantial filled blueprint masses rather than empty rooms cards or repeated nested frames.",
+        "The view is strictly front-orthographic flat fully opaque and legible with uniform line discipline and a low-intensity grid.",
+        "The cyan coupling key is the only saturated semantic feature and its alignment with both boundaries is understandable without text.",
+        "No labels dimensions fake engineering identifiers pins ports arrows perspective isometric depth shadows glow gloss people dense hatching or decorative machinery appear."
+      ]
+    },
+    {
+      "id": "blueprint-linework-concept-v1",
+      "role": "concept",
+      "revision": 2,
+      "approval": "rejected",
+      "user_feedback": "The user stopped Style 4 after this revision and rejected the overall blueprint visual language as aesthetically unattractive; the concept is not eligible to become a golden reference.",
+      "visual_thesis": "Two organized layered assemblies expose complementary internal lanes that converge on one cyan interface spine, making compatibility visible through meaningful anatomy rather than bare geometric slabs.",
+      "request": {
+        "profile_id": "blueprint-linework",
+        "asset_role": "concept",
+        "objective": "Create one polished text-free wide blueprint concept image: two substantial front-orthographic layered assemblies face each other horizontally, each assembly contains exactly three broad pale-lined internal lanes that taper toward matching slots, and one cyan interface spine in the central gap aligns all three lane pairs into a supported connection.",
+        "semantics": {
+          "confirmed": [
+            "Two separate organized components require one defined compatible interface before their corresponding internal lanes can connect.",
+            "The central interface aligns three representative corresponding lanes across the boundary.",
+            "The anatomy is a generic teaching relation and does not describe a real hardware standard protocol or product."
+          ],
+          "simplifications": [
+            "Use three semantic groups only: one left layered assembly one central cyan interface spine and one right layered assembly.",
+            "Inside each assembly show exactly three large horizontal lanes or ribs with distinct spacing; taper them toward three matching interface slots rather than drawing empty slabs.",
+            "Use one restrained ghost outline behind the right assembly to reveal how the interface spine seats against the three slots; ghost geometry is construction context not another semantic component."
+          ],
+          "blocked": [
+            "Do not imply named connector pins protocols data lanes bandwidth compatibility guarantees security properties performance benefits or manufacturing specifications.",
+            "Do not copy the cover outer shell offset panel cyan membrane protected core vertical module or right-heavy composition.",
+            "Do not create three plain slabs empty room outlines cards dashboards labels titles numbers dimensions tolerances identifiers arrows people shadows glow gloss perspective isometric depth dense decorative hatching or ornamental machinery."
+          ]
+        },
+        "composition": {
+          "structure": "balanced horizontal front-orthographic blueprint anatomy occupying roughly seventy-eight percent of the 16:9 canvas; left and right layered assemblies each fill about thirty percent of canvas width and sixty-four percent of height; a cyan central interface spine fills eight to ten percent of width; measured margins surround the complete relation",
+          "hierarchy": "three pale internal lanes on each side create the explanatory rhythm and visibly converge toward matching slots; the cyan interface spine is the only saturated focal feature; one muted ghost seating outline remains subordinate",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "label-free objects with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete layered-interface anatomy occupies roughly seventy-eight percent with balanced measured margins",
+          "crop_rules": "the three lane pairs all matching slots and the complete cyan interface spine remain visible in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "concept",
+          "bootstrap_references": [
+            {
+              "id": "blueprint-linework-cover-v1",
+              "profile_id": "blueprint-linework",
+              "role": "cover",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "The image reads as one complete content-rich interface anatomy rather than three plain slabs or a placeholder diagram.",
+        "Exactly three representative lanes on each side converge toward three matching slots through one cyan interface spine.",
+        "The internal lanes materially explain compatibility and remain large legible construction features rather than decorative machinery.",
+        "The composition remains horizontal balanced and distinct from the cover vertical exploded module shell and core story.",
+        "The view is strictly front-orthographic flat fully opaque and legible with uniform pale line hierarchy and a low-intensity grid.",
+        "No labels dimensions fake identifiers arrows perspective isometric depth shadows glow gloss people dense decorative hatching cards dashboards or ornamental machinery appear."
       ]
     }
   ]
