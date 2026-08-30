@@ -14,7 +14,21 @@
   "status": "candidate",
   "user_approval": {
     "status": "pending",
-    "revision_notes": []
+    "revision_notes": [
+      "Cover golden approved: editorial isometric world scale, substantial matte modules, one continuous amber journey, opaque pale ground, consistent 30-degree camera and soft lighting, with a generous upper-left title-safe area. The example journey is style-only and has no semantic authority."
+    ]
   },
-  "assets": []
+  "assets": [
+    {
+      "id": "isometric-infrastructure-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "artifact_path": "assets/style-anchors/isometric-infrastructure/golden-cover.png",
+      "artifact_sha256": "781c604bdb173f8990ce68fd1b89a87a128a26b6a2c828e8d77cdc50d224dd2e",
+      "prompt_path": "assets/style-anchors/isometric-infrastructure/golden-cover.prompt.md",
+      "prompt_sha256": "153fc17d3dbed9cd7d430d5e3d777e9bf5268a0010854f9ca9bce8f31c25f573",
+      "reference_role": "editorial-isometric-world-scale-matte-material-single-path-lighting-and-title-safe-cover-anchor",
+      "semantic_authority": false
+    }
+  ]
 }

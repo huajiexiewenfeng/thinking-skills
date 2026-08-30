@@ -1,0 +1,76 @@
+{
+  "golden_production_version": 1,
+  "profile_id": "isometric-infrastructure",
+  "style_pack_version": 3,
+  "status": "in_progress",
+  "mode_boundary": {
+    "must_read_as": "polished editorial architectural diorama with fixed 30-degree isometric camera substantial matte modules shared soft light spacious pale ground and one continuous amber operational journey",
+    "must_not_read_as": "toy city miniature server farm vendor marketing render glossy plastic scene neon science-fiction glass world flat blueprint or dense cloud campus",
+    "nearest_profile_id": "blueprint-linework"
+  },
+  "candidates": [
+    {
+      "id": "isometric-infrastructure-cover-v1",
+      "role": "cover",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/isometric-infrastructure/golden-cover.png",
+      "user_feedback": "Approved by the user as the Style 5 cover direction. Preserve the polished editorial architectural diorama, four substantial matte modules, one continuous amber journey, fixed isometric camera, opaque pale ground, shared soft shadow direction, and generous upper-left title-safe area. Treat the depicted journey as visual scaffolding only, never as semantic authority for future articles.",
+      "visual_thesis": "One amber journey crosses four substantial architectural modules in a calm isometric world, making the operational path tangible without turning infrastructure into a miniature city.",
+      "request": {
+        "profile_id": "isometric-infrastructure",
+        "asset_role": "cover",
+        "objective": "Create one elegant text-free wide editorial isometric infrastructure cover: a broad pale matte ground plane supports exactly four substantial architectural modules, and one continuous wide amber inset path travels from a low source dock through a dominant coordination pavilion and a subordinate relay terrace to a destination archive.",
+        "semantics": {
+          "confirmed": [
+            "One source-to-destination journey passes through two representative intermediate stages.",
+            "Exactly four spatial modules represent the source two intermediate stages and destination.",
+            "The scene is a generic teaching environment and does not claim a real cloud architecture product or operational guarantee."
+          ],
+          "simplifications": [
+            "Use one low source dock at the front-left one large coordination pavilion near center one lower relay terrace behind and right of center and one taller destination archive at the far right.",
+            "Use one wide amber route inset into the ground plane; it starts at the source dock visibly passes each intermediate module once and terminates inside the destination archive.",
+            "Use monolithic brand-neutral architectural masses with restrained chamfers and a few broad structural openings; avoid tiny windows racks controls props or city furniture."
+          ],
+          "blocked": [
+            "Do not imply named services databases queues providers protocols metrics ownership hierarchy performance or topology beyond the declared four-stage journey.",
+            "Do not add readable labels logos screens clouds server racks antennas pipes vehicles people trees streets decorative buildings multiple routes branching arrows glossy plastic glass metal neon glow dark atmosphere random perspective mixed camera angles or multiple light directions."
+          ]
+        },
+        "composition": {
+          "structure": "wide 16:9 editorial architectural diorama on a large pale matte ground slab; keep a calm upper-left title-safe region and place the substantial four-module world across the center and lower-right occupying roughly seventy-eight percent of the canvas; use one fixed 30-degree isometric camera with consistent module scale",
+          "hierarchy": "the wide continuous amber path is the primary reading line; the central blue coordination pavilion is the largest mass; source relay and archive are clearly distinct but subordinate; one shared soft light casts consistent low-contrast shadows toward the lower-right",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title-safe zone",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the coherent four-module world and continuous amber path occupy roughly seventy-eight percent with a calm upper-left title-safe area",
+          "crop_rules": "all four modules the central pavilion and the continuous amber source-to-destination path remain understandable in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "cover",
+          "bootstrap_references": [],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly four substantial architectural modules form one coherent editorial isometric world.",
+        "One continuous wide amber route starts at the source dock passes both intermediate modules once and terminates at the destination archive without branches.",
+        "The fixed 30-degree camera module scale ground thickness matte material and shared shadow direction remain consistent.",
+        "The scene fills enough of the canvas to work as a cover while preserving a usable upper-left title-safe area.",
+        "The result looks like a high-quality technology-magazine architectural diorama rather than a toy city server farm vendor render or generic stock cloud scene.",
+        "No labels logos screens racks tiny buildings decorative props multiple routes pipes people vehicles glass gloss neon dark atmosphere mixed cameras or unsupported topology appear.",
+        "The output is fully opaque and the example journey supplies no semantic authority for future article content."
+      ]
+    }
+  ]
+}
