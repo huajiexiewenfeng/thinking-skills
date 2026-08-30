@@ -16,7 +16,8 @@
     "status": "pending",
     "revision_notes": [
       "The first tactile-mineral gate cover was rejected after comparison with the user's previous Style 6 reference. It was stable but removed the desired cinematic narrative landscape, journey, warm horizon, and small rear-view human presence.",
-      "Cover revision 2 approved: complete layered teal-blue valley, one continuous foreground-to-horizon road, one warm golden horizon, one small seated rear-view figure, active upper-left title-safe space, restrained cinematic matte-painting realism, no generated text, and fully opaque output. The example road figure terrain destination and story are style-only and non-authoritative."
+      "Cover revision 2 approved: complete layered teal-blue valley, one continuous foreground-to-horizon road, one warm golden horizon, one small seated rear-view figure, active upper-left title-safe space, restrained cinematic matte-painting realism, no generated text, and fully opaque output. The example road figure terrain destination and story are style-only and non-authoritative.",
+      "Concept golden approved: human-free cinematic canyon-to-basin transition, one continuous cool river, central natural cleft, broad warm reflected basin, restrained 35 mm elevated perspective, layered teal-blue terrain, painterly realism, and fully opaque output. The example river cleft basin and transition are style-only and non-authoritative."
     ]
   },
   "assets": [
@@ -29,6 +30,17 @@
       "prompt_path": "golden-cover.prompt.md",
       "prompt_sha256": "8af8c1b59be24fc973721456aabc09b168c5e32685c4edc8904f4ac66ae42054",
       "reference_role": "layered-teal-valley-winding-journey-warm-horizon-rear-view-human-scale-and-title-safe-cover-anchor",
+      "semantic_authority": false
+    },
+    {
+      "id": "cinematic-conceptual-concept-v1",
+      "role": "concept",
+      "renderer": "imagegen",
+      "artifact_path": "golden-concept.png",
+      "artifact_sha256": "7c2267b149d9947c18691feec5b303f61d2018642ae67665ba09a5414be8d62a",
+      "prompt_path": "golden-concept.prompt.md",
+      "prompt_sha256": "c9c48afcc779e5206daeb2561a8f2dc8ea78634e1485bb0cddf0703f2ca23a3e",
+      "reference_role": "human-free-layered-canyon-single-river-natural-cleft-warm-basin-and-cinematic-transition-anchor",
       "semantic_authority": false
     }
   ]

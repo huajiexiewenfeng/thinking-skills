@@ -133,6 +133,76 @@
         "No generated text logos signs extra people vehicles buildings multiple paths multiple suns arbitrary data particles or unsupported claims appear.",
         "The output is fully opaque and the example road figure destination and story supply no semantic authority for future article content."
       ]
+    },
+    {
+      "id": "cinematic-conceptual-concept-v1",
+      "role": "concept",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/cinematic-conceptual/golden-concept.png",
+      "user_feedback": "Approved by the user by asking to continue. Preserve the human-free cinematic canyon-to-basin transition, one continuous cool river, central natural cleft, broad warm reflected basin, restrained 35 mm elevated perspective, layered teal-blue terrain, painterly realism, and fully opaque output. The example river cleft basin and transition are style-only and non-authoritative.",
+      "visual_thesis": "One cool river passes through a narrow dark mountain cleft and opens into a broad warm basin, making a single transition visible without a human figure or a road.",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "concept",
+        "objective": "Create one text-free human-free cinematic landscape concept: a single cool blue river enters from the lower-left foreground inside a dark teal canyon, passes visibly through one narrow mountain cleft near the center, and opens into one broad softly golden basin on the right; the relation reads as a constrained passage becoming an open field without copying the cover road, valley, seated figure, visible sun, or composition.",
+        "semantics": {
+          "confirmed": [
+            "A constrained passage can open into a wider field of possibilities.",
+            "The river, cleft, and basin are a generic editorial metaphor and do not promise freedom, success, safety, progress, or a particular outcome."
+          ],
+          "simplifications": [
+            "Use exactly one continuous river from foreground through the cleft into the basin; it never branches, splits, becomes a road, or disappears behind unrelated scenery.",
+            "Use four readable landscape bands with the narrow cleft at center and the broad basin on the right; no visible solar disc is present.",
+            "Use warm reflected light across the basin and low clouds as the only warm field while the canyon and river remain cool teal-blue."
+          ],
+          "blocked": [
+            "Do not imply a named location, natural process, engineering system, guaranteed transformation, danger, ownership, destination, or human decision.",
+            "Do not add people faces hands characters silhouettes animals boats bridges roads buildings signs waterfalls dams multiple river branches multiple openings visible suns extra orange lights fantasy ruins portals holograms neon circuits isometric modules interfaces generated text logos or arbitrary data particles."
+          ]
+        },
+        "composition": {
+          "structure": "wide 16:9 cinematic digital matte painting with restrained 35 mm elevated perspective; a cool river enters from the lower-left foreground, curves through a dark teal canyon, remains clearly visible through one narrow central mountain cleft, and widens subtly into a pale warm basin across the right half; four depth bands remain readable and the complete scene occupies the frame without a cover-style title void",
+          "hierarchy": "the single continuous river and narrow cleft form the primary conceptual relation, the warm open basin is the secondary state, and layered blue ridges provide atmospheric depth; cool ambient light preserves foreground texture while one broad soft golden field illuminates the basin without a visible sun or decorative rays",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free landscape concept with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the canyon river cleft and basin fill roughly eighty-five percent with active terrain across both outer bands",
+          "crop_rules": "the foreground river central cleft and representative warm basin remain understandable in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "concept",
+          "bootstrap_references": [
+            {
+              "id": "cinematic-conceptual-cover-v1",
+              "profile_id": "cinematic-conceptual",
+              "role": "cover",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly one continuous cool river passes visibly from the lower-left foreground through one narrow central cleft into one broad warm basin without branches.",
+        "The scene is fully human-free and contains no road visible sun bridge building boat waterfall dam or extra narrative prop.",
+        "The restrained 35 mm elevated perspective layered teal-blue terrain cool-to-warm atmospheric transition and painterly realism visibly match the approved cover family.",
+        "The composition is clearly different from the cover and proves the style can carry one landscape transition without repeating its road person horizon or title layout.",
+        "The result reads as a complete cinematic landscape concept rather than a travel advertisement fantasy scene neon system isometric infrastructure map or abstract sculpture.",
+        "No generated text logos multiple routes arbitrary data particles unsupported natural claims or semantic guarantees appear.",
+        "The output is fully opaque and the example river cleft basin and transition supply no semantic authority for future article content."
+      ]
     }
   ]
 }
