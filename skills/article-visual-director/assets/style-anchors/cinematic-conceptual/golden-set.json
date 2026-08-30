@@ -3,9 +3,9 @@
   "profile_id": "cinematic-conceptual",
   "protocol_version": 2,
   "style_pack_version": 3,
-  "visual_dna_sha256": "bb3a32234f928344bd8a449a2eb6deb8f99ac86f90f364d5bf975d8ff0b0529c",
-  "role_contracts_sha256": "3a0aeed280e015ddb671793063131c9d33cdc34a3c8a55f9ca57135ae607df30",
-  "reference_matrix_sha256": "528340d3c4c23825964d09846553ef2a68bc7a7f23c6b10d07088c2a09a30b50",
+  "visual_dna_sha256": "c12d5bdc7035b1d4ae5ae2672d9b9b82940a30be456bddb75cf05138b69dd996",
+  "role_contracts_sha256": "a0211c1bb430374fac1f841e9742b1104b1cc0e6291ad1d9a53424afb4b52e15",
+  "reference_matrix_sha256": "08d45f49f2e494003d5122e5de3766d4fc5dd3afc52149ab10a30d86b5da1151",
   "qualification": {
     "prompt_compile_status": "pending",
     "cross_topic_probe_status": "pending",
@@ -14,7 +14,22 @@
   "status": "candidate",
   "user_approval": {
     "status": "pending",
-    "revision_notes": []
+    "revision_notes": [
+      "The first tactile-mineral gate cover was rejected after comparison with the user's previous Style 6 reference. It was stable but removed the desired cinematic narrative landscape, journey, warm horizon, and small rear-view human presence.",
+      "Cover revision 2 approved: complete layered teal-blue valley, one continuous foreground-to-horizon road, one warm golden horizon, one small seated rear-view figure, active upper-left title-safe space, restrained cinematic matte-painting realism, no generated text, and fully opaque output. The example road figure terrain destination and story are style-only and non-authoritative."
+    ]
   },
-  "assets": []
+  "assets": [
+    {
+      "id": "cinematic-conceptual-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "artifact_path": "golden-cover.png",
+      "artifact_sha256": "aab96a12cc3a8f7e10eb8ab491c89577bd6d837654521ec1166f1b040f14dd54",
+      "prompt_path": "golden-cover.prompt.md",
+      "prompt_sha256": "8af8c1b59be24fc973721456aabc09b168c5e32685c4edc8904f4ac66ae42054",
+      "reference_role": "layered-teal-valley-winding-journey-warm-horizon-rear-view-human-scale-and-title-safe-cover-anchor",
+      "semantic_authority": false
+    }
+  ]
 }

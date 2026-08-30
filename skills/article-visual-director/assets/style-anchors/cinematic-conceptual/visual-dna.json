@@ -2,76 +2,80 @@
   "profile_id": "cinematic-conceptual",
   "style_pack_version": 3,
   "surface": {
-    "background": "fully opaque deep navy environment based on #10151D",
-    "alternate": "desaturated blue-slate distance field based on #263445",
-    "finish": "tactile practical-set atmosphere with broad tonal fields and low film grain"
+    "background": "fully opaque cinematic narrative landscape with a layered teal-blue valley",
+    "alternate": "desaturated blue-gray coastal plain or mountain basin using the same atmospheric depth grammar",
+    "finish": "cinematic digital matte painting with restrained realism and no glossy photographic advertising polish"
   },
   "palette_roles": {
-    "environment": "deep navy based on #10151D remains the dominant field",
-    "distance": "desaturated blue-slate based on #263445 and #596C85 separates atmospheric planes",
-    "subject": "a matte mineral subject based on #D6DEE6 carries the single metaphor",
-    "thesis_accent": "one amber cue based on #E59A3A supplies the only warm emphasis",
-    "shadow": "near-black blue based on #090D12 preserves depth without crushed detail"
+    "foreground": "deep desaturated teal based on #173A43 grounds the nearest terrain and human silhouette",
+    "distance": "muted blue-gray based on #4F6973 separates successive mountain or valley layers",
+    "journey": "one quiet pale road river trail or ridge line based on #B9C6C7 carries the narrative direction",
+    "horizon_light": "a single warm golden horizon light based on #F2BC63 supplies the only dominant warm field",
+    "digital_trace": "sparse low-luminance turquoise micro-traces based on #55C7B5 are optional only for confirmed technological themes"
   },
   "line_language": {
-    "primary": "silhouette and edge-light define the subject without diagram outlines",
-    "paths": "one restrained warm path or seam may carry the thesis when confirmed",
-    "boundaries": "broad environmental planes replace cards grids panels and technical frames"
+    "primary": "natural landscape silhouettes and one winding journey line replace diagram outlines",
+    "paths": "one continuous road river trail or ridge enters from the foreground and leads toward the warm horizon without branches",
+    "boundaries": "soft atmospheric terrain layers replace cards panels blueprint frames and infrastructure platforms"
   },
   "material_and_texture": {
-    "surface": "matte plaster paper stone or mineral surfaces with visible tactile restraint",
-    "objects": "one substantial practical-set sculpture rather than glossy products floating icons or stock scenery",
-    "finish": "low film grain and subtle surface variation with no chrome glass plastic sparkle or oversharpening"
+    "surface": "painterly terrain rock vegetation mist and sky use restrained cinematic detail with no stock-photo sharpness",
+    "human": "a small rear-view human silhouette uses simple matte clothing and never exposes a face or celebrity identity",
+    "finish": "subtle atmospheric grain and soft edge separation with no chrome glass plastic neon or oversharpened texture"
   },
   "geometry": {
-    "projection": "restrained 50 mm cinematic perspective with a stable horizon and no fisheye distortion",
-    "subject": "one coherent symbolic subject with a strong silhouette and no competing metaphor",
-    "environment": "foreground midground and background remain legible as large atmospheric fields",
-    "focal_rule": "very low symbolic density keeps one subject and one amber thesis cue dominant"
+    "projection": "restrained 35 mm elevated wide perspective with a stable horizon and no fisheye distortion",
+    "landscape": "foreground midground valley and distant horizon form four readable depth bands",
+    "journey": "one winding journey line creates a strong foreground-to-horizon reading path",
+    "human_scale": "one small rear-view human silhouette occupies roughly eight to twelve percent of image height when human presence is semantically supported",
+    "focal_rule": "the journey line warm horizon and optional rear-view figure form one coherent narrative rather than competing symbols"
   },
   "depth_and_camera": {
-    "mode": "restrained 50 mm cinematic perspective with controlled depth and no extreme wide-angle spectacle",
-    "layers": "three readable distance planes use desaturated blue value separation rather than invented scenery",
-    "lighting": "one cool ambient fill and a single motivated amber practical light with one coherent shadow direction",
-    "atmosphere": "subtle haze appears only where motivated light passes through space and never obscures the subject"
+    "mode": "restrained 35 mm elevated wide perspective looking across a layered valley or open landscape",
+    "layers": "dark teal foreground muted blue midground pale atmospheric distance and warm horizon remain visibly separated",
+    "lighting": "a single warm golden horizon light provides the only dominant warm source while cool ambient light preserves foreground detail",
+    "atmosphere": "measured mist and aerial perspective connect terrain layers without hiding the road figure or horizon"
   },
   "typography": {
-    "voice": "quiet editorial serif or restrained sans-serif applied deterministically outside image generation",
-    "exact_text": "titles captions and labels are added only after article semantics are confirmed",
-    "generated_text": "image generation contains no readable text logos plaques interfaces or symbols"
+    "voice": "bold editorial Chinese headline with restrained English support applied through deterministic title overlay",
+    "title_panel": "an optional dark translucent upper-left title panel is rendered deterministically after image generation",
+    "exact_text": "titles subtitles and labels never come from image generation",
+    "generated_text": "the generated background contains no readable text logos signage screens or watermarks"
   },
   "density_and_spacing": {
-    "density": "very low symbolic density with one subject and minimal supporting environment",
-    "spacing": "broad negative space and one intentional title-safe field preserve editorial hierarchy",
-    "occupancy": "the metaphor occupies roughly sixty-five to seventy-eight percent without becoming a tiny object in empty darkness"
+    "density": "low narrative density with one journey one horizon and at most one small human figure",
+    "spacing": "the upper-left field remains readable for deterministic title overlay while the road and horizon keep the landscape active",
+    "occupancy": "terrain layers fill the entire frame; no large empty black field and no tiny isolated subject"
   },
   "required_traits": [
-    "fully opaque deep navy atmosphere remains readable rather than crushed black",
-    "restrained 50 mm cinematic perspective and stable horizon preserve practical-set credibility",
-    "one matte mineral subject carries one nameable metaphor through a strong silhouette",
-    "a single motivated amber practical light or cue guides the eye without decorative glow",
-    "very low symbolic density and broad editorial negative space prevent collage and spectacle drift"
+    "cinematic narrative landscape reads through a complete foreground-to-horizon journey",
+    "layered teal-blue valley or open terrain remains fully opaque and visually active across the frame",
+    "restrained 35 mm elevated wide perspective preserves stable horizon scale and landscape depth",
+    "one winding journey line leads from the foreground toward a single warm golden horizon light",
+    "a small rear-view human silhouette may anchor scale and reflection without showing a face",
+    "deterministic title overlay preserves exact typography while image generation remains text-free"
   ],
   "forbidden_traits": [
-    "no generic glowing portal cosmic sky fantasy city floating orb hologram or unrelated cinematic spectacle",
-    "no default face lone person crowd hands character silhouette or human drama used as a conceptual shortcut",
-    "no neon circuitry transparent glass chrome glossy product render rainbow grading or multiple warm accents",
-    "no dashboard infographic card grid node-box system blueprint construction or isometric infrastructure grammar",
-    "no generated title labels logos interface screens article claims or copied golden metaphor topology",
-    "no muddy crushed-black field excessive fog excessive grain empty darkness or illegible subject"
+    "no generated title subtitle signage logo interface text or watermark",
+    "no front-facing person visible face portrait close-up crowd dramatic pose or stock-model advertising",
+    "no multiple roads branching paths multiple suns multiple warm focal lights or unrelated symbolic props",
+    "no cosmic sky fantasy city glowing portal floating orb hologram neon circuitry transparent glass or science-fiction dashboard",
+    "no isometric infrastructure modules blueprint construction flat infographic cards or node-box system grammar",
+    "no random turquoise sparkles digital grid or data particles unless confirmed technological semantics explicitly supports them",
+    "no empty dark fog crushed shadows oversaturated orange sky hyper-detailed stock photography or muddy painterly blur"
   ],
   "neighbor_boundaries": [
     {
       "profile_id": "neon-systems",
-      "difference": "Style 6 uses tactile matte practical-set objects one symbolic thesis and a single motivated amber practical light; Style 3 uses emissive circuitry transparent or luminous systems multiple relationships and neon technological atmosphere"
+      "difference": "Style 6 uses a natural cinematic narrative landscape one journey one warm horizon and optional sparse semantic technology traces; Style 3 uses luminous circuitry transparent systems multiple technological relationships and neon atmosphere"
     },
     {
       "profile_id": "isometric-infrastructure",
-      "difference": "Style 6 uses restrained cinematic perspective environmental depth and one metaphor; Style 5 uses fixed isometric projection repeated infrastructure modules explicit operational paths and architectural-system readability"
+      "difference": "Style 6 uses a restrained 35 mm elevated landscape perspective atmospheric terrain and human-scale narrative; Style 5 uses fixed isometric projection repeated modules explicit operational paths and architectural-system readability"
     },
     {
       "profile_id": "technical-editorial-minimal",
-      "difference": "Style 6 is dark atmosphere-led tactile and depth-driven; Style 1 is bright flat geometric grid-led and explanatory"
+      "difference": "Style 6 is painterly atmospheric landscape-led and emotionally narrative; Style 1 is bright flat geometric grid-led and explanatory"
     }
   ]
 }

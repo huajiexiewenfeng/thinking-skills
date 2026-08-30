@@ -458,7 +458,7 @@ class SkillContractTests(unittest.TestCase):
         for reference in matrix["references"]:
             self.assertIn("topology", reference["must_not_copy"])
 
-    def test_style_6_v3_candidate_preserves_tactile_cinematic_identity(self) -> None:
+    def test_style_6_v3_candidate_preserves_cinematic_narrative_identity(self) -> None:
         root = (
             SKILL_ROOT
             / "assets"
@@ -475,11 +475,13 @@ class SkillContractTests(unittest.TestCase):
 
         joined = json.dumps(dna, ensure_ascii=False)
         for phrase in (
-            "fully opaque deep navy",
-            "restrained 50 mm cinematic perspective",
-            "matte mineral subject",
-            "single motivated amber practical light",
-            "very low symbolic density",
+            "cinematic narrative landscape",
+            "layered teal-blue valley",
+            "restrained 35 mm elevated wide perspective",
+            "one winding journey line",
+            "single warm golden horizon light",
+            "small rear-view human silhouette",
+            "deterministic title overlay",
             "Style 3",
             "Style 5",
             "Style 1",

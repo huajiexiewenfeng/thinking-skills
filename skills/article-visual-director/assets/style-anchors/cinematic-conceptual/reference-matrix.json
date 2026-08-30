@@ -6,13 +6,13 @@
       "golden_asset_id": "cinematic-conceptual-cover-v1",
       "role": "cover",
       "must_preserve": [
-        "preserve restrained 50 mm cinematic perspective deep navy atmosphere matte mineral subject one amber practical cue and readable silhouette",
-        "preserve three broad distance planes low film grain title-safe behavior and practical-set editorial finish",
-        "preserve one nameable metaphor without people spectacle neon systems or product-ad drift"
+        "preserve restrained 35 mm elevated wide perspective layered teal-blue terrain one foreground-to-horizon journey and one golden light source",
+        "preserve complete-frame landscape occupancy atmospheric depth small rear-view human scale and deterministic upper-left title behavior",
+        "preserve cinematic narrative matte-painting identity without generated text faces neon systems or travel-ad drift"
       ],
       "may_vary": [
-        "replace the complete subject environment and metaphor with independently confirmed article semantics",
-        "vary orientation title-safe side camera distance and motivated amber cue within the approved lens and light family"
+        "replace the complete landscape journey figure weather and horizon with independently confirmed article semantics",
+        "vary title-safe side camera height road family and optional semantic technology traces within the approved narrative grammar"
       ],
       "must_not_copy": [
         "labels",
@@ -26,13 +26,13 @@
       "golden_asset_id": "cinematic-conceptual-concept-v1",
       "role": "concept",
       "must_preserve": [
-        "preserve one tactile object-state support tension threshold or transformation relation with one amber cue",
-        "preserve restrained cinematic lens matte mineral material motivated light layered blue atmosphere and very low symbolic density",
-        "preserve substantial practical-set scale and absence of people fantasy spectacle neon circuitry and glossy product treatment"
+        "preserve one journey threshold pause choice or transition relation inside a complete layered cinematic landscape",
+        "preserve restrained wide lens teal-blue depth one continuous spatial cue one warm light and low narrative density",
+        "preserve painterly realism and absence of faces crowds multiple paths neon systems isometric modules and generated text"
       ],
       "may_vary": [
-        "replace the complete object family relation state and environment with article-confirmed semantics",
-        "vary controlled depth camera distance and supported amber-cue geometry without adding another metaphor"
+        "replace the complete terrain relation journey and human presence with article-confirmed semantics",
+        "vary controlled weather camera height and supported human scale without adding another story event"
       ],
       "must_not_copy": [
         "labels",
@@ -46,13 +46,13 @@
       "golden_asset_id": "cinematic-conceptual-diagram-v1",
       "role": "diagram",
       "must_preserve": [
-        "preserve exact human-free cinematic environmental-map rendering with large tactile landmarks broad fields and readable route direction",
-        "preserve deep navy atmosphere one supported amber primary route restrained exception treatment and deterministic blank label zones",
-        "preserve practical-set lens material light and spacing without node cards isometric modules blueprint lines or neon systems"
+        "preserve exact human-free cinematic landscape-map rendering with layered terrain large landmarks and readable route direction",
+        "preserve one supported primary journey restrained exception treatment one warm horizon and deterministic blank label zones",
+        "preserve painterly atmospheric depth without node cards isometric modules blueprint lines portals or neon systems"
       ],
       "may_vary": [
-        "replace the complete example graph landmarks route and depth grouping with the validated article-specific frozen graph",
-        "vary landmark count environmental fields and explicit depth only as frozen semantics requires"
+        "replace the complete example graph landmarks route terrain and depth grouping with the validated article-specific frozen graph",
+        "vary landmark count terrain bands and explicit elevation only as frozen semantics requires"
       ],
       "must_not_copy": [
         "labels",
