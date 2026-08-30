@@ -7,16 +7,17 @@
   "role_contracts_sha256": "ce2a527c98cb56c5c2da6484533fed8ed9cc85a6f2c8a19b7afdb35adece2a8f",
   "reference_matrix_sha256": "5072d395704ef311626204811f0a14b4233d463bdf4fb874f7b310cdb9aeaac3",
   "qualification": {
-    "prompt_compile_status": "pending",
+    "prompt_compile_status": "passed",
     "cross_topic_probe_status": "pending",
     "neighbor_discrimination_status": "pending"
   },
   "status": "candidate",
   "user_approval": {
-    "status": "pending",
+    "status": "approved",
     "revision_notes": [
       "Cover golden approved: editorial isometric world scale, substantial matte modules, one continuous amber journey, opaque pale ground, consistent 30-degree camera and soft lighting, with a generous upper-left title-safe area. The example journey is style-only and has no semantic authority.",
-      "Concept golden approved: two separated architectural platform islands, two substantial balanced subjects, exactly one broad amber handoff bridge, fixed camera and matte material family, fully opaque ground, and calm editorial breathing room. The example handoff is style-only and has no semantic authority."
+      "Concept golden approved: two separated architectural platform islands, two substantial balanced subjects, exactly one broad amber handoff bridge, fixed camera and matte material family, fully opaque ground, and calm editorial breathing room. The example handoff is style-only and has no semantic authority.",
+      "Diagram golden approved: human-free pure architecture/process presentation, five equal-weight matte modules, one continuous amber serpentine route, four explicit arrowheads, blank deterministic plaques, opaque pale ground, and strict isometric consistency. The example graph is style-only and has no semantic authority."
     ]
   },
   "assets": [
@@ -40,6 +41,17 @@
       "prompt_path": "assets/style-anchors/isometric-infrastructure/golden-concept.prompt.md",
       "prompt_sha256": "79a69cccc4097bbbe2b0694349da428a6a348309a8f1142de1edd71bb60055bb",
       "reference_role": "two-platform-single-bridge-isometric-concept-composition-and-material-anchor",
+      "semantic_authority": false
+    },
+    {
+      "id": "isometric-infrastructure-diagram-v1",
+      "role": "diagram",
+      "renderer": "imagegen",
+      "artifact_path": "assets/style-anchors/isometric-infrastructure/golden-diagram.png",
+      "artifact_sha256": "ca1c563e1a06648399153d5147b3f9058d086184478360fe6e71d48e8110a083",
+      "prompt_path": "assets/style-anchors/isometric-infrastructure/golden-diagram.prompt.md",
+      "prompt_sha256": "0015de26b6ad1f6d8129f718a21d85ce81bb49943e46221f018e88b556d283b8",
+      "reference_role": "human-free-frozen-graph-isometric-module-path-arrow-and-blank-plaque-anchor",
       "semantic_authority": false
     }
   ]
