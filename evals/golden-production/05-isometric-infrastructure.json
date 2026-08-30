@@ -71,6 +71,77 @@
         "No labels logos screens racks tiny buildings decorative props multiple routes pipes people vehicles glass gloss neon dark atmosphere mixed cameras or unsupported topology appear.",
         "The output is fully opaque and the example journey supplies no semantic authority for future article content."
       ]
+    },
+    {
+      "id": "isometric-infrastructure-concept-v1",
+      "role": "concept",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/isometric-infrastructure/golden-concept.png",
+      "user_feedback": "Approved by the user by asking to continue. Preserve the two separated platform islands, two substantial balanced architectural subjects, exactly one broad amber handoff bridge, opaque pale ground, fixed isometric camera, matte editorial finish, and calm negative space. The depicted handoff is visual scaffolding only and has no semantic authority for future articles.",
+      "visual_thesis": "A single amber bridge makes one supported handoff legible between two substantial architectural islands without becoming a flowchart or a miniature city.",
+      "request": {
+        "profile_id": "isometric-infrastructure",
+        "asset_role": "concept",
+        "objective": "Create one elegant text-free wide editorial isometric concept illustration about a supported handoff: two separated architectural platforms hold one substantial source module and one substantial receiving module, connected by exactly one amber bridge spanning the open gap.",
+        "semantics": {
+          "confirmed": [
+            "One source passes a bounded handoff to one receiver.",
+            "The handoff is the only relationship shown.",
+            "The scene is a generic teaching metaphor and does not claim a real product architecture or protocol."
+          ],
+          "simplifications": [
+            "Place a lower deep-blue source pavilion on the left platform and a pale-blue receiving hall on a slightly raised right platform.",
+            "Use exactly one broad amber bridge with visible contact at both ends; it crosses a clean open gap and supplies the only visual route.",
+            "Use two or three large monolithic masses per platform at most, with restrained chamfers and broad openings rather than tiny detail."
+          ],
+          "blocked": [
+            "Do not imply queues databases clouds vendors security boundaries ownership guarantees performance or bidirectional exchange.",
+            "Do not add readable labels logos screens server racks cables pipes arrows multiple bridges branching paths vehicles people trees streets decorative buildings glossy plastic glass metal neon glow dark atmosphere mixed camera angles or multiple light directions."
+          ]
+        },
+        "composition": {
+          "structure": "wide 16:9 editorial architectural diorama on an opaque pale matte ground; two clearly separated platform islands occupy roughly seventy percent of the canvas, with the left island lower and slightly forward and the right island slightly raised and back; one broad amber bridge crosses the central negative-space gap; use the same fixed 30-degree isometric camera and module scale as the approved cover while making the arrangement unmistakably different from its four-stage journey",
+          "hierarchy": "the single amber bridge is the primary concept signal; the source pavilion and receiving hall are substantial balanced secondary masses; open ground and the gap create calm editorial breathing room; one shared soft light casts consistent low-contrast shadows toward the lower-right",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free concept illustration",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the two platform islands and their single connecting bridge occupy roughly seventy percent with generous pale negative space",
+          "crop_rules": "both source and receiver plus the complete amber bridge remain understandable in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "concept",
+          "bootstrap_references": [
+            {
+              "id": "isometric-infrastructure-cover-v1",
+              "profile_id": "isometric-infrastructure",
+              "role": "cover",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Two separated architectural platforms carry one substantial source module and one substantial receiving module.",
+        "Exactly one broad amber bridge spans the open gap and visibly contacts both platforms without branches or alternate routes.",
+        "The fixed isometric camera matte material module scale pale opaque ground and shared shadow direction visibly match the approved cover.",
+        "The composition is clearly different from the cover and reads as one supported handoff rather than a repeated four-stage journey.",
+        "The result looks like a polished technology-magazine architectural concept illustration rather than a toy city vendor render flat flowchart or generic stock cloud scene.",
+        "No labels logos screens racks small decorative buildings multiple routes pipes people vehicles glass gloss neon dark atmosphere mixed cameras or unsupported semantics appear.",
+        "The output is fully opaque and the example handoff supplies no semantic authority for future article content."
+      ]
     }
   ]
 }

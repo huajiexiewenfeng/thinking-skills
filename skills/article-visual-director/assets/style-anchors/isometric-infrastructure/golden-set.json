@@ -15,7 +15,8 @@
   "user_approval": {
     "status": "pending",
     "revision_notes": [
-      "Cover golden approved: editorial isometric world scale, substantial matte modules, one continuous amber journey, opaque pale ground, consistent 30-degree camera and soft lighting, with a generous upper-left title-safe area. The example journey is style-only and has no semantic authority."
+      "Cover golden approved: editorial isometric world scale, substantial matte modules, one continuous amber journey, opaque pale ground, consistent 30-degree camera and soft lighting, with a generous upper-left title-safe area. The example journey is style-only and has no semantic authority.",
+      "Concept golden approved: two separated architectural platform islands, two substantial balanced subjects, exactly one broad amber handoff bridge, fixed camera and matte material family, fully opaque ground, and calm editorial breathing room. The example handoff is style-only and has no semantic authority."
     ]
   },
   "assets": [
@@ -28,6 +29,17 @@
       "prompt_path": "assets/style-anchors/isometric-infrastructure/golden-cover.prompt.md",
       "prompt_sha256": "153fc17d3dbed9cd7d430d5e3d777e9bf5268a0010854f9ca9bce8f31c25f573",
       "reference_role": "editorial-isometric-world-scale-matte-material-single-path-lighting-and-title-safe-cover-anchor",
+      "semantic_authority": false
+    },
+    {
+      "id": "isometric-infrastructure-concept-v1",
+      "role": "concept",
+      "renderer": "imagegen",
+      "artifact_path": "assets/style-anchors/isometric-infrastructure/golden-concept.png",
+      "artifact_sha256": "2d9bd53a8db432fe8168217b2befb6e8d86627644a3ef7a487d571affe0bd45d",
+      "prompt_path": "assets/style-anchors/isometric-infrastructure/golden-concept.prompt.md",
+      "prompt_sha256": "79a69cccc4097bbbe2b0694349da428a6a348309a8f1142de1edd71bb60055bb",
+      "reference_role": "two-platform-single-bridge-isometric-concept-composition-and-material-anchor",
       "semantic_authority": false
     }
   ]
