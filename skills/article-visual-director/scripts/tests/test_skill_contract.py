@@ -426,7 +426,7 @@ class SkillContractTests(unittest.TestCase):
         for reference in matrix["references"]:
             self.assertIn("topology", reference["must_not_copy"])
 
-    def test_style_5_v3_candidate_preserves_editorial_isometric_identity(self) -> None:
+    def test_style_5_v3_preserves_editorial_isometric_identity(self) -> None:
         root = (
             SKILL_ROOT
             / "assets"
