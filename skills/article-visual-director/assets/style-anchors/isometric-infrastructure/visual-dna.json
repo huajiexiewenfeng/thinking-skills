@@ -1,0 +1,72 @@
+{
+  "profile_id": "isometric-infrastructure",
+  "style_pack_version": 3,
+  "surface": {
+    "background": "fully opaque pale gray matte ground based on #EEF2F4",
+    "alternate": "slightly cooler pale gray ground based on #DDE5E9 for non-golden variants",
+    "finish": "quiet editorial architectural-model surface with no visible texture pattern"
+  },
+  "palette_roles": {
+    "module": "restrained medium blue based on #4B8FD8 defines active infrastructure modules",
+    "active_transition": "a single amber path based on #E8A43A carries the one supported operational journey",
+    "edge": "deep slate based on #243746 defines crisp module edges and deterministic plaques",
+    "inactive": "muted blue-gray based on #AABAC5 supports subordinate modules without creating another focal route",
+    "ground": "pale gray remains the dominant field and preserves spatial breathing room"
+  },
+  "line_language": {
+    "primary": "crisp three-pixel-equivalent isometric edges with consistent projection and corner treatment",
+    "paths": "one clean continuous amber route with restrained bends and no decorative branching",
+    "boundaries": "platform edges and ownership zones use quiet slate outlines without dashboard frames or blueprint construction lines"
+  },
+  "material_and_texture": {
+    "surface": "pale gray matte ground plane with extremely subtle ambient occlusion",
+    "objects": "substantial modules rendered as restrained matte architectural solids rather than servers gadgets or toys",
+    "finish": "low-texture non-glossy material with consistent face values and no glass metal chrome or plastic shine"
+  },
+  "geometry": {
+    "projection": "fixed 30-degree isometric camera shared by every plane module path and plaque",
+    "modules": "three to five substantial modules with coherent platform thickness eight-pixel corner treatment and consistent scale family",
+    "grounding": "simple platforms and measured spatial grouping replace card grids cities and decorative container piles",
+    "focal_rule": "one visible source-to-destination journey dominates while every inactive module remains subordinate"
+  },
+  "depth_and_camera": {
+    "mode": "fixed 30-degree isometric projection with no random perspective or mixed camera angles",
+    "elevation": "low controlled elevation may clarify confirmed ownership or sequence but never invent importance",
+    "lighting": "one soft directional light and one shared shadow direction with no glow multiple suns or dramatic contrast"
+  },
+  "typography": {
+    "voice": "quiet sans-serif grounded captions on deterministic platform plaques",
+    "exact_text": "titles labels and module names are applied deterministically after semantics are confirmed",
+    "generated_text": "image generation keeps modules plaques and ground free of readable text logos and interface screens"
+  },
+  "density_and_spacing": {
+    "density": "medium-low spatial density with three to five substantial modules rather than miniature infrastructure clutter",
+    "spacing": "fifty-six-pixel-equivalent module gaps and ninety-six-pixel outer margins preserve architectural-model calm",
+    "occupancy": "the coherent world occupies roughly seventy-four to eighty-two percent while one title-safe or caption-safe area remains usable"
+  },
+  "required_traits": [
+    "pale gray matte ground remains fully opaque and visually dominant",
+    "fixed 30-degree isometric camera module scale platform thickness and light direction remain consistent",
+    "three to five substantial modules create one coherent editorial architectural diorama",
+    "a single amber journey is continuous dominant and readable at thumbnail size",
+    "one shared shadow direction grounds every object without dramatic lighting"
+  ],
+  "forbidden_traits": [
+    "no miniature server racks dense cloud campus city clutter vendor logos branded products or interface screens",
+    "no glossy toy plastic transparent glass chrome photorealistic material neon glow or dark cinematic atmosphere",
+    "no random perspective mixed camera angles inconsistent module scale multiple light directions or floating ungrounded modules",
+    "no multiple amber routes decorative pipe networks unsupported modules connections ownership hierarchy or topology",
+    "no front-orthographic drafting grid cutaway construction-line aesthetic fake dimensions or Style 4 blueprint language",
+    "no dark luminous circuitry transparent neon panels or Style 3 science-fiction language"
+  ],
+  "neighbor_boundaries": [
+    {
+      "profile_id": "blueprint-linework",
+      "difference": "Style 5 uses matte solids fixed isometric projection meaningful elevation and directional shadows; Style 4 is flat orthographic line-led almost volumeless drafting construction"
+    },
+    {
+      "profile_id": "neon-systems",
+      "difference": "Style 5 uses pale matte daylight restrained saturation and no glow; Style 3 uses dark atmospheric grounds neon emission transparent glass and luminous circuitry"
+    }
+  ]
+}

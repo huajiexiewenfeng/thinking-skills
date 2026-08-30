@@ -1,0 +1,48 @@
+{
+  "profile_id": "isometric-infrastructure",
+  "style_pack_version": 3,
+  "references": [
+    {
+      "golden_asset_id": "isometric-infrastructure-cover-v1",
+      "role": "cover",
+      "must_preserve": [
+        "preserve fixed 30-degree isometric world scale pale matte ground restrained blue solids one amber journey and shared soft light",
+        "preserve three to five substantial modules medium-low density title-safe behavior and generous outer margins",
+        "preserve polished editorial architectural-model hierarchy without toy city vendor marketing or server clutter"
+      ],
+      "may_vary": [
+        "replace the complete source destination modules and journey with independently confirmed article semantics",
+        "vary world orientation title-safe side and supported module hierarchy while camera scale and light remain fixed"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    },
+    {
+      "golden_asset_id": "isometric-infrastructure-concept-v1",
+      "role": "concept",
+      "must_preserve": [
+        "preserve one ownership handoff containment or processing relation through two to four substantial spatial modules",
+        "preserve fixed camera matte material consistent scale shared shadow and one amber transition",
+        "preserve spacious grouping brand-neutral forms and absence of miniature infrastructure clutter"
+      ],
+      "may_vary": [
+        "replace the object family platforms and relation with article-confirmed semantics",
+        "vary controlled elevation and supported path geometry without adding another route"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    },
+    {
+      "golden_asset_id": "isometric-infrastructure-diagram-v1",
+      "role": "diagram",
+      "must_preserve": [
+        "preserve exact human-free isometric graph rendering stable modules platform thickness edges plaques and shared shadows",
+        "preserve pale ground restrained blue solids one supported amber primary journey and legible exception treatment",
+        "preserve deterministic crop-safe spacing without logos screens server clutter or mixed projection"
+      ],
+      "may_vary": [
+        "replace the complete example graph with the validated article-specific frozen graph",
+        "vary node count groups and explicit elevation only as the frozen semantics requires"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    }
+  ]
+}

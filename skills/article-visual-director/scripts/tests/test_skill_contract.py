@@ -426,6 +426,38 @@ class SkillContractTests(unittest.TestCase):
         for reference in matrix["references"]:
             self.assertIn("topology", reference["must_not_copy"])
 
+    def test_style_5_v3_candidate_preserves_editorial_isometric_identity(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "isometric-infrastructure"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "pale gray matte ground",
+            "fixed 30-degree isometric",
+            "substantial modules",
+            "single amber",
+            "shared shadow direction",
+            "Style 4",
+            "Style 3",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["cover"]["stability"])
+        self.assertEqual("strict", roles["diagram"]["stability"])
+        self.assertIn("no people", " ".join(roles["diagram"]["must_not_include"]))
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
 
 if __name__ == "__main__":
     unittest.main()

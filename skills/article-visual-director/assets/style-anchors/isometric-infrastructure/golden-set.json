@@ -1,1 +1,20 @@
-{"golden_set_version":1,"profile_id":"isometric-infrastructure","protocol_version":2,"status":"candidate","user_approval":{"status":"pending","revision_notes":[]},"assets":[]}
+{
+  "golden_set_version": 1,
+  "profile_id": "isometric-infrastructure",
+  "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "f4a3d206cdd1d841a2819a3086b91261be3f1608a60857d13d643bc7de443714",
+  "role_contracts_sha256": "ce2a527c98cb56c5c2da6484533fed8ed9cc85a6f2c8a19b7afdb35adece2a8f",
+  "reference_matrix_sha256": "5072d395704ef311626204811f0a14b4233d463bdf4fb874f7b310cdb9aeaac3",
+  "qualification": {
+    "prompt_compile_status": "pending",
+    "cross_topic_probe_status": "pending",
+    "neighbor_discrimination_status": "pending"
+  },
+  "status": "candidate",
+  "user_approval": {
+    "status": "pending",
+    "revision_notes": []
+  },
+  "assets": []
+}
