@@ -1,0 +1,53 @@
+{
+  "profile_id": "neon-systems",
+  "asset_role": "concept",
+  "objective": "Create one text-free human-free concept image called Controlled Handoff: one elevated dark source chamber at upper-left sends one continuous cyan signal diagonally downward through one narrow vertical transformation gate into one broad low receiving basin at lower-right, where exactly one contained acid-green state becomes visible.",
+  "semantics": {
+    "confirmed": [
+      "One generic signal passes from a source through one transformation boundary before reaching one emphasized receiving state.",
+      "The handoff is an editorial teaching metaphor and does not claim a real protocol algorithm guarantee quality score or implementation."
+    ],
+    "simplifications": [
+      "Use two substantial asymmetrical modules plus one narrow vertical gate: a compact elevated source at upper-left and a broad low receiving basin at lower-right.",
+      "Use exactly one continuous cyan route descending diagonally through the gate with no horizontal three-chamber row, branch, loop, crossing, or duplicate destination.",
+      "Use acid green only inside one contained receiving volume after the gate; keep all other emission cyan."
+    ],
+    "blocked": [
+      "Do not imply a named system sender receiver format protocol validation success benchmark ownership or guaranteed delivery.",
+      "Do not copy the cover's three equal chamber row lower-left entry center-right vault route geometry module silhouettes active-core shape title-safe layout or example story.",
+      "Do not add people faces hands robots vehicles cities code labels numbers logos screens HUD dashboards random circuit wallpaper data rain arrows extra green lights extra modules or transparent background."
+    ]
+  },
+  "composition": {
+    "structure": "wide 16:9 fully opaque editorial technical set in restrained front-oblique cutaway perspective with stable verticals; place one compact substantial source chamber on an elevated upper-left platform, one slender vertical transformation gate near center, and one broad low receiving basin across lower-right; one narrow cyan signal route descends diagonally from source through the gate and terminates inside exactly one calm acid-green receiving volume; the dark navy substrate and structural ribs fill the frame without copying the cover's horizontal chamber row",
+    "hierarchy": "the descending cyan handoff is the primary reading cue, the narrow central gate makes the transformation boundary explicit, and the single acid-green receiving volume is the secondary result; matte blue-black physical modules remain readable under cool low-key ambient light with controlled local emission and medium-low density",
+    "human_elements": "none; human-free technical concept with no figures faces hands characters mascots robots or vehicles"
+  },
+  "text_policy": {
+    "mode": "text-free generated concept with deterministic captions added later",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "the elevated source vertical gate receiving basin route and opaque substrate fill roughly seventy-eight percent of the frame",
+    "crop_rules": "source gate complete diagonal route and receiving state remain visible in the central square crop",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "concept",
+    "bootstrap_references": [
+      {
+        "id": "neon-systems-cover-v1",
+        "profile_id": "neon-systems",
+        "role": "cover",
+        "approval": "approved",
+        "semantic_authority": false
+      }
+    ],
+    "semantic_authority": false
+  }
+}

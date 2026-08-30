@@ -1,0 +1,117 @@
+{
+  "profile_id": "neon-systems",
+  "asset_role": "diagram",
+  "objective": "Render a text-free human-free five-node neon-systems architecture with one exact primary path and one exact recovery loop: source enters dispatch, dispatch enters execution, execution enters verified output, execution may enter recovery, and recovery returns only to dispatch.",
+  "semantics": {
+    "confirmed": [
+      "Source enters dispatch, dispatch enters execution, and execution enters verified output on the primary route.",
+      "Execution may enter recovery on an exception edge, and recovery returns only to dispatch.",
+      "Verified output is reachable only from execution."
+    ],
+    "simplifications": [
+      "Use exactly five substantial dark modules with blank deterministic plaque zones and exactly five visible directed connections.",
+      "Use cyan for the three primary edges, restrained dashed cool gray for the execution-to-recovery exception and recovery-to-dispatch return, and acid green only inside the verified-output module.",
+      "Place the four-node primary path across the upper and middle field and recovery below the gap between dispatch and execution so the two recovery edges never cross another edge."
+    ],
+    "blocked": [
+      "Do not add users tools databases queues models policies scores approvals deployments notifications vendors metrics bypasses hidden ports or undeclared nodes and edges.",
+      "Do not copy the cover's three-chamber row route entry active-core shape title field or the concept's elevated-source vertical-gate receiving-basin composition.",
+      "Do not add generated labels numbers code symbols HUD panels decorative circuits extra arrowheads extra green states people robots cities vehicles transparent background or topology-obscuring bloom."
+    ],
+    "frozen_graph": {
+      "nodes": [
+        "source",
+        "dispatch",
+        "execution",
+        "verified-output",
+        "recovery"
+      ],
+      "edges": [
+        {
+          "id": "edge-source-dispatch",
+          "from": "source",
+          "to": "dispatch",
+          "type": "primary"
+        },
+        {
+          "id": "edge-dispatch-execution",
+          "from": "dispatch",
+          "to": "execution",
+          "type": "primary"
+        },
+        {
+          "id": "edge-execution-output",
+          "from": "execution",
+          "to": "verified-output",
+          "type": "primary"
+        },
+        {
+          "id": "edge-execution-recovery",
+          "from": "execution",
+          "to": "recovery",
+          "type": "exception"
+        },
+        {
+          "id": "edge-recovery-dispatch",
+          "from": "recovery",
+          "to": "dispatch",
+          "type": "return"
+        }
+      ],
+      "groups": [
+        {
+          "id": "primary-runtime",
+          "members": [
+            "source",
+            "dispatch",
+            "execution",
+            "verified-output"
+          ]
+        },
+        {
+          "id": "recovery-loop",
+          "members": [
+            "recovery"
+          ]
+        }
+      ],
+      "invariants": [
+        "Verified output is reachable only from execution.",
+        "Recovery receives only from execution and returns only to dispatch.",
+        "No edge enters source and no recovery edge reaches verified output directly."
+      ]
+    }
+  },
+  "composition": {
+    "structure": "strict wide 16:9 human-free architecture diagram on one fully opaque deep navy technical substrate in restrained shallow front-oblique cutaway perspective; place source at far-left, dispatch at upper-center-left, execution at upper-center-right, verified-output at far-right, and recovery below the open gap between dispatch and execution; use exactly five substantial equal-scale matte modules with blank inset plaque zones; show exactly five routed connections with no crossings: three solid cyan primary edges across the upper path, one dashed cool-gray exception edge from execution down-left to recovery, and one dashed cool-gray return edge from recovery up-left to dispatch; place exactly one clear directional arrowhead at the destination end of each connection; verified-output contains the only acid-green inner state",
+    "hierarchy": "the three-edge cyan primary route is dominant, the two dashed recovery edges are visibly subordinate, and the single acid-green verified-output state is the only green emphasis; low-key ambient light reveals every module face port and blank plaque while narrow local emission never hides route direction; background construction seams stay dim and cannot resemble semantic edges",
+    "human_elements": "none; no people faces hands characters instructors narrators mascots robots vehicles or stock imagery"
+  },
+  "text_policy": {
+    "mode": "blank deterministic module plaques with validated labels and legend added later",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "the complete five-module five-edge graph occupies roughly eighty percent of the fully opaque frame",
+    "crop_rules": "all five modules all five directed edges every arrowhead the recovery loop and the acid-green verified-output state remain inside the outer eight percent safe area",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "diagram",
+    "bootstrap_references": [
+      {
+        "id": "neon-systems-concept-v1",
+        "profile_id": "neon-systems",
+        "role": "concept",
+        "approval": "approved",
+        "semantic_authority": false
+      }
+    ],
+    "semantic_authority": false
+  }
+}

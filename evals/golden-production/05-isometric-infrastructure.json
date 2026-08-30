@@ -1,0 +1,245 @@
+{
+  "golden_production_version": 1,
+  "profile_id": "isometric-infrastructure",
+  "style_pack_version": 3,
+  "status": "approved",
+  "mode_boundary": {
+    "must_read_as": "polished editorial architectural diorama with fixed 30-degree isometric camera substantial matte modules shared soft light spacious pale ground and one continuous amber operational journey",
+    "must_not_read_as": "toy city miniature server farm vendor marketing render glossy plastic scene neon science-fiction glass world flat blueprint or dense cloud campus",
+    "nearest_profile_id": "blueprint-linework"
+  },
+  "candidates": [
+    {
+      "id": "isometric-infrastructure-cover-v1",
+      "role": "cover",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/isometric-infrastructure/golden-cover.png",
+      "user_feedback": "Approved by the user as the Style 5 cover direction. Preserve the polished editorial architectural diorama, four substantial matte modules, one continuous amber journey, fixed isometric camera, opaque pale ground, shared soft shadow direction, and generous upper-left title-safe area. Treat the depicted journey as visual scaffolding only, never as semantic authority for future articles.",
+      "visual_thesis": "One amber journey crosses four substantial architectural modules in a calm isometric world, making the operational path tangible without turning infrastructure into a miniature city.",
+      "request": {
+        "profile_id": "isometric-infrastructure",
+        "asset_role": "cover",
+        "objective": "Create one elegant text-free wide editorial isometric infrastructure cover: a broad pale matte ground plane supports exactly four substantial architectural modules, and one continuous wide amber inset path travels from a low source dock through a dominant coordination pavilion and a subordinate relay terrace to a destination archive.",
+        "semantics": {
+          "confirmed": [
+            "One source-to-destination journey passes through two representative intermediate stages.",
+            "Exactly four spatial modules represent the source two intermediate stages and destination.",
+            "The scene is a generic teaching environment and does not claim a real cloud architecture product or operational guarantee."
+          ],
+          "simplifications": [
+            "Use one low source dock at the front-left one large coordination pavilion near center one lower relay terrace behind and right of center and one taller destination archive at the far right.",
+            "Use one wide amber route inset into the ground plane; it starts at the source dock visibly passes each intermediate module once and terminates inside the destination archive.",
+            "Use monolithic brand-neutral architectural masses with restrained chamfers and a few broad structural openings; avoid tiny windows racks controls props or city furniture."
+          ],
+          "blocked": [
+            "Do not imply named services databases queues providers protocols metrics ownership hierarchy performance or topology beyond the declared four-stage journey.",
+            "Do not add readable labels logos screens clouds server racks antennas pipes vehicles people trees streets decorative buildings multiple routes branching arrows glossy plastic glass metal neon glow dark atmosphere random perspective mixed camera angles or multiple light directions."
+          ]
+        },
+        "composition": {
+          "structure": "wide 16:9 editorial architectural diorama on a large pale matte ground slab; keep a calm upper-left title-safe region and place the substantial four-module world across the center and lower-right occupying roughly seventy-eight percent of the canvas; use one fixed 30-degree isometric camera with consistent module scale",
+          "hierarchy": "the wide continuous amber path is the primary reading line; the central blue coordination pavilion is the largest mass; source relay and archive are clearly distinct but subordinate; one shared soft light casts consistent low-contrast shadows toward the lower-right",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title-safe zone",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the coherent four-module world and continuous amber path occupy roughly seventy-eight percent with a calm upper-left title-safe area",
+          "crop_rules": "all four modules the central pavilion and the continuous amber source-to-destination path remain understandable in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "cover",
+          "bootstrap_references": [],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly four substantial architectural modules form one coherent editorial isometric world.",
+        "One continuous wide amber route starts at the source dock passes both intermediate modules once and terminates at the destination archive without branches.",
+        "The fixed 30-degree camera module scale ground thickness matte material and shared shadow direction remain consistent.",
+        "The scene fills enough of the canvas to work as a cover while preserving a usable upper-left title-safe area.",
+        "The result looks like a high-quality technology-magazine architectural diorama rather than a toy city server farm vendor render or generic stock cloud scene.",
+        "No labels logos screens racks tiny buildings decorative props multiple routes pipes people vehicles glass gloss neon dark atmosphere mixed cameras or unsupported topology appear.",
+        "The output is fully opaque and the example journey supplies no semantic authority for future article content."
+      ]
+    },
+    {
+      "id": "isometric-infrastructure-concept-v1",
+      "role": "concept",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/isometric-infrastructure/golden-concept.png",
+      "user_feedback": "Approved by the user by asking to continue. Preserve the two separated platform islands, two substantial balanced architectural subjects, exactly one broad amber handoff bridge, opaque pale ground, fixed isometric camera, matte editorial finish, and calm negative space. The depicted handoff is visual scaffolding only and has no semantic authority for future articles.",
+      "visual_thesis": "A single amber bridge makes one supported handoff legible between two substantial architectural islands without becoming a flowchart or a miniature city.",
+      "request": {
+        "profile_id": "isometric-infrastructure",
+        "asset_role": "concept",
+        "objective": "Create one elegant text-free wide editorial isometric concept illustration about a supported handoff: two separated architectural platforms hold one substantial source module and one substantial receiving module, connected by exactly one amber bridge spanning the open gap.",
+        "semantics": {
+          "confirmed": [
+            "One source passes a bounded handoff to one receiver.",
+            "The handoff is the only relationship shown.",
+            "The scene is a generic teaching metaphor and does not claim a real product architecture or protocol."
+          ],
+          "simplifications": [
+            "Place a lower deep-blue source pavilion on the left platform and a pale-blue receiving hall on a slightly raised right platform.",
+            "Use exactly one broad amber bridge with visible contact at both ends; it crosses a clean open gap and supplies the only visual route.",
+            "Use two or three large monolithic masses per platform at most, with restrained chamfers and broad openings rather than tiny detail."
+          ],
+          "blocked": [
+            "Do not imply queues databases clouds vendors security boundaries ownership guarantees performance or bidirectional exchange.",
+            "Do not add readable labels logos screens server racks cables pipes arrows multiple bridges branching paths vehicles people trees streets decorative buildings glossy plastic glass metal neon glow dark atmosphere mixed camera angles or multiple light directions."
+          ]
+        },
+        "composition": {
+          "structure": "wide 16:9 editorial architectural diorama on an opaque pale matte ground; two clearly separated platform islands occupy roughly seventy percent of the canvas, with the left island lower and slightly forward and the right island slightly raised and back; one broad amber bridge crosses the central negative-space gap; use the same fixed 30-degree isometric camera and module scale as the approved cover while making the arrangement unmistakably different from its four-stage journey",
+          "hierarchy": "the single amber bridge is the primary concept signal; the source pavilion and receiving hall are substantial balanced secondary masses; open ground and the gap create calm editorial breathing room; one shared soft light casts consistent low-contrast shadows toward the lower-right",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free concept illustration",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the two platform islands and their single connecting bridge occupy roughly seventy percent with generous pale negative space",
+          "crop_rules": "both source and receiver plus the complete amber bridge remain understandable in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "concept",
+          "bootstrap_references": [
+            {
+              "id": "isometric-infrastructure-cover-v1",
+              "profile_id": "isometric-infrastructure",
+              "role": "cover",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Two separated architectural platforms carry one substantial source module and one substantial receiving module.",
+        "Exactly one broad amber bridge spans the open gap and visibly contacts both platforms without branches or alternate routes.",
+        "The fixed isometric camera matte material module scale pale opaque ground and shared shadow direction visibly match the approved cover.",
+        "The composition is clearly different from the cover and reads as one supported handoff rather than a repeated four-stage journey.",
+        "The result looks like a polished technology-magazine architectural concept illustration rather than a toy city vendor render flat flowchart or generic stock cloud scene.",
+        "No labels logos screens racks small decorative buildings multiple routes pipes people vehicles glass gloss neon dark atmosphere mixed cameras or unsupported semantics appear.",
+        "The output is fully opaque and the example handoff supplies no semantic authority for future article content."
+      ]
+    },
+    {
+      "id": "isometric-infrastructure-diagram-v1",
+      "role": "diagram",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/isometric-infrastructure/golden-diagram.png",
+      "user_feedback": "Approved by the user by asking to continue. Preserve the human-free pure architecture/process presentation, exactly five equal-weight matte modules, one continuous amber serpentine path, four explicit directional arrowheads, blank deterministic plaque areas, opaque pale ground, and strict isometric consistency. The example nodes and topology are non-authoritative and must be replaced by a separately validated frozen graph for each future article.",
+      "visual_thesis": "A frozen five-node pipeline becomes a compact human-free isometric system map whose single amber route and explicit arrowheads preserve exact direction without relying on generated text.",
+      "request": {
+        "profile_id": "isometric-infrastructure",
+        "asset_role": "diagram",
+        "objective": "Create one polished text-free human-free isometric architecture process diagram: exactly five substantial diagram modules form a compact two-row system map, connected by one continuous amber route with exactly four clearly visible directional arrowheads and no branches, returns, crossings, or hidden links.",
+        "semantics": {
+          "confirmed": [
+            "The diagram contains exactly five stages: ingress, interpretation, execution, verification, and stable output.",
+            "The only supported order is ingress to interpretation to execution to verification to stable output.",
+            "There are no exceptions, returns, branches, merges, parallel paths, ownership groups, or hierarchy claims."
+          ],
+          "simplifications": [
+            "Represent every stage as one substantial matte isometric module with a blank deterministic plaque area; generated imagery contains no readable label.",
+            "Arrange the five modules as three across the upper row and two across the lower row, using a clean single serpentine route whose bends never cross another segment.",
+            "Use one amber route and place exactly one deep-slate arrowhead between each consecutive node so all four edge directions remain unambiguous."
+          ],
+          "blocked": [
+            "Do not invent a failure path feedback loop bypass shortcut branching merge fan-out bidirectional edge hidden edge group boundary hierarchy or additional stage.",
+            "Do not add people faces hands characters mascots vehicles labels numbers logos screens server racks clouds cables pipes city props glass gloss neon dark atmosphere blueprint construction lines mixed cameras or multiple light directions."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "ingress",
+              "interpretation",
+              "execution",
+              "verification",
+              "stable_output"
+            ],
+            "edges": [
+              {
+                "from": "ingress",
+                "to": "interpretation"
+              },
+              {
+                "from": "interpretation",
+                "to": "execution"
+              },
+              {
+                "from": "execution",
+                "to": "verification"
+              },
+              {
+                "from": "verification",
+                "to": "stable_output"
+              }
+            ]
+          }
+        },
+        "composition": {
+          "structure": "wide 16:9 strict isometric system diagram on one fully opaque pale matte ground slab; exactly five substantial rounded-rectangular architectural modules arranged as three across the upper row and two across the lower row with measured equal spacing; a single continuous amber route snakes cleanly through every node in frozen order without crossings; each inter-node segment carries exactly one deep-slate directional arrowhead; use the approved Style 5 fixed 30-degree camera coherent platform thickness matte solids and shared soft shadow while avoiding the cover world and the concept bridge layout",
+          "hierarchy": "the five nodes are equal in visual weight because the frozen graph declares no hierarchy; the continuous amber route is the primary reading guide; blank plaque areas are quiet and subordinate; margins remain generous but the complete graph occupies roughly seventy-eight percent of the canvas and stays legible at article width",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "generated image contains blank deterministic plaques only; article-specific labels are added later after semantic validation",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete five-node graph occupies roughly seventy-eight percent with even outer margins and no title-safe void",
+          "crop_rules": "all five nodes and all four directed edge segments remain visible and understandable in the full-width article crop; do not optimize for a square crop by hiding an edge",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "diagram",
+          "bootstrap_references": [
+            {
+              "id": "isometric-infrastructure-concept-v1",
+              "profile_id": "isometric-infrastructure",
+              "role": "concept",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly five substantial equal-weight modules appear and no sixth node or decorative module is present.",
+        "Exactly four visible directional connections encode ingress to interpretation to execution to verification to stable output in that order.",
+        "One continuous amber route has no branch merge return crossing bypass hidden segment or bidirectional arrow.",
+        "All modules provide blank plaque areas and the generated image contains no readable text numbers or logos.",
+        "The result is a compact pure architecture/process diagram with no people and is compositionally distinct from the cover journey and two-island concept bridge.",
+        "The fixed isometric camera matte material module scale opaque pale ground platform thickness and shared shadow direction visibly match the approved Style 5 family.",
+        "The frozen example graph supplies no semantic authority for future article diagrams; future graphs must be independently validated before rendering."
+      ]
+    }
+  ]
+}

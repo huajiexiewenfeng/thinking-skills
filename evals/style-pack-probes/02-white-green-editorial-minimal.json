@@ -1,0 +1,179 @@
+{
+  "probe_suite_version": 1,
+  "profile_id": "white-green-editorial-minimal",
+  "style_pack_version": 3,
+  "purpose": "Cross-topic stability and Style 2 versus Style 1 discrimination without copying golden example content.",
+  "probes": [
+    {
+      "id": "style2-cover-priority-formation",
+      "request": {
+        "profile_id": "white-green-editorial-minimal",
+        "asset_role": "cover",
+        "objective": "Show several competing information signals becoming one clear priority without inventing a score or decision algorithm.",
+        "semantics": {
+          "confirmed": [
+            "Several signals compete for attention.",
+            "One coordinated priority emerges from the interaction of those signals."
+          ],
+          "simplifications": [
+            "Use several unequal emerald and mint fields entering a central forest-green priority lens.",
+            "Use one clear emerald direction leaving the lens while both outer bands remain meaningful."
+          ],
+          "blocked": [
+            "Do not invent scores rankings percentages algorithms or a universal best choice.",
+            "Do not copy the golden cover's radial hub routing lanes dots or topology."
+          ]
+        },
+        "composition": {
+          "structure": "ultra-wide high-key editorial picture with competing signals across the left band one crop-safe priority lens at center and a coherent direction across the right band",
+          "hierarchy": "emerald action dominates deep forest defines the lens and pale mint supports secondary signals",
+          "human_elements": "none"
+        },
+        "text_policy": {"mode": "text-free background with deterministic title overlay", "exact_text": [], "deterministic_overlay": true},
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "2.35:1",
+          "occupancy": "meaningful foreground occupies roughly eighty-four percent with active content in both outer bands",
+          "crop_rules": "the priority lens and emerging direction remain readable in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": ["white-green-editorial-minimal-cover-v1"],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "bright opaque field and unmistakable emerald-led hierarchy",
+        "crop-safe semantic nucleus plus meaningful active content in both outer bands"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"],
+      "acceptance_checks": [
+        "Priority formation is clear without numbers.",
+        "The image reads as active green-led Style 2 rather than neutral ink-blue Style 1."
+      ]
+    },
+    {
+      "id": "style2-concept-feedback-alignment",
+      "request": {
+        "profile_id": "white-green-editorial-minimal",
+        "asset_role": "concept",
+        "objective": "Explain one relationship: feedback aligns two initially divergent decisions into one coordinated direction.",
+        "semantics": {
+          "confirmed": [
+            "Two decisions initially diverge.",
+            "Feedback can help align their subsequent direction without guaranteeing identical outcomes."
+          ],
+          "simplifications": [
+            "Use two divergent emerald paths one pale-mint feedback bridge and one shared forest-green alignment field.",
+            "Keep the relationship as one complete active wide mechanism rather than cards."
+          ],
+          "blocked": [
+            "Do not invent people teams scores cycles metrics or guaranteed convergence.",
+            "Do not copy the golden concept's fluid-versus-structured hinge or arrow topology."
+          ]
+        },
+        "composition": {
+          "structure": "one active wide concept with divergent forces on the left feedback bridge at center and aligned direction on the right",
+          "hierarchy": "emerald paths dominate forest green defines alignment pale mint carries feedback and cyan-green remains secondary",
+          "human_elements": "none"
+        },
+        "text_policy": {"mode": "label-free objects with deterministic captions", "exact_text": [], "deterministic_overlay": true},
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete feedback relationship occupies roughly eighty percent with meaningful side structures",
+          "crop_rules": "both divergent paths feedback bridge and aligned result remain in the central safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": ["white-green-editorial-minimal-concept-v1"],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "one green-led tension or transition on a bright opaque field",
+        "flat matte geometry active horizontal grouping and no empty side bands"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"],
+      "acceptance_checks": [
+        "The feedback relationship is clear without claiming guaranteed convergence.",
+        "No golden mechanism or topology is repeated."
+      ]
+    },
+    {
+      "id": "style2-diagram-insight-decision-actions",
+      "request": {
+        "profile_id": "white-green-editorial-minimal",
+        "asset_role": "diagram",
+        "objective": "Render a human-free six-node decision architecture with two insights, synthesis, decision, two actions, and one explicit return edge.",
+        "semantics": {
+          "confirmed": [
+            "Two insights enter synthesis before decision.",
+            "Decision directs two distinct actions.",
+            "Action B may return evidence to decision."
+          ],
+          "simplifications": [
+            "Use emerald for the primary insight and action path and cyan-green for the secondary path and return.",
+            "Keep synthesis and decision inside the central crop-safe nucleus."
+          ],
+          "blocked": [
+            "Do not add users tools databases metrics or undeclared edges.",
+            "Do not copy the golden diagram's coordinator systems shared-result graph or positions."
+          ],
+          "frozen_graph": {
+            "nodes": ["insight-a", "insight-b", "synthesis", "decision", "action-a", "action-b"],
+            "edges": [
+              {"id": "edge-insight-a-synthesis", "from": "insight-a", "to": "synthesis", "type": "primary"},
+              {"id": "edge-insight-b-synthesis", "from": "insight-b", "to": "synthesis", "type": "secondary"},
+              {"id": "edge-synthesis-decision", "from": "synthesis", "to": "decision", "type": "primary"},
+              {"id": "edge-decision-action-a", "from": "decision", "to": "action-a", "type": "primary"},
+              {"id": "edge-decision-action-b", "from": "decision", "to": "action-b", "type": "secondary"},
+              {"id": "edge-action-b-decision", "from": "action-b", "to": "decision", "type": "return"}
+            ],
+            "groups": [
+              {"id": "evidence", "members": ["insight-a", "insight-b", "synthesis"]},
+              {"id": "decision-and-action", "members": ["decision", "action-a", "action-b"]}
+            ],
+            "invariants": [
+              "Decision is unreachable without synthesis.",
+              "Only Action B returns evidence to decision."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict human-free flat wide architecture with exact frozen-graph rendering and crop-safe central synthesis and decision nodes",
+          "hierarchy": "forest boundaries emerald primary edges cyan-green secondary and return edges and pale-mint support groups",
+          "human_elements": "none; no people faces hands characters instructors narrators mascots or stock imagery"
+        },
+        "text_policy": {"mode": "deterministic labels and edge annotations", "exact_text": [], "deterministic_overlay": true},
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the six-node architecture spans roughly eighty-two percent with meaningful outer nodes",
+          "crop_rules": "synthesis decision and branch directions survive the central safe crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": ["white-green-editorial-minimal-diagram-v1"],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "strict flat green-led deterministic diagram grammar and exact frozen graph",
+        "full-width active grouping human-free rendering and crop-safe central nucleus"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"],
+      "acceptance_checks": [
+        "Exactly six nodes and six declared edges appear with correct directions.",
+        "The diagram copies no topology from its golden reference."
+      ]
+    }
+  ],
+  "neighbor_discrimination": {
+    "compare_profile_id": "technical-editorial-minimal",
+    "style_2_expected": [
+      "emerald-led bright high-key hierarchy",
+      "active wide composition with meaningful content in both outer bands",
+      "flat matte depth and pale-mint support"
+    ],
+    "style_1_expected": [
+      "neutral off-white and ink-blue hierarchy",
+      "quieter composition with one blue signal and optional warm exception",
+      "role-sensitive shallow 2.5D for cover and concept"
+    ]
+  }
+}

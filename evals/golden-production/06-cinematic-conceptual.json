@@ -1,0 +1,393 @@
+{
+  "golden_production_version": 1,
+  "profile_id": "cinematic-conceptual",
+  "style_pack_version": 3,
+  "status": "approved",
+  "mode_boundary": {
+    "must_read_as": "cinematic narrative matte-painting landscape with layered teal-blue terrain one foreground-to-horizon journey one warm golden horizon optional small rear-view human scale and deterministic title-safe behavior",
+    "must_not_read_as": "abstract editorial sculpture generic travel advertising visible-face portrait oversaturated sunrise fantasy landscape science-fiction poster neon system isometric infrastructure or empty fog",
+    "nearest_profile_id": "neon-systems"
+  },
+  "candidates": [
+    {
+      "id": "cinematic-conceptual-cover-v1",
+      "role": "cover",
+      "revision": 1,
+      "approval": "rejected",
+      "rejected_artifact_path": "assets/style-anchors/cinematic-conceptual/rejected-cover-v1.png",
+      "prompt_path": "assets/style-anchors/cinematic-conceptual/rejected-cover-v1.prompt.md",
+      "user_feedback": "Rejected after the user supplied the previous Style 6 reference and confirmed that the mode should preserve its cinematic narrative-landscape direction. The tactile mineral gate was stable but over-corrected into a cold abstract editorial sculpture, removing the layered landscape, journey, warm horizon, and small rear-view human narrative that define the desired mode.",
+      "visual_thesis": "One precise aperture through a monumental tactile barrier turns an otherwise broad dark field into one legible amber direction.",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "cover",
+        "objective": "Create one memorable text-free wide cinematic editorial cover as a practical miniature set: a monumental matte mineral gate occupies the center-right, one narrow vertical aperture cuts cleanly through its mass, and one restrained amber path approaches from the lower foreground, passes through the aperture once, and continues only a short visible distance into layered blue atmosphere.",
+        "semantics": {
+          "confirmed": [
+            "A narrow constraint can focus a broad direction into one legible passage.",
+            "The gate and amber passage are a generic editorial metaphor, not a real architecture, mechanism, guarantee, or recommendation."
+          ],
+          "simplifications": [
+            "Use one substantial freestanding mineral gate composed as one coherent subject rather than multiple buildings or symbols.",
+            "Use exactly one narrow amber path and one motivated warm light source at the aperture; the path passes through the gate once without branching.",
+            "Use three broad blue depth planes and a restrained 50 mm perspective to create atmosphere without adding scenery."
+          ],
+          "blocked": [
+            "Do not imply security, access control, destiny, guaranteed progress, a named system, a real place, or a technological portal.",
+            "Do not add people faces hands characters silhouettes vehicles stairs doors machinery interfaces labels logos screens buildings cities mountains stars planets cosmic skies floating objects multiple apertures multiple paths extra warm lights neon cyan-magenta glow glass chrome glossy product surfaces or unrelated scenery."
+          ]
+        },
+        "composition": {
+          "structure": "wide 16:9 tactile editorial practical set on a fully opaque deep navy stage; reserve the left twenty-eight percent as a calm but tonally layered title-safe field; place the monumental matte mineral gate across the center-right so the complete subject and its base occupy roughly seventy percent of the canvas; one amber path enters from the lower-center foreground and passes through the narrow aperture; use a restrained 50 mm cinematic perspective with stable horizon and three readable depth planes",
+          "hierarchy": "the strong gate silhouette is primary, the single aperture and amber path form one secondary thesis cue, and broad desaturated blue environment layers support depth; one cool ambient fill preserves shadow detail while one motivated amber practical light at the aperture creates a restrained volumetric beam and one coherent shadow direction",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title-safe zone",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete gate path and grounded stage occupy roughly seventy percent while the layered left field remains usable for a title",
+          "crop_rules": "the aperture, representative gate mass, amber path, and foreground grounding remain understandable in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "cover",
+          "bootstrap_references": [],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "One monumental matte mineral gate reads as one coherent tactile subject rather than multiple buildings or symbols.",
+        "Exactly one narrow aperture and one amber path appear; the path passes through once without branching or becoming a neon portal.",
+        "The restrained 50 mm perspective stable horizon matte material three blue depth planes and one coherent light direction remain consistent.",
+        "The scene fills enough of the canvas to feel like a complete editorial picture while preserving a useful layered left title-safe field.",
+        "The result resembles a photographed practical editorial set rather than generic AI cinema fantasy science-fiction neon systems or luxury advertising.",
+        "No people text logos interfaces cities cosmic scenery multiple metaphors multiple warm accents glass chrome glossy surfaces or unsupported claims appear.",
+        "The output is fully opaque and the gate metaphor supplies no semantic authority for future article content."
+      ]
+    },
+    {
+      "id": "cinematic-conceptual-cover-v1",
+      "role": "cover",
+      "revision": 2,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/cinematic-conceptual/golden-cover.png",
+      "user_feedback": "Approved by the user by asking to continue. This revision restores the preferred Style 6 identity: a complete layered teal-blue valley, one continuous foreground-to-horizon road, one warm golden horizon, one small seated rear-view figure, active upper-left title-safe space, restrained cinematic matte-painting realism, no generated text, and fully opaque output. The example road, figure, terrain, destination, and story are non-authoritative.",
+      "visual_thesis": "A traveler may pause in the foreground while one winding road continues across layered terrain toward a single warm horizon.",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "cover",
+        "objective": "Create one text-free wide cinematic narrative landscape in the user's preferred Style 6 direction: a fully active layered teal-blue valley fills the frame, one winding road begins broadly in the lower foreground and leads continuously toward one golden sunrise near the right horizon, and one small seated rear-view human figure rests at the lower-right edge looking along the road.",
+        "semantics": {
+          "confirmed": [
+            "A temporary pause does not imply that the wider journey has ended.",
+            "The road, horizon, and seated rear-view figure form a reflective editorial metaphor rather than a promise about progress, success, destination, or recovery."
+          ],
+          "simplifications": [
+            "Use exactly one continuous paved road with gentle bends from the lower foreground through the valley toward the warm horizon; it never branches or disappears behind unrelated scenery.",
+            "Use one small seated rear-view adult figure at the lower-right, occupying roughly ten percent of image height, with simple dark clothing and no visible face.",
+            "Use four readable terrain bands: dark teal foreground, muted blue-green middle valley, pale distant ridges, and one warm golden horizon; preserve an active upper-left title-safe field without generated text."
+          ],
+          "blocked": [
+            "Do not imply guaranteed progress a named destination a personal identity a diagnosis a universal life lesson or a literal travel recommendation.",
+            "Do not add visible faces front-facing people extra figures crowds vehicles buildings signs guardrails streetlights multiple roads forks crossroads multiple suns extra orange lights fantasy towers cosmic skies portals holograms neon circuits isometric modules interfaces generated text logos or arbitrary data particles."
+          ]
+        },
+        "composition": {
+          "structure": "wide 16:9 cinematic digital matte painting with restrained 35 mm elevated perspective; a broad road enters from the lower-center foreground, bends gently through a fully occupied layered valley, and narrows toward one golden sun near the right horizon; place one small seated rear-view figure on a grounded rocky ledge at the lower-right; keep the upper-left sky and distant valley tonally calm but visibly layered for deterministic title overlay rather than leaving an empty rectangle",
+          "hierarchy": "the winding road is the primary reading path, the single warm horizon is the secondary focal destination, and the small rear-view figure anchors scale and reflection; deep teal foreground and cool blue-green terrain transition gradually toward warm gold; soft atmospheric mist separates four depth bands without hiding the road or figure",
+          "human_elements": "exactly one small seated rear-view adult figure at lower-right; no face visible, no second person, no dramatic gesture, no stock-model styling"
+        },
+        "text_policy": {
+          "mode": "text-free landscape background with deterministic upper-left title and subtitle overlay added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "terrain sky road and figure fill the complete frame with no empty black field; the upper-left remains active but readable for later title overlay",
+          "crop_rules": "the road bend representative valley layers warm horizon and seated figure remain understandable in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "cover",
+          "bootstrap_references": [],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "One continuous road leads clearly from the lower foreground through four readable terrain bands toward one warm golden horizon without branches.",
+        "Exactly one small seated rear-view figure appears at lower-right with no visible face and no stock-model or advertising pose.",
+        "The restrained 35 mm elevated perspective stable horizon cool-to-warm palette atmospheric depth and painterly realism match the user's previous Style 6 reference direction.",
+        "The complete frame contains meaningful landscape content while the upper-left remains calm enough for deterministic title overlay.",
+        "The result reads as a reflective cinematic narrative landscape rather than an abstract sculpture generic travel poster fantasy scene neon system or isometric infrastructure image.",
+        "No generated text logos signs extra people vehicles buildings multiple paths multiple suns arbitrary data particles or unsupported claims appear.",
+        "The output is fully opaque and the example road figure destination and story supply no semantic authority for future article content."
+      ]
+    },
+    {
+      "id": "cinematic-conceptual-concept-v1",
+      "role": "concept",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/cinematic-conceptual/golden-concept.png",
+      "user_feedback": "Approved by the user by asking to continue. Preserve the human-free cinematic canyon-to-basin transition, one continuous cool river, central natural cleft, broad warm reflected basin, restrained 35 mm elevated perspective, layered teal-blue terrain, painterly realism, and fully opaque output. The example river cleft basin and transition are style-only and non-authoritative.",
+      "visual_thesis": "One cool river passes through a narrow dark mountain cleft and opens into a broad warm basin, making a single transition visible without a human figure or a road.",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "concept",
+        "objective": "Create one text-free human-free cinematic landscape concept: a single cool blue river enters from the lower-left foreground inside a dark teal canyon, passes visibly through one narrow mountain cleft near the center, and opens into one broad softly golden basin on the right; the relation reads as a constrained passage becoming an open field without copying the cover road, valley, seated figure, visible sun, or composition.",
+        "semantics": {
+          "confirmed": [
+            "A constrained passage can open into a wider field of possibilities.",
+            "The river, cleft, and basin are a generic editorial metaphor and do not promise freedom, success, safety, progress, or a particular outcome."
+          ],
+          "simplifications": [
+            "Use exactly one continuous river from foreground through the cleft into the basin; it never branches, splits, becomes a road, or disappears behind unrelated scenery.",
+            "Use four readable landscape bands with the narrow cleft at center and the broad basin on the right; no visible solar disc is present.",
+            "Use warm reflected light across the basin and low clouds as the only warm field while the canyon and river remain cool teal-blue."
+          ],
+          "blocked": [
+            "Do not imply a named location, natural process, engineering system, guaranteed transformation, danger, ownership, destination, or human decision.",
+            "Do not add people faces hands characters silhouettes animals boats bridges roads buildings signs waterfalls dams multiple river branches multiple openings visible suns extra orange lights fantasy ruins portals holograms neon circuits isometric modules interfaces generated text logos or arbitrary data particles."
+          ]
+        },
+        "composition": {
+          "structure": "wide 16:9 cinematic digital matte painting with restrained 35 mm elevated perspective; a cool river enters from the lower-left foreground, curves through a dark teal canyon, remains clearly visible through one narrow central mountain cleft, and widens subtly into a pale warm basin across the right half; four depth bands remain readable and the complete scene occupies the frame without a cover-style title void",
+          "hierarchy": "the single continuous river and narrow cleft form the primary conceptual relation, the warm open basin is the secondary state, and layered blue ridges provide atmospheric depth; cool ambient light preserves foreground texture while one broad soft golden field illuminates the basin without a visible sun or decorative rays",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free landscape concept with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the canyon river cleft and basin fill roughly eighty-five percent with active terrain across both outer bands",
+          "crop_rules": "the foreground river central cleft and representative warm basin remain understandable in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "concept",
+          "bootstrap_references": [
+            {
+              "id": "cinematic-conceptual-cover-v1",
+              "profile_id": "cinematic-conceptual",
+              "role": "cover",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly one continuous cool river passes visibly from the lower-left foreground through one narrow central cleft into one broad warm basin without branches.",
+        "The scene is fully human-free and contains no road visible sun bridge building boat waterfall dam or extra narrative prop.",
+        "The restrained 35 mm elevated perspective layered teal-blue terrain cool-to-warm atmospheric transition and painterly realism visibly match the approved cover family.",
+        "The composition is clearly different from the cover and proves the style can carry one landscape transition without repeating its road person horizon or title layout.",
+        "The result reads as a complete cinematic landscape concept rather than a travel advertisement fantasy scene neon system isometric infrastructure map or abstract sculpture.",
+        "No generated text logos multiple routes arbitrary data particles unsupported natural claims or semantic guarantees appear.",
+        "The output is fully opaque and the example river cleft basin and transition supply no semantic authority for future article content."
+      ]
+    },
+    {
+      "id": "cinematic-conceptual-diagram-v1",
+      "role": "diagram",
+      "revision": 1,
+      "approval": "rejected",
+      "review_feedback": "Rejected during internal topology acceptance before the user gate. The image contained the intended four terrain landmarks but rendered four visible directional chevrons, exceeding the frozen graph's three directed edges.",
+      "failure_analysis": "The prompt asked for one chevron on each inter-landmark segment but also emphasized continuous route readability. The renderer treated a long first or middle segment as needing another direction cue. Revision 2 fixes one named chevron position inside each of exactly three explicit gaps and forbids chevrons on landmarks or segment subdivisions.",
+      "visual_thesis": "A frozen four-landmark sequence becomes a human-free cinematic terrain map whose single path and three explicit direction markers preserve exact order without node cards or generated labels.",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "diagram",
+        "objective": "Create one text-free human-free cinematic landscape process map: exactly four large terrain landmarks form a gentle foreground-left to horizon-right sequence, connected by one continuous pale-gold trail with exactly three clearly visible deep-slate directional chevrons and no branches, returns, crossings, or hidden links.",
+        "semantics": {
+          "confirmed": [
+            "The map contains exactly four stages: origin, passage, evaluation, and arrival.",
+            "The only supported order is origin to passage to evaluation to arrival.",
+            "There are no exceptions, returns, branches, merges, parallel paths, ownership groups, or hierarchy claims."
+          ],
+          "simplifications": [
+            "Represent each stage as one substantial natural terrain landmark integrated into the landscape: a low foreground terrace, a narrow pass, a broad overlook, and a distant high plateau.",
+            "Use exactly one continuous pale-gold trail and place one deep-slate directional chevron on each of the three inter-landmark segments.",
+            "Reserve one quiet blank caption-safe area beside each landmark for deterministic labels added later; the generated image contains no readable label or number."
+          ],
+          "blocked": [
+            "Do not invent failure paths feedback loops shortcuts branches merges bidirectional edges hidden links groups elevation hierarchy or additional stages.",
+            "Do not add people faces hands characters animals vehicles buildings bridges roads signs flags gates ruins portals node cards boxes interfaces generated text numbers logos neon circuits isometric modules blueprint lines multiple suns or arbitrary data particles."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "origin",
+              "passage",
+              "evaluation",
+              "arrival"
+            ],
+            "edges": [
+              {
+                "from": "origin",
+                "to": "passage"
+              },
+              {
+                "from": "passage",
+                "to": "evaluation"
+              },
+              {
+                "from": "evaluation",
+                "to": "arrival"
+              }
+            ]
+          }
+        },
+        "composition": {
+          "structure": "wide 16:9 strict human-free cinematic terrain map in restrained 35 mm elevated perspective; exactly four large natural landmarks form a clear gentle zigzag from a lower-left foreground terrace to a center-left narrow pass to a center-right broad overlook to a far-right high plateau near the warm horizon; one continuous pale-gold trail touches each landmark once in frozen order; each of the three inter-landmark segments carries exactly one visible deep-slate directional chevron; four depth bands remain readable and no route segment crosses another",
+          "hierarchy": "all four landmarks have equal semantic weight while natural perspective changes apparent scale; the single trail is the primary reading guide and one soft warm horizon field supports destination depth without implying success; layered teal-blue terrain and measured mist preserve cinematic identity; quiet nearby ground patches remain available for deterministic labels without becoming cards",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "generated landscape contains no text; validated landmark labels are added later as deterministic overlays",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete four-landmark terrain graph and all three directed trail segments occupy roughly eighty percent with active landscape across the frame",
+          "crop_rules": "all four landmarks and all three directional trail segments remain visible in the full article crop; the central square crop preserves the two middle landmarks and representative incoming and outgoing direction",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "diagram",
+          "bootstrap_references": [
+            {
+              "id": "cinematic-conceptual-concept-v1",
+              "profile_id": "cinematic-conceptual",
+              "role": "concept",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly four substantial natural terrain landmarks appear and no fifth landmark or decorative object can be mistaken for a node.",
+        "Exactly three visible directional trail connections encode origin to passage to evaluation to arrival in that order.",
+        "One continuous pale-gold trail has no branch merge return crossing bypass hidden segment or bidirectional marker.",
+        "The generated landscape contains no readable text numbers logos cards boxes or interface elements; labels remain deterministic overlays.",
+        "The result is a human-free cinematic landscape process map compositionally distinct from the road-and-person cover and canyon-river concept.",
+        "The restrained 35 mm perspective layered teal-blue terrain warm horizon measured mist painterly realism and complete-frame occupancy match the approved Style 6 family.",
+        "The frozen example graph landmarks path positions and story supply no semantic authority for future article diagrams."
+      ]
+    },
+    {
+      "id": "cinematic-conceptual-diagram-v1",
+      "role": "diagram",
+      "revision": 2,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/cinematic-conceptual/golden-diagram.png",
+      "user_feedback": "Approved by the user by asking to continue. Preserve the human-free cinematic terrain-map grammar, exactly four intentional natural terrace landmarks, one continuous pale-gold trail, exactly three deep-slate chevrons placed in the three inter-landmark gaps, layered teal-blue terrain, warm distant atmosphere, no text, and fully opaque output. The example graph landmarks path positions and story remain non-authoritative.",
+      "visual_thesis": "Four named terrain landmarks form three explicit gaps, and each gap contains exactly one direction chevron so the frozen sequence cannot gain a decorative fourth arrow.",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "diagram",
+        "objective": "Create one text-free human-free cinematic terrain process map with exactly four natural landmarks and exactly three directed gaps: landmark A at lower-left, landmark B at center-left, landmark C at center-right, and landmark D at upper-right; one continuous pale-gold trail connects A to B to C to D, and each named gap AB BC and CD contains exactly one deep-slate chevron.",
+        "semantics": {
+          "confirmed": [
+            "The map contains exactly four stages in one order: origin, passage, evaluation, arrival.",
+            "The only edges are origin to passage, passage to evaluation, and evaluation to arrival.",
+            "There are no branches, merges, returns, loops, parallel paths, groups, or hierarchy claims."
+          ],
+          "simplifications": [
+            "Render exactly four intentional natural terraces as landmarks A B C and D; surrounding mountains remain soft background and cannot resemble another terrace node.",
+            "Render exactly three trail gaps AB BC and CD; put exactly one chevron at the midpoint of each gap and nowhere else.",
+            "Keep every chevron off the landmark surfaces and do not subdivide any gap with an extra direction marker."
+          ],
+          "blocked": [
+            "Do not add a fourth chevron a fifth landmark a second route a segment subdivision a route branch a return a crossing or a bidirectional marker.",
+            "Do not add people animals vehicles buildings bridges roads with lane markings signs flags gates ruins portals cards boxes interfaces text numbers logos neon circuits isometric modules blueprint lines visible suns or data particles."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "origin",
+              "passage",
+              "evaluation",
+              "arrival"
+            ],
+            "edges": [
+              {
+                "from": "origin",
+                "to": "passage"
+              },
+              {
+                "from": "passage",
+                "to": "evaluation"
+              },
+              {
+                "from": "evaluation",
+                "to": "arrival"
+              }
+            ]
+          }
+        },
+        "composition": {
+          "structure": "wide 16:9 human-free cinematic landscape map in restrained 35 mm elevated perspective; four clearly shaped natural terrace landmarks form a clean zigzag A lower-left B center-left C center-right D upper-right; one continuous narrow pale-gold trail connects them; leave visible terrain gaps between landmarks and put exactly one dark chevron at the midpoint of gap AB exactly one at midpoint BC and exactly one at midpoint CD; no chevron sits on a landmark or elsewhere on the trail",
+          "hierarchy": "the four landmarks remain equal semantic nodes while perspective supplies natural depth; the single trail and exactly three chevrons are the primary reading system; deep teal foreground muted blue middle terrain and a soft warm upper-right atmosphere preserve Style 6 without a visible sun",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free landscape with deterministic labels added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete four-landmark three-gap graph occupies roughly eighty percent with no empty title field",
+          "crop_rules": "all four landmarks and all three chevrons remain fully visible in the wide article crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "diagram",
+          "bootstrap_references": [
+            {
+              "id": "cinematic-conceptual-concept-v1",
+              "profile_id": "cinematic-conceptual",
+              "role": "concept",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly four intentional natural terrace landmarks appear in the A B C D zigzag and background terrain cannot be mistaken for a fifth node.",
+        "Exactly three and only three chevrons appear: one in gap AB one in gap BC and one in gap CD.",
+        "One continuous trail encodes A to B to C to D without branch merge return crossing subdivision hidden segment or bidirectional marker.",
+        "No chevron appears on a landmark and no gap contains more than one chevron.",
+        "The result remains a human-free text-free cinematic landscape map rather than a technical node diagram isometric infrastructure scene or fantasy map.",
+        "The output is fully opaque and the example graph landmarks trail positions and story remain non-authoritative."
+      ]
+    }
+  ]
+}

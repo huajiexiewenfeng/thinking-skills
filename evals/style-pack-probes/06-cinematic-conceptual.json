@@ -1,0 +1,260 @@
+{
+  "probe_suite_version": 1,
+  "profile_id": "cinematic-conceptual",
+  "style_pack_version": 3,
+  "purpose": "Cross-topic stability and Style 6 versus Style 3 discrimination without copying golden landscape content.",
+  "probes": [
+    {
+      "id": "style6-cover-winter-continuation",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "cover",
+        "objective": "Show patient continuation as one narrow winter ridge trail crossing layered blue-white highlands toward one warm break in the clouds, with one small standing rear-view figure at lower-left.",
+        "semantics": {
+          "confirmed": [
+            "Continuation may remain possible even when the full route is not visible.",
+            "The winter trail and distant warm opening are an editorial metaphor rather than a guarantee of progress or outcome."
+          ],
+          "simplifications": [
+            "Use one narrow snow trail across layered highland ridges and one small standing rear-view figure at lower-left.",
+            "Use one diffuse warm opening in the far-right clouds without a visible sun or second light source."
+          ],
+          "blocked": [
+            "Do not imply guaranteed success safety destination weather prediction or a named location.",
+            "Do not copy the golden valley paved road seated figure visible sunrise mountain forms title layout or example story."
+          ]
+        },
+        "composition": {
+          "structure": "wide text-free cinematic winter highland landscape in restrained elevated perspective with one ridge trail crossing four blue-white depth bands toward one warm cloud opening and one small standing rear-view figure at lower-left",
+          "hierarchy": "the trail is the primary reading line the warm cloud opening is secondary and the small figure anchors scale; the upper-right remains active while an upper-left band supports deterministic title overlay",
+          "human_elements": "exactly one small standing rear-view figure with no visible face"
+        },
+        "text_policy": {
+          "mode": "text-free landscape with deterministic title overlay",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "snow terrain sky trail and figure fill the frame with no empty dark field",
+          "crop_rules": "trail representative ridges warm opening and rear-view figure remain visible in the central safe crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "cinematic-conceptual-cover-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "layered cinematic landscape restrained 35 mm elevated perspective one foreground-to-distance journey one warm field and optional small rear-view human scale",
+        "fully opaque complete-frame terrain measured mist painterly realism and deterministic title-safe behavior"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "The winter trail reads as one journey without copying the golden road or promising an outcome.",
+        "The result remains Style 6 cinematic narrative landscape and does not become a neon system or stock travel advertisement."
+      ]
+    },
+    {
+      "id": "style6-concept-sheltered-hollow",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "concept",
+        "objective": "Explain one protective relation: a wind-exposed teal ridge bends grasses in one direction while one lower sheltered hollow remains visibly calm under a soft warm reflected sky.",
+        "semantics": {
+          "confirmed": [
+            "Terrain can change exposure to the same environmental force.",
+            "The exposed ridge and sheltered hollow are a simplified visual relation rather than a scientific model or safety claim."
+          ],
+          "simplifications": [
+            "Use one exposed ridge and one adjacent lower hollow as the complete relation.",
+            "Use consistent grass direction on the ridge and calm mist in the hollow without people labels arrows or instruments."
+          ],
+          "blocked": [
+            "Do not invent wind speed measurements weather forecasts structures animals ownership boundaries or guaranteed protection.",
+            "Do not copy the golden river canyon cleft basin route shape warm-water reflection or composition."
+          ]
+        },
+        "composition": {
+          "structure": "one human-free cinematic landscape relation with a dark exposed ridge across the left and upper field and one calmer lower hollow across the right foreground using four atmospheric depth bands",
+          "hierarchy": "terrain shape and vegetation direction explain exposure while a restrained warm reflected sky separates the calm hollow; no path or route is required",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free concept with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the ridge hollow vegetation and atmospheric terrain fill roughly eighty-five percent",
+          "crop_rules": "representative exposed ridge and sheltered hollow remain visible in the central safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "cinematic-conceptual-concept-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "one complete landscape relation with layered teal-blue depth restrained warm field measured mist and painterly cinematic realism",
+        "human-free text-free full-frame composition without neon circuitry isometric modules or travel-ad polish"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "The exposure-versus-shelter relation reads without measurements or unsupported guarantees.",
+        "No river-cleft story path person diagram card or neon-system language appears."
+      ]
+    },
+    {
+      "id": "style6-diagram-reviewed-publication-map",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "diagram",
+        "objective": "Render a human-free five-landmark cinematic terrain map where two source trails converge at review, review leads to release, and an exception route passes through revision before returning only to source A.",
+        "semantics": {
+          "confirmed": [
+            "Source A and Source B both enter review.",
+            "Review leads to release on the primary route.",
+            "An exception from review enters revision and returns only to Source A."
+          ],
+          "simplifications": [
+            "Use five substantial terrain landmarks with deterministic blank label zones.",
+            "Use pale gold for primary trails and one restrained dashed slate exception-and-return route."
+          ],
+          "blocked": [
+            "Do not add authors editors tools scores approvals archives distribution systems people or undeclared landmarks and edges.",
+            "Do not copy the golden four-landmark linear topology terrace positions single-trail shape arrow count or story."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "source-a",
+              "source-b",
+              "review",
+              "release",
+              "revision"
+            ],
+            "edges": [
+              {
+                "id": "edge-a-review",
+                "from": "source-a",
+                "to": "review",
+                "type": "primary"
+              },
+              {
+                "id": "edge-b-review",
+                "from": "source-b",
+                "to": "review",
+                "type": "primary"
+              },
+              {
+                "id": "edge-review-release",
+                "from": "review",
+                "to": "release",
+                "type": "primary"
+              },
+              {
+                "id": "edge-review-revision",
+                "from": "review",
+                "to": "revision",
+                "type": "exception"
+              },
+              {
+                "id": "edge-revision-a",
+                "from": "revision",
+                "to": "source-a",
+                "type": "return"
+              }
+            ],
+            "groups": [
+              {
+                "id": "sources",
+                "members": [
+                  "source-a",
+                  "source-b"
+                ]
+              },
+              {
+                "id": "review-and-result",
+                "members": [
+                  "review",
+                  "release",
+                  "revision"
+                ]
+              }
+            ],
+            "invariants": [
+              "Release is reachable only through review.",
+              "Revision returns only to Source A and never directly to release or Source B."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict human-free cinematic terrain map with two source landmarks at lower-left and upper-left review at center release at warm far-right and revision below center; every frozen route remains visible without crossings",
+          "hierarchy": "layered teal-blue terrain and large natural landmarks carry the graph; pale-gold primary trails and one dashed slate exception-return route remain legible without node cards",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "blank deterministic landmark labels added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete five-landmark five-edge map occupies roughly eighty percent",
+          "crop_rules": "all five landmarks every primary edge exception edge return edge and direction marker remain inside the outer safe area",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "cinematic-conceptual-diagram-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "strict human-free frozen-graph landscape rendering with restrained 35 mm perspective layered terrain large landmarks and exact route direction",
+        "one warm horizon pale-gold primary trails restrained exception treatment text-free imagery and deterministic labels"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "Exactly five declared landmarks and five declared directed edges appear with correct type and direction.",
+        "The map remains a cinematic landscape and does not become the golden linear graph a node-card diagram or a neon system."
+      ]
+    }
+  ],
+  "neighbor_discrimination": {
+    "compare_profile_id": "neon-systems",
+    "style_6_expected": [
+      "layered teal-blue natural terrain with four readable atmospheric depth bands",
+      "restrained 35 mm elevated perspective one narrative journey or landscape relation and one warm horizon field",
+      "painterly cinematic realism optional small rear-view human scale and deterministic text overlay",
+      "technology traces only when semantics explicitly supports them"
+    ],
+    "style_3_expected": [
+      "dark technological environment with neon circuitry and emissive system paths",
+      "transparent glass holograms luminous panels or multiple network relationships",
+      "electric cyan magenta glow and technology-first atmosphere",
+      "system topology rather than natural landscape narrative"
+    ]
+  }
+}

@@ -26,6 +26,7 @@ Use these cases to test whether `article-visual-director` behaves like an articl
 |---|---|
 | “文章已定稿，需要三张概念插画和一张准确的 Runtime 架构图。” | Own the article-level plan; route concepts to `imagegen` and the architecture to a deterministic diagram under one style profile. |
 | “文章刚写完，沿用已经确认的读者、论点和语气继续做配图。” | Accept the `content-creator` brief without restarting content discovery, then begin visual planning. |
+| “已经选好 Style 8，但编译后的提示词没有 REFERENCE CONTRACT。” | Stop before image generation with `PROMPT_BLOCK_MISSING`; repair and recompile Prompt IR instead of falling back to a free-form prompt. |
 
 ## Quality Checks
 
@@ -46,3 +47,4 @@ Use these cases to test whether `article-visual-director` behaves like an articl
 - Repeats the same decorative composition after every heading.
 - Claims safe insertion without source hashing, anchor validation, stable markers, or file checks.
 - Overwrites the source Markdown without explicit authorization.
+- Generates from a Style Pack v3 prompt that is missing `REFERENCE CONTRACT` or any other required Prompt IR block.

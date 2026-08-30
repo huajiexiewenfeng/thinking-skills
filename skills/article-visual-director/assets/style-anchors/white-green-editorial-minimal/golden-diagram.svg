@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="864" viewBox="0 0 1536 864" role="img" aria-labelledby="title desc">
+  <title id="title">Coordinated system style anchor</title>
+  <desc id="desc">Two inputs enter one coordinator. The coordinator directs a primary system and a support system. Both systems contribute to one shared result.</desc>
+  <defs>
+    <marker id="arrow-emerald" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L11,6 L1,11 Z" fill="#168A55"/>
+    </marker>
+    <marker id="arrow-cyan" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M1,1 L11,6 L1,11 Z" fill="#46B98A"/>
+    </marker>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="2" flood-color="#173B2A" flood-opacity="0.10"/>
+    </filter>
+    <style>
+      .heading { font-family: Inter, Arial, sans-serif; fill: #173B2A; font-size: 34px; font-weight: 750; letter-spacing: 1.4px; }
+      .subhead { font-family: Inter, Arial, sans-serif; fill: #4C705E; font-size: 18px; font-weight: 400; }
+      .node-label { font-family: Inter, Arial, sans-serif; fill: #173B2A; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; text-anchor: middle; }
+      .node-note { font-family: Inter, Arial, sans-serif; fill: #4C705E; font-size: 15px; font-weight: 450; text-anchor: middle; }
+      .badge { font-family: Inter, Arial, sans-serif; fill: #FAFFFC; font-size: 15px; font-weight: 750; text-anchor: middle; dominant-baseline: middle; }
+      .primary-edge { fill: none; stroke: #168A55; stroke-width: 7; stroke-linecap: round; marker-end: url(#arrow-emerald); }
+      .support-edge { fill: none; stroke: #46B98A; stroke-width: 6; stroke-linecap: round; marker-end: url(#arrow-cyan); }
+    </style>
+  </defs>
+
+  <rect width="1536" height="864" fill="#FAFFFC"/>
+  <path d="M72 244 C350 174 512 196 674 302 C846 414 1066 220 1464 284 L1464 638 C1120 704 914 630 742 566 C534 488 326 674 72 594 Z" fill="#F1FAF5"/>
+
+  <g id="diagram-heading" transform="translate(104 84)">
+    <rect x="0" y="0" width="10" height="74" rx="5" fill="#168A55"/>
+    <text class="heading" x="32" y="34">COORDINATED SYSTEM</text>
+    <text class="subhead" x="32" y="67">Two forces. Two coordinated paths. One shared result.</text>
+  </g>
+
+  <g id="edges" aria-label="Six exact directed edges">
+    <path id="edge-input-a-coordinator" data-edge-type="primary" class="primary-edge" d="M344 320 C400 320 422 352 468 382"/>
+    <path id="edge-input-b-coordinator" data-edge-type="secondary" class="support-edge" d="M344 544 C400 544 422 510 468 478"/>
+    <path id="edge-coordinator-primary" data-edge-type="primary" class="primary-edge" d="M700 382 C744 350 766 330 812 330"/>
+    <path id="edge-coordinator-support" data-edge-type="secondary" class="support-edge" d="M700 478 C744 510 766 534 812 534"/>
+    <path id="edge-primary-result" data-edge-type="primary" class="primary-edge" d="M1072 330 C1128 330 1140 370 1184 398"/>
+    <path id="edge-support-result" data-edge-type="secondary" class="support-edge" d="M1072 534 C1128 534 1140 494 1184 466"/>
+  </g>
+
+  <g id="node-input-a" data-node-id="input-a" transform="translate(120 266)" filter="url(#soft-shadow)">
+    <path d="M18 0 H190 L224 54 L190 108 H18 Q0 108 0 90 V18 Q0 0 18 0 Z" fill="#E3F5EA" stroke="#173B2A" stroke-width="3"/>
+    <circle cx="34" cy="30" r="17" fill="#168A55"/>
+    <text class="badge" x="34" y="30">1</text>
+    <text class="node-label" x="112" y="61">INPUT A</text>
+    <text class="node-note" x="112" y="86">primary force</text>
+  </g>
+
+  <g id="node-input-b" data-node-id="input-b" transform="translate(120 490)" filter="url(#soft-shadow)">
+    <path d="M18 0 H190 L224 54 L190 108 H18 Q0 108 0 90 V18 Q0 0 18 0 Z" fill="#EAF8F2" stroke="#173B2A" stroke-width="3"/>
+    <circle cx="34" cy="30" r="17" fill="#46B98A"/>
+    <text class="badge" x="34" y="30">2</text>
+    <text class="node-label" x="112" y="61">INPUT B</text>
+    <text class="node-note" x="112" y="86">support force</text>
+  </g>
+
+  <g id="node-coordinator" data-node-id="coordinator" transform="translate(580 430)" filter="url(#soft-shadow)">
+    <circle r="122" fill="#DDF4E8" stroke="#173B2A" stroke-width="3"/>
+    <circle r="92" fill="#168A55"/>
+    <circle r="53" fill="#FAFFFC" stroke="#173B2A" stroke-width="3"/>
+    <path d="M-28 -4 H28 M0 -32 V24 M-20 18 L0 38 L20 18" fill="none" stroke="#168A55" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="-88" cy="-86" r="18" fill="#173B2A"/>
+    <text class="badge" x="-88" y="-86">3</text>
+    <text class="node-label" x="0" y="151">COORDINATOR</text>
+    <text class="node-note" x="0" y="177">shared semantic nucleus</text>
+  </g>
+
+  <g id="node-primary-system" data-node-id="primary-system" transform="translate(812 270)" filter="url(#soft-shadow)">
+    <rect width="260" height="120" rx="12" fill="#DDF4E8" stroke="#173B2A" stroke-width="3"/>
+    <rect x="0" y="0" width="14" height="120" rx="7" fill="#168A55"/>
+    <circle cx="38" cy="30" r="17" fill="#168A55"/>
+    <text class="badge" x="38" y="30">4</text>
+    <path d="M72 33 H204 M72 50 H228" fill="none" stroke="#168A55" stroke-width="6" stroke-linecap="round"/>
+    <text class="node-label" x="130" y="82">PRIMARY SYSTEM</text>
+    <text class="node-note" x="130" y="105">active contribution</text>
+  </g>
+
+  <g id="node-support-system" data-node-id="support-system" transform="translate(812 474)" filter="url(#soft-shadow)">
+    <rect width="260" height="120" rx="12" fill="#EAF8F2" stroke="#173B2A" stroke-width="3"/>
+    <rect x="0" y="0" width="14" height="120" rx="7" fill="#46B98A"/>
+    <circle cx="38" cy="30" r="17" fill="#46B98A"/>
+    <text class="badge" x="38" y="30">5</text>
+    <path d="M72 33 H190 M72 50 H224" fill="none" stroke="#46B98A" stroke-width="6" stroke-linecap="round"/>
+    <text class="node-label" x="130" y="82">SUPPORT SYSTEM</text>
+    <text class="node-note" x="130" y="105">secondary contribution</text>
+  </g>
+
+  <g id="node-shared-result" data-node-id="shared-result" transform="translate(1184 314)" filter="url(#soft-shadow)">
+    <path d="M64 0 H188 L252 116 L188 232 H64 L0 116 Z" fill="#168A55" stroke="#173B2A" stroke-width="3"/>
+    <circle cx="48" cy="42" r="18" fill="#173B2A"/>
+    <text class="badge" x="48" y="42">6</text>
+    <path d="M84 84 H166 M84 112 H188 M84 140 H166" fill="none" stroke="#FAFFFC" stroke-width="7" stroke-linecap="round"/>
+    <text x="126" y="184" text-anchor="middle" style="font-family: Inter, Arial, sans-serif; fill:#FAFFFC; font-size:22px; font-weight:750; letter-spacing:0.5px">SHARED RESULT</text>
+    <text x="126" y="208" text-anchor="middle" style="font-family: Inter, Arial, sans-serif; fill:#DDF4E8; font-size:15px; font-weight:450">combined outcome</text>
+  </g>
+
+  <g id="legend" transform="translate(104 758)">
+    <line x1="0" y1="0" x2="58" y2="0" stroke="#168A55" stroke-width="7" stroke-linecap="round"/>
+    <text class="subhead" x="76" y="6">PRIMARY PATH</text>
+    <line x1="246" y1="0" x2="304" y2="0" stroke="#46B98A" stroke-width="6" stroke-linecap="round"/>
+    <text class="subhead" x="322" y="6">SUPPORT PATH</text>
+  </g>
+  <text x="1432" y="782" text-anchor="end" class="subhead">Style reference only — example topology is non-authoritative</text>
+</svg>

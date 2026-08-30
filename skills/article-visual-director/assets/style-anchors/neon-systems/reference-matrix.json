@@ -1,0 +1,66 @@
+{
+  "profile_id": "neon-systems",
+  "style_pack_version": 3,
+  "references": [
+    {
+      "golden_asset_id": "neon-systems-cover-v1",
+      "role": "cover",
+      "must_preserve": [
+        "preserve fully opaque deep navy signal architecture substantial extruded modules one dominant cyan route and one acid-green active state",
+        "preserve front-oblique cutaway perspective readable matte faces controlled emission complete-frame occupancy and deterministic title-safe behavior",
+        "preserve premium editorial technical identity without people city HUD code rainbow neon or isometric toy-world drift"
+      ],
+      "may_vary": [
+        "replace the complete system subject module forms route direction active state and title-safe side with article-confirmed semantics",
+        "vary camera distance and confirmed subordinate connections within the approved module scale and emission hierarchy"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ]
+    },
+    {
+      "golden_asset_id": "neon-systems-concept-v1",
+      "role": "concept",
+      "must_preserve": [
+        "preserve one signal transformation propagation gating or routing relation through two to four substantial dark modules",
+        "preserve one cyan normal path acid green only for one emphasized state restrained cutaway depth and fully opaque substrate",
+        "preserve medium-low density without generated text HUD city code decorative circuitry or copied cover composition"
+      ],
+      "may_vary": [
+        "replace the complete input transformation output module forms route and active state with article-confirmed semantics",
+        "vary module count and one supported branch while maintaining exact route continuity and one-state green semantics"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ]
+    },
+    {
+      "golden_asset_id": "neon-systems-diagram-v1",
+      "role": "diagram",
+      "must_preserve": [
+        "preserve strict human-free frozen-graph rendering on a fully opaque deep navy technical substrate",
+        "preserve exact substantial module ports route directions cyan primary semantics one declared acid-green active state and deterministic blank labels",
+        "preserve restrained front-oblique depth without topology-obscuring glow HUD code city decoration or isometric server-city grammar"
+      ],
+      "may_vary": [
+        "replace the complete example graph modules paths groups labels and active state with the validated article-specific frozen graph",
+        "vary module count spatial grouping and restrained exception treatment only as frozen semantics requires"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ]
+    }
+  ]
+}

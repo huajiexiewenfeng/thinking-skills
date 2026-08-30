@@ -507,6 +507,49 @@ class ValidateManifestV2Tests(unittest.TestCase):
                     path.write_bytes(b"verified")
         return data
 
+    def enable_v3_manifest(self, data: dict) -> None:
+        profile_root = self.skill_root / "assets" / "style-anchors" / "fixture-profile"
+        pack_paths = {
+            "visual_dna": profile_root / "visual-dna.json",
+            "role_contracts": profile_root / "role-contracts.json",
+            "reference_matrix": profile_root / "reference-matrix.json",
+        }
+        for name, path in pack_paths.items():
+            path.write_text(json.dumps({"kind": name}), encoding="utf-8")
+
+        prompt_root = self.root / "visual-prompts"
+        prompt_root.mkdir(parents=True, exist_ok=True)
+        prompt_ir = prompt_root / "asset-concept.prompt-ir.json"
+        compiled = prompt_root / "asset-concept.gpt-image.prompt.md"
+        prompt_ir.write_text(json.dumps({"prompt": "ir"}), encoding="utf-8")
+        compiled.write_text("[OUTPUT CONTRACT]\nfixture\n", encoding="utf-8")
+
+        style = data["style"]
+        style.update({
+            "style_pack_version": 3,
+            "visual_dna_path": (
+                "assets/style-anchors/fixture-profile/visual-dna.json"
+            ),
+            "visual_dna_sha256": self._sha(pack_paths["visual_dna"]),
+            "role_contracts_path": (
+                "assets/style-anchors/fixture-profile/role-contracts.json"
+            ),
+            "role_contracts_sha256": self._sha(pack_paths["role_contracts"]),
+            "reference_matrix_path": (
+                "assets/style-anchors/fixture-profile/reference-matrix.json"
+            ),
+            "reference_matrix_sha256": self._sha(pack_paths["reference_matrix"]),
+            "adapter_id": "gpt-image",
+            "adapter_version": 1,
+            "prompt_ir_path": "visual-prompts/asset-concept.prompt-ir.json",
+            "prompt_ir_sha256": self._sha(prompt_ir),
+            "compiled_prompt_path": (
+                "visual-prompts/asset-concept.gpt-image.prompt.md"
+            ),
+            "compiled_prompt_sha256": self._sha(compiled),
+        })
+        data["assets"][0]["style_validation"]["drift_codes"] = []
+
     def assert_error(
         self, data: dict, code: str, phase: str = "plan"
     ) -> None:
@@ -563,6 +606,36 @@ class ValidateManifestV2Tests(unittest.TestCase):
         data = self.make_v2_manifest()
         data["style"]["article_style_anchor_asset_id"] = "missing-asset"
         self.assert_error(data, "unknown_style_anchor_asset")
+
+    def test_v3_style_requires_pack_and_prompt_traceability(self) -> None:
+        data = self.make_v2_manifest()
+        data["style"]["style_pack_version"] = 3
+        self.assert_error(data, "missing_style_pack_field")
+
+    def test_legacy_v2_without_style_pack_remains_valid(self) -> None:
+        data = self.make_v2_manifest()
+        self.assertEqual(
+            [],
+            validate_manifest(
+                data, self.manifest_path, "plan", skill_root=self.skill_root
+            ),
+        )
+
+    def test_valid_v3_traceability_passes(self) -> None:
+        data = self.make_v2_manifest()
+        self.enable_v3_manifest(data)
+        self.assertEqual(
+            [],
+            validate_manifest(
+                data, self.manifest_path, "plan", skill_root=self.skill_root
+            ),
+        )
+
+    def test_v3_rejects_unknown_drift_code(self) -> None:
+        data = self.make_v2_manifest()
+        self.enable_v3_manifest(data)
+        data["assets"][0]["style_validation"]["drift_codes"] = ["FREEFORM_DRIFT"]
+        self.assert_error(data, "invalid_drift_code")
 
 
 if __name__ == "__main__":

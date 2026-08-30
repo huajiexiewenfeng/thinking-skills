@@ -1,0 +1,76 @@
+{
+  "profile_id": "isometric-infrastructure",
+  "style_pack_version": 3,
+  "roles": {
+    "cover": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one coherent editorial isometric world with three to five substantial modules and one continuous amber source-to-destination journey",
+        "preserve pale matte ground fixed 30-degree camera consistent scale shared soft light and generous spatial margins",
+        "preserve a usable deterministic title-safe area without shrinking the infrastructure world"
+      ],
+      "may_vary": [
+        "the confirmed source destination stages module abstractions and path shape may change completely",
+        "the title-safe side and overall world orientation may vary while the camera scale and light remain fixed",
+        "one module may be dominant only when the confirmed thesis supports that hierarchy"
+      ],
+      "must_not_include": [
+        "do not add readable generated labels logos screens vendor anatomy metrics or unsupported infrastructure",
+        "do not use miniature server clutter city skylines glossy toys glass glow photorealism mixed cameras or multiple routes",
+        "do not create an empty platform with tiny decorative modules or a dense marketing ecosystem"
+      ],
+      "acceptance_checks": [
+        "the one operational journey remains understandable at thumbnail size without text",
+        "the world feels like a polished technology-magazine architectural diorama rather than a toy city",
+        "camera module scale material path and shared shadow direction remain coherent"
+      ]
+    },
+    "concept": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve exactly one ownership handoff containment or processing relation through two to four substantial modules",
+        "preserve one amber active transition and restrained blue inactive spatial context",
+        "preserve fixed camera scale family matte material shared light and spacious grouping"
+      ],
+      "may_vary": [
+        "the confirmed module family platform ownership and supported relation may replace the complete golden example",
+        "controlled elevation may clarify confirmed ownership or sequence",
+        "the one path may use a bridge lane or ground route when semantics supports it"
+      ],
+      "must_not_include": [
+        "do not invent services stages ownership importance connections labels logos screens or topology",
+        "do not copy the cover module family path world layout title zone or example journey",
+        "do not add tiny city clutter glossy toy treatment multiple amber routes glass glow blueprint lines or cinematic atmosphere"
+      ],
+      "acceptance_checks": [
+        "one spatial relation dominates and remains legible without labels",
+        "two to four modules feel substantial consistently scaled and materially coherent",
+        "the cover reference contributes only camera scale material lighting density margin and path visibility"
+      ]
+    },
+    "diagram": {
+      "stability": "strict",
+      "must_preserve": [
+        "preserve the frozen graph exactly including every node edge direction group invariant exception and return",
+        "preserve fully human-free fixed 30-degree isometric projection consistent platform thickness module scale and shared shadow direction",
+        "preserve deterministic plaques one supported amber primary path and restrained exception treatment"
+      ],
+      "may_vary": [
+        "node count labels groups elevation and edge types may vary only as validated semantics requires",
+        "elevation may encode hierarchy only when the frozen semantics explicitly declares that hierarchy",
+        "platform layout may adapt to the graph while every node edge and arrowhead remains visible"
+      ],
+      "must_not_include": [
+        "no people faces hands characters instructors narrators mascots vehicles or stock imagery",
+        "do not invent omit reverse merge split reroute or visually hide any frozen semantic relationship",
+        "do not copy golden labels numbers nodes topology groups elevation meaning or example story",
+        "no logos screens server clutter mixed cameras glossy toys glass glow blueprint construction or unsupported route"
+      ],
+      "acceptance_checks": [
+        "every visible module edge direction group exception and return matches the frozen graph",
+        "the diagram remains human-free opaque isometric consistently lit and legible at article width",
+        "the golden diagram contributes only camera scale material edge plaque path shadow and spacing grammar"
+      ]
+    }
+  }
+}

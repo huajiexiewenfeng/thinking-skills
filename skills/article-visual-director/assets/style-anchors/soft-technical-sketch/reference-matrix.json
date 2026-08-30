@@ -1,0 +1,48 @@
+{
+  "profile_id": "soft-technical-sketch",
+  "style_pack_version": 3,
+  "references": [
+    {
+      "golden_asset_id": "soft-technical-sketch-cover-v1",
+      "role": "cover",
+      "must_preserve": [
+        "preserve warm-paper calm fine soft contours translucent muted washes and generous title-safe margins",
+        "preserve one complete approachable physical metaphor under low density",
+        "preserve consistent object proportions and disciplined shallow perspective"
+      ],
+      "may_vary": [
+        "replace the complete metaphor and objects with the approved article teaching thesis",
+        "vary title-safe side object family and gentle view without increasing density"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    },
+    {
+      "golden_asset_id": "soft-technical-sketch-concept-v1",
+      "role": "concept",
+      "must_preserve": [
+        "preserve one gentle relation through one to three familiar objects",
+        "preserve low-density spatial explanation translucent watercolor restraint and fine contour",
+        "preserve generous margins open silhouettes and consistent proportions"
+      ],
+      "may_vary": [
+        "replace the object family and relation with independently confirmed article semantics",
+        "vary muted color mapping scale and shallow overlap without adding dense notes"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    },
+    {
+      "golden_asset_id": "soft-technical-sketch-diagram-v1",
+      "role": "diagram",
+      "must_preserve": [
+        "preserve fine graphite-brown edges open captions translucent muted groups and generous margins",
+        "preserve human-free deterministic topology with exact arrows and calm low-density presentation",
+        "preserve absence of black tabs bold frames and Style 8 annotation density"
+      ],
+      "may_vary": [
+        "replace the complete example graph with the validated article-specific frozen graph",
+        "vary node count grouping and one supported ochre emphasis only as the graph requires"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    }
+  ]
+}

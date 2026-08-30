@@ -1,0 +1,48 @@
+{
+  "profile_id": "technical-editorial-minimal",
+  "style_pack_version": 3,
+  "references": [
+    {
+      "golden_asset_id": "technical-editorial-minimal-cover-v1",
+      "role": "cover",
+      "must_preserve": [
+        "preserve the wide editorial hierarchy dominant thesis and deterministic title-safe zone",
+        "preserve off-white matte presentation crisp ink-blue modular geometry restrained shallow technical 2.5D and deliberate negative space",
+        "preserve one clear blue signal and at most one warm semantic exception"
+      ],
+      "may_vary": [
+        "replace the focal metaphor and supporting geometry with the approved article thesis",
+        "vary the title-safe side and canvas inversion when the target platform requires it"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    },
+    {
+      "golden_asset_id": "technical-editorial-minimal-concept-v1",
+      "role": "concept",
+      "must_preserve": [
+        "preserve one causal relationship with two to four crisp editorial objects using either flat geometry or restrained shallow technical 2.5D",
+        "preserve space-led grouping low-to-medium density and restrained accent count",
+        "preserve front-biased alignment matte or satin geometry and quiet explanatory hierarchy"
+      ],
+      "may_vary": [
+        "replace the mechanism and object shapes with independently confirmed article semantics",
+        "vary alignment scale and the supported warm exception without adding more accents"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    },
+    {
+      "golden_asset_id": "technical-editorial-minimal-diagram-v1",
+      "role": "diagram",
+      "must_preserve": [
+        "preserve strict grid alignment straight arrows crisp nodes and quiet sans label rhythm",
+        "preserve flat semantic color roles large outer margins and absence of ornamental containers",
+        "preserve human-free deterministic architecture and exact frozen-graph rendering"
+      ],
+      "may_vary": [
+        "replace the complete example graph with the validated article-specific frozen graph",
+        "vary node count grouping and one supported exception path only as the graph requires"
+      ],
+      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+    }
+  ]
+}

@@ -225,6 +225,304 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("golden topology is non-authoritative", protocol)
         self.assertIn("semantic graph", protocol)
 
+    def test_style_pack_v3_reference_contracts_exist(self) -> None:
+        required = {
+            "references/style-pack-schema.md": [
+                "visual-dna.json",
+                "role-contracts.json",
+                "reference-matrix.json",
+            ],
+            "references/prompt-ir-schema.md": [
+                "OUTPUT CONTRACT",
+                "ARTICLE SEMANTICS",
+                "ROLE COMPOSITION",
+                "VISUAL DNA",
+                "REFERENCE CONTRACT",
+                "TEXT POLICY",
+                "NEGATIVE CONSTRAINTS",
+                "ACCEPTANCE CHECK",
+                "bootstrap_reference",
+                "semantic_authority",
+            ],
+            "references/adapters/gpt-image.md": [
+                "same-role golden",
+                "must_preserve",
+                "must_not_copy",
+                "bootstrap candidate",
+            ],
+        }
+        for relative, phrases in required.items():
+            with self.subTest(relative=relative):
+                text = (SKILL_ROOT / relative).read_text(encoding="utf-8")
+                for phrase in phrases:
+                    self.assertIn(phrase, text)
+
+    def test_style_8_v3_preserves_approved_identity(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "handwritten-systems-explainer"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in ("warm ivory", "fine lively", "pastel", "handwritten"):
+            self.assertIn(phrase, joined)
+        self.assertEqual("strict", roles["roles"]["diagram"]["stability"])
+        self.assertEqual("family", roles["roles"]["cover"]["stability"])
+        self.assertIn(
+            "no people",
+            " ".join(roles["roles"]["diagram"]["must_not_include"]),
+        )
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
+    def test_v3_workflow_compiles_and_fails_closed(self) -> None:
+        skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+        cases_text = (
+            SKILL_ROOT.parents[1] / "evals" / "article-visual-director-cases.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("scripts/compile_image_prompt.py", skill_text)
+        self.assertIn("style_pack_not_qualified", skill_text)
+        self.assertIn("never delete a failing block", skill_text)
+        self.assertIn("PROMPT_BLOCK_MISSING", cases_text)
+        self.assertIn("REFERENCE CONTRACT", cases_text)
+
+    def test_style_1_v3_candidate_preserves_editorial_minimal_identity(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "technical-editorial-minimal"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "off-white matte",
+            "ink-blue",
+            "uniform crisp",
+            "negative space",
+            "one warm",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["roles"]["cover"]["stability"])
+        self.assertEqual("strict", roles["roles"]["diagram"]["stability"])
+        self.assertIn("emerald", joined)
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
+    def test_style_1_separates_editorial_2_5d_from_flat_diagram_depth(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "technical-editorial-minimal"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+
+        self.assertIn("role-sensitive", dna["material_and_texture"]["depth"])
+        self.assertIn("2.5D", " ".join(roles["cover"]["may_vary"]))
+        self.assertIn("2.5D", " ".join(roles["concept"]["may_vary"]))
+        self.assertIn("flat", " ".join(roles["diagram"]["must_preserve"]))
+        self.assertIn("no perspective", " ".join(roles["diagram"]["must_not_include"]))
+
+    def test_style_2_v3_candidate_preserves_green_led_wide_identity(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "white-green-editorial-minimal"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "emerald-led",
+            "both outer bands",
+            "pale mint",
+            "no leaves",
+            "empty outer bands",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["cover"]["stability"])
+        self.assertEqual("strict", roles["diagram"]["stability"])
+        self.assertIn("no people", " ".join(roles["diagram"]["must_not_include"]))
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
+    def test_style_7_v3_candidate_stays_soft_and_distinct_from_style_8(self) -> None:
+        root = SKILL_ROOT / "assets" / "style-anchors" / "soft-technical-sketch"
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "warm watercolor paper",
+            "fine soft",
+            "translucent watercolor",
+            "low density",
+            "no black label tabs",
+            "Style 8",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["cover"]["stability"])
+        self.assertEqual("strict", roles["diagram"]["stability"])
+        self.assertIn("no people", " ".join(roles["diagram"]["must_not_include"]))
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
+    def test_style_4_v3_candidate_preserves_orthographic_blueprint_identity(self) -> None:
+        root = SKILL_ROOT / "assets" / "style-anchors" / "blueprint-linework"
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "deep blueprint-blue",
+            "orthographic",
+            "uniform two-pixel",
+            "single cyan",
+            "no fake dimensions",
+            "Style 5",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["cover"]["stability"])
+        self.assertEqual("strict", roles["diagram"]["stability"])
+        self.assertIn("no people", " ".join(roles["diagram"]["must_not_include"]))
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
+    def test_style_5_v3_preserves_editorial_isometric_identity(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "isometric-infrastructure"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "pale gray matte ground",
+            "fixed 30-degree isometric",
+            "substantial modules",
+            "single amber",
+            "shared shadow direction",
+            "Style 4",
+            "Style 3",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["cover"]["stability"])
+        self.assertEqual("strict", roles["diagram"]["stability"])
+        self.assertIn("no people", " ".join(roles["diagram"]["must_not_include"]))
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
+    def test_style_6_v3_preserves_cinematic_narrative_identity(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "cinematic-conceptual"
+        )
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "cinematic narrative landscape",
+            "layered teal-blue valley",
+            "restrained 35 mm elevated wide perspective",
+            "one winding journey line",
+            "single warm golden horizon light",
+            "small rear-view human silhouette",
+            "deterministic title overlay",
+            "Style 3",
+            "Style 5",
+            "Style 1",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["cover"]["stability"])
+        self.assertEqual("strict", roles["diagram"]["stability"])
+        self.assertIn("no people", " ".join(roles["diagram"]["must_not_include"]))
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
+    def test_style_3_v3_preserves_editorial_signal_architecture_identity(self) -> None:
+        root = SKILL_ROOT / "assets" / "style-anchors" / "neon-systems"
+        dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+        matrix = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+
+        joined = json.dumps(dna, ensure_ascii=False)
+        for phrase in (
+            "deep navy signal architecture",
+            "fully opaque dark technical substrate",
+            "front-oblique cutaway perspective",
+            "one dominant cyan route",
+            "acid green only for the single active state",
+            "substantial extruded modules",
+            "deterministic title overlay",
+            "Style 5",
+            "Style 6",
+            "Style 4",
+        ):
+            self.assertIn(phrase, joined)
+        self.assertEqual("family", roles["cover"]["stability"])
+        self.assertEqual("strict", roles["diagram"]["stability"])
+        self.assertIn("no people", " ".join(roles["diagram"]["must_not_include"]))
+        for reference in matrix["references"]:
+            self.assertIn("topology", reference["must_not_copy"])
+
 
 if __name__ == "__main__":
     unittest.main()

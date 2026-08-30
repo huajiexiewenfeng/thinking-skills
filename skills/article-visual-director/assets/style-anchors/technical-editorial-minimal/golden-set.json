@@ -1,1 +1,57 @@
-{"golden_set_version":1,"profile_id":"technical-editorial-minimal","protocol_version":2,"status":"candidate","user_approval":{"status":"pending","revision_notes":[]},"assets":[]}
+{
+  "golden_set_version": 1,
+  "profile_id": "technical-editorial-minimal",
+  "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "a3a8370e52bc1075e8dcf5dc6240eed9808a50c9eb40b597ef98538559d51f9d",
+  "role_contracts_sha256": "1a353636b2fd834f74913bb4d0ecdd02c1e08df4ed9a0d3a2d241ba4bee46178",
+  "reference_matrix_sha256": "6909bccaea0ed01cc4e589d9c985f87ed75f80bb5d82282f9b9e853df4d44661",
+  "qualification": {
+    "prompt_compile_status": "passed",
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed"
+  },
+  "status": "approved",
+  "user_approval": {
+    "status": "approved",
+    "revision_notes": [
+      "The user approved the content-rich connected technical mechanism and rejected its transparent variant.",
+      "The user approved revision 3 with an opaque off-white matte background by asking to continue; this anchor establishes restrained shallow 2.5D for cover and concept while diagrams remain flat.",
+      "The user approved the opaque verification concept by asking to continue; it retains the Style 1 grammar without copying the cover's example mechanism or topology.",
+      "The user explicitly confirmed the human-free deterministic diagram; the editable SVG contains stable IDs for five nodes and five directed edges and its example topology is non-authoritative.",
+      "All three cross-topic probes compile and lint, and the Style 1 versus Style 2 discrimination contract keeps Style 1 neutral ink-blue rather than emerald-led."
+    ]
+  },
+  "assets": [
+    {
+      "id": "technical-editorial-minimal-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "artifact_path": "golden-cover.png",
+      "artifact_sha256": "b0b63d1d616e75217afbbacf83bcd167f755a7928b395a38ba4f70fec567081d",
+      "prompt_path": "golden-cover.prompt.md",
+      "prompt_sha256": "cec74d8a3dadcfd58c8fdc396c10b444ab695bf87b0927fa31675298fbec4325",
+      "reference_role": "wide-connected-mechanism-and-role-sensitive-depth-anchor"
+    },
+    {
+      "id": "technical-editorial-minimal-concept-v1",
+      "role": "concept",
+      "renderer": "imagegen",
+      "artifact_path": "golden-concept.png",
+      "artifact_sha256": "4ab8412ec1f24f3004f55bf69217b454743a39dac7c5e0b19aba843f3eed2f65",
+      "prompt_path": "golden-concept.prompt.md",
+      "prompt_sha256": "e469ab7269354607f6a07b71e9825eecd3cddcb222e2e990d230a7597a7a1c28",
+      "reference_role": "single-causal-mechanism-and-restrained-2.5d-concept-anchor"
+    },
+    {
+      "id": "technical-editorial-minimal-diagram-v1",
+      "role": "diagram",
+      "renderer": "deterministic-diagram",
+      "artifact_path": "golden-diagram.png",
+      "artifact_sha256": "570ae66640ecf293cb6ae8103255bbefc12547ec124c81c57bd4d7e167a4db88",
+      "editable_source_path": "golden-diagram.svg",
+      "editable_source_sha256": "00e2e60f7bc256f16622b2f970eae71d6e95247581a42ddd144a7edbc5c1be61",
+      "reference_role": "human-free-flat-semantic-topology-and-exception-loop-anchor"
+    }
+  ]
+}

@@ -1,0 +1,259 @@
+{
+  "probe_suite_version": 1,
+  "profile_id": "neon-systems",
+  "style_pack_version": 3,
+  "purpose": "Cross-topic stability and Style 3 versus Style 5 discrimination without copying golden system content.",
+  "probes": [
+    {
+      "id": "style3-cover-single-ring-switch",
+      "request": {
+        "profile_id": "neon-systems",
+        "asset_role": "cover",
+        "objective": "Show one generic live signal changing direction through one substantial central switching ring before reaching one active upper-right receiver, without implying a real network protocol or guaranteed continuity.",
+        "semantics": {
+          "confirmed": [
+            "One generic signal enters a switching element and exits along one selected route.",
+            "The image is an editorial system metaphor rather than a literal network design or reliability claim."
+          ],
+          "simplifications": [
+            "Use one large central matte switching ring, one compact lower-left intake, and one upper-right receiver on a complete dark substrate.",
+            "Use one cyan route that bends visibly through the ring and ends at one acid-green active receiver."
+          ],
+          "blocked": [
+            "Do not invent protocols redundancy providers failover metrics guarantees labels or additional routes.",
+            "Do not copy the golden cover's three chambers horizontal route core shape module positions title field or example story."
+          ]
+        },
+        "composition": {
+          "structure": "wide fully opaque deep navy signal architecture in restrained front-oblique cutaway perspective with one large central switching ring, one compact intake at lower-left, one upper-right receiver, and one continuous bent cyan route; preserve an active lower-right deterministic title field without copying the golden layout",
+          "hierarchy": "the bent cyan route and central ring dominate; one acid-green receiver is secondary; substantial matte dark modules and structural ribs fill roughly eighty percent",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title overlay",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "system substrate route ring and receiver fill roughly eighty percent with no empty black field",
+          "crop_rules": "intake switching ring representative route and active receiver remain visible in the central safe crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "neon-systems-cover-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "fully opaque deep navy substrate substantial physical modules front-oblique cutaway depth one cyan focal route and one acid-green active state",
+        "medium-low editorial density controlled local emission readable dark detail and deterministic title behavior"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "One switching relation reads without unsupported technical claims.",
+        "The result remains editorial signal architecture rather than a city HUD or copy of the golden cover."
+      ]
+    },
+    {
+      "id": "style3-concept-isolated-branch",
+      "request": {
+        "profile_id": "neon-systems",
+        "asset_role": "concept",
+        "objective": "Explain one generic isolation relation where one incoming cyan signal reaches one separator, continues to one accepted acid-green receiver, and sends one visibly subordinate rejected branch into one sealed dark containment module.",
+        "semantics": {
+          "confirmed": [
+            "One incoming signal is separated into an accepted route and a contained rejected route.",
+            "The relation does not define a real algorithm threshold classification rule or guarantee."
+          ],
+          "simplifications": [
+            "Use one intake, one circular separator, one accepted receiver, and one sealed containment module in a wide asymmetric composition.",
+            "Use cyan for the input and both declared branches, with acid green only inside the accepted receiver and no glow inside containment."
+          ],
+          "blocked": [
+            "Do not invent scores labels criteria data types failure causes ownership metrics or extra outputs.",
+            "Do not copy the golden concept's elevated source vertical gate diagonal handoff receiving basin positions or example story."
+          ]
+        },
+        "composition": {
+          "structure": "one fully opaque human-free dark technical concept in shallow front-oblique cutaway depth; place a compact intake at left, a substantial circular separator near center-left, an accepted receiver at upper-right, and a sealed containment module at lower-right; one cyan route branches exactly once at the separator with no crossings",
+          "hierarchy": "the separator and branch relation dominate; accepted receiver contains the only acid-green state; the contained branch is dimmer cyan and ends visibly without another state",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free concept with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete four-module isolation relation occupies roughly seventy-eight percent",
+          "crop_rules": "intake separator branch point accepted receiver and containment remain visible in the central safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "neon-systems-concept-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "one supported technical relation through substantial matte dark modules with exact cyan route continuity and one acid-green state",
+        "fully opaque substrate front-oblique material family controlled glow medium-low density and no generated text"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "The accepted-versus-contained relation reads without invented criteria or guarantees.",
+        "No cover row golden handoff layout HUD city code or decorative circuit field appears."
+      ]
+    },
+    {
+      "id": "style3-diagram-parallel-merge",
+      "request": {
+        "profile_id": "neon-systems",
+        "asset_role": "diagram",
+        "objective": "Render a strict human-free six-node parallel-processing graph: intake enters classifier, classifier enters both worker A and worker B, both workers enter merge, and merge enters output.",
+        "semantics": {
+          "confirmed": [
+            "Intake enters classifier.",
+            "Classifier sends one declared edge to worker A and one declared edge to worker B.",
+            "Both workers enter merge, and merge alone enters output."
+          ],
+          "simplifications": [
+            "Use exactly six substantial equal-scale modules and exactly six cyan directed edges with one destination arrowhead per edge.",
+            "Use a clean diamond layout with classifier at left-center, workers above and below center, merge at right-center, and output at far-right."
+          ],
+          "blocked": [
+            "Do not add recovery queues tools users databases scores models bypasses returns exceptions hidden edges or extra nodes.",
+            "Do not copy the golden diagram's four-node upper row lower recovery node loop topology module positions path treatment or story."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "intake",
+              "classifier",
+              "worker-a",
+              "worker-b",
+              "merge",
+              "output"
+            ],
+            "edges": [
+              {
+                "id": "edge-intake-classifier",
+                "from": "intake",
+                "to": "classifier",
+                "type": "primary"
+              },
+              {
+                "id": "edge-classifier-worker-a",
+                "from": "classifier",
+                "to": "worker-a",
+                "type": "primary"
+              },
+              {
+                "id": "edge-classifier-worker-b",
+                "from": "classifier",
+                "to": "worker-b",
+                "type": "primary"
+              },
+              {
+                "id": "edge-worker-a-merge",
+                "from": "worker-a",
+                "to": "merge",
+                "type": "primary"
+              },
+              {
+                "id": "edge-worker-b-merge",
+                "from": "worker-b",
+                "to": "merge",
+                "type": "primary"
+              },
+              {
+                "id": "edge-merge-output",
+                "from": "merge",
+                "to": "output",
+                "type": "primary"
+              }
+            ],
+            "groups": [
+              {
+                "id": "parallel-workers",
+                "members": [
+                  "worker-a",
+                  "worker-b"
+                ]
+              }
+            ],
+            "invariants": [
+              "Output is reachable only from merge.",
+              "Worker A and worker B each receive only from classifier and each sends only to merge."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict human-free fully opaque deep navy architecture diagram with six substantial equal-scale modules in a left-to-right diamond graph and exactly six non-crossing cyan directed edges; output contains the only acid-green inner state; use blank deterministic plaques and shallow front-oblique depth without hiding ports or arrowheads",
+          "hierarchy": "the cyan split-and-merge topology dominates; acid green marks output only; dim background seams cannot resemble semantic edges",
+          "human_elements": "none; no people faces hands characters instructors narrators mascots robots or vehicles"
+        },
+        "text_policy": {
+          "mode": "blank deterministic module plaques with validated labels added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete six-node six-edge graph occupies roughly eighty percent",
+          "crop_rules": "all six nodes all six edges every arrowhead and the active output remain inside the outer safe area",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "neon-systems-diagram-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "strict human-free frozen-graph rendering on a fully opaque deep navy substrate with substantial modules exact cyan directions and one acid-green output",
+        "front-oblique physical depth blank deterministic plaques controlled emission and topology-first readability"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "Exactly six declared nodes and six declared directed edges appear with correct direction.",
+        "The graph remains editorial neon signal architecture without copying the golden recovery-loop topology."
+      ]
+    }
+  ],
+  "neighbor_discrimination": {
+    "compare_profile_id": "isometric-infrastructure",
+    "style_3_expected": [
+      "deep navy fully opaque signal architecture in restrained front-oblique cutaway perspective",
+      "substantial dark modules with one dominant cyan route and acid green only for one active state",
+      "controlled local emission low-key ambient light and technology-first atmosphere",
+      "premium editorial technical set rather than a cyberpunk city HUD or gaming poster"
+    ],
+    "style_5_expected": [
+      "pale matte daylight ground with restrained blue solids",
+      "fixed 30-degree isometric architectural projection and coherent platform thickness",
+      "one restrained amber operational journey with soft shared shadows",
+      "bright physical diorama rather than dark luminous signal architecture"
+    ]
+  }
+}

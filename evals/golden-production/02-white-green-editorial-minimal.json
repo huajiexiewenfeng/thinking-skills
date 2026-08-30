@@ -1,0 +1,230 @@
+{
+  "golden_production_version": 1,
+  "profile_id": "white-green-editorial-minimal",
+  "style_pack_version": 3,
+  "status": "approved",
+  "mode_boundary": {
+    "must_read_as": "bright emerald-led technology editorial with one central semantic nucleus, meaningful left and right forces, crisp flat geometry, and active wide occupancy",
+    "must_not_read_as": "neutral ink-blue Style 1, sustainability branding, botanical illustration, pale card wall, dashboard, glassmorphism, or empty side bands",
+    "nearest_profile_id": "technical-editorial-minimal"
+  },
+  "candidates": [
+    {
+      "id": "white-green-editorial-minimal-cover-v1",
+      "role": "cover",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/white-green-editorial-minimal/golden-cover.png",
+      "user_feedback": "The user approved the first opaque ultra-wide emerald coordination cover by asking to continue. The central nucleus and both outer bands were accepted as the Style 2 wide-composition anchor.",
+      "visual_thesis": "A central emerald coordination nucleus gathers scattered left-side signals and releases one coherent active system across the right side of a bright wide canvas.",
+      "request": {
+        "profile_id": "white-green-editorial-minimal",
+        "asset_role": "cover",
+        "objective": "Create a complete text-free ultra-wide bright technology editorial illustration in which several scattered signals converge through one central emerald coordination nucleus and emerge as one coherent active system spanning the right outer band.",
+        "semantics": {
+          "confirmed": [
+            "One central coordination relationship is the focal thesis.",
+            "Several scattered inputs become one coherent organized system after passing the central nucleus.",
+            "Both outer bands carry meaningful parts of the relationship rather than decoration."
+          ],
+          "simplifications": [
+            "Represent scattered inputs as three broad forest emerald and pale-mint signal ribbons plus a few restrained geometric fragments entering from the left.",
+            "Represent coordination as one large flat layered emerald radial nucleus with a white central opening and interlocking arcs.",
+            "Represent the organized system as three connected emerald and mint fields or lanes that expand actively into the right outer band."
+          ],
+          "blocked": [
+            "Do not imply a specific product architecture metric performance guarantee or industry claim.",
+            "Do not add readable labels numbers people cards dashboards leaves plants globes recycling symbols eco imagery glass panels neon glow dense circuitry or empty side bands."
+          ]
+        },
+        "composition": {
+          "structure": "ultra-wide bright matte editorial picture with one large central semantic nucleus; meaningful scattered signals occupy the left outer band and an organized connected system occupies the right outer band; intentional foreground spans roughly eighty-four percent of the full canvas",
+          "hierarchy": "saturated emerald action and deep forest boundaries lead the composition; pale mint supports the system; one restrained cyan-green secondary path adds distinction without becoming another focal color",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title-safe zone",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "2.35:1",
+          "occupancy": "the complete coordinated system occupies roughly eighty-four percent of the ultra-wide canvas with meaningful structures in both outer bands",
+          "crop_rules": "the emerald nucleus, incoming convergence, and outgoing organization remain understandable in a central square crop while the full wide frame reveals both outer forces",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "cover",
+          "bootstrap_references": [],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "The result reads as one complete content-rich editorial picture rather than decorative green shapes or a process-box diagram.",
+        "The central semantic nucleus survives square crop and the left and right outer bands remain meaningfully occupied in the full frame.",
+        "The hierarchy is unmistakably emerald-led on an opaque bright white or pale mint matte surface.",
+        "Every object remains flat crisp and mechanically aligned with only restrained soft separation shadows.",
+        "No leaf eco card-wall dashboard glass glow text person or empty side band appears.",
+        "The result is visibly Style 2 rather than neutral ink-blue Style 1."
+      ]
+    },
+    {
+      "id": "white-green-editorial-minimal-concept-v1",
+      "role": "concept",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/white-green-editorial-minimal/golden-concept.png",
+      "user_feedback": "The user approved the fully opaque speed-versus-structure coordination concept by asking to continue. It preserved the Style 2 grammar without copying the cover's radial nucleus or routing topology.",
+      "visual_thesis": "A fast emerald force and a structured forest-green force create one stable coordinated direction through a central mint tension hinge.",
+      "request": {
+        "profile_id": "white-green-editorial-minimal",
+        "asset_role": "concept",
+        "objective": "Create one complete text-free bright editorial concept illustration showing a single tension: a fast fluid emerald force and a structured forest-green force meet at one central pale-mint coordination hinge and leave as one stable shared direction.",
+        "semantics": {
+          "confirmed": [
+            "Two distinct forces must be coordinated rather than allowing either force to dominate alone.",
+            "The result is one stable shared direction produced by their interaction."
+          ],
+          "simplifications": [
+            "Represent the fast force as one broad fluid emerald ribbon entering from the left outer band.",
+            "Represent the structured force as one deep-forest geometric field entering from the right outer band.",
+            "Represent coordination as one central pale-mint tension hinge that aligns both forces into one clean upward-forward cyan-green direction."
+          ],
+          "blocked": [
+            "Do not identify the forces as specific products teams metrics or universal trade-offs.",
+            "Do not add labels numbers scales people cards dashboards leaves eco symbols glass panels circuitry or multiple outcomes."
+          ]
+        },
+        "composition": {
+          "structure": "one active wide tension composition with meaningful emerald force on the left deep-forest structure on the right and one central pale-mint hinge; the resulting shared direction rises clearly through the center-right; intentional foreground spans roughly eighty percent",
+          "hierarchy": "emerald remains the dominant action color deep forest supplies counterforce pale mint defines the hinge and one restrained cyan-green direction expresses the coordinated result",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "label-free objects with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete tension and coordination picture occupies roughly eighty percent of the bright canvas with meaningful left and right forces",
+          "crop_rules": "both forces the central hinge and the resulting shared direction remain readable in the central safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "concept",
+          "bootstrap_references": [
+            {
+              "id": "white-green-editorial-minimal-cover-v1",
+              "profile_id": "white-green-editorial-minimal",
+              "role": "cover",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly one tension and one coordinated result form a complete editorial picture.",
+        "Both outer forces are meaningful and the central mint hinge is the semantic nucleus.",
+        "The result uses an unmistakable emerald-led hierarchy and flat bright matte geometry.",
+        "The cover reference influences only palette hierarchy flat material edge behavior active wide occupancy and crop rhythm; its radial nucleus paths and topology are not copied.",
+        "No cards dashboard leaves eco imagery glass text people or empty side bands appear."
+      ]
+    },
+    {
+      "id": "white-green-editorial-minimal-diagram-v1",
+      "role": "diagram",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/white-green-editorial-minimal/golden-diagram.png",
+      "user_feedback": "The user approved the human-free six-node coordinated-system diagram by asking to continue. Its SVG preserves stable IDs for all six nodes and six directed edges and the PNG is fully opaque.",
+      "visual_thesis": "Two meaningful input forces converge at one coordination nucleus, split into primary and support systems, and reconverge into one shared result through six exact directed edges.",
+      "request": {
+        "profile_id": "white-green-editorial-minimal",
+        "asset_role": "diagram",
+        "objective": "Render a strict human-free six-node green-led coordination architecture with two inputs, one coordinator, primary and support systems, one shared result, and exactly six directed edges.",
+        "semantics": {
+          "confirmed": [
+            "Input A and Input B both enter the coordinator.",
+            "The coordinator directs work into a primary system and a support system.",
+            "Both systems contribute separately to one shared result."
+          ],
+          "simplifications": [
+            "Place the two inputs in the left outer band, the coordinator at the central semantic nucleus, the two systems in the right-center band, and the shared result in the right outer band.",
+            "Use emerald for the primary path and cyan-green for the secondary support path."
+          ],
+          "blocked": [
+            "Do not add people databases caches retries metrics dashboards or undeclared nodes and edges.",
+            "Do not copy the Style 1 validation and rework loop or the Style 2 cover and concept example topology."
+          ],
+          "frozen_graph": {
+            "nodes": ["input-a", "input-b", "coordinator", "primary-system", "support-system", "shared-result"],
+            "edges": [
+              {"id": "edge-input-a-coordinator", "from": "input-a", "to": "coordinator", "type": "primary"},
+              {"id": "edge-input-b-coordinator", "from": "input-b", "to": "coordinator", "type": "secondary"},
+              {"id": "edge-coordinator-primary", "from": "coordinator", "to": "primary-system", "type": "primary"},
+              {"id": "edge-coordinator-support", "from": "coordinator", "to": "support-system", "type": "secondary"},
+              {"id": "edge-primary-result", "from": "primary-system", "to": "shared-result", "type": "primary"},
+              {"id": "edge-support-result", "from": "support-system", "to": "shared-result", "type": "secondary"}
+            ],
+            "groups": [
+              {"id": "input-forces", "members": ["input-a", "input-b"]},
+              {"id": "coordinated-systems", "members": ["coordinator", "primary-system", "support-system"]},
+              {"id": "shared-outcome", "members": ["shared-result"]}
+            ],
+            "invariants": [
+              "Neither input reaches a system or result without passing through the coordinator.",
+              "The shared result receives one primary contribution and one secondary support contribution."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict human-free front-orthogonal ultra-wide architecture with two input nodes on the left one large circular coordinator at center two flat system nodes on the right-center and one result node in the right outer band",
+          "hierarchy": "forest boundaries define every node; emerald primary edges and cyan-green support edges remain visually distinct; pale mint fields support grouping without card piles",
+          "human_elements": "none; no people, faces, hands, characters, instructors, narrators, mascots, or stock imagery"
+        },
+        "text_policy": {
+          "mode": "deterministic labels and edge annotations",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete six-node architecture spans roughly eighty-two percent with meaningful structures in both outer bands",
+          "crop_rules": "the coordinator and both system branches survive the central safe crop while the full wide frame preserves both inputs and the shared result",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "diagram",
+          "bootstrap_references": [
+            {
+              "id": "white-green-editorial-minimal-concept-v1",
+              "profile_id": "white-green-editorial-minimal",
+              "role": "concept",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly six nodes and six declared edges appear with correct direction and primary-versus-support type.",
+        "The architecture is human-free fully opaque flat crisp green-led and free of dashboard or card-wall styling.",
+        "The central coordinator survives crop while both input forces and the shared result make the full width meaningful.",
+        "The concept candidate influences only palette hierarchy flat material edge behavior active occupancy and spacing; its objects and topology are not copied."
+      ]
+    }
+  ]
+}

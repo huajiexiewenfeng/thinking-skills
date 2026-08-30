@@ -1,0 +1,67 @@
+{
+  "profile_id": "technical-editorial-minimal",
+  "style_pack_version": 3,
+  "surface": {
+    "background": "off-white matte editorial surface with no visible decorative pattern; an isolated transparent subject plate is allowed only when it will be deterministically composited onto that surface",
+    "alternate": "deep ink-blue canvas is reserved for an occasional inverted cover",
+    "finish": "quiet low-texture paper or matte print finish"
+  },
+  "palette_roles": {
+    "foundation": "ink-blue carries structure boundaries and the dominant editorial weight",
+    "primary_signal": "one restrained clear blue marks the main signal or causal path",
+    "human_or_exception": "at most one warm orange accent marks the exception pressure or human factor",
+    "neutral": "cool pale gray supports subordinate objects without creating another accent",
+    "background": "off-white remains the dominant field and preserves negative space"
+  },
+  "line_language": {
+    "primary": "uniform crisp three-pixel edges with mechanically consistent alignment",
+    "arrows": "straight or single-elbow arrows without glow texture or sketch wobble",
+    "boundaries": "precise technical boundaries; cover and concept may use sparse functional connector lines while diagrams remain flat and free of ornamental circuitry or dashboard chrome"
+  },
+  "material_and_texture": {
+    "surface": "off-white matte editorial paper with extremely subtle texture",
+    "objects": "crisp matte or satin technical modules; cover and concept may use restrained layered panels rings and baffles while diagrams use flat opaque geometry",
+    "depth": "role-sensitive depth: cover and concept may use shallow editorial 2.5D with restrained bevels and soft contact shadows; diagrams remain strictly flat"
+  },
+  "geometry": {
+    "grid": "disciplined twenty-four-pixel editorial alignment",
+    "nodes": "simple technical modules with crisp silhouettes; deterministic diagram nodes keep eight-pixel corners",
+    "grouping": "one connected visual mechanism groups cover and concept objects; space rather than cards or frames groups diagram nodes",
+    "focal_rule": "one dominant metaphor or comparison occupies the hierarchy"
+  },
+  "depth_and_camera": {
+    "mode": "role-sensitive editorial camera: front-biased shallow 2.5D for cover and concept; front orthogonal flat composition for diagrams",
+    "perspective": "cover and concept may use restrained shallow perspective to explain a mechanism; no dramatic cinematic perspective or deep isometric scene; diagrams use no perspective"
+  },
+  "typography": {
+    "voice": "modern sans-serif hierarchy with quiet captions",
+    "exact_text": "titles labels and technical copy are applied deterministically",
+    "generated_text": "image generation keeps supporting shapes label-free and reserves a title-safe zone"
+  },
+  "density_and_spacing": {
+    "density": "low-to-medium object density with one obvious focal relationship",
+    "spacing": "large deliberate negative space and ninety-six-pixel outer breathing zones",
+    "rhythm": "subordinate objects remain quiet and never compete with the focal thesis"
+  },
+  "required_traits": [
+    "off-white matte field and large deliberate negative space dominate the composition",
+    "ink-blue structure and one clear blue signal establish the editorial hierarchy",
+    "uniform crisp modular geometry remains aligned and mechanically controlled; shallow 2.5D is role-limited to cover and concept while diagrams stay flat",
+    "one focal metaphor or comparison is readable at thumbnail size",
+    "no more than one warm semantic exception appears in the composition"
+  ],
+  "forbidden_traits": [
+    "no hand-drawn strokes watercolor washes marker texture or playful doodles",
+    "no dashboard chrome card pile tiny interface text or ornamental frame system",
+    "no neon science-fiction glow transparent glass photorealistic metal or dense decorative circuitry",
+    "no deep isometric environment exploded hardware assembly or uncontrolled pile of machinery",
+    "no stock-photo people crowd scene or multiple competing visual accents",
+    "no emerald-led hierarchy because dominant emerald belongs to Style 2"
+  ],
+  "neighbor_boundaries": [
+    {
+      "profile_id": "white-green-editorial-minimal",
+      "difference": "Style 1 is neutral off-white and ink-blue with one blue signal and one warm exception; Style 2 is emerald-led wider and more active across the canvas"
+    }
+  ]
+}

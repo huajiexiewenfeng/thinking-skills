@@ -2,13 +2,23 @@
   "golden_set_version": 1,
   "profile_id": "handwritten-systems-explainer",
   "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "48b8f28ef43e1cfd01cf483969c66c54985560ba86b8e53c6de298db9687a6f1",
+  "role_contracts_sha256": "1734787b3e5c3bdc6adbcb14e08bf58d7e2628d63f6ebb6a7923a59843f8d0a0",
+  "reference_matrix_sha256": "2e8bea4e99b5593202943507ec50d32fb07b95642f465b2706b84c3742325b56",
+  "qualification": {
+    "prompt_compile_status": "passed",
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed"
+  },
   "status": "approved",
   "user_approval": {
     "status": "approved",
     "revision_notes": [
       "User approved the capability-gap cover and communication-relay concept anchors.",
       "User approved the third anchor as a human-free architecture/process diagram.",
-      "User explicitly replaced the third anchor with the richer two-level architecture image and declared its example content non-authoritative; future AI must derive and validate article-specific topology before rendering."
+      "User explicitly replaced the third anchor with the richer two-level architecture image and declared its example content non-authoritative; future AI must derive and validate article-specific topology before rendering.",
+      "User confirmed the cross-topic context-budget result as Style 8 and declared Style 8 complete; remaining golden-production work moves to Styles 1 through 7."
     ]
   },
   "assets": [

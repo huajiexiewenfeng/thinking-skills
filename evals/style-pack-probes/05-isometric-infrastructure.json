@@ -1,0 +1,268 @@
+{
+  "probe_suite_version": 1,
+  "profile_id": "isometric-infrastructure",
+  "style_pack_version": 3,
+  "purpose": "Cross-topic stability and Style 5 versus Style 4 discrimination without copying golden example content.",
+  "probes": [
+    {
+      "id": "style5-cover-repair-journey",
+      "request": {
+        "profile_id": "isometric-infrastructure",
+        "asset_role": "cover",
+        "objective": "Show one returned object moving through inspection and repair toward renewed use as a calm editorial isometric journey without claiming guaranteed recovery.",
+        "semantics": {
+          "confirmed": [
+            "A returned object may pass through inspection and repair before renewed use.",
+            "The picture is a generic circular-use teaching metaphor rather than a real industrial process."
+          ],
+          "simplifications": [
+            "Use four substantial brand-neutral modules representing return, inspection, repair, and renewed use.",
+            "Use one continuous amber ground route and make the repair workshop the largest mass only to support the cover hierarchy."
+          ],
+          "blocked": [
+            "Do not imply guaranteed repair, waste elimination, efficiency metrics, named machinery, providers, materials, or environmental impact values.",
+            "Do not copy the golden cover source dock, coordination pavilion, relay terrace, destination archive, object silhouettes, route shape, or world layout."
+          ]
+        },
+        "composition": {
+          "structure": "wide editorial isometric repair landscape on fully opaque pale matte ground with four substantial modules arranged around one shallow central workshop court and a usable right-side title-safe band",
+          "hierarchy": "one continuous amber route is the primary reading guide; restrained blue matte solids and one larger repair workshop create the world; all shadows share one soft lower-right direction",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title overlay",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the coherent repair world occupies roughly seventy-eight percent with a usable right-side title-safe band",
+          "crop_rules": "the workshop and representative incoming and outgoing route segments remain legible in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "isometric-infrastructure-cover-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "fixed 30-degree isometric world scale, pale opaque matte ground, restrained blue solids, one amber journey, and shared soft light",
+        "substantial modules, medium-low density, polished editorial architectural hierarchy, and a usable title-safe region"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "The return-to-renewed-use journey reads at thumbnail size without labels or unsupported guarantees.",
+        "The composition remains a substantial matte architectural diorama rather than a toy factory, server city, or flat blueprint."
+      ]
+    },
+    {
+      "id": "style5-concept-filtered-signal",
+      "request": {
+        "profile_id": "isometric-infrastructure",
+        "asset_role": "concept",
+        "objective": "Explain one processing relation in which a noisy incoming signal passes through one filter module before reaching one calm receiving basin.",
+        "semantics": {
+          "confirmed": [
+            "One incoming signal passes through one filtering stage before reaching one receiver.",
+            "The metaphor does not claim perfect filtering or a specific technical implementation."
+          ],
+          "simplifications": [
+            "Use three substantial modules on one shared stepped platform: an intake channel, a central filter block, and a broad receiving basin.",
+            "Use exactly one amber route that narrows through the filter and widens slightly at the receiver without branching."
+          ],
+          "blocked": [
+            "Do not invent algorithms, thresholds, scores, pollutants, protocols, ownership boundaries, guarantees, or additional processing stages.",
+            "Do not copy the golden concept's two islands, source pavilion, receiving hall, spanning bridge, object positions, or handoff story."
+          ]
+        },
+        "composition": {
+          "structure": "one shared asymmetrical matte isometric platform carrying three substantial abstract modules in a shallow triangular grouping with one continuous amber processing route",
+          "hierarchy": "the central filter relation dominates; medium blue intake, muted blue-gray receiver, restrained amber transition, fixed scale, and one shared soft shadow preserve the Style 5 family",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "label-free concept with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete three-module relation occupies roughly seventy-four percent with balanced pale margins",
+          "crop_rules": "intake, filter, receiver, and the complete single route stay inside the central safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "isometric-infrastructure-concept-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "one clear relation through substantial matte isometric modules, restrained blue context, and one amber transition",
+        "fixed camera, coherent scale, pale opaque ground, shared shadow direction, spacious brand-neutral grouping"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "The filtering relation is understandable without labels and does not claim perfect filtering.",
+        "The composition uses one shared platform and does not repeat the golden two-island bridge topology."
+      ]
+    },
+    {
+      "id": "style5-diagram-verified-release",
+      "request": {
+        "profile_id": "isometric-infrastructure",
+        "asset_role": "diagram",
+        "objective": "Render a human-free six-node release architecture with one validated primary path and one explicit rework loop.",
+        "semantics": {
+          "confirmed": [
+            "Submission passes through a policy gate, processing, and verification before release.",
+            "A failed verification enters rework and returns only to processing.",
+            "Release is reachable only from verification."
+          ],
+          "simplifications": [
+            "Use one amber primary path, one restrained dashed slate exception edge, and one restrained dashed slate return edge.",
+            "Use six substantial equal-scale modules with blank plaque areas and no generated labels."
+          ],
+          "blocked": [
+            "Do not add users, approvers, tools, databases, scores, vendors, deployment environments, notifications, bypasses, or undeclared nodes and edges.",
+            "Do not copy the golden diagram's five-node linear topology, positions, route shape, arrow count, or example story."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "submission",
+              "policy-gate",
+              "processing",
+              "verification",
+              "release",
+              "rework"
+            ],
+            "edges": [
+              {
+                "id": "edge-submission-policy",
+                "from": "submission",
+                "to": "policy-gate",
+                "type": "primary"
+              },
+              {
+                "id": "edge-policy-processing",
+                "from": "policy-gate",
+                "to": "processing",
+                "type": "primary"
+              },
+              {
+                "id": "edge-processing-verification",
+                "from": "processing",
+                "to": "verification",
+                "type": "primary"
+              },
+              {
+                "id": "edge-verification-release",
+                "from": "verification",
+                "to": "release",
+                "type": "primary"
+              },
+              {
+                "id": "edge-verification-rework",
+                "from": "verification",
+                "to": "rework",
+                "type": "exception"
+              },
+              {
+                "id": "edge-rework-processing",
+                "from": "rework",
+                "to": "processing",
+                "type": "return"
+              }
+            ],
+            "groups": [
+              {
+                "id": "primary-processing",
+                "members": [
+                  "submission",
+                  "policy-gate",
+                  "processing",
+                  "verification",
+                  "release"
+                ]
+              },
+              {
+                "id": "recovery",
+                "members": [
+                  "rework"
+                ]
+              }
+            ],
+            "invariants": [
+              "Release is reachable only from verification.",
+              "Rework returns only to processing and never directly to release or submission."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict human-free fixed-isometric diagram with the five-node primary path across the upper and central field and rework below verification; every frozen edge remains visible with no crossings",
+          "hierarchy": "substantial equal-scale matte blue modules carry blank plaques; amber encodes only the primary path; dashed slate encodes the verification exception and rework return; pale opaque ground and shared shadows keep the graph architectural",
+          "human_elements": "none; no people, faces, hands, characters, instructors, narrators, mascots, vehicles, or stock imagery"
+        },
+        "text_policy": {
+          "mode": "blank deterministic plaques with validated labels added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete six-node graph occupies roughly eighty percent with every edge and arrowhead visible",
+          "crop_rules": "all six nodes, the full primary path, the exception edge, and the return edge remain inside the outer eight percent safe area",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "isometric-infrastructure-diagram-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "strict human-free frozen-graph rendering in fixed isometric projection with substantial matte modules and blank deterministic plaques",
+        "pale opaque ground, one amber primary path, restrained dashed exception treatment, coherent platform thickness, scale, and shared shadows"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "Exactly six declared nodes and six declared directed edges appear with correct type and direction.",
+        "The result remains a matte isometric architecture diagram and does not become a flat orthographic blueprint or copy the golden linear graph."
+      ]
+    }
+  ],
+  "neighbor_discrimination": {
+    "compare_profile_id": "blueprint-linework",
+    "style_5_expected": [
+      "substantial matte blue solids on pale opaque ground",
+      "fixed isometric camera with coherent platform thickness and meaningful elevation",
+      "one shared soft-light and shadow direction with restrained amber operational path",
+      "editorial architectural diorama rather than drafting construction"
+    ],
+    "style_4_expected": [
+      "flat orthographic drafting composition",
+      "line-led volumeless modules and construction geometry",
+      "blueprint grid dimensions callouts or drafting marks",
+      "minimal or absent directional shadow and physical elevation"
+    ]
+  }
+}

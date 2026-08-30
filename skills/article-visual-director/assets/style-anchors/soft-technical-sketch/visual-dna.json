@@ -1,0 +1,66 @@
+{
+  "profile_id": "soft-technical-sketch",
+  "style_pack_version": 3,
+  "surface": {
+    "background": "warm watercolor paper in soft ivory with visible but quiet fine fibers",
+    "alternate": "slightly deeper cream paper may support pale washes without becoming notebook clutter",
+    "finish": "matte absorbent paper with disciplined organic variation"
+  },
+  "palette_roles": {
+    "outline": "warm graphite-brown carries fine object contours and open captions",
+    "concept_a": "muted dusty blue translucent watercolor supports the primary teaching object",
+    "concept_b": "muted sage translucent watercolor supports the related object or environment",
+    "emphasis": "one restrained ochre wash marks the single teaching emphasis",
+    "background": "warm ivory paper remains visible through every wash"
+  },
+  "line_language": {
+    "primary": "fine soft two-pixel pencil-and-ink contour with slight disciplined imperfection",
+    "arrows": "thin gentle curved guides used sparingly rather than thick direct system arrows",
+    "boundaries": "open contours and spatial grouping without bold black frames black tabs or corporate cards"
+  },
+  "material_and_texture": {
+    "surface": "warm watercolor paper with medium-low fine fiber texture",
+    "objects": "familiar teaching objects drawn in graphite-brown and supported by translucent watercolor washes",
+    "depth": "flat-paper depth with gentle overlap or shallow-oblique view and no glossy volume"
+  },
+  "geometry": {
+    "grid": "loose twenty-four-pixel editorial alignment beneath an organic sketch surface",
+    "nodes": "simple familiar teaching objects with consistent proportions and open silhouettes",
+    "grouping": "one to three objects grouped by generous margins and a gentle spatial relation",
+    "focal_rule": "one approachable physical metaphor carries the mental model without dense annotation"
+  },
+  "depth_and_camera": {
+    "mode": "front or gentle shallow-oblique teaching view",
+    "perspective": "consistent simple object perspective with no isometric infrastructure or cinematic camera"
+  },
+  "typography": {
+    "voice": "friendly readable sans-serif open captions applied deterministically",
+    "exact_text": "titles labels and technical copy are applied deterministically rather than handwritten by image generation",
+    "generated_text": "image generation keeps objects label-free and preserves a generous title-safe zone"
+  },
+  "density_and_spacing": {
+    "density": "low density with one to three familiar objects and no faux notebook clutter",
+    "spacing": "generous one-hundred-four-pixel outer margins and calm internal gaps",
+    "rhythm": "quiet teaching rhythm with one obvious relationship and no annotation swarm"
+  },
+  "required_traits": [
+    "warm watercolor paper remains visible and calm across the composition",
+    "fine soft graphite-brown contours retain consistent proportions and disciplined imperfection",
+    "muted blue sage and one ochre emphasis behave as translucent watercolor support",
+    "one approachable physical metaphor remains readable at thumbnail size under low density",
+    "open captions and generous margins preserve a friendly teachable atmosphere"
+  ],
+  "forbidden_traits": [
+    "no black label tabs bold black frames thick direct arrows or high-saturation semantic fills",
+    "no dense handwritten annotations formulas sticky notes or systems-whiteboard density associated with Style 8",
+    "no childish doodles mascots by default faux notebook clutter or inconsistent object proportions",
+    "no corporate card layout dashboard chrome glossy 3D neon glow or cinematic scene",
+    "no stock-photo people crowd or decorative object pile"
+  ],
+  "neighbor_boundaries": [
+    {
+      "profile_id": "handwritten-systems-explainer",
+      "difference": "Style 7 is low-density and gentle with fine soft contours open captions and translucent watercolor; Style 8 is a higher-density systems explainer with lively variable ink compact annotations black section tabs and direct system arrows"
+    }
+  ]
+}

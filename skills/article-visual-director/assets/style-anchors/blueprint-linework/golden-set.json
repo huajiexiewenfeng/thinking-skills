@@ -1,1 +1,23 @@
-{"golden_set_version":1,"profile_id":"blueprint-linework","protocol_version":2,"status":"candidate","user_approval":{"status":"pending","revision_notes":[]},"assets":[]}
+{
+  "golden_set_version": 1,
+  "profile_id": "blueprint-linework",
+  "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "4fbad1df23c80b80637ab1be381cfc13e7f1f162c29b84511a39debc5ae0502b",
+  "role_contracts_sha256": "9acf098e894bea2f0050183ca23cfe446e0e7e678ea54b92bef56e0820c483a0",
+  "reference_matrix_sha256": "dd7f841ef3ab07c51eb365cca7831c46c8eead349a987d1102f878ceef91ccf1",
+  "qualification": {
+    "prompt_compile_status": "pending",
+    "cross_topic_probe_status": "pending",
+    "neighbor_discrimination_status": "pending"
+  },
+  "status": "candidate",
+  "user_approval": {
+    "status": "rejected",
+    "revision_notes": [
+      "The user rejected the first symmetric empty CAD-room cover as ugly, then provisionally advanced the asymmetric revision.",
+      "After reviewing multiple cover and concept variants, the user rejected Style 4 overall as aesthetically unattractive and asked to move to the next style. No asset remains approved as a golden reference."
+    ]
+  },
+  "assets": []
+}

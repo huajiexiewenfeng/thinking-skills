@@ -1,0 +1,228 @@
+{
+  "golden_production_version": 1,
+  "profile_id": "soft-technical-sketch",
+  "style_pack_version": 3,
+  "status": "approved",
+  "mode_boundary": {
+    "must_read_as": "calm low-density teaching sketch on warm watercolor paper with fine soft graphite-brown contours translucent muted washes and one approachable physical metaphor",
+    "must_not_read_as": "Style 8 systems whiteboard, dense handwritten annotation, black label tabs, childish doodle page, corporate cards, or glossy illustration",
+    "nearest_profile_id": "handwritten-systems-explainer"
+  },
+  "candidates": [
+    {
+      "id": "soft-technical-sketch-cover-v1",
+      "role": "cover",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/soft-technical-sketch/golden-cover.png",
+      "user_feedback": "The user approved the fully opaque thread-loom-ribbon teaching cover by asking to continue. It establishes warm paper fine soft contour translucent wash low density and consistent object proportion as the Style 7 cover grammar.",
+      "visual_thesis": "A tangled blue thread passes through one simple ochre wooden loom and emerges as one orderly sage-and-blue woven ribbon, turning complexity into an approachable structure.",
+      "request": {
+        "profile_id": "soft-technical-sketch",
+        "asset_role": "cover",
+        "objective": "Create a complete text-free wide teaching illustration in which a loose tangled dusty-blue thread on the left passes through one simple hand-sized ochre wooden loom at center and emerges as one orderly muted blue-and-sage woven ribbon on the right.",
+        "semantics": {
+          "confirmed": [
+            "One familiar craft mechanism transforms a tangled input into a more orderly output.",
+            "The complete relationship is understandable as an approachable mental model rather than a literal technical claim."
+          ],
+          "simplifications": [
+            "Use one loose tangled dusty-blue thread occupying the left side with a few visible loops rather than chaotic clutter.",
+            "Use one small consistent-proportion wooden loom or weaving frame with an ochre watercolor emphasis at center.",
+            "Use one neat flat woven ribbon with alternating muted blue and sage bands extending into the right side."
+          ],
+          "blocked": [
+            "Do not imply a named technology algorithm performance guarantee or universal transformation process.",
+            "Do not add labels numbers people hands mascots notebooks sticky notes formulas black tabs bold frames thick arrows cards dashboards saturated fills or dense annotation."
+          ]
+        },
+        "composition": {
+          "structure": "wide warm-paper teaching picture with one continuous left-to-right craft metaphor occupying roughly seventy-two percent of the canvas; preserve generous calm margins and a deterministic title-safe zone above and to the left without making the subject too small",
+          "hierarchy": "fine graphite-brown contours define every object; translucent dusty-blue and sage washes support the thread and ribbon; one restrained ochre wash emphasizes the loom",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title-safe zone",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete thread loom and ribbon metaphor occupies roughly seventy-two percent with generous warm-paper margins",
+          "crop_rules": "the loom tangled input and emerging orderly ribbon remain understandable in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "cover",
+          "bootstrap_references": [],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "The result reads as one complete content-rich teaching picture rather than empty paper with decorative doodles.",
+        "The physical thread loom and ribbon metaphor is understandable at thumbnail size without text.",
+        "The warm paper is fully opaque and contours remain fine soft consistent and proportionally coherent.",
+        "Dusty blue sage and one ochre emphasis appear as translucent watercolor rather than solid high-saturation coding.",
+        "The picture remains low-density with generous but balanced margins and no tiny scattered object clutter.",
+        "No Style 8 black tabs bold strokes direct arrows annotation swarm or systems-whiteboard layout appears."
+      ]
+    },
+    {
+      "id": "soft-technical-sketch-concept-v1",
+      "role": "concept",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/soft-technical-sketch/golden-concept.png",
+      "user_feedback": "The user explicitly approved the fully opaque tray-boundary concept and asked to continue. It preserved Style 7 paper contour wash density and proportion grammar without copying the cover metaphor.",
+      "visual_thesis": "A shallow wooden tray holds only a small selected set of muted blue and sage pieces while one ochre piece remains outside, making bounded capacity and selection physically approachable.",
+      "request": {
+        "profile_id": "soft-technical-sketch",
+        "asset_role": "concept",
+        "objective": "Create one complete text-free gentle teaching illustration showing a single relation: a shallow hand-sized wooden tray has room for three selected muted blue and sage pieces, while one distinct ochre piece rests just outside the tray and is not included.",
+        "semantics": {
+          "confirmed": [
+            "A bounded working space contains only a selected subset of available items.",
+            "One available item remains outside the active boundary and should not be treated as included."
+          ],
+          "simplifications": [
+            "Use one shallow warm-wood tray with consistent simple perspective and a clear physical rim.",
+            "Place exactly three familiar low-detail pieces inside the tray using muted dusty-blue and sage washes.",
+            "Place exactly one ochre piece outside the tray with a small visible gap from the rim."
+          ],
+          "blocked": [
+            "Do not imply a numerical context limit selection algorithm score priority or correctness guarantee.",
+            "Do not add labels numbers people hands notebooks sticky notes formulas arrows black tabs bold frames cards dashboards or extra scattered objects."
+          ]
+        },
+        "composition": {
+          "structure": "one low-density warm-paper still-life teaching picture with a shallow tray slightly right of center three selected pieces inside and one ochre excluded piece to the left; the complete relation occupies roughly sixty-eight percent with generous calm margins",
+          "hierarchy": "fine graphite-brown contour defines the boundary; muted dusty-blue and sage watercolor distinguish included pieces; one restrained ochre wash marks the excluded piece",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "label-free objects with deterministic captions added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete tray inclusion and exclusion relation occupies roughly sixty-eight percent with generous warm-paper margins",
+          "crop_rules": "the tray rim all three included pieces and the single excluded ochre piece remain visible in the central safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "concept",
+          "bootstrap_references": [
+            {
+              "id": "soft-technical-sketch-cover-v1",
+              "profile_id": "soft-technical-sketch",
+              "role": "cover",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly one containment relation through one tray three included pieces and one excluded piece forms a complete teaching picture.",
+        "The physical boundary and excluded gap are obvious without text or arrows.",
+        "The result remains low-density calm finely contoured and proportionally consistent on fully opaque warm paper.",
+        "The cover reference influences only paper warmth contour softness wash transparency object simplicity margin behavior and proportion discipline; its loom thread and transformation topology are not copied.",
+        "No Style 8 black tabs bold strokes annotation density cards dashboards people or decorative clutter appear."
+      ]
+    },
+    {
+      "id": "soft-technical-sketch-diagram-v1",
+      "role": "diagram",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/soft-technical-sketch/golden-diagram.png",
+      "user_feedback": "The user approved the fully opaque human-free learning-flow diagram after the three input nodes were respaced to remove a text overlap. The exact example graph remains non-authoritative for future article content.",
+      "visual_thesis": "Three gentle evidence inputs converge into one mental model, which supports practice and then understanding through five exact directed edges.",
+      "request": {
+        "profile_id": "soft-technical-sketch",
+        "asset_role": "diagram",
+        "objective": "Render a strict human-free six-node learning architecture in which Question, Example, and Prior Knowledge converge into Mental Model, which leads to Practice and then Understanding through exactly five directed edges.",
+        "semantics": {
+          "confirmed": [
+            "Question Example and Prior Knowledge each contribute to the Mental Model.",
+            "The Mental Model supports Practice.",
+            "Practice supports Understanding."
+          ],
+          "simplifications": [
+            "Place three small input nodes in a calm vertical group on the left one larger Mental Model node at center and Practice and Understanding nodes on the right.",
+            "Use muted dusty-blue and sage washes for groups and one restrained ochre emphasis for Mental Model."
+          ],
+          "blocked": [
+            "Do not add people teachers tools tests scores retries dashboards notebooks or undeclared nodes and edges.",
+            "Do not copy the cover transformation or concept containment topology and do not add Style 8 black tabs or dense annotations."
+          ],
+          "frozen_graph": {
+            "nodes": ["question", "example", "prior-knowledge", "mental-model", "practice", "understanding"],
+            "edges": [
+              {"id": "edge-question-model", "from": "question", "to": "mental-model", "type": "primary"},
+              {"id": "edge-example-model", "from": "example", "to": "mental-model", "type": "primary"},
+              {"id": "edge-prior-model", "from": "prior-knowledge", "to": "mental-model", "type": "primary"},
+              {"id": "edge-model-practice", "from": "mental-model", "to": "practice", "type": "primary"},
+              {"id": "edge-practice-understanding", "from": "practice", "to": "understanding", "type": "primary"}
+            ],
+            "groups": [
+              {"id": "learning-inputs", "members": ["question", "example", "prior-knowledge"]},
+              {"id": "learning-path", "members": ["mental-model", "practice", "understanding"]}
+            ],
+            "invariants": [
+              "No input reaches Practice or Understanding without Mental Model.",
+              "Understanding is reachable only through Practice."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict human-free front-orthogonal warm-paper architecture with three small open-caption input nodes on the left one larger ochre-emphasis Mental Model node at center and two calm output nodes on the right",
+          "hierarchy": "fine graphite-brown two-pixel edges define exact topology; translucent dusty-blue and sage washes distinguish the two groups; one muted ochre wash emphasizes Mental Model",
+          "human_elements": "none; no people, faces, hands, characters, instructors, narrators, mascots, or stock imagery"
+        },
+        "text_policy": {
+          "mode": "deterministic open captions and labels",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete six-node architecture occupies roughly seventy-two percent with generous warm-paper margins",
+          "crop_rules": "all six nodes and every arrowhead remain inside the outer eight percent safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "diagram",
+          "bootstrap_references": [
+            {
+              "id": "soft-technical-sketch-concept-v1",
+              "profile_id": "soft-technical-sketch",
+              "role": "concept",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly six nodes and five declared directed edges appear with correct direction.",
+        "The architecture is human-free fully opaque calm fine-lined and topologically exact.",
+        "Warm paper fine graphite contours translucent muted washes open captions and generous margins remain continuous with the Style 7 series.",
+        "No Style 8 black tabs bold strokes annotation swarm thick direct arrows or systems-whiteboard density appears.",
+        "The concept candidate influences only paper contour wash density spacing and proportion grammar; its tray pieces and containment topology are not copied."
+      ]
+    }
+  ]
+}

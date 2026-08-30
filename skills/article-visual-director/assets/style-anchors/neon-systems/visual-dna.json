@@ -1,0 +1,80 @@
+{
+  "profile_id": "neon-systems",
+  "style_pack_version": 3,
+  "surface": {
+    "background": "fully opaque dark technical substrate built as deep navy signal architecture",
+    "alternate": "charcoal-blue technical chamber using the same restrained luminous grammar",
+    "finish": "editorial cinematic product-visualization finish with matte physical depth and no cyberpunk spectacle"
+  },
+  "palette_roles": {
+    "foundation": "near-black navy based on #07111F fills the complete frame without transparency or crushed detail",
+    "module": "muted blue-black based on #10263A defines substantial extruded modules and structural frames",
+    "normal_signal": "electric cyan based on #27D8FF carries one dominant cyan route and any subordinate confirmed primary edges",
+    "active_state": "acid green based on #B8FF3D appears only for the single active state or explicitly confirmed successful result",
+    "label": "cool pale cyan-white based on #D8F7FF is reserved for deterministic overlay text"
+  },
+  "line_language": {
+    "primary": "one dominant cyan route moves through a small number of substantial modules with exact directional continuity",
+    "active": "acid green only for the single active state, never as a general decorative second neon",
+    "boundaries": "thick matte frames, recessed channels, and controlled seams replace HUD cards, city skylines, and random circuit wallpaper"
+  },
+  "material_and_texture": {
+    "surface": "matte anodized navy metal, dark ceramic, and restrained translucent inner membranes grounded on a fully opaque base",
+    "modules": "substantial extruded modules share one physical scale, bevel family, and shadow direction rather than floating as unrelated icons",
+    "emission": "cyan and acid-green light stays narrow, directional, and locally motivated with a soft emission halo no wider than six pixels at target size",
+    "finish": "low fine grain and precise edges preserve editorial tactility without glossy stock render polish"
+  },
+  "geometry": {
+    "projection": "front-oblique cutaway perspective with roughly fifteen degrees of elevation, stable verticals, and no isometric toy-city view",
+    "module_family": "three to five substantial extruded modules form one coherent signal architecture with readable entrances, chambers, and exits",
+    "route": "one continuous focal path crosses the system without decorative branches, loops, crossings, or duplicate destinations unless frozen semantics requires them",
+    "focal_rule": "the active chamber or result is largest or brightest but never overwhelms route legibility or title-safe space"
+  },
+  "depth_and_camera": {
+    "mode": "restrained front-oblique cutaway perspective at medium-wide distance, closer to an editorial technical set than a dashboard",
+    "layers": "foreground frame, working modules, and receding dark substrate create three readable depth bands",
+    "lighting": "cool low-key ambient light reveals all module faces while cyan route emission and one acid-green active state provide the only luminous accents",
+    "atmosphere": "minimal volumetric haze may separate depth but never hides an edge, port, arrow, node, or route"
+  },
+  "typography": {
+    "voice": "precise editorial Chinese headline with compact monospace English support applied through deterministic title overlay",
+    "title_panel": "title-safe negative space is an intentional dark architectural field rather than an empty black void",
+    "exact_text": "titles subtitles labels numbers and legends are rendered deterministically after image generation",
+    "generated_text": "the generated image remains text-free with no code terminal labels glyphs logos or watermark"
+  },
+  "density_and_spacing": {
+    "density": "medium-low system density with three to five large modules and one primary reading route",
+    "spacing": "module gaps remain wide enough to expose route continuity and preserve one deterministic label or title field",
+    "occupancy": "the signal architecture fills roughly seventy-two to eighty-four percent of the frame and never becomes a tiny object in a black canvas"
+  },
+  "required_traits": [
+    "deep navy signal architecture reads as one complete physical system rather than a collection of floating UI cards",
+    "fully opaque dark technical substrate preserves readable structure and complete-frame occupancy",
+    "front-oblique cutaway perspective gives restrained depth without becoming isometric infrastructure or flat blueprint drafting",
+    "one dominant cyan route provides the primary reading order through substantial extruded modules",
+    "acid green only for the single active state or explicitly confirmed successful result",
+    "deterministic title overlay preserves exact language while the generated architecture remains text-free"
+  ],
+  "forbidden_traits": [
+    "no cyberpunk city skyline street alley vehicle human face character hacker or dramatic sci-fi narrative",
+    "no HUD dashboard code terminal random glyph microtext data rain or decorative interface wallpaper",
+    "no rainbow neon uncontrolled magenta violet-red palette multiple green focal points or glow around every object",
+    "no transparent background empty black field crushed module faces tiny isolated subject or clipped architecture",
+    "no glossy glass maze chrome machinery toy factory isometric server city flat blueprint drafting or white-background infographic",
+    "no invented modules branches arrows status lights labels metrics ports or system relationships beyond confirmed semantics"
+  ],
+  "neighbor_boundaries": [
+    {
+      "profile_id": "isometric-infrastructure",
+      "difference": "Style 3 uses deep navy front-oblique signal architecture narrow cyan emission and one acid-green active state; Style 5 uses pale matte daylight fixed 30-degree isometric modules one amber journey and soft architectural shadows"
+    },
+    {
+      "profile_id": "cinematic-conceptual",
+      "difference": "Style 3 is technology-first with substantial dark modules and luminous system relationships; Style 6 is natural landscape-first with atmospheric terrain one journey one warm horizon and optional rear-view human scale"
+    },
+    {
+      "profile_id": "blueprint-linework",
+      "difference": "Style 3 uses extruded physical modules controlled emission and front-oblique cutaway depth; Style 4 uses flat orthographic linework construction marks and no luminous material depth"
+    }
+  ]
+}

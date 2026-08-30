@@ -70,6 +70,30 @@ Required v2 `style` object:
 
 The two hashes must equal the current files, and the golden set must be approved with matching profile identity/version and the same three reference IDs.
 
+### Additive Style Pack v3 Traceability
+
+Do not reinterpret an existing Manifest v2 automatically. When, and only when, `style.style_pack_version` equals `3`, the `style` object additionally requires:
+
+```json
+{
+  "style_pack_version": 3,
+  "visual_dna_path": "assets/style-anchors/handwritten-systems-explainer/visual-dna.json",
+  "visual_dna_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "role_contracts_path": "assets/style-anchors/handwritten-systems-explainer/role-contracts.json",
+  "role_contracts_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "reference_matrix_path": "assets/style-anchors/handwritten-systems-explainer/reference-matrix.json",
+  "reference_matrix_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "adapter_id": "gpt-image",
+  "adapter_version": 1,
+  "prompt_ir_path": "visual-prompts/asset-cover.prompt-ir.json",
+  "prompt_ir_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "compiled_prompt_path": "visual-prompts/asset-cover.gpt-image.prompt.md",
+  "compiled_prompt_sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+}
+```
+
+The three Style Pack paths are Skill-relative. Prompt IR and compiled-prompt paths are manifest-relative. Every path must remain inside its declared root, every file must exist, and every SHA-256 must match the exact bytes approved for generation. A v3 failure never falls back to a free-form prompt.
+
 ### Article Style Anchor Decision Table
 
 | v2 plan | `approvals.article_style_anchor` | Anchor asset ID |
@@ -91,12 +115,15 @@ Every v2 asset also carries a style review:
     "forbidden_traits_found": [],
     "theme_bleed": false,
     "series_continuity": "planned",
+    "drift_codes": [],
     "review_notes": null
   }
 }
 ```
 
 Integration requires `status=passed`, `required_traits_passed=true`, no forbidden traits, `theme_bleed=false`, and `series_continuity=passed`.
+
+For Style Pack v3, `drift_codes` is required and may contain only `PROMPT_BLOCK_MISSING`, `STYLE_IDENTITY_DRIFT`, `ROLE_LAYOUT_DRIFT`, `PUBLICATION_THEME_BLEED`, `GOLDEN_CONTENT_COPY`, `SEMANTIC_TOPOLOGY_DRIFT`, `SERIES_CONTINUITY_DRIFT`, or `TEXT_POLICY_VIOLATION`.
 
 ## Source Object
 

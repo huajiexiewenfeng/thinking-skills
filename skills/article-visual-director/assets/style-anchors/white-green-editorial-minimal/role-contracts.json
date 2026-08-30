@@ -1,0 +1,76 @@
+{
+  "profile_id": "white-green-editorial-minimal",
+  "style_pack_version": 3,
+  "roles": {
+    "cover": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one central semantic nucleus and meaningful left and right forces across seventy to ninety percent of the wide canvas",
+        "preserve an explicit deterministic title-safe zone without emptying either outer band",
+        "preserve bright opaque surface deep forest hierarchy saturated emerald action pale mint support and at most one cyan-green secondary signal"
+      ],
+      "may_vary": [
+        "the nucleus may represent coordination comparison transition balance or routing",
+        "left and right forces may be asymmetrical when both remain semantically meaningful",
+        "the background may vary between bright white and pale mint while remaining high contrast"
+      ],
+      "must_not_include": [
+        "do not add readable generated labels title copy dashboards card piles or interface chrome",
+        "do not introduce leaves eco symbolism glass transparency glow dense circuitry or empty side bands",
+        "do not allow ink-blue neutrality or non-green accents to replace the emerald-led hierarchy"
+      ],
+      "acceptance_checks": [
+        "the emerald-led thesis is obvious at thumbnail size",
+        "the central nucleus survives a square crop while both outer bands carry meaningful content",
+        "the result reads as a bright active editorial picture rather than a green dashboard or sustainability ad"
+      ]
+    },
+    "concept": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one tension transition or three-part system under an emerald-led hierarchy",
+        "preserve active horizontal grouping through alignment and space rather than cards",
+        "preserve bright surface forest boundaries emerald action pale mint support and one optional cyan-green secondary force"
+      ],
+      "may_vary": [
+        "the concept may use convergence divergence balance exchange or coordinated motion",
+        "object scale and asymmetry may vary when the semantic nucleus remains clear",
+        "support structures may extend into both outer bands without becoming decoration"
+      ],
+      "must_not_include": [
+        "do not turn the relationship into a card row dashboard widget grid or generic funnel",
+        "do not add leaves people atmospheric scenery glass panels or ornamental circuitry",
+        "do not invent labels numbers stages or unsupported causal relationships"
+      ],
+      "acceptance_checks": [
+        "one tension transition or three-part system dominates the concept illustration",
+        "the green semantic hierarchy is unmistakable and the side structures remain meaningful",
+        "the result stays flat bright active and free of sustainability clichés"
+      ]
+    },
+    "diagram": {
+      "stability": "strict",
+      "must_preserve": [
+        "preserve the frozen graph exactly including every node edge direction group and blocked relationship",
+        "preserve straight or single-elbow three-pixel edges and a strict twenty-four-pixel grid",
+        "preserve flat twelve-pixel nodes forest boundaries emerald active paths pale mint support and cyan-green secondary paths"
+      ],
+      "may_vary": [
+        "node count labels and group sizes may vary only as the frozen graph requires",
+        "secondary paths may appear only when supported by article semantics",
+        "wide group proportions may adapt while alignment edge direction and crop safety remain strict"
+      ],
+      "must_not_include": [
+        "no people faces hands characters instructors narrators mascots or stock imagery",
+        "no leaves eco icons glass depth glow card-grid dashboard chrome or decorative circuitry",
+        "do not invent omit reverse merge or reroute any frozen semantic relationship",
+        "do not copy golden labels numbers nodes topology boundaries or example story"
+      ],
+      "acceptance_checks": [
+        "every visible node edge direction boundary and secondary path matches the frozen graph",
+        "the diagram remains human-free flat crisp green-led and free of dashboard chrome",
+        "the full wide diagram and its semantic nucleus both preserve their intended reading order"
+      ]
+    }
+  }
+}

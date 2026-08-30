@@ -54,7 +54,8 @@ class ValidateStyleContractTests(unittest.TestCase):
                 "golden_set_path": "assets/style-anchors/fixture-profile/golden-set.json",
             }],
         }
-        (references / "style-registry.json").write_text(
+        self.registry_path = references / "style-registry.json"
+        self.registry_path.write_text(
             json.dumps(registry), encoding="utf-8"
         )
         self._write_golden_set({
@@ -76,6 +77,116 @@ class ValidateStyleContractTests(unittest.TestCase):
         (self.profile_root / "golden-set.json").write_text(
             json.dumps(data), encoding="utf-8"
         )
+
+    def _load_registry(self) -> dict:
+        return json.loads(self.registry_path.read_text(encoding="utf-8"))
+
+    def _write_registry(self, data: dict) -> None:
+        self.registry_path.write_text(json.dumps(data), encoding="utf-8")
+
+    def enable_v3_fixture(
+        self, *, approved: bool = False, qualified: bool = False
+    ) -> None:
+        registry = self._load_registry()
+        profile = registry["profiles"][0]
+        profile.update({
+            "style_pack_version": 3,
+            "visual_dna_path": (
+                "assets/style-anchors/fixture-profile/visual-dna.json"
+            ),
+            "role_contracts_path": (
+                "assets/style-anchors/fixture-profile/role-contracts.json"
+            ),
+            "reference_matrix_path": (
+                "assets/style-anchors/fixture-profile/reference-matrix.json"
+            ),
+            "adapter_ids": ["gpt-image"],
+        })
+        self._write_registry(registry)
+
+        visual_dna = {
+            "profile_id": "fixture-profile",
+            "style_pack_version": 3,
+            "surface": {"background": "warm ivory paper surface"},
+            "palette_roles": {"primary": "blue carries source context"},
+            "line_language": {"primary": "fine variable near-black ink"},
+            "material_and_texture": {"primary": "subtle paper grain texture"},
+            "geometry": {"nodes": "rounded rectangular teaching nodes"},
+            "depth_and_camera": {"mode": "flat orthographic composition"},
+            "typography": {"labels": "compact handwritten labels"},
+            "density_and_spacing": {"density": "organized medium information density"},
+            "required_traits": ["warm ivory paper remains visible"],
+            "forbidden_traits": ["no glossy three-dimensional cards"],
+            "neighbor_boundaries": [{
+                "profile_id": "neighbor-profile",
+                "difference": "fixture uses organized technical annotations",
+            }],
+        }
+        role_contracts = {
+            "profile_id": "fixture-profile",
+            "style_pack_version": 3,
+            "roles": {
+                role: {
+                    "stability": "strict" if role == "diagram" else "family",
+                    "must_preserve": ["preserve the registered visual identity"],
+                    "may_vary": ["article-specific subject may change"],
+                    "must_not_include": ["do not invent unsupported facts"],
+                    "acceptance_checks": ["result remains in the visual family"],
+                }
+                for role in ("cover", "concept", "diagram")
+            },
+        }
+        reference_matrix = {
+            "profile_id": "fixture-profile",
+            "style_pack_version": 3,
+            "references": [
+                {
+                    "golden_asset_id": f"fixture-{role}",
+                    "role": role,
+                    "must_preserve": ["preserve the visible line and material language"],
+                    "may_vary": ["article-specific composition may change"],
+                    "must_not_copy": [
+                        "labels", "numbers", "nodes", "topology", "example_story"
+                    ],
+                }
+                for role in ("cover", "concept", "diagram")
+            ],
+        }
+        pack_files = {
+            "visual-dna.json": visual_dna,
+            "role-contracts.json": role_contracts,
+            "reference-matrix.json": reference_matrix,
+        }
+        for name, data in pack_files.items():
+            (self.profile_root / name).write_text(
+                json.dumps(data), encoding="utf-8"
+            )
+
+        if approved:
+            self.approve_fixture_with_three_assets()
+        golden = json.loads(
+            (self.profile_root / "golden-set.json").read_text(encoding="utf-8")
+        )
+        golden.update({
+            "style_pack_version": 3,
+            "visual_dna_sha256": self._sha256(
+                self.profile_root / "visual-dna.json"
+            ),
+            "role_contracts_sha256": self._sha256(
+                self.profile_root / "role-contracts.json"
+            ),
+            "reference_matrix_sha256": self._sha256(
+                self.profile_root / "reference-matrix.json"
+            ),
+            "qualification": {
+                "prompt_compile_status": "passed",
+                "cross_topic_probe_status": "passed" if qualified else "pending",
+                "neighbor_discrimination_status": (
+                    "passed" if qualified else "pending"
+                ),
+            },
+        })
+        self._write_golden_set(golden)
 
     def approve_fixture_with_three_assets(self) -> None:
         files = {
@@ -159,6 +270,66 @@ class ValidateStyleContractTests(unittest.TestCase):
         self.assertTrue(
             any(error["code"] == "profile_identity_mismatch" for error in errors)
         )
+
+    def test_v3_registry_requires_all_pack_paths(self) -> None:
+        registry = self._load_registry()
+        registry["profiles"][0]["style_pack_version"] = 3
+        self._write_registry(registry)
+
+        errors = validate_style_contract(self.skill_root, "protocol")
+
+        self.assertTrue(
+            any(error["code"] == "style_pack_path_missing" for error in errors)
+        )
+
+    def test_v3_visual_dna_requires_observable_traits(self) -> None:
+        self.enable_v3_fixture()
+        visual_dna_path = self.profile_root / "visual-dna.json"
+        visual_dna = json.loads(visual_dna_path.read_text(encoding="utf-8"))
+        visual_dna["required_traits"] = ["beautiful"]
+        visual_dna_path.write_text(json.dumps(visual_dna), encoding="utf-8")
+
+        errors = validate_style_contract(self.skill_root, "protocol")
+
+        self.assertTrue(any(error["code"] == "visual_dna_invalid" for error in errors))
+
+    def test_v3_protocol_allows_incremental_candidate_assets(self) -> None:
+        self.enable_v3_fixture()
+        artifact = self.profile_root / "golden-cover.png"
+        prompt = self.profile_root / "golden-cover.prompt.md"
+        artifact.write_bytes(b"approved cover")
+        prompt.write_bytes(b"approved cover prompt")
+        golden = json.loads(
+            (self.profile_root / "golden-set.json").read_text(encoding="utf-8")
+        )
+        golden["assets"] = [{
+            "id": "fixture-cover",
+            "role": "cover",
+            "renderer": "imagegen",
+            "artifact_path": artifact.name,
+            "artifact_sha256": self._sha256(artifact),
+            "prompt_path": prompt.name,
+            "prompt_sha256": self._sha256(prompt),
+            "reference_role": "approved incremental cover anchor",
+        }]
+        self._write_golden_set(golden)
+
+        self.assertEqual([], validate_style_contract(self.skill_root, "protocol"))
+
+    def test_v3_release_requires_qualification(self) -> None:
+        self.enable_v3_fixture(approved=True, qualified=False)
+
+        errors = validate_style_contract(self.skill_root, "release")
+
+        self.assertTrue(
+            any(error["code"] == "style_pack_not_qualified" for error in errors)
+        )
+
+    def test_valid_v3_fixture_passes_protocol_and_release(self) -> None:
+        self.enable_v3_fixture(approved=True, qualified=True)
+
+        self.assertEqual([], validate_style_contract(self.skill_root, "protocol"))
+        self.assertEqual([], validate_style_contract(self.skill_root, "release"))
 
 
 if __name__ == "__main__":
