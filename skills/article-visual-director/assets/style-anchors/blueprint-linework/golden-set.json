@@ -14,7 +14,20 @@
   "status": "candidate",
   "user_approval": {
     "status": "pending",
-    "revision_notes": []
+    "revision_notes": [
+      "The user rejected the first symmetric empty CAD-room cover as ugly, then approved the fully opaque asymmetric exploded-module revision by asking to continue. The approved cover anchors right-heavy orthographic hierarchy, one broad cyan boundary, compact core masses, and a calm title-safe band."
+    ]
   },
-  "assets": []
+  "assets": [
+    {
+      "id": "blueprint-linework-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "artifact_path": "golden-cover.png",
+      "artifact_sha256": "f8a033b676485c09bba9c27933b93dcc323cafd84ed95428eaade7a4fd5354ca",
+      "prompt_path": "golden-cover.prompt.md",
+      "prompt_sha256": "d6699b8219ab162170ba8c8ec6b96b9fea3d1e72a958dfff0dcb9e64a1ab880a",
+      "reference_role": "deep-blue-asymmetric-orthographic-cutaway-line-hierarchy-and-title-safe-cover-anchor"
+    }
+  ]
 }

@@ -293,6 +293,29 @@ class ValidateStyleContractTests(unittest.TestCase):
 
         self.assertTrue(any(error["code"] == "visual_dna_invalid" for error in errors))
 
+    def test_v3_protocol_allows_incremental_candidate_assets(self) -> None:
+        self.enable_v3_fixture()
+        artifact = self.profile_root / "golden-cover.png"
+        prompt = self.profile_root / "golden-cover.prompt.md"
+        artifact.write_bytes(b"approved cover")
+        prompt.write_bytes(b"approved cover prompt")
+        golden = json.loads(
+            (self.profile_root / "golden-set.json").read_text(encoding="utf-8")
+        )
+        golden["assets"] = [{
+            "id": "fixture-cover",
+            "role": "cover",
+            "renderer": "imagegen",
+            "artifact_path": artifact.name,
+            "artifact_sha256": self._sha256(artifact),
+            "prompt_path": prompt.name,
+            "prompt_sha256": self._sha256(prompt),
+            "reference_role": "approved incremental cover anchor",
+        }]
+        self._write_golden_set(golden)
+
+        self.assertEqual([], validate_style_contract(self.skill_root, "protocol"))
+
     def test_v3_release_requires_qualification(self) -> None:
         self.enable_v3_fixture(approved=True, qualified=False)
 

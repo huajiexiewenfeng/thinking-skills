@@ -429,8 +429,8 @@ def _validate_style_pack_v3(
                 or not isinstance(non_copy, list)
                 or not REQUIRED_NON_COPY_FIELDS.issubset(non_copy)
                 or (
-                    golden_ids_by_role
-                    and reference.get("golden_asset_id") != golden_ids_by_role.get(role)
+                    role in golden_ids_by_role
+                    and reference.get("golden_asset_id") != golden_ids_by_role[role]
                 )
             ):
                 reference_matrix_valid = False

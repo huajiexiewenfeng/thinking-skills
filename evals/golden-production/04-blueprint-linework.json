@@ -1,0 +1,137 @@
+{
+  "golden_production_version": 1,
+  "profile_id": "blueprint-linework",
+  "style_pack_version": 3,
+  "status": "planned",
+  "mode_boundary": {
+    "must_read_as": "deep blueprint-blue orthographic technical linework with uniform pale construction lines a restrained grid one cyan semantic boundary and almost no volume",
+    "must_not_read_as": "isometric infrastructure scene cinematic technology art neon system dashboard watercolor teaching sketch photorealistic engineering render or pseudo-technical drawing with invented measurements",
+    "nearest_profile_id": "isometric-infrastructure"
+  },
+  "candidates": [
+    {
+      "id": "blueprint-linework-cover-v1",
+      "role": "cover",
+      "revision": 1,
+      "approval": "rejected",
+      "user_feedback": "The user rejected revision 1 as ugly. The output became a symmetrical three-chamber CAD floor plan with large empty cavities, repetitive bright outlines, and an insignificant cyan slit instead of a clear cover thesis.",
+      "failure_analysis": "The prompt combined outer shell, inner core chamber, horizontal section, and eighty-percent occupancy without requiring an asymmetric focal hierarchy or a minimum cyan focal area. That language biased generation toward a generic symmetric room plan rather than a legible explanatory cutaway.",
+      "visual_thesis": "A large orthographic sectional construction makes one controlled boundary visible between an open exterior field and a protected inner core without relying on labels or invented engineering detail.",
+      "request": {
+        "profile_id": "blueprint-linework",
+        "asset_role": "cover",
+        "objective": "Create one complete text-free wide blueprint cover showing a large orthographic sectional construction: an open exterior field reaches one controlled cyan boundary inside a pale outlined enclosure, beyond which a protected inner core remains structurally separated.",
+        "semantics": {
+          "confirmed": [
+            "One outer boundary separates an open exterior region from a protected interior region.",
+            "One controlled transition crosses the boundary and reaches the inner core.",
+            "The structure is a generic teaching construction and does not claim a real product architecture."
+          ],
+          "simplifications": [
+            "Use one large front-orthographic horizontal section with a clearly visible outer shell and one inner core chamber.",
+            "Use one sparse cyan plane or narrow cyan transition at the controlled boundary and keep every other final structure line pale blue-white.",
+            "Use one light ghost construction outline to show alignment without adding volume or another semantic layer."
+          ],
+          "blocked": [
+            "Do not imply a named security model network protocol physical device performance guarantee or universal architecture.",
+            "Do not add labels titles dimensions numbers tolerances identifiers ports annotations rulers people shadows glow glossy surfaces perspective isometric depth dense hatching or decorative machinery."
+          ]
+        },
+        "composition": {
+          "structure": "wide 16:9 deep-blue blueprint cover with one large front-orthographic sectional construction spanning roughly eighty percent of the canvas; position the main shell from lower-left through center-right and reserve a clean deterministic title-safe band in the upper-left without making the subject small",
+          "hierarchy": "uniform pale two-pixel final lines establish shell and core; quieter construction lines and grid remain secondary; exactly one cyan boundary plane or transition is the focal feature",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title-safe zone",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete orthographic section occupies roughly eighty percent of the canvas with a usable upper-left title-safe band",
+          "crop_rules": "the cyan boundary outer shell and protected core remain understandable in the central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "cover",
+          "bootstrap_references": [],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "The result reads as one complete large blueprint construction rather than empty grid paper with a small decorative schematic.",
+        "The view is strictly front-orthographic and flat with no 30-degree isometric camera perspective convergence solid material volume or directional shadow.",
+        "The canvas is fully opaque deep blueprint-blue with a low-intensity grid uniform pale linework and exactly one cyan semantic boundary.",
+        "The outer shell controlled boundary and protected core are understandable at thumbnail size without text.",
+        "No fake dimensions labels identifiers decorative measurements dense hatching glow gloss people or ornamental machinery appear.",
+        "The example remains generic and supplies no semantic authority for future article topology."
+      ]
+    },
+    {
+      "id": "blueprint-linework-cover-v1",
+      "role": "cover",
+      "revision": 2,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/blueprint-linework/golden-cover.png",
+      "user_feedback": "After rejecting the symmetric empty CAD-room revision, the user approved revision 2 by asking to continue. The approved image uses one asymmetric exploded module, a calm left title band, one broad cyan boundary membrane, compact filled core regions, and a fully opaque deep-blue blueprint ground.",
+      "visual_thesis": "One asymmetric exploded orthographic module exposes a broad cyan boundary membrane and a compact protected core, creating a clear technical focal hierarchy without labels or pseudo-engineering detail.",
+      "request": {
+        "profile_id": "blueprint-linework",
+        "asset_role": "cover",
+        "objective": "Create one elegant text-free wide blueprint cover with a strongly asymmetric composition: a single large front-orthographic exploded sectional module occupies the right two-thirds, one outer panel is offset slightly to reveal a broad cyan boundary membrane, and one compact pale-lined core sits behind that membrane; the left band remains calm for a deterministic title.",
+        "semantics": {
+          "confirmed": [
+            "One outer layer can be separated visually to reveal a controlled boundary and an inner core.",
+            "The cyan membrane marks the only supported boundary between outer layer and core.",
+            "The module is a generic teaching construction and does not claim a real product architecture."
+          ],
+          "simplifications": [
+            "Use exactly one coherent tall rectangular module in front elevation with one offset outer panel connected by sparse horizontal construction guides.",
+            "Make the cyan membrane a clearly visible flat vertical band occupying roughly eight to twelve percent of the module width rather than a thin slit.",
+            "Keep the protected core compact and structurally filled with two or three large pale outline regions; do not create empty room-like chambers."
+          ],
+          "blocked": [
+            "Do not imply a named security model network protocol physical device performance guarantee or universal architecture.",
+            "Do not add a mirrored composition multiple modules room plans labels titles dimensions numbers tolerances identifiers ports annotations rulers people shadows glow glossy surfaces perspective isometric depth dense hatching or decorative machinery."
+          ]
+        },
+        "composition": {
+          "structure": "strongly asymmetric wide 16:9 deep-blue blueprint cover; reserve the left twenty-eight percent as a quiet title-safe band and place one large vertically oriented front-orthographic exploded sectional module across the center-right; the complete module fills roughly seventy-four percent of canvas height and sixty-two percent of width",
+          "hierarchy": "one clean outer silhouette anchors the module; quieter ghost guides explain the offset panel; a broad single cyan membrane is the focal plane; the compact pale-lined core provides a second clear mass without empty cavities or repeated frames",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free background with deterministic title-safe zone",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "one coherent exploded module occupies the center-right with roughly seventy-four-percent height and a calm twenty-eight-percent left title band",
+          "crop_rules": "the cyan membrane compact core and offset outer panel remain together in the central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "cover",
+          "bootstrap_references": [],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "The result reads as one elegant asymmetric exploded blueprint module rather than a symmetric room plan or empty CAD shell.",
+        "One broad cyan membrane is immediately visible as the focal semantic boundary and occupies roughly eight to twelve percent of module width.",
+        "The core is compact and information-bearing with two or three large outline regions rather than large empty cavities or repetitive nested frames.",
+        "The view is strictly front-orthographic flat and fully opaque with a low-intensity grid and disciplined pale line hierarchy.",
+        "The left title-safe band remains calm while the center-right module feels complete and visually substantial.",
+        "No labels dimensions pseudo-engineering identifiers room-plan symmetry perspective isometric depth shadows glow gloss dense hatching people or decorative machinery appear."
+      ]
+    }
+  ]
+}
