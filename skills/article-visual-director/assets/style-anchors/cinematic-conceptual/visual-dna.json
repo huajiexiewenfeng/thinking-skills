@@ -1,0 +1,77 @@
+{
+  "profile_id": "cinematic-conceptual",
+  "style_pack_version": 3,
+  "surface": {
+    "background": "fully opaque deep navy environment based on #10151D",
+    "alternate": "desaturated blue-slate distance field based on #263445",
+    "finish": "tactile practical-set atmosphere with broad tonal fields and low film grain"
+  },
+  "palette_roles": {
+    "environment": "deep navy based on #10151D remains the dominant field",
+    "distance": "desaturated blue-slate based on #263445 and #596C85 separates atmospheric planes",
+    "subject": "a matte mineral subject based on #D6DEE6 carries the single metaphor",
+    "thesis_accent": "one amber cue based on #E59A3A supplies the only warm emphasis",
+    "shadow": "near-black blue based on #090D12 preserves depth without crushed detail"
+  },
+  "line_language": {
+    "primary": "silhouette and edge-light define the subject without diagram outlines",
+    "paths": "one restrained warm path or seam may carry the thesis when confirmed",
+    "boundaries": "broad environmental planes replace cards grids panels and technical frames"
+  },
+  "material_and_texture": {
+    "surface": "matte plaster paper stone or mineral surfaces with visible tactile restraint",
+    "objects": "one substantial practical-set sculpture rather than glossy products floating icons or stock scenery",
+    "finish": "low film grain and subtle surface variation with no chrome glass plastic sparkle or oversharpening"
+  },
+  "geometry": {
+    "projection": "restrained 50 mm cinematic perspective with a stable horizon and no fisheye distortion",
+    "subject": "one coherent symbolic subject with a strong silhouette and no competing metaphor",
+    "environment": "foreground midground and background remain legible as large atmospheric fields",
+    "focal_rule": "very low symbolic density keeps one subject and one amber thesis cue dominant"
+  },
+  "depth_and_camera": {
+    "mode": "restrained 50 mm cinematic perspective with controlled depth and no extreme wide-angle spectacle",
+    "layers": "three readable distance planes use desaturated blue value separation rather than invented scenery",
+    "lighting": "one cool ambient fill and a single motivated amber practical light with one coherent shadow direction",
+    "atmosphere": "subtle haze appears only where motivated light passes through space and never obscures the subject"
+  },
+  "typography": {
+    "voice": "quiet editorial serif or restrained sans-serif applied deterministically outside image generation",
+    "exact_text": "titles captions and labels are added only after article semantics are confirmed",
+    "generated_text": "image generation contains no readable text logos plaques interfaces or symbols"
+  },
+  "density_and_spacing": {
+    "density": "very low symbolic density with one subject and minimal supporting environment",
+    "spacing": "broad negative space and one intentional title-safe field preserve editorial hierarchy",
+    "occupancy": "the metaphor occupies roughly sixty-five to seventy-eight percent without becoming a tiny object in empty darkness"
+  },
+  "required_traits": [
+    "fully opaque deep navy atmosphere remains readable rather than crushed black",
+    "restrained 50 mm cinematic perspective and stable horizon preserve practical-set credibility",
+    "one matte mineral subject carries one nameable metaphor through a strong silhouette",
+    "a single motivated amber practical light or cue guides the eye without decorative glow",
+    "very low symbolic density and broad editorial negative space prevent collage and spectacle drift"
+  ],
+  "forbidden_traits": [
+    "no generic glowing portal cosmic sky fantasy city floating orb hologram or unrelated cinematic spectacle",
+    "no default face lone person crowd hands character silhouette or human drama used as a conceptual shortcut",
+    "no neon circuitry transparent glass chrome glossy product render rainbow grading or multiple warm accents",
+    "no dashboard infographic card grid node-box system blueprint construction or isometric infrastructure grammar",
+    "no generated title labels logos interface screens article claims or copied golden metaphor topology",
+    "no muddy crushed-black field excessive fog excessive grain empty darkness or illegible subject"
+  ],
+  "neighbor_boundaries": [
+    {
+      "profile_id": "neon-systems",
+      "difference": "Style 6 uses tactile matte practical-set objects one symbolic thesis and a single motivated amber practical light; Style 3 uses emissive circuitry transparent or luminous systems multiple relationships and neon technological atmosphere"
+    },
+    {
+      "profile_id": "isometric-infrastructure",
+      "difference": "Style 6 uses restrained cinematic perspective environmental depth and one metaphor; Style 5 uses fixed isometric projection repeated infrastructure modules explicit operational paths and architectural-system readability"
+    },
+    {
+      "profile_id": "technical-editorial-minimal",
+      "difference": "Style 6 is dark atmosphere-led tactile and depth-driven; Style 1 is bright flat geometric grid-led and explanatory"
+    }
+  ]
+}

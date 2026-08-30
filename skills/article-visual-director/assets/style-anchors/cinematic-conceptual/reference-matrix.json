@@ -1,0 +1,66 @@
+{
+  "profile_id": "cinematic-conceptual",
+  "style_pack_version": 3,
+  "references": [
+    {
+      "golden_asset_id": "cinematic-conceptual-cover-v1",
+      "role": "cover",
+      "must_preserve": [
+        "preserve restrained 50 mm cinematic perspective deep navy atmosphere matte mineral subject one amber practical cue and readable silhouette",
+        "preserve three broad distance planes low film grain title-safe behavior and practical-set editorial finish",
+        "preserve one nameable metaphor without people spectacle neon systems or product-ad drift"
+      ],
+      "may_vary": [
+        "replace the complete subject environment and metaphor with independently confirmed article semantics",
+        "vary orientation title-safe side camera distance and motivated amber cue within the approved lens and light family"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ]
+    },
+    {
+      "golden_asset_id": "cinematic-conceptual-concept-v1",
+      "role": "concept",
+      "must_preserve": [
+        "preserve one tactile object-state support tension threshold or transformation relation with one amber cue",
+        "preserve restrained cinematic lens matte mineral material motivated light layered blue atmosphere and very low symbolic density",
+        "preserve substantial practical-set scale and absence of people fantasy spectacle neon circuitry and glossy product treatment"
+      ],
+      "may_vary": [
+        "replace the complete object family relation state and environment with article-confirmed semantics",
+        "vary controlled depth camera distance and supported amber-cue geometry without adding another metaphor"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ]
+    },
+    {
+      "golden_asset_id": "cinematic-conceptual-diagram-v1",
+      "role": "diagram",
+      "must_preserve": [
+        "preserve exact human-free cinematic environmental-map rendering with large tactile landmarks broad fields and readable route direction",
+        "preserve deep navy atmosphere one supported amber primary route restrained exception treatment and deterministic blank label zones",
+        "preserve practical-set lens material light and spacing without node cards isometric modules blueprint lines or neon systems"
+      ],
+      "may_vary": [
+        "replace the complete example graph landmarks route and depth grouping with the validated article-specific frozen graph",
+        "vary landmark count environmental fields and explicit depth only as frozen semantics requires"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ]
+    }
+  ]
+}

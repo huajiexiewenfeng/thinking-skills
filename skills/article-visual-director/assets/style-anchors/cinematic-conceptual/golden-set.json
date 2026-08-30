@@ -1,1 +1,20 @@
-{"golden_set_version":1,"profile_id":"cinematic-conceptual","protocol_version":2,"status":"candidate","user_approval":{"status":"pending","revision_notes":[]},"assets":[]}
+{
+  "golden_set_version": 1,
+  "profile_id": "cinematic-conceptual",
+  "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "bb3a32234f928344bd8a449a2eb6deb8f99ac86f90f364d5bf975d8ff0b0529c",
+  "role_contracts_sha256": "3a0aeed280e015ddb671793063131c9d33cdc34a3c8a55f9ca57135ae607df30",
+  "reference_matrix_sha256": "528340d3c4c23825964d09846553ef2a68bc7a7f23c6b10d07088c2a09a30b50",
+  "qualification": {
+    "prompt_compile_status": "pending",
+    "cross_topic_probe_status": "pending",
+    "neighbor_discrimination_status": "pending"
+  },
+  "status": "candidate",
+  "user_approval": {
+    "status": "pending",
+    "revision_notes": []
+  },
+  "assets": []
+}

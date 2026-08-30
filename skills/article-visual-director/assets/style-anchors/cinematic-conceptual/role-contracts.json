@@ -1,0 +1,76 @@
+{
+  "profile_id": "cinematic-conceptual",
+  "style_pack_version": 3,
+  "roles": {
+    "cover": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one coherent monumental metaphor one strong silhouette and exactly one motivated amber thesis cue",
+        "preserve fully opaque deep navy atmosphere restrained 50 mm perspective matte mineral material and three readable depth planes",
+        "preserve a deterministic title-safe field without shrinking the subject into empty darkness"
+      ],
+      "may_vary": [
+        "the confirmed metaphor object environment and orientation may change completely",
+        "the title-safe side and camera distance may vary within the restrained lens family",
+        "the amber cue may be a seam aperture path reflection or practical source only when confirmed semantics supports it"
+      ],
+      "must_not_include": [
+        "do not add people faces hands crowds characters generated titles logos labels screens or article claims",
+        "do not use generic portals fantasy landscapes cosmic skies neon circuitry holograms glass chrome glossy product advertising or rainbow grading",
+        "do not create multiple metaphors competing warm accents unrelated scenery tiny subjects or empty crushed-black fields"
+      ],
+      "acceptance_checks": [
+        "a reviewer can name the one metaphor and identify the one amber thesis cue at thumbnail size",
+        "the scene feels like a tactile high-end editorial practical set rather than generic AI cinema or a luxury advertisement",
+        "silhouette lens material atmosphere light ratio title space and opacity remain coherent"
+      ]
+    },
+    "concept": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve exactly one object-state support tension threshold or transformation relation through one coherent tactile subject",
+        "preserve deep navy atmosphere matte mineral material one amber cue restrained perspective and motivated light",
+        "preserve very low symbolic density and enough environment to make the relation spatially legible"
+      ],
+      "may_vary": [
+        "the confirmed object material relation and spatial state may replace the complete golden example",
+        "controlled camera distance and depth may vary while the 50 mm lens family and practical-set scale remain credible",
+        "the one amber cue may identify the confirmed cause support boundary or state change"
+      ],
+      "must_not_include": [
+        "do not invent causality guarantees ownership hierarchy labels numbers faces people or extra symbols",
+        "do not copy the cover metaphor object path aperture layout title zone or example story",
+        "do not add neon glow holograms glass chrome fantasy scenery product-ad polish node cards or isometric modules"
+      ],
+      "acceptance_checks": [
+        "one conceptual relation is understandable without text and without claiming more than confirmed semantics",
+        "the subject remains tactile substantial and visually complete rather than an isolated decorative prop",
+        "the cover reference contributes only lens palette material light ratio atmosphere scale and finish"
+      ]
+    },
+    "diagram": {
+      "stability": "strict",
+      "must_preserve": [
+        "preserve the frozen graph exactly including every landmark edge direction group invariant exception and return",
+        "preserve fully human-free restrained cinematic perspective matte landmarks broad environmental fields and one coherent light direction",
+        "preserve deterministic blank label zones one supported amber primary route and restrained exception treatment"
+      ],
+      "may_vary": [
+        "landmark count labels groups distance planes and route types may vary only as validated semantics requires",
+        "depth may encode order or grouping only when the frozen semantics explicitly declares it",
+        "environmental map layout may adapt while every landmark edge and arrow direction remains visible"
+      ],
+      "must_not_include": [
+        "no people faces hands characters instructors narrators mascots crowds vehicles or stock imagery",
+        "do not invent omit reverse merge split reroute hide or atmosphericly obscure any frozen semantic relationship",
+        "do not copy golden labels numbers nodes topology landmarks depth meaning or example story",
+        "no node cards dashboards isometric infrastructure blueprint lines neon circuits glass chrome fantasy spectacle or unsupported route"
+      ],
+      "acceptance_checks": [
+        "every visible landmark edge direction group exception and return matches the frozen graph",
+        "the map remains human-free fully opaque cinematic materially tactile and legible at article width",
+        "the golden map contributes only lens palette material light atmosphere spacing landmark and route grammar"
+      ]
+    }
+  }
+}
