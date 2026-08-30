@@ -203,6 +203,191 @@
         "No generated text logos multiple routes arbitrary data particles unsupported natural claims or semantic guarantees appear.",
         "The output is fully opaque and the example river cleft basin and transition supply no semantic authority for future article content."
       ]
+    },
+    {
+      "id": "cinematic-conceptual-diagram-v1",
+      "role": "diagram",
+      "revision": 1,
+      "approval": "rejected",
+      "review_feedback": "Rejected during internal topology acceptance before the user gate. The image contained the intended four terrain landmarks but rendered four visible directional chevrons, exceeding the frozen graph's three directed edges.",
+      "failure_analysis": "The prompt asked for one chevron on each inter-landmark segment but also emphasized continuous route readability. The renderer treated a long first or middle segment as needing another direction cue. Revision 2 fixes one named chevron position inside each of exactly three explicit gaps and forbids chevrons on landmarks or segment subdivisions.",
+      "visual_thesis": "A frozen four-landmark sequence becomes a human-free cinematic terrain map whose single path and three explicit direction markers preserve exact order without node cards or generated labels.",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "diagram",
+        "objective": "Create one text-free human-free cinematic landscape process map: exactly four large terrain landmarks form a gentle foreground-left to horizon-right sequence, connected by one continuous pale-gold trail with exactly three clearly visible deep-slate directional chevrons and no branches, returns, crossings, or hidden links.",
+        "semantics": {
+          "confirmed": [
+            "The map contains exactly four stages: origin, passage, evaluation, and arrival.",
+            "The only supported order is origin to passage to evaluation to arrival.",
+            "There are no exceptions, returns, branches, merges, parallel paths, ownership groups, or hierarchy claims."
+          ],
+          "simplifications": [
+            "Represent each stage as one substantial natural terrain landmark integrated into the landscape: a low foreground terrace, a narrow pass, a broad overlook, and a distant high plateau.",
+            "Use exactly one continuous pale-gold trail and place one deep-slate directional chevron on each of the three inter-landmark segments.",
+            "Reserve one quiet blank caption-safe area beside each landmark for deterministic labels added later; the generated image contains no readable label or number."
+          ],
+          "blocked": [
+            "Do not invent failure paths feedback loops shortcuts branches merges bidirectional edges hidden links groups elevation hierarchy or additional stages.",
+            "Do not add people faces hands characters animals vehicles buildings bridges roads signs flags gates ruins portals node cards boxes interfaces generated text numbers logos neon circuits isometric modules blueprint lines multiple suns or arbitrary data particles."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "origin",
+              "passage",
+              "evaluation",
+              "arrival"
+            ],
+            "edges": [
+              {
+                "from": "origin",
+                "to": "passage"
+              },
+              {
+                "from": "passage",
+                "to": "evaluation"
+              },
+              {
+                "from": "evaluation",
+                "to": "arrival"
+              }
+            ]
+          }
+        },
+        "composition": {
+          "structure": "wide 16:9 strict human-free cinematic terrain map in restrained 35 mm elevated perspective; exactly four large natural landmarks form a clear gentle zigzag from a lower-left foreground terrace to a center-left narrow pass to a center-right broad overlook to a far-right high plateau near the warm horizon; one continuous pale-gold trail touches each landmark once in frozen order; each of the three inter-landmark segments carries exactly one visible deep-slate directional chevron; four depth bands remain readable and no route segment crosses another",
+          "hierarchy": "all four landmarks have equal semantic weight while natural perspective changes apparent scale; the single trail is the primary reading guide and one soft warm horizon field supports destination depth without implying success; layered teal-blue terrain and measured mist preserve cinematic identity; quiet nearby ground patches remain available for deterministic labels without becoming cards",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "generated landscape contains no text; validated landmark labels are added later as deterministic overlays",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete four-landmark terrain graph and all three directed trail segments occupy roughly eighty percent with active landscape across the frame",
+          "crop_rules": "all four landmarks and all three directional trail segments remain visible in the full article crop; the central square crop preserves the two middle landmarks and representative incoming and outgoing direction",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "diagram",
+          "bootstrap_references": [
+            {
+              "id": "cinematic-conceptual-concept-v1",
+              "profile_id": "cinematic-conceptual",
+              "role": "concept",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly four substantial natural terrain landmarks appear and no fifth landmark or decorative object can be mistaken for a node.",
+        "Exactly three visible directional trail connections encode origin to passage to evaluation to arrival in that order.",
+        "One continuous pale-gold trail has no branch merge return crossing bypass hidden segment or bidirectional marker.",
+        "The generated landscape contains no readable text numbers logos cards boxes or interface elements; labels remain deterministic overlays.",
+        "The result is a human-free cinematic landscape process map compositionally distinct from the road-and-person cover and canyon-river concept.",
+        "The restrained 35 mm perspective layered teal-blue terrain warm horizon measured mist painterly realism and complete-frame occupancy match the approved Style 6 family.",
+        "The frozen example graph landmarks path positions and story supply no semantic authority for future article diagrams."
+      ]
+    },
+    {
+      "id": "cinematic-conceptual-diagram-v1",
+      "role": "diagram",
+      "revision": 2,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/cinematic-conceptual/golden-diagram.png",
+      "user_feedback": "Approved by the user by asking to continue. Preserve the human-free cinematic terrain-map grammar, exactly four intentional natural terrace landmarks, one continuous pale-gold trail, exactly three deep-slate chevrons placed in the three inter-landmark gaps, layered teal-blue terrain, warm distant atmosphere, no text, and fully opaque output. The example graph landmarks path positions and story remain non-authoritative.",
+      "visual_thesis": "Four named terrain landmarks form three explicit gaps, and each gap contains exactly one direction chevron so the frozen sequence cannot gain a decorative fourth arrow.",
+      "request": {
+        "profile_id": "cinematic-conceptual",
+        "asset_role": "diagram",
+        "objective": "Create one text-free human-free cinematic terrain process map with exactly four natural landmarks and exactly three directed gaps: landmark A at lower-left, landmark B at center-left, landmark C at center-right, and landmark D at upper-right; one continuous pale-gold trail connects A to B to C to D, and each named gap AB BC and CD contains exactly one deep-slate chevron.",
+        "semantics": {
+          "confirmed": [
+            "The map contains exactly four stages in one order: origin, passage, evaluation, arrival.",
+            "The only edges are origin to passage, passage to evaluation, and evaluation to arrival.",
+            "There are no branches, merges, returns, loops, parallel paths, groups, or hierarchy claims."
+          ],
+          "simplifications": [
+            "Render exactly four intentional natural terraces as landmarks A B C and D; surrounding mountains remain soft background and cannot resemble another terrace node.",
+            "Render exactly three trail gaps AB BC and CD; put exactly one chevron at the midpoint of each gap and nowhere else.",
+            "Keep every chevron off the landmark surfaces and do not subdivide any gap with an extra direction marker."
+          ],
+          "blocked": [
+            "Do not add a fourth chevron a fifth landmark a second route a segment subdivision a route branch a return a crossing or a bidirectional marker.",
+            "Do not add people animals vehicles buildings bridges roads with lane markings signs flags gates ruins portals cards boxes interfaces text numbers logos neon circuits isometric modules blueprint lines visible suns or data particles."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "origin",
+              "passage",
+              "evaluation",
+              "arrival"
+            ],
+            "edges": [
+              {
+                "from": "origin",
+                "to": "passage"
+              },
+              {
+                "from": "passage",
+                "to": "evaluation"
+              },
+              {
+                "from": "evaluation",
+                "to": "arrival"
+              }
+            ]
+          }
+        },
+        "composition": {
+          "structure": "wide 16:9 human-free cinematic landscape map in restrained 35 mm elevated perspective; four clearly shaped natural terrace landmarks form a clean zigzag A lower-left B center-left C center-right D upper-right; one continuous narrow pale-gold trail connects them; leave visible terrain gaps between landmarks and put exactly one dark chevron at the midpoint of gap AB exactly one at midpoint BC and exactly one at midpoint CD; no chevron sits on a landmark or elsewhere on the trail",
+          "hierarchy": "the four landmarks remain equal semantic nodes while perspective supplies natural depth; the single trail and exactly three chevrons are the primary reading system; deep teal foreground muted blue middle terrain and a soft warm upper-right atmosphere preserve Style 6 without a visible sun",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free landscape with deterministic labels added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "golden-reference",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete four-landmark three-gap graph occupies roughly eighty percent with no empty title field",
+          "crop_rules": "all four landmarks and all three chevrons remain fully visible in the wide article crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [],
+        "article_anchor_reference_ids": [],
+        "golden_production": {
+          "stage": "diagram",
+          "bootstrap_references": [
+            {
+              "id": "cinematic-conceptual-concept-v1",
+              "profile_id": "cinematic-conceptual",
+              "role": "concept",
+              "approval": "approved",
+              "semantic_authority": false
+            }
+          ],
+          "semantic_authority": false
+        }
+      },
+      "acceptance_checks": [
+        "Exactly four intentional natural terrace landmarks appear in the A B C D zigzag and background terrain cannot be mistaken for a fifth node.",
+        "Exactly three and only three chevrons appear: one in gap AB one in gap BC and one in gap CD.",
+        "One continuous trail encodes A to B to C to D without branch merge return crossing subdivision hidden segment or bidirectional marker.",
+        "No chevron appears on a landmark and no gap contains more than one chevron.",
+        "The result remains a human-free text-free cinematic landscape map rather than a technical node diagram isometric infrastructure scene or fantasy map.",
+        "The output is fully opaque and the example graph landmarks trail positions and story remain non-authoritative."
+      ]
     }
   ]
 }

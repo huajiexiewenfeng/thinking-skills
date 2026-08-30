@@ -7,17 +7,18 @@
   "role_contracts_sha256": "a0211c1bb430374fac1f841e9742b1104b1cc0e6291ad1d9a53424afb4b52e15",
   "reference_matrix_sha256": "08d45f49f2e494003d5122e5de3766d4fc5dd3afc52149ab10a30d86b5da1151",
   "qualification": {
-    "prompt_compile_status": "pending",
+    "prompt_compile_status": "passed",
     "cross_topic_probe_status": "pending",
     "neighbor_discrimination_status": "pending"
   },
   "status": "candidate",
   "user_approval": {
-    "status": "pending",
+    "status": "approved",
     "revision_notes": [
       "The first tactile-mineral gate cover was rejected after comparison with the user's previous Style 6 reference. It was stable but removed the desired cinematic narrative landscape, journey, warm horizon, and small rear-view human presence.",
       "Cover revision 2 approved: complete layered teal-blue valley, one continuous foreground-to-horizon road, one warm golden horizon, one small seated rear-view figure, active upper-left title-safe space, restrained cinematic matte-painting realism, no generated text, and fully opaque output. The example road figure terrain destination and story are style-only and non-authoritative.",
-      "Concept golden approved: human-free cinematic canyon-to-basin transition, one continuous cool river, central natural cleft, broad warm reflected basin, restrained 35 mm elevated perspective, layered teal-blue terrain, painterly realism, and fully opaque output. The example river cleft basin and transition are style-only and non-authoritative."
+      "Concept golden approved: human-free cinematic canyon-to-basin transition, one continuous cool river, central natural cleft, broad warm reflected basin, restrained 35 mm elevated perspective, layered teal-blue terrain, painterly realism, and fully opaque output. The example river cleft basin and transition are style-only and non-authoritative.",
+      "Diagram golden approved after revision 1 was rejected for one extra arrow: human-free cinematic terrain map, exactly four intentional natural terrace landmarks, one continuous pale-gold trail, exactly three deep-slate chevrons in the three inter-landmark gaps, layered teal-blue terrain, warm distant atmosphere, no text, and fully opaque output. The example graph is style-only and non-authoritative."
     ]
   },
   "assets": [
@@ -41,6 +42,17 @@
       "prompt_path": "golden-concept.prompt.md",
       "prompt_sha256": "c9c48afcc779e5206daeb2561a8f2dc8ea78634e1485bb0cddf0703f2ca23a3e",
       "reference_role": "human-free-layered-canyon-single-river-natural-cleft-warm-basin-and-cinematic-transition-anchor",
+      "semantic_authority": false
+    },
+    {
+      "id": "cinematic-conceptual-diagram-v1",
+      "role": "diagram",
+      "renderer": "imagegen",
+      "artifact_path": "golden-diagram.png",
+      "artifact_sha256": "d322f83ba39915f846ced4f6db9473ba41baa673337b374a6aa2ac8e39f9ab50",
+      "prompt_path": "golden-diagram.prompt.md",
+      "prompt_sha256": "851f5aa66448d268b0de836a791cfa04e764c4cbeb16c65174ec6bb126f02816",
+      "reference_role": "human-free-four-landmark-three-gap-single-trail-cinematic-terrain-map-anchor",
       "semantic_authority": false
     }
   ]
