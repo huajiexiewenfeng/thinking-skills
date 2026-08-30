@@ -8,17 +8,18 @@
   "reference_matrix_sha256": "08d45f49f2e494003d5122e5de3766d4fc5dd3afc52149ab10a30d86b5da1151",
   "qualification": {
     "prompt_compile_status": "passed",
-    "cross_topic_probe_status": "pending",
-    "neighbor_discrimination_status": "pending"
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed"
   },
-  "status": "candidate",
+  "status": "approved",
   "user_approval": {
     "status": "approved",
     "revision_notes": [
       "The first tactile-mineral gate cover was rejected after comparison with the user's previous Style 6 reference. It was stable but removed the desired cinematic narrative landscape, journey, warm horizon, and small rear-view human presence.",
       "Cover revision 2 approved: complete layered teal-blue valley, one continuous foreground-to-horizon road, one warm golden horizon, one small seated rear-view figure, active upper-left title-safe space, restrained cinematic matte-painting realism, no generated text, and fully opaque output. The example road figure terrain destination and story are style-only and non-authoritative.",
       "Concept golden approved: human-free cinematic canyon-to-basin transition, one continuous cool river, central natural cleft, broad warm reflected basin, restrained 35 mm elevated perspective, layered teal-blue terrain, painterly realism, and fully opaque output. The example river cleft basin and transition are style-only and non-authoritative.",
-      "Diagram golden approved after revision 1 was rejected for one extra arrow: human-free cinematic terrain map, exactly four intentional natural terrace landmarks, one continuous pale-gold trail, exactly three deep-slate chevrons in the three inter-landmark gaps, layered teal-blue terrain, warm distant atmosphere, no text, and fully opaque output. The example graph is style-only and non-authoritative."
+      "Diagram golden approved after revision 1 was rejected for one extra arrow: human-free cinematic terrain map, exactly four intentional natural terrace landmarks, one continuous pale-gold trail, exactly three deep-slate chevrons in the three inter-landmark gaps, layered teal-blue terrain, warm distant atmosphere, no text, and fully opaque output. The example graph is style-only and non-authoritative.",
+      "Qualification passed: cover, concept, and diagram cross-topic probes compile, lint, and render all eight prompt blocks; the Style 6 cinematic natural-landscape identity also remains explicitly distinguishable from Style 3 neon circuitry and technology-first system topology."
     ]
   },
   "assets": [
