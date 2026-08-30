@@ -1,0 +1,76 @@
+{
+  "profile_id": "neon-systems",
+  "style_pack_version": 3,
+  "roles": {
+    "cover": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve one fully opaque deep navy signal architecture with three to five substantial modules and one continuous dominant cyan route",
+        "preserve restrained front-oblique cutaway depth readable matte module faces and acid green only for one confirmed active state",
+        "preserve a complete-frame editorial composition with an intentional deterministic title-safe architectural field"
+      ],
+      "may_vary": [
+        "the confirmed system subject module forms route direction and title-safe side may change completely",
+        "the active state may be a chamber gate output or transition only when supported by article semantics",
+        "small subordinate cyan connections may appear only when they are confirmed and remain visibly secondary to the focal route"
+      ],
+      "must_not_include": [
+        "do not generate title subtitle labels numbers code terminal text logos or watermarks",
+        "do not show people faces hands cities vehicles hackers robots mascots or cinematic characters",
+        "do not add HUD clutter rainbow neon uncontrolled magenta multiple green focal states transparent background isometric toy-city modules or empty black space"
+      ],
+      "acceptance_checks": [
+        "one cyan route through substantial dark modules reads immediately at thumbnail size and ends in no more than one acid-green active state",
+        "the composition feels like premium editorial signal architecture rather than a gaming poster dashboard or cyberpunk city",
+        "module scale camera lighting route continuity title space opacity and crop remain coherent"
+      ]
+    },
+    "concept": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve exactly one supported signal transformation propagation gating or routing relation using two to four substantial dark modules",
+        "preserve one continuous cyan input path and acid green only for the one emphasized state or output",
+        "preserve restrained physical cutaway depth complete-frame opacity and medium-low editorial density"
+      ],
+      "may_vary": [
+        "the confirmed input mechanism transformation and output may replace the complete golden example",
+        "module count may vary from two to four and the route may branch once only when semantics explicitly requires it",
+        "camera distance may vary within the front-oblique cutaway family while stable verticals and route visibility remain intact"
+      ],
+      "must_not_include": [
+        "do not invent algorithms protocols scores guarantees ownership metrics labels ports branches or additional system stages",
+        "do not copy the cover subject module positions route shape active chamber title field or example story",
+        "do not add people cities HUD panels code rainbow neon decorative circuitry glossy product advertising or generated text"
+      ],
+      "acceptance_checks": [
+        "one technical relation is understandable without labels and without implying unsupported implementation detail",
+        "cyan normal flow and the single acid-green emphasis remain semantically distinct and visually restrained",
+        "the cover reference contributes only substrate module scale camera emission hierarchy opacity and editorial finish"
+      ]
+    },
+    "diagram": {
+      "stability": "strict",
+      "must_preserve": [
+        "preserve the frozen graph exactly including every node edge direction group invariant exception and return",
+        "preserve a fully human-free opaque deep navy technical substrate with exact module ports and unobscured route geometry",
+        "preserve cyan for declared primary flow acid green only for a declared active node or edge and deterministic blank label zones"
+      ],
+      "may_vary": [
+        "node count labels groups and route types may vary only as validated semantics requires",
+        "front-oblique module depth may flatten slightly for dense graphs while never becoming blueprint linework or a dashboard",
+        "one restrained dashed cool-gray exception treatment may appear only when the frozen graph declares it"
+      ],
+      "must_not_include": [
+        "no people faces hands characters instructors narrators mascots crowds vehicles or stock imagery",
+        "do not invent omit reverse merge split reroute decorate or hide any frozen node edge direction group or invariant",
+        "do not copy golden labels numbers nodes topology module meanings route positions or example story",
+        "no HUD chrome code city data rain random circuits rainbow neon multiple active-green states transparent background or isometric server-city grammar"
+      ],
+      "acceptance_checks": [
+        "every visible module edge direction exception return group and active state matches the frozen graph exactly",
+        "all topology remains readable at article width without atmospheric haze glow or perspective hiding a route or port",
+        "the golden diagram contributes only substrate module family camera emission semantics spacing and deterministic label grammar"
+      ]
+    }
+  }
+}

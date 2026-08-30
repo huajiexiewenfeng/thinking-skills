@@ -1,0 +1,46 @@
+{
+  "golden_production_version": 1,
+  "profile_id": "neon-systems",
+  "style_pack_version": 3,
+  "status": "approved",
+  "mode_boundary": {
+    "must_read_as": "premium deep navy editorial signal architecture on a fully opaque substrate with substantial extruded modules one dominant cyan route acid green only for one active state and restrained front-oblique cutaway depth",
+    "must_not_read_as": "cyberpunk city HUD dashboard code terminal gaming poster rainbow neon glossy glass maze isometric server city flat blueprint or tiny transparent cutout",
+    "nearest_profile_id": "isometric-infrastructure"
+  },
+  "candidates": [
+    {
+      "id": "neon-systems-cover-v1",
+      "role": "cover",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/neon-systems/golden-cover.png",
+      "prompt_path": "assets/style-anchors/neon-systems/golden-cover.prompt.md",
+      "request_path": "evals/golden-production/03-neon-systems-cover-request.json",
+      "user_feedback": "Approved by the user by asking to continue. Preserve the three substantial chambers, one continuous cyan path, one acid-green final core, fully opaque substrate, front-oblique dark technical material family, and title-safe field only; the example topology is non-authoritative.",
+      "visual_thesis": "One visible cyan route makes a substantial dark system legible and activates exactly one green final state."
+    },
+    {
+      "id": "neon-systems-concept-v1",
+      "role": "concept",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/neon-systems/golden-concept.png",
+      "prompt_path": "assets/style-anchors/neon-systems/golden-concept.prompt.md",
+      "request_path": "evals/golden-production/03-neon-systems-concept-request.json",
+      "user_feedback": "Approved by the user by asking to continue. Preserve the asymmetrical elevated-source vertical-gate low-receiver relation, controlled cyan handoff, single acid-green receiving state, opacity, and shared material family only; the example relation is non-authoritative.",
+      "visual_thesis": "One signal becomes understandable as it crosses one explicit transformation boundary into one receiving state."
+    },
+    {
+      "id": "neon-systems-diagram-v1",
+      "role": "diagram",
+      "revision": 1,
+      "approval": "approved",
+      "approved_artifact_path": "assets/style-anchors/neon-systems/golden-diagram.png",
+      "prompt_path": "assets/style-anchors/neon-systems/golden-diagram.prompt.md",
+      "request_path": "evals/golden-production/03-neon-systems-diagram-request.json",
+      "user_feedback": "Approved by the user by asking to continue after internal topology review confirmed exactly five nodes, five directed edges, one recovery loop, one green verified output, no shortcut, and fully opaque human-free output. The example graph is non-authoritative.",
+      "visual_thesis": "A strict dark architecture diagram separates the cyan primary route from a restrained recovery loop without losing physical depth."
+    }
+  ]
+}

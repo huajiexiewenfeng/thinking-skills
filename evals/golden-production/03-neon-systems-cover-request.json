@@ -1,0 +1,44 @@
+{
+  "profile_id": "neon-systems",
+  "asset_role": "cover",
+  "objective": "Create one text-free wide editorial cover called Signal Vault: a complete fully opaque deep navy signal architecture spans the frame, one continuous cyan route enters from the lower-left, passes visibly through exactly three substantial extruded technical chambers, and activates exactly one acid-green core inside the final chamber at center-right.",
+  "semantics": {
+    "confirmed": [
+      "One generic signal moves through three visible system stages before activating one emphasized final state.",
+      "The chambers route and active core are a style demonstration only and do not represent a named product protocol guarantee or real infrastructure."
+    ],
+    "simplifications": [
+      "Use exactly three substantial chambers on one continuous physical substrate: a low intake chamber at left, a larger transformation chamber near center, and a final activation chamber at center-right.",
+      "Use exactly one continuous narrow cyan route with no branch loop crossing or duplicate destination, and change only the final contained core to acid green.",
+      "Keep the upper-left as a dark but architecturally active title-safe field with subtle frame depth and no generated text."
+    ],
+    "blocked": [
+      "Do not imply a real algorithm model security boundary deployment result benchmark success provider ownership or guaranteed system behavior.",
+      "Do not add people faces hands robots vehicles cities buildings streets hackers code terminals labels numbers logos screens dashboards HUD panels random circuits data rain rainbow neon magenta light extra green lights branches arrows or additional chambers."
+    ]
+  },
+  "composition": {
+    "structure": "wide 16:9 premium editorial technical set in restrained front-oblique cutaway perspective with stable verticals and roughly fifteen degrees of elevation; the fully opaque near-black navy substrate fills the complete frame; exactly three substantial matte blue-black chambers share one scale and bevel family across the lower and middle field; one narrow cyan route enters from lower-left, remains visible through all three chambers, and terminates at one contained acid-green core in the final center-right chamber; keep upper-left readable for deterministic title overlay without turning it into an empty black rectangle",
+    "hierarchy": "the continuous cyan route is the primary reading line, the single acid-green final core is the secondary focal state, and three substantial matte chambers establish physical scale; cool low-key ambient light reveals every module face while emission remains narrow and locally motivated; the architecture occupies roughly eighty percent of the frame",
+    "human_elements": "none; human-free system architecture with no figures faces hands characters mascots robots or vehicles"
+  },
+  "text_policy": {
+    "mode": "text-free generated background with deterministic upper-left Chinese title and compact English subtitle added later",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "the complete substrate chambers route and active core fill roughly eighty percent of the frame with readable dark detail and no transparent or empty black field",
+    "crop_rules": "representative intake route central chamber final acid-green core and physical substrate remain legible in the central square crop",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "cover",
+    "bootstrap_references": [],
+    "semantic_authority": false
+  }
+}

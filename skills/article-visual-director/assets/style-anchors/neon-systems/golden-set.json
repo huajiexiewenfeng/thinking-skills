@@ -1,1 +1,57 @@
-{"golden_set_version":1,"profile_id":"neon-systems","protocol_version":2,"status":"candidate","user_approval":{"status":"pending","revision_notes":[]},"assets":[]}
+{
+  "golden_set_version": 1,
+  "profile_id": "neon-systems",
+  "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "d8643fc70c02c01bc444977d68ba79492133c38e4101ec1a28357ac1cc996219",
+  "role_contracts_sha256": "db68d42b0b7cfc79d7f5c8549472544f3c9128c2473d51c5d4e6d4dad2255f90",
+  "reference_matrix_sha256": "b87c6d523de2693142817fb2798305e907b26c7939354637c55f3cc0297caacc",
+  "qualification": {
+    "prompt_compile_status": "passed",
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed"
+  },
+  "status": "approved",
+  "user_approval": {
+    "status": "approved",
+    "revision_notes": [
+      "Style 3 v3 candidate identity established before golden generation: premium deep navy editorial signal architecture, fully opaque substrate, front-oblique cutaway depth, substantial extruded modules, one dominant cyan route, and acid green only for one confirmed active state.",
+      "Cover golden approved: exactly three substantial dark technical chambers on one fully opaque substrate, one continuous cyan signal route, one acid-green final core, restrained front-oblique cutaway depth, active upper-left deterministic title field, no people, no generated text, and no HUD or city drift. The example chambers route and active core are style-only and non-authoritative.",
+      "Concept golden approved: one elevated source chamber, one narrow vertical transformation gate, one broad low receiving basin, one continuous descending cyan handoff, one contained acid-green receiving state, fully opaque dark substrate, and no repetition of the cover's horizontal three-chamber composition. The example handoff topology and module meanings are style-only and non-authoritative.",
+      "Diagram golden approved after topology review: exactly five substantial modules, exactly three left-to-right cyan primary edges, one dashed execution-to-recovery exception edge, one dashed recovery-to-dispatch return edge, exactly five destination arrowheads, one acid-green verified-output state, fully opaque substrate, blank deterministic plaques, and no undeclared shortcut. The example graph is style-only and non-authoritative.",
+      "Qualification passed: cover, concept, and diagram cross-topic probes compile, lint, and render all eight prompt blocks without copying golden labels, numbers, nodes, topology, or story; Style 3 front-oblique dark signal architecture remains explicitly distinguishable from Style 5 pale matte isometric infrastructure."
+    ]
+  },
+  "assets": [
+    {
+      "id": "neon-systems-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "reference_role": "Anchors deep navy substrate, substantial module scale, front-oblique cutaway camera, narrow cyan emission, one acid-green active state, complete-frame opacity, and title-safe behavior only; example content and topology are non-authoritative.",
+      "artifact_path": "golden-cover.png",
+      "artifact_sha256": "6e988d4515a66a1305d5b500395dcc64521f84857b44eb44bbe8e775456c9988",
+      "prompt_path": "golden-cover.prompt.md",
+      "prompt_sha256": "35d87e5190e6c93eb9e6591549470dc25c66ab1797a3642382789a290e850721"
+    },
+    {
+      "id": "neon-systems-concept-v1",
+      "role": "concept",
+      "renderer": "imagegen",
+      "reference_role": "Anchors one technical relation, asymmetrical module composition, controlled cyan handoff, single acid-green receiving state, front-oblique material family, opacity, and medium-low density only; example content and topology are non-authoritative.",
+      "artifact_path": "golden-concept.png",
+      "artifact_sha256": "ef8f11f14f3d3829dbd9e0823df00245e1e44b080837cee2292ba32c698f4785",
+      "prompt_path": "golden-concept.prompt.md",
+      "prompt_sha256": "3038aebfef66b444e7be5d8bcc63fdd9eba67ff8ea16d01833ae8bebd0ab106f"
+    },
+    {
+      "id": "neon-systems-diagram-v1",
+      "role": "diagram",
+      "renderer": "imagegen",
+      "reference_role": "Anchors strict human-free frozen-graph rendering, dark opaque substrate, equal-scale substantial modules, exact cyan primary paths, restrained dashed recovery treatment, single acid-green active output, blank deterministic plaques, and topology-readable emission only; example graph is non-authoritative.",
+      "artifact_path": "golden-diagram.png",
+      "artifact_sha256": "524fa64755078afe12c4daa3fe51150eb5fda2a789b4a743c6233949aec06857",
+      "prompt_path": "golden-diagram.prompt.md",
+      "prompt_sha256": "a5eebe7c9e34dd9bcf2c34ad599fc1db70ed30c4cfdc26ac054977e2aabd232d"
+    }
+  ]
+}
