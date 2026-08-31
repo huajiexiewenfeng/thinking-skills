@@ -1,0 +1,59 @@
+{
+  "profile_id": "blueprint-linework",
+  "asset_role": "concept",
+  "objective": "Create one text-free Clean Tech Blueprint concept image called Verified Context Stack: three distinct information layers align through one transparent verification core and resolve into one trusted result module.",
+  "semantics": {
+    "confirmed": [
+      "A reliable result depends on aligning context constraints and evidence rather than using any one layer alone.",
+      "One verification core checks the three layers as a combined structure.",
+      "The layered stack is a generic explanatory metaphor and does not describe a named AI architecture product protocol or guarantee."
+    ],
+    "simplifications": [
+      "Use one dominant central stack of exactly three wide frosted-glass plates floating vertically with measured gaps; each plate contains one large blank geometric icon only: layered cards on top, shield in the middle, evidence marks on the bottom.",
+      "Pass one translucent cobalt vertical verification core through all three plates; use a clean rectangular light column rather than a circle ring or capsule.",
+      "Place two small white satin source modules at far-left feeding separate cobalt paths into the top and middle plates; use abstract document and rule icons with no text.",
+      "Place one white satin trusted-result module at far-right receiving one cobalt path from the bottom of the verification core; use exactly one teal check state inside it.",
+      "Use a low frosted-glass base beneath the stack so subtle blue reflections and soft spatial shadows create material quality.",
+      "Use no browser monitor phone large screen title field or multi-branch state diagram."
+    ],
+    "blocked": [
+      "Do not copy the cover input-tile fan circular orchestration hub platform shape dominant system panel six-module graph red amber branches or left-to-right three-zone silhouette.",
+      "Do not copy either user reference's text devices workflow topology icons paper sketch phone browser chrome or object arrangement.",
+      "Do not imply a named retrieval system security protocol agent architecture verification guarantee compliance rule or physical device.",
+      "Do not add generated Chinese English words letters numbers labels legends code UI copy dimensions logos watermarks people hands robots AI brains office props dashboards or stock photography.",
+      "Do not use dark cyanotype black background neon cyberpunk excessive chrome heavy bloom harsh shadows giant empty cards or candy-plastic toy rendering."
+    ]
+  },
+  "composition": {
+    "structure": "wide 16:9 fully opaque cool-white technology canvas with faint blue grid; one dominant central three-layer frosted-glass stack occupies roughly fifty percent of the canvas width and seventy percent of height; a rectangular translucent cobalt verification core passes vertically through all layers; two small source modules balance the far-left and one trusted-result module balances the far-right; a low glass base grounds only the central stack; cobalt paths remain sparse clean and visibly connected; no title-safe zone",
+    "hierarchy": "the three floating glass plates and vertical cobalt core form the material focal object, the left source modules are subordinate, and the single teal trusted-result module is the semantic endpoint; deep navy edges cobalt light restrained cyan glass and one teal success state create a polished modular technology explainer with soft spatial shadow and generous breathing room",
+    "human_elements": "none; no people faces hands characters instructors narrators mascots humanoid robots or stock imagery"
+  },
+  "text_policy": {
+    "mode": "label-free generated technology concept with deterministic captions added later",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "central stack source modules result module paths and glass base occupy roughly eighty-two percent of the fully opaque canvas",
+    "crop_rules": "all three glass layers the complete cobalt verification core and the teal trusted-result module remain meaningful in the central square crop",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "concept",
+    "bootstrap_references": [
+      {
+        "id": "blueprint-linework-cover-v1",
+        "profile_id": "blueprint-linework",
+        "role": "cover",
+        "approval": "approved",
+        "semantic_authority": false
+      }
+    ],
+    "semantic_authority": false
+  }
+}

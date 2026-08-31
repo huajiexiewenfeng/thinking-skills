@@ -214,12 +214,3 @@
   "deterministic text overlay and deterministic annotation overlay preserve exact Chinese English labels titles legends and states",
   "the visual remains content-rich polished and legible at article width"
 ]
-
-[DETERMINISTIC FINAL OVERLAY]
-
-- Eyebrow: `ARTICLE VISUAL DIRECTOR · STYLE 4`
-- Headline line 1: `一个 Skill，`
-- Headline line 2: `让复杂技术拥有一整套质感配图`
-- Cobalt keyword emphasis: `一整套质感配图`
-- English subtitle: `POLISHED TECH EXPLAINER`
-- Renderer: SVG overlay using Microsoft YaHei / PingFang SC fallback; never ask the image model to generate this copy.

@@ -1,0 +1,47 @@
+{
+  "profile_id": "blueprint-linework",
+  "asset_role": "cover",
+  "objective": "Create one text-free wide editorial blueprint atlas called Radial Gateway: a large orthographic radial cutaway shows one generic layered boundary assembly, while two smaller synchronized views clarify the same object; one cyan interface band is the only semantic highlight.",
+  "semantics": {
+    "confirmed": [
+      "One generic layered boundary assembly contains an outer structure, an intermediate boundary, and a compact inner region.",
+      "One controlled interface crosses the intermediate boundary and reaches the inner region.",
+      "The radial assembly and supporting views are a style demonstration only and do not represent a named device architecture protocol or guarantee."
+    ],
+    "simplifications": [
+      "Use one large front-orthographic radial quarter-cutaway as the hero subject with four substantial uneven structural bands and one compact inner region.",
+      "Use opaque ivory section fills for the cut structural bands, deep indigo negative channels for internal separations, and a three-level 4/2/1 pale line hierarchy.",
+      "Use exactly two smaller pale supporting views of the same assembly stacked at far-right: one side elevation and one narrow detail section connected by thin muted projection leaders.",
+      "Use exactly one broad cyan interface band crossing one side of the hero cutaway toward the inner region; supporting views contain no additional cyan highlight."
+    ],
+    "blocked": [
+      "Do not imply a real machine material network security model standard dimension performance value safety property or product architecture.",
+      "Do not add labels titles numbers dimensions tolerances identifiers callout text bolts gears pipes rooms doors windows people hands rulers dashboards code screens arrows extra cyan accents or unrelated supporting objects.",
+      "Do not copy the rejected cover's tall rectangular module three empty inner cavities detached right slab narrow vertical cyan membrane or sparse unused grid composition."
+    ]
+  },
+  "composition": {
+    "structure": "wide 16:9 fully opaque editorial blueprint atlas on deep indigo cyanotype paper; reserve the left twenty-four percent as a calm but active deterministic title field containing only a faint datum grid and two or three short blank annotation rules; place one large front-orthographic radial quarter-cutaway across the center with four uneven ivory-filled structural bands, deep-blue internal channels, crisp pale anatomy, and one compact inner region; stack exactly two smaller synchronized orthographic views at far-right, one side elevation above and one detail section below, using muted projection leaders to matching hero features; all views remain flat and coplanar with no perspective",
+    "hierarchy": "the substantial ivory-filled radial cutaway is the dominant graphic mass, the single broad cyan interface band is the only saturated semantic focal feature, and the two smaller supporting views remain clearly subordinate; four-pixel hero silhouette, two-pixel final internal structure, and one-pixel muted construction context create a premium technical-poster hierarchy; technical anatomy fills roughly eighty-two percent without giant hollow regions",
+    "human_elements": "none; no people faces hands characters instructors narrators mascots or stock imagery"
+  },
+  "text_policy": {
+    "mode": "text-free generated cyanotype background with deterministic title and compact annotations added later",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "hero cutaway supporting views projection leaders grid and title field form one complete technical atlas across roughly eighty-two percent of the fully opaque canvas",
+    "crop_rules": "the cyan interface representative ivory section bands compact inner region and at least one supporting view remain meaningful in the central square crop",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "cover",
+    "bootstrap_references": [],
+    "semantic_authority": false
+  }
+}

@@ -2,31 +2,32 @@
 {
   "platform": "golden-reference",
   "aspect_ratio": "16:9",
-  "occupancy": "input tiles glass hub platform flow bands and dominant display panel occupy roughly eighty-four percent while the upper-left title-safe field remains usable",
-  "crop_rules": "the complete glass hub at least two input tiles the main display panel and its core cobalt system path remain meaningful in the central square crop",
+  "occupancy": "central stack source modules result module paths and glass base occupy roughly eighty-two percent of the fully opaque canvas",
+  "crop_rules": "all three glass layers the complete cobalt verification core and the teal trusted-result module remain meaningful in the central square crop",
   "output_count": 1
 }
 
 [ARTICLE SEMANTICS]
 {
   "confirmed": [
-    "Several incomplete input fragments can be gathered into one structured system representation.",
-    "One central orchestration and verification stage separates raw input from structured output.",
-    "The display panel and state colors are a generic style demonstration and do not describe a named product architecture workflow or guarantee."
+    "A reliable result depends on aligning context constraints and evidence rather than using any one layer alone.",
+    "One verification core checks the three layers as a combined structure.",
+    "The layered stack is a generic explanatory metaphor and does not describe a named AI architecture product protocol or guarantee."
   ],
   "simplifications": [
-    "Reserve the upper-left thirty-four percent as a calm deterministic title-safe field with only faint grid and soft ambient blue arcs.",
-    "Below the title field place three to five small translucent input tiles with abstract lines and shapes only; no paper sketch no question marks and no text.",
-    "Place one polished circular glass orchestration hub near center with a cobalt inner ring and three small blank geometric status tokens suspended inside.",
-    "Place one dominant wide white satin display panel across the center-right, slightly front-facing with shallow thickness; inside it show one clean generic six-module system diagram using cobalt paths, white rounded modules, one teal success state, one amber attention state, and one red blocked state.",
-    "Connect input tiles to the glass hub and the hub to the display panel using two broad restrained translucent cobalt flow bands; use no phone and no second large screen.",
-    "Add a low white-glass platform beneath the hub and display panel so soft shadows and blue ambient reflections create material quality."
+    "Use one dominant central stack of exactly three wide frosted-glass plates floating vertically with measured gaps; each plate contains one large blank geometric icon only: layered cards on top, shield in the middle, evidence marks on the bottom.",
+    "Pass one translucent cobalt vertical verification core through all three plates; use a clean rectangular light column rather than a circle ring or capsule.",
+    "Place two small white satin source modules at far-left feeding separate cobalt paths into the top and middle plates; use abstract document and rule icons with no text.",
+    "Place one white satin trusted-result module at far-right receiving one cobalt path from the bottom of the verification core; use exactly one teal check state inside it.",
+    "Use a low frosted-glass base beneath the stack so subtle blue reflections and soft spatial shadows create material quality.",
+    "Use no browser monitor phone large screen title field or multi-branch state diagram."
   ],
   "blocked": [
-    "Do not copy either user reference's title text paper sketch central vertical capsule browser chrome phone exact icons graph topology node count or device arrangement.",
-    "Do not imply a named AI agent workflow software product protocol security mechanism compatibility guarantee or universal architecture.",
-    "Do not add generated Chinese English words letters numbers labels legends code interface copy dimensions watermarks logos people hands robots AI brains office props or stock photography.",
-    "Do not use dark cyanotype black dashboard neon cyberpunk hologram tunnel dramatic lens flare chrome overload heavy bloom harsh shadows dense UI controls or a generic app screenshot."
+    "Do not copy the cover input-tile fan circular orchestration hub platform shape dominant system panel six-module graph red amber branches or left-to-right three-zone silhouette.",
+    "Do not copy either user reference's text devices workflow topology icons paper sketch phone browser chrome or object arrangement.",
+    "Do not imply a named retrieval system security protocol agent architecture verification guarantee compliance rule or physical device.",
+    "Do not add generated Chinese English words letters numbers labels legends code UI copy dimensions logos watermarks people hands robots AI brains office props dashboards or stock photography.",
+    "Do not use dark cyanotype black background neon cyberpunk excessive chrome heavy bloom harsh shadows giant empty cards or candy-plastic toy rendering."
   ]
 }
 
@@ -34,21 +35,21 @@
 {
   "stability": "family",
   "instructions": {
-    "structure": "wide 16:9 fully opaque cool-white technology studio with a faint blue drafting grid on the wall and floor; upper-left title-safe field remains calm; three to five small translucent input tiles sit lower-left; one circular polished glass orchestration hub on a low white-glass platform anchors center; one dominant wide white satin display panel occupies center-right and contains a clean blank-label six-module system diagram; two translucent cobalt flow bands connect the three zones; all objects remain front-facing with shallow 2.5D thickness and complete-frame balance",
-    "hierarchy": "the display panel is the largest content-bearing object, the glass hub is the material focal object, and input tiles remain subordinate; deep navy and cobalt dominate, teal amber and red appear only as small evidence-bound states; polished glass-acrylic edges soft spatial shadow subtle blue ambient bounce and restrained highlights create premium technology product visual quality",
+    "structure": "wide 16:9 fully opaque cool-white technology canvas with faint blue grid; one dominant central three-layer frosted-glass stack occupies roughly fifty percent of the canvas width and seventy percent of height; a rectangular translucent cobalt verification core passes vertically through all layers; two small source modules balance the far-left and one trusted-result module balances the far-right; a low glass base grounds only the central stack; cobalt paths remain sparse clean and visibly connected; no title-safe zone",
+    "hierarchy": "the three floating glass plates and vertical cobalt core form the material focal object, the left source modules are subordinate, and the single teal trusted-result module is the semantic endpoint; deep navy edges cobalt light restrained cyan glass and one teal success state create a polished modular technology explainer with soft spatial shadow and generous breathing room",
     "human_elements": "none; no people faces hands characters instructors narrators mascots humanoid robots or stock imagery"
   },
   "must_preserve": [
-    "preserve one content-rich hybrid 2.5D technology scene on a cool white grid with a dominant system panel or browser frame and one or two subordinate device or process objects",
-    "preserve cobalt-blue system logic deep navy hierarchy polished glass-acrylic or frosted glass material and soft spatial shadow",
-    "preserve a deterministic title-safe region while the technology scene occupies roughly seventy-eight to eighty-eight percent",
-    "preserve fully opaque output and a premium front-facing technology product visual rather than a flat poster of disconnected icons"
+    "preserve one visual thesis through a polished modular technology explainer on a cool white grid",
+    "preserve one dominant focal module or transformation and two to five purposeful supporting modules connected by clear cobalt logic",
+    "preserve selective frosted glass or shallow 2.5D depth navy hierarchy restrained semantic state colors and generous spacing",
+    "preserve label-free image generation with deterministic text zones and complete article-width legibility"
   ],
   "may_vary": [
-    "the article-supported system panel devices process objects arrows and visual thesis may change completely",
-    "the scene may combine browser monitor tablet phone glass capsule service pillar or modular console when each object supports the thesis",
-    "title-safe side object order and shallow depth may vary while hierarchy and crop remain clear",
-    "validated semantic state colors may appear on small modules while cobalt remains dominant"
+    "the confirmed article concept modules device types relation and composition may replace the complete golden example",
+    "the concept may use one system panel a staged transformation a layered service stack or a device-to-process relation",
+    "one teal amber red or purple semantic class may appear only when confirmed semantics requires it",
+    "depth may range from flat-plus-shadow to shallow glass layering but never becomes an isometric infrastructure scene"
   ]
 }
 
@@ -151,19 +152,29 @@
 
 [REFERENCE CONTRACT]
 {
-  "required_references": [],
+  "required_references": [
+    {
+      "id": "blueprint-linework-cover-v1",
+      "kind": "bootstrap_candidate",
+      "profile_id": "blueprint-linework",
+      "role": "cover",
+      "approval": "approved",
+      "bootstrap_reference": true,
+      "semantic_authority": false
+    }
+  ],
   "bootstrap_reference": true,
   "semantic_authority": false,
-  "target_golden_asset_id": "blueprint-linework-cover-v1",
+  "target_golden_asset_id": "blueprint-linework-concept-v1",
   "must_preserve": [
-    "preserve cool white grid surface cobalt-blue logic navy hierarchy and premium glass-acrylic device material",
-    "preserve one dominant system panel plus one or two subordinate technology objects in a coherent front-facing shallow 2.5D scene",
-    "preserve soft spatial shadow luminous blue edge restraint content-rich occupancy and deterministic title-safe behavior"
+    "preserve one polished modular technology explainer with a clear focal transformation or relation",
+    "preserve cool white grid cobalt logic navy hierarchy selective glass depth generous spacing and deterministic text zones",
+    "preserve purposeful content density and evidence-bound semantic color without generic dashboard or icon-collage drift"
   ],
   "may_vary": [
-    "replace the complete system panel device family process objects title-safe side and visual thesis with article-confirmed content",
-    "vary browser monitor tablet phone glass capsule service pillar or modular console when the object supports the article",
-    "vary supported semantic accent colors while cobalt remains dominant"
+    "replace the complete modules device types relation composition and semantic color class with article-confirmed content",
+    "vary system panel staged transformation service stack or device-to-process layout",
+    "vary depth from flat-plus-shadow to shallow glass layering without becoming isometric infrastructure"
   ],
   "must_not_copy": [
     "labels",
@@ -178,7 +189,7 @@
 
 [TEXT POLICY]
 {
-  "mode": "text-free generated technology cover with deterministic title subtitle and compact labels added later",
+  "mode": "label-free generated technology concept with deterministic captions added later",
   "exact_text": [],
   "deterministic_overlay": true
 }
@@ -191,22 +202,23 @@
   "no photoreal product advertisement chrome overload dramatic lens flare heavy bloom harsh cast shadow or candy-plastic toy rendering",
   "no generated Chinese English labels titles legends node names dimensions or pseudo-technical text",
   "no unsupported nodes edges devices states colors branches exceptions returns or topology",
-  "do not generate title subtitle labels legends interface copy code or pseudo-technical text",
-  "do not copy reference devices graph topology labels icons paper sketch story or exact layout",
-  "do not use dark cyanotype neon cyberpunk black dashboards photoreal people humanoid robots floating AI brains or generic stock-office scenes",
-  "do not create excessive glass blur chrome overload harsh shadows giant empty UI frames meaningless app screens or decorative device collections",
-  "Do not copy either user reference's title text paper sketch central vertical capsule browser chrome phone exact icons graph topology node count or device arrangement.",
-  "Do not imply a named AI agent workflow software product protocol security mechanism compatibility guarantee or universal architecture.",
-  "Do not add generated Chinese English words letters numbers labels legends code interface copy dimensions watermarks logos people hands robots AI brains office props or stock photography.",
-  "Do not use dark cyanotype black dashboard neon cyberpunk hologram tunnel dramatic lens flare chrome overload heavy bloom harsh shadows dense UI controls or a generic app screenshot."
+  "do not invent modules devices interfaces states colors branches labels causal links or outcomes",
+  "do not copy the cover subject object arrangement title field graph topology or example story",
+  "do not create a generic dashboard wall meaningless UI app mockup giant empty browser isolated floating icons dark neon scene or glossy advertising render",
+  "do not use generated text people robots AI brains code screens dense charts or unsupported decorative technology",
+  "Do not copy the cover input-tile fan circular orchestration hub platform shape dominant system panel six-module graph red amber branches or left-to-right three-zone silhouette.",
+  "Do not copy either user reference's text devices workflow topology icons paper sketch phone browser chrome or object arrangement.",
+  "Do not imply a named retrieval system security protocol agent architecture verification guarantee compliance rule or physical device.",
+  "Do not add generated Chinese English words letters numbers labels legends code UI copy dimensions logos watermarks people hands robots AI brains office props dashboards or stock photography.",
+  "Do not use dark cyanotype black background neon cyberpunk excessive chrome heavy bloom harsh shadows giant empty cards or candy-plastic toy rendering."
 ]
 
 [ACCEPTANCE CHECK]
 [
-  "the cover reads as one premium technology launch visual with a clear article thesis at thumbnail size",
-  "glass-acrylic depth white device frames cobalt logic and soft shadow create visible material quality without photoreal-advertising excess",
-  "the dominant panel contains meaningful blank diagram structure ready for deterministic overlay rather than invented interface text",
-  "title-safe region central crop opacity and distinction from Styles 1 2 and 5 remain coherent",
+  "one visual thesis is understandable through module hierarchy connection logic material contrast and semantic color without generated text",
+  "the image feels like a polished technology explainer with real content density rather than a template dashboard or icon collage",
+  "glass and soft shadow add quality but remain subordinate to the supported relationship",
+  "the cover reference contributes only white-blue surface material depth modular hierarchy spacing and annotation restraint",
   "cool white technology canvas faint blue drafting grid and navy information hierarchy establish a clean technical atmosphere",
   "cobalt blue system logic polished glass-acrylic material and soft spatial shadow create premium technology product visual quality",
   "cover and concept roles use deliberate shallow 2.5D depth while the diagram role remains a precise flat infographic",
@@ -217,9 +229,7 @@
 
 [DETERMINISTIC FINAL OVERLAY]
 
-- Eyebrow: `ARTICLE VISUAL DIRECTOR · STYLE 4`
-- Headline line 1: `一个 Skill，`
-- Headline line 2: `让复杂技术拥有一整套质感配图`
-- Cobalt keyword emphasis: `一整套质感配图`
-- English subtitle: `POLISHED TECH EXPLAINER`
+- Eyebrow: `VERIFIED CONTEXT STACK`
+- Headline: `可靠结果，来自三层共同验证`
+- Subtitle: `上下文、约束与证据对齐后，再交付可信结果`
 - Renderer: SVG overlay using Microsoft YaHei / PingFang SC fallback; never ask the image model to generate this copy.

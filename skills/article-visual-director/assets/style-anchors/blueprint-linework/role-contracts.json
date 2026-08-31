@@ -5,71 +5,87 @@
     "cover": {
       "stability": "family",
       "must_preserve": [
-        "preserve one large content-rich orthographic construction or cutaway across seventy-six to eighty-four percent of the wide canvas",
-        "preserve fully opaque deep blueprint-blue ground low-intensity grid uniform pale linework and one semantic cyan feature",
-        "preserve one clean deterministic title-safe zone without shrinking the technical subject"
+        "preserve one content-rich hybrid 2.5D technology scene on a cool white grid with a dominant system panel or browser frame and one or two subordinate device or process objects",
+        "preserve cobalt-blue system logic deep navy hierarchy polished glass-acrylic or frosted glass material and soft spatial shadow",
+        "preserve a deterministic title-safe region while the technology scene occupies roughly seventy-eight to eighty-eight percent",
+        "preserve fully opaque output and a premium front-facing technology product visual rather than a flat poster of disconnected icons",
+        "preserve a two-stage text workflow: text-free image-generation background first then deterministic final overlay for the validated headline subtitle and compact annotations"
       ],
       "may_vary": [
-        "the real article-supported boundary component or cutaway subject may change completely",
-        "the title-safe side and orthographic elevation plan section or cutaway arrangement may vary",
-        "one ghost construction layer may clarify alignment without creating volumetric scenery"
+        "the article-supported system panel devices process objects arrows and visual thesis may change completely",
+        "the scene may combine browser monitor tablet phone glass capsule service pillar or modular console when each object supports the thesis",
+        "title-safe side object order and shallow depth may vary while hierarchy and crop remain clear",
+        "validated semantic state colors may appear on small modules while cobalt remains dominant",
+        "the deterministic headline may use navy body text with cobalt keyword emphasis plus one compact English subtitle"
       ],
       "must_not_include": [
-        "do not generate dimensions labels tolerances identifiers captions or unsupported engineering details",
-        "do not use isometric perspective shadows glow gloss photorealistic material or decorative machinery",
-        "do not create an empty grid with a small ornamental schematic or use multiple cyan accents"
+        "do not generate title subtitle labels legends interface copy code or pseudo-technical text",
+        "do not copy reference devices graph topology labels icons paper sketch story or exact layout",
+        "do not use dark cyanotype neon cyberpunk black dashboards photoreal people humanoid robots floating AI brains or generic stock-office scenes",
+        "do not create excessive glass blur chrome overload harsh shadows giant empty UI frames meaningless app screens or decorative device collections"
       ],
       "acceptance_checks": [
-        "the supported technical thesis is understandable at thumbnail size without text",
-        "the large orthographic subject and title-safe zone remain balanced on a fully opaque canvas",
-        "the result reads as blueprint linework rather than isometric infrastructure or cinematic technology art"
+        "the cover reads as one premium technology launch visual with a clear article thesis at thumbnail size",
+        "glass-acrylic depth white device frames cobalt logic and soft shadow create visible material quality without photoreal-advertising excess",
+        "the dominant panel contains meaningful blank diagram structure ready for deterministic overlay rather than invented interface text",
+        "title-safe region central crop opacity and distinction from Styles 1 2 and 5 remain coherent"
       ]
     },
     "concept": {
       "stability": "family",
       "must_preserve": [
-        "preserve exactly one boundary layer interface or component relation through one main orthographic outline",
-        "preserve uniform pale two-pixel lines one optional ghost construction layer and one semantic cyan emphasis",
-        "preserve disciplined occupancy measured spacing and label-free generation"
+        "preserve one visual thesis through a polished modular technology explainer on a cool white grid",
+        "preserve one dominant focal module or transformation and two to five purposeful supporting modules connected by clear cobalt logic",
+        "preserve selective frosted glass or shallow 2.5D depth navy hierarchy restrained semantic state colors and generous spacing",
+        "preserve label-free image generation followed by deterministic readable title subtitle section and module labels with complete article-width legibility"
       ],
       "may_vary": [
-        "the confirmed article subject and relation may replace the complete golden example",
-        "the view may vary among elevation plan section cutaway and exploded alignment",
-        "the cyan role may identify a supported boundary layer interface or transition"
+        "the confirmed article concept modules device types relation and composition may replace the complete golden example",
+        "the concept may use one system panel a staged transformation a layered service stack or a device-to-process relation",
+        "one teal amber red or purple semantic class may appear only when confirmed semantics requires it",
+        "depth may range from flat-plus-shadow to shallow glass layering but never becomes an isometric infrastructure scene",
+        "a validated comparison or capability-evolution concept may use two system panels circular technology icons and one blue-to-green transition arrow"
       ],
       "must_not_include": [
-        "do not invent components layers dimensions interfaces ports labels or causal relationships",
-        "do not repeat the cover object family story topology or positions",
-        "do not introduce isometric volume watercolor softness dense hatching multiple highlights or engineering theater"
+        "do not invent modules devices interfaces states colors branches labels causal links or outcomes",
+        "do not copy the cover subject object arrangement title field graph topology or example story",
+        "do not create a generic dashboard wall meaningless UI app mockup giant empty browser isolated floating icons dark neon scene or glossy advertising render",
+        "do not use generated text people robots AI brains code screens dense charts or unsupported decorative technology"
       ],
       "acceptance_checks": [
-        "one relationship is legible through line hierarchy and spatial arrangement without generated text",
-        "the concept remains a complete article image rather than a sparse decorative fragment",
-        "the cover reference contributes only projection surface line grid density and annotation-zone behavior"
+        "one visual thesis is understandable through module hierarchy connection logic material contrast and semantic color without generated text",
+        "the image feels like a polished technology explainer with real content density rather than a template dashboard or icon collage",
+        "glass and soft shadow add quality but remain subordinate to the supported relationship",
+        "the cover reference contributes only white-blue surface material depth modular hierarchy spacing and annotation restraint"
       ]
     },
     "diagram": {
       "stability": "strict",
       "must_preserve": [
-        "preserve the frozen graph exactly including every node edge direction group invariant and exception",
-        "preserve a fully human-free front-orthographic layout with uniform two-pixel lines and orthogonal arrows",
-        "preserve deep blueprint-blue ground deterministic drafting captions measured spacing and one supported cyan thesis feature"
+        "preserve the frozen graph exactly including every node edge direction group invariant exception return and state",
+        "preserve a fully human-free flat infographic on a cool white grid with large rounded containers grid-aligned modules cobalt paths and deterministic text zones",
+        "preserve deep navy label hierarchy pale blue boundaries consistent two-pixel arrows subtle card shadows and semantic state colors only where validated",
+        "preserve generous spacing safe margins and complete topology visibility at article width",
+        "preserve content-rich information design: the image-generation background contains a blank eyebrow blank title and subtitle zones blank step-index discs blank caption rails group bands and one blank explanatory strip without adding semantic nodes or edges; the deterministic final overlay fills these zones with validated copy",
+        "preserve readable deterministic final copy in golden references and article output while image generation remains text-free"
       ],
       "may_vary": [
-        "node count labels groups and edge types may vary only as the validated frozen graph requires",
-        "one cyan boundary node or path may appear only when article semantics supports it",
-        "the grid-aligned layout may adapt to the graph while every element remains inside the safe region"
+        "node count exact labels groups lanes and edge types may vary only as the validated frozen graph requires",
+        "teal amber red or purple states may appear only when the graph explicitly assigns their success judgment failure or service meaning",
+        "container layout may use horizontal stages vertical lanes or grouped regions while every semantic element remains inside the safe area",
+        "non-semantic information layers such as decorative corner circles blank index discs caption rails and explanatory strips may vary when they improve hierarchy"
       ],
       "must_not_include": [
-        "no people faces hands characters instructors narrators mascots or stock imagery",
-        "do not invent omit reverse merge split or reroute any frozen semantic relationship",
-        "do not copy golden labels numbers nodes topology boundaries groups or example story",
-        "no isometric camera perspective extrusion shadow glow fake dimension decorative machinery or dense hatching"
+        "no people faces hands characters instructors narrators mascots robots or stock imagery",
+        "do not invent omit reverse merge split reroute decorate or hide any frozen semantic relationship",
+        "do not copy golden labels numbers nodes topology devices states groups or example story",
+        "no generated text dark dashboard neon cyberpunk 3D device perspective glass capsule decorative browser chrome or ornamental illustration"
       ],
       "acceptance_checks": [
-        "every visible node edge direction group and exception matches the frozen graph",
-        "the diagram remains human-free flat orthographic opaque and legible at article width",
-        "the golden diagram contributes only surface projection line grid spacing caption and semantic-color grammar"
+        "every visible node edge direction group exception return state and semantic color matches the frozen graph",
+        "the diagram remains a crisp flat infographic with deterministic labels and no image-model text",
+        "normal flow warning human judgment failure success and fallback remain visually distinguishable only when supported",
+        "the golden diagram contributes only white-grid surface modular geometry path styling container hierarchy spacing state-color grammar and typography zones"
       ]
     }
   }

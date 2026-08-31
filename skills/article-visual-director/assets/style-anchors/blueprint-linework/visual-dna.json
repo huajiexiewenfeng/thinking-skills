@@ -1,73 +1,100 @@
 {
   "profile_id": "blueprint-linework",
   "style_pack_version": 3,
+  "identity": {
+    "name_en": "Polished Tech Explainer",
+    "name_zh": "质感科技图解",
+    "promise": "turn validated technical content into a polished technology product visual for covers and concepts, then a content-rich information design for precise diagrams"
+  },
   "surface": {
-    "background": "fully opaque deep blueprint-blue drafting ground based on #123B66",
-    "alternate": "warm drafting paper inversion is allowed for non-golden article variants only",
-    "finish": "matte technical drafting surface with one low-intensity construction grid"
+    "background": "fully opaque cool white technology canvas based on #F7FAFF",
+    "grid": "faint blue drafting grid based on #DCE8FA appears only in open background regions",
+    "finish": "clean luminous enterprise-technology editorial surface with subtle blue ambient depth and no paper texture"
   },
   "palette_roles": {
-    "final_structure": "pale blue-white based on #E6F4FF defines final orthographic structure",
-    "construction": "muted steel blue based on #82A8C8 defines ghost and construction lines",
-    "thesis_highlight": "a single cyan based on #72D5FF identifies exactly one supported boundary layer or transition",
-    "secondary_boundary": "deep muted blue based on #2A5278 separates subordinate drafting regions without creating a second accent",
-    "ground": "deep blueprint-blue remains the dominant visual field"
-  },
-  "line_language": {
-    "primary": "uniform two-pixel pale lines with disciplined mechanical continuity",
-    "construction": "uniform two-pixel or visually lighter dashed construction lines aligned to the drafting grid",
-    "arrows": "orthogonal two-pixel arrows with small unglowed heads and no perspective foreshortening",
-    "boundaries": "flat orthographic outlines sections cutaways and exploded alignment guides"
+    "ink": "deep navy based on #071A3D carries titles primary labels and hierarchy",
+    "primary": "cobalt blue based on #1769FF carries primary structures arrows and emphasized words",
+    "secondary": "bright cyan based on #18B9E8 supports transitions and selected secondary modules",
+    "success": "teal green based on #20C997 appears only for validated success states",
+    "attention": "warm amber based on #F5A000 appears only for validated human judgment warning or exception states",
+    "failure": "clear red based on #F23D4F appears only for validated failure or blocked states",
+    "neutral": "cool gray-blue based on #6E7F99 supports secondary copy dividers and inactive structure"
   },
   "material_and_texture": {
-    "surface": "opaque matte blueprint ground with a restrained low-contrast square grid",
-    "objects": "line-led technical structures with no glossy solid material rendering",
-    "depth": "almost volumeless flat cutaway; ghost layers clarify alignment without creating spatial scenery"
+    "cover_material": "polished glass-acrylic panels frosted glass capsules white satin device frames and translucent blue edges",
+    "diagram_material": "flat white cards with pale blue outlines minimal corner radius and almost no material rendering",
+    "surface_detail": "subtle glass refraction fine blue edge light soft interface highlights and clean anti-aliased icon surfaces",
+    "finish": "premium technology product visual rather than generic corporate clip art or dark cyberpunk art"
+  },
+  "line_language": {
+    "primary": "clean cobalt blue two-pixel system paths with compact arrowheads and generous bend radii",
+    "secondary": "cool gray-blue one-pixel dividers grid lines and explanatory boundaries",
+    "semantic": "green amber and red paths appear only when the validated graph assigns the matching state",
+    "icons": "simple geometric device database shield package check warning and loop icons with consistent stroke and fill grammar"
   },
   "geometry": {
-    "grid": "twenty-pixel drafting grid with measured spacing and seventy-two-pixel outer margins",
-    "projection": "orthographic elevation plan section cutaway or exploded alignment only",
-    "nodes": "flat two-pixel technical outlines with two-pixel corners and open drafting captions",
-    "grouping": "construction boundaries and measured spacing group content without cards dashboards or decorative containers",
-    "focal_rule": "one large supported boundary layer component relation or frozen-graph path carries the thesis"
+    "cover_composition": "one hybrid 2.5D technology scene combines a dominant system panel or browser frame with one or two subordinate glass device or process objects",
+    "concept_composition": "one polished modular technology explainer uses a clear focal module purposeful supporting modules and visible connection logic",
+    "diagram_composition": "one flat infographic uses large rounded white containers grid-aligned modules generous spacing and content-rich information design with blank title and subtitle zones step markers caption rails group bands and explanatory strips",
+    "comparison_composition": "a left-right comparison or before-to-after evolution may use two differently scaled system panels one large blue-to-green transition arrow circular technology icons and validated section headings",
+    "module_shape": "rounded rectangles device frames glass capsules and restrained circular hubs use consistent corner radii",
+    "grid": "a faint cool-blue construction grid gives technical order without turning the image into CAD",
+    "occupancy": "content occupies roughly seventy-eight to eighty-eight percent of the frame while title and annotation zones remain deliberate"
   },
   "depth_and_camera": {
-    "mode": "strict orthographic camera with no perspective convergence",
-    "volume": "almost no volume; section offsets and ghost layers remain coplanar",
-    "lighting": "none; no glow cast shadow dramatic light or material highlight"
+    "cover_depth": "restrained front-facing 2.5D perspective with shallow device thickness and polished edge separation",
+    "concept_depth": "mostly frontal with selective shallow extrusion or glass layering only when it improves hierarchy",
+    "diagram_depth": "strict flat infographic with no perspective and no generated text",
+    "lighting": "soft spatial shadow subtle blue ambient bounce and restrained glass highlights; no dramatic spotlight neon bloom or black background"
   },
   "typography": {
-    "voice": "restrained monospace drafting captions in deterministic annotation zones",
-    "exact_text": "titles labels dimensions and technical prose are applied deterministically only after semantics are confirmed",
-    "generated_text": "image generation leaves annotation zones blank and never invents dimensions identifiers or labels"
+    "voice": "bold modern sans-serif with deep navy hierarchy and selective cobalt emphasis",
+    "title": "large deterministic Chinese or English title overlay with compact subtitle optional uppercase eyebrow and blank title and subtitle zones reserved during image generation",
+    "generated_text": "image generation leaves title labels legends node names and status copy blank; deterministic text overlay supplies all exact wording",
+    "annotation": "deterministic annotation overlay uses short labels large enough for article and presentation width"
+    ,"workflow": "two-stage text workflow: imagegen creates a text-free image-generation background and a deterministic final overlay applies validated readable copy",
+    "golden_copy": "golden references include readable example copy so the finished title hierarchy node labels and explanatory text remain part of the style definition"
+  },
+  "semantic_color_policy": {
+    "default": "cobalt blue and navy carry the normal system",
+    "exceptions": "semantic state colors are evidence-bound: teal for success amber for judgment or warning red for failure and purple only for a validated distinct service class",
+    "limit": "never use semantic colors as decoration and never create an unsupported state"
   },
   "density_and_spacing": {
-    "density": "medium-disciplined line density with one complete technical subject rather than an empty grid or decorative machinery",
-    "spacing": "measured grid-aligned gaps and generous outer margins keep every boundary legible at article width",
-    "occupancy": "cover and concept subjects occupy roughly seventy-six to eighty-four percent while deterministic diagrams preserve all graph elements inside the outer eight percent safe region"
+    "density": "content-rich airy technology composition with one dominant panel or focal module purposeful supporting objects and information-design layers that never alter semantics",
+    "spacing": "generous grid-aligned gaps separate title panel devices modules and semantic groups while keeping their relation visually continuous",
+    "occupancy": "cover and concept content occupies roughly seventy-eight to eighty-eight percent; strict diagrams preserve every frozen-graph element inside a seventy-two-pixel safe margin"
   },
   "required_traits": [
-    "deep blueprint-blue ground dominates every golden reference",
-    "strict orthographic projection and uniform two-pixel pale linework remain visible at article width",
-    "a single cyan highlight carries one confirmed semantic boundary layer or transition",
-    "low-intensity drafting grid construction hierarchy and measured spacing create technical discipline",
-    "complete subject occupancy prevents empty blueprint paper with tiny decorative line art"
+    "cool white technology canvas faint blue drafting grid and navy information hierarchy establish a clean technical atmosphere",
+    "cobalt blue system logic polished glass-acrylic material and soft spatial shadow create premium technology product visual quality",
+    "cover and concept roles use deliberate shallow 2.5D depth while the diagram role remains a precise flat infographic with content-rich information design",
+    "semantic state colors appear only when supported and remain secondary to cobalt blue",
+    "deterministic text overlay and deterministic annotation overlay preserve exact Chinese English labels titles legends and states",
+    "two-stage text workflow combines a text-free image-generation background with a deterministic final overlay",
+    "golden references include readable example copy with large navy titles cobalt keyword emphasis compact English subtitles section pills node labels and explanatory text",
+    "the visual remains content-rich polished and legible at article width"
   ],
   "forbidden_traits": [
-    "no fake dimensions tolerances pseudo-engineering identifiers decorative measurements or invented technical labels",
-    "no isometric camera perspective distortion matte spatial solids directional shadows glossy materials photorealism or cinematic lighting",
-    "no dense crosshatching decorative machinery dashboard chrome card grids neon glow or multiple cyan accents",
-    "no loose graphite wobble translucent watercolor wash familiar-object teaching metaphor or playful doodle contour",
-    "no unsupported nodes edges ports layers connections or article topology"
+    "no dark cyanotype black background or dark dashboard; no neon cyberpunk laser grid or luminous sci-fi tunnel",
+    "no generic stock-photo people office scene humanoid robot floating hologram or decorative AI brain",
+    "no dense glassmorphism dashboard chrome excessive blur giant empty card wall or mobile-app mockup with meaningless UI",
+    "no photoreal product advertisement chrome overload dramatic lens flare heavy bloom harsh cast shadow or candy-plastic toy rendering",
+    "no generated Chinese English labels titles legends node names dimensions or pseudo-technical text",
+    "no unsupported nodes edges devices states colors branches exceptions returns or topology"
   ],
   "neighbor_boundaries": [
     {
-      "profile_id": "isometric-infrastructure",
-      "difference": "Style 4 is flat orthographic line-led and almost volumeless; Style 5 uses a fixed 30-degree isometric camera matte spatial solids ecosystem scale and directional shadows"
+      "profile_id": "technical-editorial-minimal",
+      "difference": "Style 4 uses a cool white grid cobalt-blue product-technology system polished glass-acrylic devices and stronger modular UI framing; Style 1 uses warm ivory editorial space sparse connected mechanisms muted graphite contours and restrained red-cyan accents"
     },
     {
-      "profile_id": "soft-technical-sketch",
-      "difference": "Style 4 keeps uniform mechanically controlled drafting lines and a strict grid; Style 7 uses fine soft variable contours translucent watercolor washes warm paper and approachable physical metaphors"
+      "profile_id": "white-green-editorial-minimal",
+      "difference": "Style 4 is cobalt-blue technology-forward with glass device depth semantic system colors and UI-like technical modules; Style 2 is white-green quiet editorial minimalism with large open space restrained green emphasis and almost no product-render material"
+    },
+    {
+      "profile_id": "isometric-infrastructure",
+      "difference": "Style 4 is front-facing white-blue interface and device composition with shallow glass depth; Style 5 uses a fixed 30-degree isometric camera matte infrastructure solids platform thickness environmental scale and directional shadows"
     }
   ]
 }

@@ -16,7 +16,7 @@ EXPECTED_PROFILES = [
         "白底绿色编辑简约",
     ),
     (3, "neon-systems", "Neon Systems", "霓虹系统科技"),
-    (4, "blueprint-linework", "Blueprint Linework", "蓝图线稿"),
+    (4, "blueprint-linework", "Polished Tech Explainer", "质感科技图解"),
     (
         5,
         "isometric-infrastructure",
@@ -400,7 +400,7 @@ class SkillContractTests(unittest.TestCase):
         for reference in matrix["references"]:
             self.assertIn("topology", reference["must_not_copy"])
 
-    def test_style_4_v3_candidate_preserves_orthographic_blueprint_identity(self) -> None:
+    def test_style_4_v3_preserves_polished_tech_explainer_identity(self) -> None:
         root = SKILL_ROOT / "assets" / "style-anchors" / "blueprint-linework"
         dna = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
         roles = json.loads(
@@ -412,16 +412,50 @@ class SkillContractTests(unittest.TestCase):
 
         joined = json.dumps(dna, ensure_ascii=False)
         for phrase in (
-            "deep blueprint-blue",
-            "orthographic",
-            "uniform two-pixel",
-            "single cyan",
-            "no fake dimensions",
+            "cool white technology canvas",
+            "faint blue drafting grid",
+            "cobalt blue",
+            "polished glass-acrylic",
+            "soft spatial shadow",
+            "navy information hierarchy",
+            "deterministic text overlay",
+            "semantic state colors",
+            "technology product visual",
+            "flat infographic",
+            "content-rich information design",
+            "blank title and subtitle zones",
+            "two-stage text workflow",
+            "text-free image-generation background",
+            "deterministic final overlay",
+            "golden references include readable example copy",
+            "deterministic annotation overlay",
+            "no dark cyanotype",
+            "no neon cyberpunk",
             "Style 5",
+            "Style 1",
+            "Style 2",
         ):
             self.assertIn(phrase, joined)
         self.assertEqual("family", roles["cover"]["stability"])
+        cover_contract = json.dumps(roles["cover"], ensure_ascii=False)
+        self.assertIn("hybrid 2.5D technology scene", cover_contract)
+        self.assertIn("frosted glass", cover_contract)
+        concept_contract = json.dumps(roles["concept"], ensure_ascii=False)
+        self.assertIn("polished modular technology explainer", concept_contract)
+        self.assertIn("one visual thesis", concept_contract)
         self.assertEqual("strict", roles["diagram"]["stability"])
+        self.assertIn(
+            "flat infographic",
+            json.dumps(roles["diagram"], ensure_ascii=False),
+        )
+        diagram_contract = json.dumps(roles["diagram"], ensure_ascii=False)
+        for information_layer in (
+            "blank eyebrow",
+            "blank step-index discs",
+            "blank caption rails",
+            "blank explanatory strip",
+        ):
+            self.assertIn(information_layer, diagram_contract)
         self.assertIn("no people", " ".join(roles["diagram"]["must_not_include"]))
         for reference in matrix["references"]:
             self.assertIn("topology", reference["must_not_copy"])

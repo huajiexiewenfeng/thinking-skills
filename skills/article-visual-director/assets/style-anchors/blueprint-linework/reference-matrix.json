@@ -6,43 +6,66 @@
       "golden_asset_id": "blueprint-linework-cover-v1",
       "role": "cover",
       "must_preserve": [
-        "preserve deep blueprint-blue macro construction uniform pale linework restrained grid and one cyan thesis feature",
-        "preserve strict orthographic projection large subject occupancy and deterministic title-safe behavior",
-        "preserve flat cutaway discipline without dimensions labels material volume or engineering theater"
+        "preserve cool white grid surface cobalt-blue logic navy hierarchy and premium glass-acrylic device material",
+        "preserve one dominant system panel plus one or two subordinate technology objects in a coherent front-facing shallow 2.5D scene",
+        "preserve soft spatial shadow luminous blue edge restraint content-rich occupancy and deterministic title-safe behavior"
       ],
       "may_vary": [
-        "replace the complete subject and boundary story with independently confirmed article semantics",
-        "vary orthographic view cutaway shape title-safe side and one supported cyan feature"
+        "replace the complete system panel device family process objects title-safe side and visual thesis with article-confirmed content",
+        "vary browser monitor tablet phone glass capsule service pillar or modular console when the object supports the article",
+        "vary supported semantic accent colors while cobalt remains dominant"
       ],
-      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "devices",
+        "example_story"
+      ]
     },
     {
       "golden_asset_id": "blueprint-linework-concept-v1",
       "role": "concept",
       "must_preserve": [
-        "preserve one orthographic boundary layer interface or component relation with disciplined line hierarchy",
-        "preserve one main outline at most one ghost layer measured spacing and one cyan semantic emphasis",
-        "preserve fully opaque blueprint ground label-free generation and complete subject occupancy"
+        "preserve one polished modular technology explainer with a clear focal transformation or relation",
+        "preserve cool white grid cobalt logic navy hierarchy selective glass depth generous spacing and deterministic text zones",
+        "preserve purposeful content density and evidence-bound semantic color without generic dashboard or icon-collage drift"
       ],
       "may_vary": [
-        "replace the object family and relation with article-confirmed semantics",
-        "vary elevation plan section cutaway or exploded alignment without introducing perspective"
+        "replace the complete modules device types relation composition and semantic color class with article-confirmed content",
+        "vary system panel staged transformation service stack or device-to-process layout",
+        "vary depth from flat-plus-shadow to shallow glass layering without becoming isometric infrastructure"
       ],
-      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "devices",
+        "example_story"
+      ]
     },
     {
       "golden_asset_id": "blueprint-linework-diagram-v1",
       "role": "diagram",
       "must_preserve": [
-        "preserve strict human-free orthographic graph rendering exact two-pixel edges and grid-aligned geometry",
-        "preserve deep blueprint-blue ground pale structure lines restrained construction boundaries and one supported cyan thesis feature",
-        "preserve deterministic drafting captions safe margins and absence of invented engineering detail"
+        "preserve strict human-free frozen-graph rendering as a crisp flat infographic on a cool white grid",
+        "preserve large rounded containers grid-aligned modules cobalt paths navy hierarchy pale blue boundaries and subtle card shadows",
+        "preserve semantic state colors only when validated plus deterministic text zones safe margins and complete topology visibility"
       ],
       "may_vary": [
-        "replace the complete example graph with the validated article-specific frozen graph",
-        "vary node count grouping and exception placement only as the frozen graph requires"
+        "replace the complete example graph nodes edges labels devices groups states and story with the validated article-specific frozen graph",
+        "vary horizontal stages vertical lanes and grouped regions only as frozen semantics requires"
       ],
-      "must_not_copy": ["labels", "numbers", "nodes", "topology", "example_story"]
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "devices",
+        "example_story"
+      ]
     }
   ]
 }

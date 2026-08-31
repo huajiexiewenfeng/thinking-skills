@@ -83,7 +83,7 @@ Every invocation that will generate article images must present this complete me
 1. **Technical Editorial Minimal（技术编辑简约）** — 适合技术教程和解释型文章，几何清晰、留白克制。
 2. **White-Green Editorial Minimal（白底绿色编辑简约）** — 适合微信公众号 AI 与产业分析，白底绿色、明亮理性。
 3. **Neon Systems（霓虹系统科技）** — 深色底配青绿霓虹，适合 Agent、基础设施和高能科技主题。
-4. **Blueprint Linework（蓝图线稿）** — 工程制图式线条，适合架构边界、组件结构和系统解析。
+4. **Polished Tech Explainer（质感科技图解）** — 冷白网格、钴蓝系统逻辑、玻璃科技质感与丰富信息层，适合 AI 系统、产品架构、技术流程和发布级科技图解。
 5. **Isometric Infrastructure（等距基础设施）** — 等距模块化空间，适合云服务、部署体系和数据管线。
 6. **Cinematic Conceptual（电影感概念视觉）** — 单一强隐喻配合克制的戏剧光影，适合战略与哲学议题。
 7. **Soft Technical Sketch（柔和技术手绘）** — 纸张、墨线和淡彩质感，适合教程、入门内容和亲和解释。

@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+  <defs>
+    <linearGradient id="groupBlue" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2D6DF6"/>
+      <stop offset="1" stop-color="#16BEDB"/>
+    </linearGradient>
+    <linearGradient id="softTitle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#EEF5FF"/>
+      <stop offset="1" stop-color="#F7FAFF"/>
+    </linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#DCE8FA" stroke-width="1"/>
+    </pattern>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#6C8FBF" flood-opacity=".16"/>
+    </filter>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#6C8FBF" flood-opacity=".12"/>
+    </filter>
+    <marker id="arrowBlue" markerWidth="18" markerHeight="18" refX="16" refY="9" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0L18 9L0 18Z" fill="#1769FF"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="18" markerHeight="18" refX="16" refY="9" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0L18 9L0 18Z" fill="#F5A000"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="18" markerHeight="18" refX="16" refY="9" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0L18 9L0 18Z" fill="#7B91B2"/>
+    </marker>
+  </defs>
+
+  <rect width="1672" height="941" fill="#F8FBFF"/>
+  <rect width="1672" height="941" fill="url(#grid)" opacity=".58"/>
+
+  <!-- deterministic header placeholders -->
+  <rect x="68" y="50" width="200" height="8" rx="4" fill="#B8D2FF"/>
+  <rect x="68" y="80" width="850" height="88" rx="18" fill="#FFFFFF" stroke="#C8DCFF" stroke-width="2"/>
+  <rect x="68" y="184" width="430" height="34" rx="14" fill="url(#softTitle)"/>
+  <circle cx="1455" cy="82" r="136" fill="#DCEAFF" opacity=".62"/>
+  <circle cx="1584" cy="112" r="101" fill="#C6F6FA" opacity=".68"/>
+
+  <!-- primary information container -->
+  <rect x="60" y="258" width="1552" height="622" rx="32" fill="#FFFFFF" stroke="#9FC7FF" stroke-width="2" filter="url(#softShadow)"/>
+  <rect x="607" y="280" width="432" height="50" rx="25" fill="url(#groupBlue)" filter="url(#cardShadow)"/>
+
+  <!-- four exact primary edges -->
+  <path d="M322 466H408" fill="none" stroke="#1769FF" stroke-width="7" marker-end="url(#arrowBlue)"/>
+  <path d="M630 466H716" fill="none" stroke="#1769FF" stroke-width="7" marker-end="url(#arrowBlue)"/>
+  <path d="M938 466H1024" fill="none" stroke="#1769FF" stroke-width="7" marker-end="url(#arrowBlue)"/>
+  <path d="M1246 466H1332" fill="none" stroke="#1769FF" stroke-width="7" marker-end="url(#arrowBlue)"/>
+
+  <!-- exact exception and return edges -->
+  <path d="M1141 570V731H978" fill="none" stroke="#F5A000" stroke-width="5" stroke-dasharray="11 10" marker-end="url(#arrowAmber)"/>
+  <path d="M742 731H525V570" fill="none" stroke="#7B91B2" stroke-width="5" stroke-dasharray="11 10" marker-end="url(#arrowGray)"/>
+
+  <!-- node 1 intake -->
+  <g filter="url(#cardShadow)">
+    <rect x="112" y="360" width="210" height="210" rx="22" fill="#FFFFFF" stroke="#75AFFF" stroke-width="2"/>
+  </g>
+  <circle cx="143" cy="390" r="21" fill="#DCEAFF"/>
+  <g transform="translate(182 392)" fill="none" stroke="#1769FF" stroke-width="7" stroke-linejoin="round">
+    <path d="M0 28H22L31 17H72L81 28H103V65H0Z"/>
+    <path d="M0 28V12H103V28"/>
+  </g>
+  <rect x="143" y="493" width="148" height="27" rx="8" fill="#071A3D"/>
+  <rect x="157" y="533" width="120" height="14" rx="7" fill="#D3DAE5"/>
+
+  <!-- node 2 framing -->
+  <g filter="url(#cardShadow)">
+    <rect x="420" y="360" width="210" height="210" rx="22" fill="#FFFFFF" stroke="#75AFFF" stroke-width="2"/>
+  </g>
+  <circle cx="451" cy="390" r="21" fill="#DCEAFF"/>
+  <g transform="translate(488 393)" fill="none" stroke="#1769FF" stroke-width="7" stroke-linecap="round">
+    <circle cx="37" cy="37" r="28"/>
+    <circle cx="37" cy="37" r="9"/>
+    <path d="M37 0V14M37 60V74M0 37H14M60 37H74"/>
+  </g>
+  <rect x="451" y="493" width="148" height="27" rx="8" fill="#071A3D"/>
+  <rect x="465" y="533" width="120" height="14" rx="7" fill="#D3DAE5"/>
+
+  <!-- node 3 execution -->
+  <g filter="url(#cardShadow)">
+    <rect x="728" y="360" width="210" height="210" rx="22" fill="#FFFFFF" stroke="#75AFFF" stroke-width="2"/>
+  </g>
+  <circle cx="759" cy="390" r="21" fill="#DCEAFF"/>
+  <g transform="translate(794 393)" fill="none" stroke="#1769FF" stroke-width="7" stroke-linejoin="round">
+    <path d="M42 0L82 23L42 46L2 23Z"/>
+    <path d="M2 23V69L42 92L82 69V23M42 46V92"/>
+  </g>
+  <rect x="759" y="493" width="148" height="27" rx="8" fill="#071A3D"/>
+  <rect x="773" y="533" width="120" height="14" rx="7" fill="#D3DAE5"/>
+
+  <!-- node 4 verification -->
+  <g filter="url(#cardShadow)">
+    <rect x="1036" y="360" width="210" height="210" rx="22" fill="#FFFFFF" stroke="#75AFFF" stroke-width="2"/>
+  </g>
+  <circle cx="1067" cy="390" r="21" fill="#DCEAFF"/>
+  <g transform="translate(1104 392)" fill="none" stroke="#1769FF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M37 0C49 10 61 13 74 15V48C74 69 59 82 37 92C15 82 0 69 0 48V15C13 13 25 10 37 0Z"/>
+    <path d="M20 46L32 58L57 33"/>
+  </g>
+  <rect x="1067" y="493" width="148" height="27" rx="8" fill="#071A3D"/>
+  <rect x="1081" y="533" width="120" height="14" rx="7" fill="#D3DAE5"/>
+
+  <!-- node 5 stable result -->
+  <g filter="url(#cardShadow)">
+    <rect x="1344" y="360" width="210" height="210" rx="22" fill="#F3FFFC" stroke="#20C7AF" stroke-width="2"/>
+  </g>
+  <circle cx="1375" cy="390" r="21" fill="#D7F8F2"/>
+  <circle cx="1449" cy="438" r="48" fill="#20C7AF" opacity=".14"/>
+  <circle cx="1449" cy="438" r="36" fill="none" stroke="#20C7AF" stroke-width="7"/>
+  <path d="M1429 438L1443 452L1471 422" fill="none" stroke="#20C7AF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="1375" y="493" width="148" height="27" rx="8" fill="#071A3D"/>
+  <rect x="1389" y="533" width="120" height="14" rx="7" fill="#CBD9D8"/>
+
+  <!-- recovery group and node -->
+  <rect x="767" y="610" width="176" height="26" rx="13" fill="#F5A000"/>
+  <g filter="url(#cardShadow)">
+    <rect x="742" y="650" width="236" height="164" rx="22" fill="#FFF9EB" stroke="#F5A000" stroke-width="2"/>
+  </g>
+  <circle cx="775" cy="684" r="21" fill="#FFE8AC"/>
+  <g transform="translate(820 672)" fill="none" stroke="#F5A000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M66 10A40 40 0 0 0 5 34"/>
+    <path d="M5 34L3 10M5 34L29 31"/>
+    <path d="M10 65A40 40 0 0 0 71 41"/>
+    <path d="M71 41L73 65M71 41L47 44"/>
+  </g>
+  <rect x="780" y="742" width="160" height="24" rx="8" fill="#071A3D"/>
+  <rect x="799" y="779" width="122" height="13" rx="7" fill="#E5D8BD"/>
+
+  <!-- deterministic explanatory strip -->
+  <rect x="100" y="833" width="1472" height="34" rx="17" fill="#EAF2FE"/>
+  <rect x="390" y="844" width="892" height="12" rx="6" fill="#CAD9ED"/>
+
+  <!-- deterministic validated copy -->
+  <g font-family="Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif">
+    <text x="68" y="76" fill="#1769FF" font-size="18" font-weight="700" letter-spacing="1.2">VERIFIED DELIVERY LOOP</text>
+    <text x="92" y="140" fill="#071A3D" font-size="42" font-weight="800">验证先于交付</text>
+    <text x="88" y="207" fill="#64758F" font-size="19" font-weight="500">主流程自动推进，失败检查进入恢复并返回任务界定</text>
+    <text x="823" y="306" fill="#FFFFFF" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="middle">PRIMARY DELIVERY</text>
+
+    <g fill="#31547E" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="middle">
+      <text x="143" y="390">01</text>
+      <text x="451" y="390">02</text>
+      <text x="759" y="390">03</text>
+      <text x="1067" y="390">04</text>
+      <text x="1375" y="390">05</text>
+      <text x="775" y="684">R</text>
+    </g>
+
+    <g fill="#FFFFFF" font-size="17" font-weight="700" text-anchor="middle" dominant-baseline="middle">
+      <text x="217" y="507">输入收集</text>
+      <text x="525" y="507">任务界定</text>
+      <text x="833" y="507">方案执行</text>
+      <text x="1141" y="507">结果验证</text>
+      <text x="1449" y="507">稳定结果</text>
+      <text x="860" y="754">恢复返工</text>
+    </g>
+
+    <g fill="#526784" font-size="11.5" font-weight="500" text-anchor="middle" dominant-baseline="middle">
+      <text x="217" y="540">接收目标与材料</text>
+      <text x="525" y="540">明确范围与约束</text>
+      <text x="833" y="540">在约束内执行</text>
+      <text x="1141" y="540">检查准确与完整</text>
+      <text x="1449" y="540">验证通过后交付</text>
+      <text x="860" y="786">修正后返回界定</text>
+    </g>
+
+    <text x="855" y="623" fill="#FFFFFF" font-size="13" font-weight="700" text-anchor="middle" dominant-baseline="middle">RECOVERY</text>
+    <text x="836" y="855" fill="#526784" font-size="16" font-weight="500" text-anchor="middle" dominant-baseline="middle">验证失败 → 进入恢复；恢复完成 → 返回任务界定；不允许绕过验证直接交付</text>
+  </g>
+</svg>
