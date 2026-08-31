@@ -36,6 +36,12 @@ Identity and version must match the registry. Trait lists contain observable sta
 
 Every role declares non-empty `must_preserve`, `may_vary`, `must_not_include`, and `acceptance_checks` arrays.
 
+## Native Generated Copy Exception
+
+Exact copy uses deterministic typography by default. Only the registered `dense-technical-infographic` profile may declare native generated copy. Its copy ledger must be frozen before generation, its model policy must select the latest `gpt-image-2` alias, and exact post-generation text validation is mandatory. Technical diagrams additionally retain the frozen semantic graph requirement.
+
+Correct native copy is preserved. One isolated copy defect may use a deterministic local correction; multiple-copy, numeric, grouping, direction, or topology defects require regeneration or deterministic rebuild. A validation failure never authorizes accepting wrong copy or weakening the graph.
+
 ## Reference Matrix
 
 `reference-matrix.json` contains `profile_id`, `style_pack_version`, and `references`. There is exactly one entry for each approved golden role. Each entry contains:

@@ -7,6 +7,7 @@ from typing import Any
 
 
 STYLE_PACK_VERSION = 3
+NATIVE_TEXT_PROFILE_ID = "dense-technical-infographic"
 VALID_ASSET_ROLES = {"cover", "concept", "diagram"}
 REQUIRED_NON_COPY_FIELDS = {"labels", "numbers", "nodes", "topology", "example_story"}
 REQUIRED_PROMPT_BLOCKS = (
@@ -174,6 +175,32 @@ def _valid_frozen_graph(value: object) -> bool:
     )
 
 
+def _valid_latest_image_model_policy(value: object) -> bool:
+    return (
+        isinstance(value, dict)
+        and value.get("alias") == "gpt-image-2"
+        and value.get("selection") == "latest-alias"
+        and value.get("runtime_identity") == "record-if-returned"
+    )
+
+
+def _valid_native_text_policy(profile_id: object, value: object) -> bool:
+    return (
+        profile_id == NATIVE_TEXT_PROFILE_ID
+        and isinstance(value, dict)
+        and value.get("mode") == "native-generated-copy-with-validation"
+        and isinstance(value.get("exact_text"), list)
+        and bool(value["exact_text"])
+        and all(isinstance(item, str) and item.strip() for item in value["exact_text"])
+        and value.get("copy_ledger_status") == "frozen"
+        and value.get("native_text_generation") is True
+        and value.get("post_generation_validation") == "exact"
+        and value.get("deterministic_overlay") is False
+        and value.get("fallback_policy")
+        == "correct-one-isolated-copy-defect-otherwise-regenerate"
+    )
+
+
 def lint_prompt_ir(prompt_ir: dict[str, Any]) -> list[dict[str, str]]:
     errors: list[dict[str, str]] = []
     for field in ("profile_id", "asset_role", "objective"):
@@ -220,6 +247,17 @@ def lint_prompt_ir(prompt_ir: dict[str, Any]) -> list[dict[str, str]]:
                         "Output contract is incomplete.",
                     )
                 )
+        if (
+            prompt_ir.get("profile_id") == NATIVE_TEXT_PROFILE_ID
+            and not _valid_latest_image_model_policy(output.get("model_policy"))
+        ):
+            errors.append(
+                _error(
+                    "STYLE_IDENTITY_DRIFT",
+                    "output_contract.model_policy",
+                    "Style 9 requires the latest gpt-image-2 alias policy and runtime identity recording when available.",
+                )
+            )
 
     semantics = prompt_ir.get("semantics")
     if isinstance(semantics, dict):
@@ -304,13 +342,16 @@ def lint_prompt_ir(prompt_ir: dict[str, Any]) -> list[dict[str, str]]:
     if isinstance(text_policy, dict):
         exact_text = text_policy.get("exact_text")
         if exact_text and not text_policy.get("deterministic_overlay"):
-            errors.append(
-                _error(
-                    "TEXT_POLICY_VIOLATION",
-                    "text_policy.deterministic_overlay",
-                    "Exact text requires deterministic typography overlay.",
+            if not _valid_native_text_policy(
+                prompt_ir.get("profile_id"), text_policy
+            ):
+                errors.append(
+                    _error(
+                        "TEXT_POLICY_VIOLATION",
+                        "text_policy",
+                        "Exact text requires deterministic overlay unless the registered Style 9 native-copy policy is frozen and exact validation is mandatory.",
+                    )
                 )
-            )
     return errors
 
 
@@ -495,6 +536,7 @@ def compile_prompt_ir(skill_root: Path, request: dict[str, Any]) -> dict[str, An
             "occupancy": platform.get("occupancy"),
             "crop_rules": platform.get("crop_rules"),
             "output_count": platform.get("output_count"),
+            "model_policy": request.get("model_policy"),
         },
         "semantics": semantics,
         "role_composition": {

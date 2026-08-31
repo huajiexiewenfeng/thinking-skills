@@ -2,6 +2,10 @@
 
 Use this adapter only after a valid Prompt IR exists. It translates model-neutral facts into a GPT Image prompt without adding article facts or weakening the selected Style Pack.
 
+## Model Selection
+
+For `dense-technical-infographic`, select the latest alias `gpt-image-2` through `selection: latest-alias` and record any runtime-reported identity. Do not substitute `chatgpt-image-latest`, pin an older snapshot, or invent a model identity when the host abstracts selection.
+
 ## Reference Selection
 
 Attach the permanent same-role golden image by default. Attach the approved article anchor when required by the article workflow. A cross-role reference is exceptional and must have a recorded property-specific reason.
@@ -24,7 +28,7 @@ Render the eight Prompt IR blocks in their declared order. Use concrete, observa
 
 `REFERENCE CONTRACT` names each reference and its inheritance rules.
 
-`TEXT POLICY` delegates exact titles and dense technical labels to deterministic typography unless the approved asset contract says otherwise.
+`TEXT POLICY` delegates exact titles and dense technical labels to deterministic typography by default. Only `dense-technical-infographic` may use `native-generated-copy-with-validation`, with a frozen exact-copy ledger, exact post-generation review, and fallback `correct-one-isolated-copy-defect-otherwise-regenerate`. Diagrams still include and obey the frozen graph.
 
 `NEGATIVE CONSTRAINTS` combines profile, role, semantic, and common generation exclusions without introducing another style.
 
@@ -32,4 +36,4 @@ Render the eight Prompt IR blocks in their declared order. Use concrete, observa
 
 ## Failure Boundary
 
-Do not call GPT Image if lint reports an error. Do not recover by removing a golden reference, blending profiles, rewriting the prompt freely, or copying example topology. Correct only the failed Prompt IR or Style Pack field, then compile again.
+Do not call GPT Image if lint reports an error. Do not recover by removing a golden reference, blending profiles, rewriting the prompt freely, copying example topology, or accepting wrong text. Correct only the failed Prompt IR or Style Pack field, then compile again.

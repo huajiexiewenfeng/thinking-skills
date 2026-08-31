@@ -261,6 +261,38 @@ class SkillContractTests(unittest.TestCase):
                 for phrase in phrases:
                     self.assertIn(phrase, text)
 
+    def test_style_9_native_copy_exception_is_documented(self) -> None:
+        expected = {
+            "references/prompt-ir-schema.md": [
+                "native-generated-copy-with-validation",
+                "copy_ledger_status",
+                "gpt-image-2",
+                "latest-alias",
+                "frozen_graph",
+            ],
+            "references/style-pack-schema.md": [
+                "dense-technical-infographic",
+                "native generated copy",
+                "validation failure",
+            ],
+            "references/adapters/gpt-image.md": [
+                "gpt-image-2",
+                "latest-alias",
+                "correct-one-isolated-copy-defect-otherwise-regenerate",
+                "wrong text",
+            ],
+            "SKILL.md": [
+                "dense-technical-infographic",
+                "copy ledger",
+                "validation failure never",
+            ],
+        }
+        for relative, phrases in expected.items():
+            with self.subTest(relative=relative):
+                text = (SKILL_ROOT / relative).read_text(encoding="utf-8")
+                for phrase in phrases:
+                    self.assertIn(phrase, text)
+
     def test_style_8_v3_preserves_approved_identity(self) -> None:
         root = (
             SKILL_ROOT

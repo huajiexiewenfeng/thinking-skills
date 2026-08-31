@@ -144,7 +144,11 @@ Use this renderer rule:
 | Flow, architecture, boundary, comparison, timeline | `deterministic-diagram` | Nodes, labels, edges, and direction must be exact |
 | Quantitative relationship backed by data | `deterministic-chart` | Values and scales must be reproducible |
 
-Never send dense technical labels, source code, or a multi-step architecture to an image model. If a cover needs an exact title, generate the background without text and add title typography with a deterministic SVG/HTML layer.
+Never send dense technical labels, source code, or a multi-step architecture to an image model by default. If a cover needs an exact title, generate the background without text and add title typography with a deterministic SVG/HTML layer.
+
+### Style 9 native-copy exception
+
+Only `dense-technical-infographic` may generate exact native copy. Freeze every intended visible string in the `text_policy.exact_text` copy ledger with `copy_ledger_status=frozen`, use model alias `gpt-image-2` with `selection=latest-alias`, and require exact post-generation text validation. A Style 9 diagram still requires `semantics.frozen_graph`, followed by node, label, edge, direction, group, and invariant equality review. Correct native copy stays native; one isolated copy defect may receive a deterministic local correction, while multiple-copy, numeric, grouping, direction, or topology defects require regeneration or deterministic rebuild. A validation failure never permits accepting wrong text.
 
 ### Cover title and value-point contract
 
