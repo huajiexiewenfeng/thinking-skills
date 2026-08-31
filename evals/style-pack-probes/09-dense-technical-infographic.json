@@ -31,10 +31,12 @@
           "hierarchy": "royal-blue read and write routes organize the central mechanism; engineering green marks supported read service; orange marks bounded failover attention",
           "human_elements": "none"
         },
-        "model_policy": {
-          "alias": "gpt-image-2",
-          "selection": "latest-alias",
-          "runtime_identity": "record-if-returned"
+        "execution_policy": {
+          "mode": "built-in-image-gen",
+          "model_selection": "host-managed",
+          "runtime_identity": "record-if-returned",
+          "api_key_required": false,
+          "fallback_approval": "not-required"
         },
         "text_policy": {
           "mode": "native-generated-copy-with-validation",
@@ -112,10 +114,12 @@
           "hierarchy": "the shared idempotency-key record is the central comparison anchor; the two routes remain distinct and terminate in one existing-result state",
           "human_elements": "none"
         },
-        "model_policy": {
-          "alias": "gpt-image-2",
-          "selection": "latest-alias",
-          "runtime_identity": "record-if-returned"
+        "execution_policy": {
+          "mode": "built-in-image-gen",
+          "model_selection": "host-managed",
+          "runtime_identity": "record-if-returned",
+          "api_key_required": false,
+          "fallback_approval": "not-required"
         },
         "text_policy": {
           "mode": "native-generated-copy-with-validation",
@@ -254,10 +258,12 @@
           "hierarchy": "oversized navy Chinese title, numbered groups, exact arrowheads, green audit terminal, red dead-letter state, and orange replay-approval gate",
           "human_elements": "none"
         },
-        "model_policy": {
-          "alias": "gpt-image-2",
-          "selection": "latest-alias",
-          "runtime_identity": "record-if-returned"
+        "execution_policy": {
+          "mode": "built-in-image-gen",
+          "model_selection": "host-managed",
+          "runtime_identity": "record-if-returned",
+          "api_key_required": false,
+          "fallback_approval": "not-required"
         },
         "text_policy": {
           "mode": "native-generated-copy-with-validation",

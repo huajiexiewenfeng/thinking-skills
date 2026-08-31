@@ -2,9 +2,11 @@
 
 Use this adapter only after a valid Prompt IR exists. It translates model-neutral facts into a GPT Image prompt without adding article facts or weakening the selected Style Pack.
 
-## Model Selection
+## Execution Mode
 
-For `dense-technical-infographic`, select the latest alias `gpt-image-2` through `selection: latest-alias` and record any runtime-reported identity. Do not substitute `chatgpt-image-latest`, pin an older snapshot, or invent a model identity when the host abstracts selection.
+The default adapter path is the Codex built-in `image_gen` capability. Record `mode: built-in-image-gen`, `model_selection: host-managed`, `api_key_required: false`, and `fallback_approval: not-required`. When the built-in schema exposes no model parameter, call it without one; do not switch runtimes to force a model alias. Built-in execution never needs `OPENAI_API_KEY`.
+
+The CLI/API path is a fallback, not a model-selection convenience. Use it only after the user explicitly requests or approves fallback, then record `mode: cli-api-fallback`, `model_selection: gpt-image-2`, `api_key_required: true`, and `fallback_approval: explicit-user-approved`. If built-in generation fails or is unavailable, explain the fallback and stop for approval before any CLI/API call. Record the exact runtime identity returned by the host when available; record `null` when none is returned and never invent an identity.
 
 ## Reference Selection
 
@@ -36,4 +38,4 @@ Render the eight Prompt IR blocks in their declared order. Use concrete, observa
 
 ## Failure Boundary
 
-Do not call GPT Image if lint reports an error. Do not recover by removing a golden reference, blending profiles, rewriting the prompt freely, copying example topology, or accepting wrong text. Correct only the failed Prompt IR or Style Pack field, then compile again.
+Do not call an image runtime if lint reports an error. Do not recover by removing a golden reference, blending profiles, rewriting the prompt freely, copying example topology, accepting wrong text, or silently switching from built-in execution to CLI/API fallback. Correct only the failed Prompt IR or Style Pack field, then compile again.

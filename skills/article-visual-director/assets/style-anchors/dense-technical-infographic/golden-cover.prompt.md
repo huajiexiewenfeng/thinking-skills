@@ -5,10 +5,12 @@
   "occupancy": "eighty-five to ninety-two percent intentional foreground occupancy",
   "crop_rules": "preserve the full title, central request-processing core, four numbered zones, and complete bottom rail; keep critical copy outside the outer five percent",
   "output_count": 1,
-  "model_policy": {
-    "alias": "gpt-image-2",
-    "selection": "latest-alias",
-    "runtime_identity": "record-if-returned"
+  "execution_policy": {
+    "mode": "built-in-image-gen",
+    "model_selection": "host-managed",
+    "runtime_identity": "record-if-returned",
+    "api_key_required": false,
+    "fallback_approval": "not-required"
   }
 }
 

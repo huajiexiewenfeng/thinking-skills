@@ -41,6 +41,13 @@ NATIVE_TEXT_VALIDATION_KEYS = {
     "semantic_graph_status",
     "review_notes",
 }
+GENERATION_EXECUTION_KEYS = {
+    "mode",
+    "model_selection",
+    "fallback_approval",
+    "api_key_required",
+    "runtime_identity",
+}
 VALID_DRIFT_CODES = {
     "PROMPT_BLOCK_MISSING",
     "STYLE_IDENTITY_DRIFT",
@@ -1270,6 +1277,8 @@ def _validate_asset_style_v2(
     style_pack_version: int | None,
     errors: list[dict[str, str]],
 ) -> None:
+    if style_pack_version == 3 and asset.get("renderer") == "imagegen":
+        _validate_generation_execution(asset, index, errors)
     base = f"assets[{index}].style_validation"
     validation = asset.get("style_validation")
     if not isinstance(validation, dict):
@@ -1370,6 +1379,78 @@ def _validate_asset_style_v2(
             f"{base}.series_continuity",
             "Integration requires series_continuity=passed",
         )
+
+
+def _validate_generation_execution(
+    asset: dict[str, Any],
+    index: int,
+    errors: list[dict[str, str]],
+) -> None:
+    base = f"assets[{index}].generation_execution"
+    execution = asset.get("generation_execution")
+    if not isinstance(execution, dict):
+        _add_error(
+            errors,
+            "missing_generation_execution",
+            base,
+            "Style Pack v3 imagegen assets must record the execution mode and runtime identity when returned.",
+        )
+        return
+    if set(execution) != GENERATION_EXECUTION_KEYS:
+        _add_error(
+            errors,
+            "invalid_generation_execution",
+            base,
+            "generation_execution must contain only mode, model_selection, fallback_approval, api_key_required, and runtime_identity.",
+        )
+        return
+    runtime_identity = execution.get("runtime_identity")
+    if runtime_identity is not None and not _is_nonempty_string(runtime_identity):
+        _add_error(
+            errors,
+            "invalid_generation_execution",
+            f"{base}.runtime_identity",
+            "runtime_identity must be null when the host returns none, or the exact non-empty identity returned by the runtime.",
+        )
+    mode = execution.get("mode")
+    if mode == "built-in-image-gen":
+        if not (
+            execution.get("model_selection") == "host-managed"
+            and execution.get("fallback_approval") == "not-required"
+            and execution.get("api_key_required") is False
+        ):
+            _add_error(
+                errors,
+                "invalid_generation_execution",
+                base,
+                "Built-in image_gen must be host-managed, require no API key, and require no fallback approval.",
+            )
+        return
+    if mode == "cli-api-fallback":
+        if execution.get("fallback_approval") != "explicit-user-approved":
+            _add_error(
+                errors,
+                "unapproved_imagegen_fallback",
+                f"{base}.fallback_approval",
+                "CLI/API fallback requires explicit user approval after the built-in path is declined or unavailable.",
+            )
+        if not (
+            execution.get("model_selection") == "gpt-image-2"
+            and execution.get("api_key_required") is True
+        ):
+            _add_error(
+                errors,
+                "invalid_generation_execution",
+                base,
+                "The supported CLI/API fallback records gpt-image-2 and requires a locally configured API key.",
+            )
+        return
+    _add_error(
+        errors,
+        "invalid_generation_execution",
+        f"{base}.mode",
+        "generation_execution.mode must be built-in-image-gen or cli-api-fallback.",
+    )
 
 
 def validate_manifest(
