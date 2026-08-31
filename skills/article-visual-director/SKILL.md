@@ -61,7 +61,7 @@ For a standalone technical diagram unrelated to an article, use the environment'
 
 ```text
 inspect article
-  -> present the existing eight bilingual modes
+  -> present the existing nine bilingual modes
   -> wait for explicit style selection
   -> load selected protocol and approved golden set
   -> separate publication theme, visual profile, and asset semantics
@@ -88,16 +88,17 @@ Every invocation that will generate article images must present this complete me
 6. **Cinematic Conceptual（电影感概念视觉）** — 单一强隐喻配合克制的戏剧光影，适合战略与哲学议题。
 7. **Soft Technical Sketch（柔和技术手绘）** — 纸张、墨线和淡彩质感，适合教程、入门内容和亲和解释。
 8. **Handwritten Systems Explainer（手写系统解释图）** — 米白纸面、手绘框线和少量高亮色，适合解释 Agent、Runtime、检索边界与前后对比。
+9. **Dense Technical Infographic（高密度技术信息图）** — 白底、深海军蓝标题、扁平矢量图标、高密度分区与底部总结栏，适合框架原理、中间件、网络协议、并发模型和系统架构教程。
 
 Use this response shape:
 
 ```text
 请选择本次配图风格（回复序号、英文名或中文名均可）：
-[the complete eight-item menu]
+[the complete nine-item menu]
 推荐：N. English Name（中文名）— one sentence tied to this article.
 ```
 
-After inspecting an available article, mark one item as the recommendation but still show all eight. If the article is not yet available, show the menu without a recommendation. If the user named a style in the invoking message, show all eight, mark that item as their current choice, and ask them to confirm it or select another. Do not infer approval from a past invocation or a previous article.
+After inspecting an available article, mark one item as the recommendation but still show all nine. If the article is not yet available, show the menu without a recommendation. If the user named a style in the invoking message, show all nine, mark that item as their current choice, and ask them to confirm it or select another. Do not infer approval from a past invocation or a previous article.
 
 Stop after the menu and wait for an explicit selection. Do not produce the visual plan, freeze prompts, create a manifest, or call image generation before the selection arrives. Style selection approves only the visual submode; the later plan and style-anchor gates still apply.
 
@@ -160,7 +161,7 @@ When a cross-platform article has separate cover exports, record asset-level `pl
 
 ### 4. Establish the selected visual direction
 
-Read [references/style-registry.json](references/style-registry.json), locate the exact selected profile, then read only that entry's protocol, token file, and golden-set metadata. If that entry declares `style_pack_version=3`, also load its Visual DNA, role contracts, reference matrix, and registered adapter contract. Do not load or blend the other seven protocols. Explain the selected mode's fit in terms of audience, article tone, technical density, and platform—not taste alone.
+Read [references/style-registry.json](references/style-registry.json), locate the exact selected profile, then read only that entry's protocol, token file, and golden-set metadata. If that entry declares `style_pack_version=3`, also load its Visual DNA, role contracts, reference matrix, and registered adapter contract. Do not load or blend the other eight protocols. Explain the selected mode's fit in terms of audience, article tone, technical density, and platform—not taste alone.
 
 The selected golden set must have `status=approved`, explicit user approval, and exactly three verified anchors: cover, concept, and diagram style anchor. If it is missing or still `candidate`, stop article production with `golden_set_pending`. Explain that this visual mode has no approved permanent style anchors yet and enter the golden-production flow only after the user agrees. Golden-production order is cover, concept, then architecture/process style anchor; candidates become golden only after explicit user approval and release validation.
 

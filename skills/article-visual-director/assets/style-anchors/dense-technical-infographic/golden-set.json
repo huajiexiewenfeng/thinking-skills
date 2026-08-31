@@ -1,0 +1,20 @@
+{
+  "golden_set_version": 1,
+  "profile_id": "dense-technical-infographic",
+  "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "0d1b474a5e6bcfeca86bd194fd4c6d54b5bb2fddab9459ee0dbf03de0e278ab5",
+  "role_contracts_sha256": "71699d0312216ffcf8c31c6b258bbd59795be431da3bb92a25a66816fe2e5941",
+  "reference_matrix_sha256": "21293698fc040b0e8cd535bb6245252dd374ca04e871ddd0e99e4b9f945440ce",
+  "qualification": {
+    "prompt_compile_status": "pending",
+    "cross_topic_probe_status": "pending",
+    "neighbor_discrimination_status": "pending"
+  },
+  "status": "candidate",
+  "user_approval": {
+    "status": "pending",
+    "revision_notes": []
+  },
+  "assets": []
+}

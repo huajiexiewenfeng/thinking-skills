@@ -12,6 +12,9 @@ Use this catalog to choose a profile; use the linked protocol as the normative v
 | 6 | Cinematic Conceptual | 电影感概念视觉 | Thesis-led strategic or philosophical essays with one metaphor | [`06-cinematic-conceptual.md`](styles/06-cinematic-conceptual.md) |
 | 7 | Soft Technical Sketch | 柔和技术手绘 | Tutorials and approachable teaching metaphors | [`07-soft-technical-sketch.md`](styles/07-soft-technical-sketch.md) |
 | 8 | Handwritten Systems Explainer | 手写系统解释图 | Agent/runtime trade-offs, before/after systems, and compact operational ideas | [`08-handwritten-systems-explainer.md`](styles/08-handwritten-systems-explainer.md) |
+| 9 | Dense Technical Infographic | 高密度技术信息图 | Text-bearing framework mechanisms, middleware internals, network protocols, concurrency models, and system architecture tutorials | [`09-dense-technical-infographic.md`](styles/09-dense-technical-infographic.md) |
+
+Dense Technical Infographic is the flat, front-facing, text-bearing engineering-poster mode. It is denser and more explicitly instructional than Style 1, avoids Style 4's polished glass-acrylic product depth, avoids Style 5's isometric spatial world, and uses crisp sans-serif vector-like geometry instead of Style 8's warm handwritten paper language.
 
 ## Selection Heuristic
 
@@ -25,5 +28,6 @@ Use this catalog to choose a profile; use the linked protocol as the normative v
 | Thesis-led strategic essay | Cinematic Conceptual |
 | Beginner-friendly teaching | Soft Technical Sketch |
 | Agent/runtime trade-off or before/after explanation | Handwritten Systems Explainer |
+| Framework mechanism, middleware internals, protocol flow, or concurrency model | Dense Technical Infographic |
 
 When two signals conflict, prefer the lower-density profile for body illustrations. Covers may be more expressive, but they must retain the selected profile's palette roles, geometry, line behavior, and material cues.

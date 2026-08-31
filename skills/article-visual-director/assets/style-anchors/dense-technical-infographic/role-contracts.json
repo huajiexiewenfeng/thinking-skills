@@ -1,0 +1,84 @@
+{
+  "profile_id": "dense-technical-infographic",
+  "style_pack_version": 3,
+  "roles": {
+    "cover": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve a condensed mechanism-poster with approximately thirty percent less detail than a body infographic",
+        "preserve one oversized deep navy title one central mechanism three to four numbered explanation zones and one bottom takeaway rail",
+        "preserve the thumbnail hierarchy of title first mechanism second and supporting zones third",
+        "preserve fully opaque pure white surface flat vector-like icons semantic palette and native generated copy with exact validation"
+      ],
+      "may_vary": [
+        "article-specific central mechanism and numbered zone arrangement may vary",
+        "the title length and supported technical icons may vary with the confirmed copy ledger",
+        "royal blue green orange purple and red may appear only in their confirmed semantic roles"
+      ],
+      "must_not_include": [
+        "no people mascots narrators hands decorative AI brains vendor marks or fabricated metrics",
+        "do not reduce the cover to a generic title card or overload it with body-level copy",
+        "do not use glass acrylic chrome 3D isometric handwritten cyberpunk or dashboard styling",
+        "do not copy golden labels numbers nodes topology icons or example story"
+      ],
+      "acceptance_checks": [
+        "every visible native generated copy string matches the frozen exact-copy ledger",
+        "title central mechanism numbered zones and bottom takeaway rail remain distinct at thumbnail size",
+        "the cover is fully opaque and occupies the canvas without losing crop survival",
+        "the result remains visibly distinct from Style 1 Style 4 Style 5 and Style 8"
+      ]
+    },
+    "concept": {
+      "stability": "family",
+      "must_preserve": [
+        "preserve exactly one mechanism design principle transformation or performance reason",
+        "preserve a mechanism-poster or layered-comparison with three to five explanatory sections and one explicit bottom takeaway rail",
+        "preserve high organized density crisp vector-like geometry semantic palette and clean technical sans-serif copy",
+        "preserve native generated copy only after exact post-generation validation"
+      ],
+      "may_vary": [
+        "article-supported causal comparison or transformation structure may vary",
+        "the central technical icon set and section arrangement may vary without copying the cover topology",
+        "the reading path may be stacked two-lane or centered around one supported mechanism"
+      ],
+      "must_not_include": [
+        "no people mascots narrators hands decorative AI brains vendor marks or unsupported guarantees",
+        "do not expand one concept into an unsupported complete-system topology",
+        "do not use glass acrylic chrome 3D isometric handwritten cyberpunk or meaningless dashboard styling",
+        "do not copy golden labels numbers nodes topology icons or example story"
+      ],
+      "acceptance_checks": [
+        "every visible native generated copy string matches the frozen exact-copy ledger",
+        "one causal or comparative lesson is understandable without decorative filler",
+        "semantic colors map only to confirmed meanings",
+        "the result belongs to the same Style 9 family while using a composition distinct from the cover"
+      ]
+    },
+    "diagram": {
+      "stability": "strict",
+      "must_preserve": [
+        "preserve the article-specific frozen graph exactly node-for-node edge-for-edge direction-for-direction and boundary-for-boundary",
+        "preserve an architecture-flow or layered-comparison with strict front-facing flat geometry numbered regions legend and bottom invariant rail",
+        "preserve crisp direct arrow grammar royal blue primary paths and confirmed semantic exception success and failure colors",
+        "preserve native generated copy only after exact label validation and frozen-graph equality"
+      ],
+      "may_vary": [
+        "only article-supported node labels groups edge types and topology may replace the golden example",
+        "group dimensions and module placement may adapt to the frozen graph while keeping high organized density",
+        "technical flat vector-like icons may vary when they clarify confirmed node roles"
+      ],
+      "must_not_include": [
+        "no people faces hands characters instructors narrators mascots or decorative AI brains",
+        "do not invent omit reverse merge duplicate or reroute any frozen semantic relationship",
+        "do not use glass acrylic chrome 3D isometric handwritten cyberpunk or meaningless dashboard styling",
+        "do not copy golden labels numbers nodes topology icons or example story"
+      ],
+      "acceptance_checks": [
+        "every visible node label edge arrowhead direction group boundary number state and invariant equals the frozen graph and copy ledger",
+        "no unsupported shortcut metric protocol vendor or causal claim appears",
+        "the diagram is fully opaque legible at article width and remains human-free",
+        "the result reads as the strict architecture diagram role of Style 9 rather than Style 4 or Style 8"
+      ]
+    }
+  }
+}
