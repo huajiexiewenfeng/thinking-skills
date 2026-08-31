@@ -1,0 +1,14 @@
+{
+  "profile_id": "dense-technical-infographic",
+  "protocol_version": 2,
+  "surface": {"background": "#FFFFFF", "panel": "#F8FBFF", "boundary": "#B8D0F4", "finish": "clean-flat-technical-poster"},
+  "palette": {"ink": "#071A3D", "primary": "#1769C2", "success": "#238636", "attention": "#D96C00", "extension": "#5B3FA3", "failure": "#D1242F", "neutral": "#59677D", "saturation": "semantic-controlled"},
+  "line": {"primary": "#1769C2", "width_px": 2, "secondary_width_px": 1, "container_width_px": 2, "behavior": "crisp-direct-vector-path"},
+  "typography": {"family_zh": "Microsoft YaHei, PingFang SC, sans-serif", "family_en": "Inter, IBM Plex Sans, Arial, sans-serif", "title_weight": 850, "section_weight": 750, "label_weight": 650, "label_treatment": "native-generated-copy-with-exact-validation"},
+  "geometry": {"corner_radius_px": 18, "module_radius_px": 12, "number_disc_px": 44, "shape_language": "flat-numbered-engineering-poster", "camera": "strict-front-facing-flat"},
+  "depth": {"mode": "flat-vector-like", "shadow": "minimal-soft-card-separation", "glow": "none"},
+  "texture": {"pattern": "none", "intensity": "none"},
+  "spacing": {"grid_px": 20, "outer_margin_px": 36, "module_gap_px": 24, "density": "high-organized", "occupancy": "85-92-percent"},
+  "semantic_color_roles": {"normal": "#1769C2", "success": "#238636", "conclusion": "#D96C00", "configuration": "#5B3FA3", "failure": "#D1242F", "secondary_copy": "#59677D"},
+  "forbidden_traits": ["glass acrylic", "3D isometric", "handwritten paper", "cyberpunk", "people", "decorative AI brain", "meaningless dashboard", "unsupported topology"]
+}

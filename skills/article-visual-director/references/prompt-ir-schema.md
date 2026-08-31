@@ -19,6 +19,8 @@ Prompt IR is the model-neutral, auditable input to an image-model adapter. It is
 
 `semantics` contains `confirmed`, `simplifications`, and `blocked`. A diagram additionally contains a validated `frozen_graph`. Adapters may rephrase this structure but may not add facts.
 
+`output_contract.model_policy` records model selection when a profile constrains it. For `dense-technical-infographic`, it is exactly `{"alias":"gpt-image-2","selection":"latest-alias","runtime_identity":"record-if-returned"}`. The runtime-reported identity is recorded when available; no snapshot identifier is invented.
+
 ## Required Prompt Blocks
 
 Every rendered image prompt contains these blocks exactly once and in this order:
@@ -55,8 +57,14 @@ Formal article production always requires the permanent same-role golden. A prof
 - Bootstrap never accepts a cross-profile reference, article anchor, permanent `golden_reference_ids`, or example content as semantic evidence.
 - After three permanent role goldens are approved, normal same-role reference rules replace bootstrap.
 
+## Native Copy Exception
+
+Deterministic typography remains the default for exact text in every profile. Only `dense-technical-infographic` may use `text_policy.mode=native-generated-copy-with-validation`. Its `text_policy.exact_text` array is the complete copy ledger, `copy_ledger_status` is `frozen`, `native_text_generation` is `true`, `post_generation_validation` is `exact`, `deterministic_overlay` is `false`, and `fallback_policy` is `correct-one-isolated-copy-defect-otherwise-regenerate`.
+
+The exception does not relax diagram semantics: a diagram still requires a valid `semantics.frozen_graph`. A text or semantic mismatch fails validation and is corrected, regenerated, or deterministically rebuilt; wrong native copy is never accepted.
+
 ## Lint Rules
 
-Generation stops when any required block or field is missing; profile or role identity conflicts; the same-role golden reference is absent outside an explicit candidate bootstrap; inheritance constraints are vague; a diagram lacks a frozen graph; exact title text is incorrectly delegated to image generation; a publication theme mutates Visual DNA; platform aspect ratio, occupancy, or crop rules are missing; or an undeclared cross-profile/cross-role reference appears.
+Generation stops when any required block or field is missing; profile or role identity conflicts; the same-role golden reference is absent outside an explicit candidate bootstrap; inheritance constraints are vague; a diagram lacks a frozen graph; exact title text is incorrectly delegated to image generation outside the registered Style 9 exception; a publication theme mutates Visual DNA; platform aspect ratio, occupancy, or crop rules are missing; or an undeclared cross-profile/cross-role reference appears.
 
 Lint failures use the shared drift codes and never fall back to a free-form prompt.

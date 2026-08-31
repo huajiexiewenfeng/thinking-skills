@@ -31,7 +31,16 @@ VALID_INSERTION_STATES = {"pending", "inserted", "skipped"}
 VALID_INTEGRATION_STATES = {"pending", "complete", "failed"}
 VALID_VERIFICATION_STATES = {"pending", "passed", "failed"}
 VALID_OUTPUT_FORMATS = {"png", "jpg", "jpeg", "svg"}
-VALID_COVER_TITLE_MODES = {"deterministic", "text-free"}
+VALID_COVER_TITLE_MODES = {"deterministic", "native-generated", "text-free"}
+NATIVE_TEXT_PROFILE_ID = "dense-technical-infographic"
+NATIVE_IMAGEGEN_ROLES = {"process", "architecture", "comparison", "timeline"}
+NATIVE_TEXT_VALIDATION_KEYS = {
+    "status",
+    "copy_ledger_status",
+    "visible_copy_status",
+    "semantic_graph_status",
+    "review_notes",
+}
 VALID_DRIFT_CODES = {
     "PROMPT_BLOCK_MISSING",
     "STYLE_IDENTITY_DRIFT",
@@ -733,12 +742,57 @@ def _validate_dimensions(
             )
 
 
+def _renderer_matches_role(role: object, renderer: object, profile_id: object) -> bool:
+    if (
+        profile_id == NATIVE_TEXT_PROFILE_ID
+        and role in NATIVE_IMAGEGEN_ROLES
+        and renderer == "imagegen"
+    ):
+        return True
+    return role not in ROLE_RENDERER or renderer == ROLE_RENDERER[role]
+
+
+def _validate_native_text_validation(
+    asset: dict[str, Any],
+    index: int,
+    phase: str,
+    semantic_graph_status: str,
+    errors: list[dict[str, str]],
+) -> None:
+    base = f"assets[{index}].native_text_validation"
+    validation = asset.get("native_text_validation")
+    valid = (
+        isinstance(validation, dict)
+        and set(validation) == NATIVE_TEXT_VALIDATION_KEYS
+        and validation.get("copy_ledger_status") == "frozen"
+        and validation.get("semantic_graph_status") == semantic_graph_status
+        and _is_nonempty_string(validation.get("review_notes"))
+        and validation.get("status") in {"planned", "pending", "passed", "failed"}
+        and validation.get("visible_copy_status")
+        in {"planned", "pending", "exact-match", "mismatch"}
+    )
+    if phase == "integration":
+        valid = (
+            valid
+            and validation.get("status") == "passed"
+            and validation.get("visible_copy_status") == "exact-match"
+        )
+    if not valid:
+        _add_error(
+            errors,
+            "native_text_validation_invalid",
+            base,
+            "Style 9 native copy requires the exact validation record, a frozen ledger, exact visible copy at integration, and the role-appropriate semantic graph result.",
+        )
+
+
 def _validate_asset(
     asset: Any,
     index: int,
     manifest_path: Path,
     phase: str,
     asset_directory: str | None,
+    style_profile_id: object,
     errors: list[dict[str, str]],
 ) -> tuple[str | None, str | None]:
     base = f"assets[{index}]"
@@ -783,12 +837,28 @@ def _validate_asset(
             f"{base}.renderer",
             f"renderer must be one of {sorted(VALID_RENDERERS)}",
         )
-    elif role in ROLE_RENDERER and renderer != ROLE_RENDERER[role]:
+    elif not _renderer_matches_role(role, renderer, style_profile_id):
         _add_error(
             errors,
             "renderer_role_mismatch",
             f"{base}.renderer",
             f"role {role!r} requires renderer {ROLE_RENDERER[role]!r}",
+        )
+    elif (
+        style_profile_id == NATIVE_TEXT_PROFILE_ID
+        and renderer == "imagegen"
+        and role in NATIVE_IMAGEGEN_ROLES
+    ):
+        _validate_native_text_validation(
+            asset, index, phase, "exact-match", errors
+        )
+    elif (
+        style_profile_id == NATIVE_TEXT_PROFILE_ID
+        and renderer == "imagegen"
+        and role == "concept"
+    ):
+        _validate_native_text_validation(
+            asset, index, phase, "not-required", errors
         )
 
     output_format = asset.get("output_format")
@@ -1016,6 +1086,7 @@ def _validate_cover_title(
     index: int,
     manifest_path: Path,
     phase: str,
+    style_profile_id: object,
     require_title: bool,
     require_square_crop: bool,
     errors: list[dict[str, str]],
@@ -1052,6 +1123,15 @@ def _validate_cover_title(
             )
         return
 
+    if mode == "native-generated" and style_profile_id != NATIVE_TEXT_PROFILE_ID:
+        _add_error(
+            errors,
+            "invalid_cover_title_mode",
+            f"{base}.mode",
+            "title.mode=native-generated is restricted to dense-technical-infographic",
+        )
+        return
+
     text_lines = title.get("text_lines")
     if (
         not isinstance(text_lines, list)
@@ -1062,7 +1142,7 @@ def _validate_cover_title(
             errors,
             "missing_cover_title_text",
             f"{base}.text_lines",
-            "deterministic cover titles require non-empty text_lines",
+            "cover titles require non-empty text_lines",
         )
 
     supporting_points = title.get("supporting_points")
@@ -1077,6 +1157,24 @@ def _validate_cover_title(
             f"{base}.supporting_points",
             "supporting_points must contain one to four non-empty strings when present",
         )
+
+    if mode == "native-generated":
+        _validate_native_text_validation(
+            asset, index, phase, "not-required", errors
+        )
+        if phase == "integration":
+            crop_fields = ["wide_crop_checked"]
+            if require_square_crop:
+                crop_fields.append("square_crop_checked")
+            for field in crop_fields:
+                if title.get(field) is not True:
+                    _add_error(
+                        errors,
+                        "cover_title_crop_not_checked",
+                        f"{base}.{field}",
+                        "native-generated cover titles require the platform's verified crop checks",
+                    )
+        return
 
     editable_source = title.get("editable_source_path")
     if not _is_safe_relative_path(editable_source):
@@ -1366,6 +1464,7 @@ def validate_manifest(
     platforms = data.get("platforms")
     version = data.get("manifest_version")
     style = data.get("style")
+    style_profile_id = style.get("profile_id") if isinstance(style, dict) else None
     style_pack_version = (
         style.get("style_pack_version") if isinstance(style, dict) else None
     )
@@ -1376,7 +1475,13 @@ def validate_manifest(
     )
     for index, asset in enumerate(assets):
         asset_id, markdown_path = _validate_asset(
-            asset, index, manifest_path, phase, asset_directory, errors
+            asset,
+            index,
+            manifest_path,
+            phase,
+            asset_directory,
+            style_profile_id,
+            errors,
         )
         effective_platforms = platforms
         if isinstance(asset, dict) and "platforms" in asset:
@@ -1407,6 +1512,7 @@ def validate_manifest(
                     index,
                     manifest_path,
                     phase,
+                    style_profile_id,
                     require_title=has_wechat,
                     require_square_crop=has_wechat,
                     errors=errors,

@@ -1,0 +1,337 @@
+{
+  "probe_suite_version": 1,
+  "profile_id": "dense-technical-infographic",
+  "style_pack_version": 3,
+  "purpose": "Cross-topic stability and discrimination from Styles 1, 4, 5, and 8 without copying golden example content or topology.",
+  "probes": [
+    {
+      "id": "style9-cover-database-read-write-separation",
+      "request": {
+        "profile_id": "dense-technical-infographic",
+        "asset_role": "cover",
+        "objective": "Explain generic database read/write separation and bounded failover roles without claiming transparent consistency or automatic correctness.",
+        "semantics": {
+          "confirmed": [
+            "A primary role accepts writes while read-only replicas may serve read traffic.",
+            "Changes flow from the primary role toward read-only replicas through a generic synchronization relationship.",
+            "A failover decision requires observing role health and selecting a valid replacement role."
+          ],
+          "simplifications": [
+            "Show one write entrance, one primary role, two representative read-only replicas, one read entrance, and one compact failover decision zone.",
+            "Treat synchronization and failover as generic responsibilities rather than a vendor-specific algorithm."
+          ],
+          "blocked": [
+            "Do not claim zero data loss, instant failover, perfect consistency, unlimited reads, or automatic correctness.",
+            "Do not add vendor names, protocols, latency numbers, throughput numbers, regions, consensus nodes, or extra storage roles."
+          ]
+        },
+        "composition": {
+          "family": "mechanism-poster",
+          "structure": "pure-white dense technical cover with an oversized navy title, a central primary-role mechanism, four numbered responsibility zones, and one bottom three-invariant rail",
+          "hierarchy": "royal-blue read and write routes organize the central mechanism; engineering green marks supported read service; orange marks bounded failover attention",
+          "human_elements": "none"
+        },
+        "model_policy": {
+          "alias": "gpt-image-2",
+          "selection": "latest-alias",
+          "runtime_identity": "record-if-returned"
+        },
+        "text_policy": {
+          "mode": "native-generated-copy-with-validation",
+          "exact_text": [
+            "读写分离：把查询压力与写入责任分开",
+            "01 写入入口",
+            "02 主节点",
+            "03 只读副本",
+            "04 故障切换",
+            "变更同步",
+            "查询入口",
+            "写入只由主节点负责",
+            "只读副本承担读请求",
+            "故障切换需要确认状态"
+          ],
+          "copy_ledger_status": "frozen",
+          "native_text_generation": true,
+          "post_generation_validation": "exact",
+          "deterministic_overlay": false,
+          "fallback_policy": "correct-one-isolated-copy-defect-otherwise-regenerate"
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "eighty-five to ninety-two percent intentional occupancy",
+          "crop_rules": "preserve title central role all four zones and the complete invariant rail",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "dense-technical-infographic-cover-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "dense front-facing pure-white technical poster and oversized navy Chinese headline",
+        "numbered zones, controlled semantic colors, compact mechanism core, and exact native copy"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "icons",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "Read and write responsibilities are distinct without promising perfect consistency.",
+        "The result remains a dense Style 9 mechanism poster rather than a sparse editorial cover or spatial device scene."
+      ]
+    },
+    {
+      "id": "style9-concept-idempotency-key",
+      "request": {
+        "profile_id": "dense-technical-infographic",
+        "asset_role": "concept",
+        "objective": "Explain how an idempotency key can recognize a repeated request and reuse a recorded result to reduce duplicate side effects.",
+        "semantics": {
+          "confirmed": [
+            "A first request presents an idempotency key before a side-effecting operation is executed.",
+            "The operation result is recorded against the key for a bounded retention context.",
+            "A repeated request that matches the recorded key may return the existing result rather than repeat the operation."
+          ],
+          "simplifications": [
+            "Use an upper first-request path and a lower repeated-request path that meet at one key record.",
+            "Show reuse of the existing result without specifying storage technology, expiry duration, or payment behavior."
+          ],
+          "blocked": [
+            "Do not claim that an idempotency key makes all business logic correct or prevents every duplicate effect.",
+            "Do not add payment vendors, databases, time-to-live numbers, globally unique guarantees, locks, queues, or extra decision stages."
+          ]
+        },
+        "composition": {
+          "family": "layered-comparison",
+          "structure": "pure-white dense teaching poster with an oversized navy title, an upper royal-blue first-request route, a lower green repeated-request reuse route, and one orange caution cell",
+          "hierarchy": "the shared idempotency-key record is the central comparison anchor; the two routes remain distinct and terminate in one existing-result state",
+          "human_elements": "none"
+        },
+        "model_policy": {
+          "alias": "gpt-image-2",
+          "selection": "latest-alias",
+          "runtime_identity": "record-if-returned"
+        },
+        "text_policy": {
+          "mode": "native-generated-copy-with-validation",
+          "exact_text": [
+            "幂等键：识别重复请求，减少重复副作用",
+            "首次请求",
+            "幂等键",
+            "执行操作",
+            "记录结果",
+            "重复请求",
+            "命中记录",
+            "返回既有结果",
+            "减少重复执行风险",
+            "不代表业务自动正确"
+          ],
+          "copy_ledger_status": "frozen",
+          "native_text_generation": true,
+          "post_generation_validation": "exact",
+          "deterministic_overlay": false,
+          "fallback_policy": "correct-one-isolated-copy-defect-otherwise-regenerate"
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "eighty-five to ninety-two percent intentional occupancy",
+          "crop_rules": "preserve title both request routes the shared key record result state and caution cell",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "dense-technical-infographic-concept-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "dense front-facing layered comparison on pure white with oversized navy Chinese headline",
+        "royal-blue primary logic, engineering-green reuse state, orange caution, and exact native copy"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "icons",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "The first and repeated request paths are distinct and converge through one key record.",
+        "The limitation remains visible and the composition does not repeat the golden backpressure feedback loop."
+      ]
+    },
+    {
+      "id": "style9-diagram-event-ingestion-replay-audit",
+      "request": {
+        "profile_id": "dense-technical-infographic",
+        "asset_role": "diagram",
+        "objective": "Render a strict event-ingestion architecture with validation, dead-letter routing, approved replay, and audit recording.",
+        "semantics": {
+          "confirmed": [
+            "An event moves from a source through intake and validation before processing.",
+            "Accepted processing writes an audit record.",
+            "Rejected validation routes to a dead-letter state, which may pass through replay approval and return to intake."
+          ],
+          "simplifications": [
+            "Use exactly seven nodes and seven directed edges.",
+            "Represent replay approval as one bounded gate without retry counts, schedules, or operator identities."
+          ],
+          "blocked": [
+            "Do not add brokers, databases, consumers, notification nodes, vendors, protocols, batch sizes, timing, or automatic replay guarantees.",
+            "Do not omit, duplicate, reverse, merge, or invent any frozen node or edge."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "event-source",
+              "intake",
+              "validation",
+              "processing",
+              "audit-record",
+              "dead-letter",
+              "replay-approval"
+            ],
+            "edges": [
+              {
+                "id": "edge-source-intake",
+                "from": "event-source",
+                "to": "intake",
+                "type": "primary"
+              },
+              {
+                "id": "edge-intake-validation",
+                "from": "intake",
+                "to": "validation",
+                "type": "primary"
+              },
+              {
+                "id": "edge-validation-processing",
+                "from": "validation",
+                "to": "processing",
+                "type": "primary"
+              },
+              {
+                "id": "edge-processing-audit",
+                "from": "processing",
+                "to": "audit-record",
+                "type": "primary"
+              },
+              {
+                "id": "edge-validation-dead-letter",
+                "from": "validation",
+                "to": "dead-letter",
+                "type": "exception"
+              },
+              {
+                "id": "edge-dead-letter-replay",
+                "from": "dead-letter",
+                "to": "replay-approval",
+                "type": "exception"
+              },
+              {
+                "id": "edge-replay-intake",
+                "from": "replay-approval",
+                "to": "intake",
+                "type": "return"
+              }
+            ],
+            "invariants": [
+              "audit-record is reachable only from processing",
+              "dead-letter is reachable only from validation",
+              "replay-approval may return only to intake",
+              "dead-letter never reaches processing directly"
+            ]
+          }
+        },
+        "composition": {
+          "family": "architecture-flow",
+          "structure": "pure-white strict seven-node architecture with one royal-blue primary row, one orange-to-red dead-letter branch, one dashed royal-blue replay return, compact legend, and four-cell invariant rail",
+          "hierarchy": "oversized navy Chinese title, numbered groups, exact arrowheads, green audit terminal, red dead-letter state, and orange replay-approval gate",
+          "human_elements": "none"
+        },
+        "model_policy": {
+          "alias": "gpt-image-2",
+          "selection": "latest-alias",
+          "runtime_identity": "record-if-returned"
+        },
+        "text_policy": {
+          "mode": "native-generated-copy-with-validation",
+          "exact_text": [
+            "事件接入：校验、死信、重放与审计",
+            "事件源",
+            "接入入口",
+            "格式校验",
+            "事件处理",
+            "审计记录",
+            "死信队列",
+            "重放审批",
+            "主流程",
+            "异常路径",
+            "重放路径",
+            "审计记录仅来自事件处理",
+            "死信队列仅来自格式校验",
+            "重放审批只返回接入入口",
+            "死信不直达事件处理"
+          ],
+          "copy_ledger_status": "frozen",
+          "native_text_generation": true,
+          "post_generation_validation": "exact",
+          "deterministic_overlay": false,
+          "fallback_policy": "correct-one-isolated-copy-defect-otherwise-regenerate"
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "eighty-five to ninety-two percent intentional occupancy",
+          "crop_rules": "preserve all seven nodes all seven arrowheads complete replay return legend and invariant rail",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "dense-technical-infographic-diagram-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "strict front-facing dense technical architecture, oversized navy title, numbered grouping, compact legend, and bottom invariant rail",
+        "royal-blue primary route, orange exception gate, red dead-letter state, green audit state, dashed return, and exact native copy"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "icons",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "Exactly seven nodes and seven declared edges are visible with correct direction and edge type.",
+        "The graph is distinct from the golden asynchronous-task lifecycle and contains no unsupported system node."
+      ]
+    }
+  ],
+  "neighbor_discrimination": {
+    "compare_profile_ids": [
+      "technical-editorial-minimal",
+      "blueprint-linework",
+      "isometric-infrastructure",
+      "handwritten-systems-explainer"
+    ],
+    "style_9_expected": [
+      "dense front-facing technical poster on a pure-white canvas",
+      "oversized deep-navy Chinese headline and compact readable native copy",
+      "numbered semantic zones, flat vector-like technical icons, legend, and takeaway or invariant rail",
+      "royal-blue main structure with restrained green orange purple and red semantic states"
+    ],
+    "neighbor_expected": [
+      "Style 1 uses sparse ink-blue editorial minimalism and far less information density",
+      "Style 4 uses polished cool-white technology surfaces, glass devices, and spatial presentation",
+      "Style 5 uses fixed isometric matte architectural worlds rather than flat front-facing posters",
+      "Style 8 uses warm ivory paper, lively handwritten ink, and hand-drawn systems teaching"
+    ]
+  }
+}

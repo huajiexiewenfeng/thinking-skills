@@ -1,0 +1,83 @@
+{
+  "golden_production_version": 1,
+  "profile_id": "dense-technical-infographic",
+  "style_pack_version": 3,
+  "status": "approved",
+  "program_outcome": "The cover, concept, and topology-validated diagram are explicitly approved; prompt compilation, cross-topic stability, and neighbor discrimination passed for release qualification.",
+  "candidates": [
+    {
+      "role": "cover",
+      "version": 1,
+      "status": "rejected",
+      "asset": "skills/article-visual-director/assets/style-anchors/dense-technical-infographic/candidates/rejected-cover-v1-unfrozen-copy.png",
+      "reason": "The visual direction passed, but the image introduced explanatory copy that was not present in the pre-generation frozen copy ledger.",
+      "semantic_review": "passed",
+      "copy_ledger_review": "failed"
+    },
+    {
+      "role": "cover",
+      "version": 2,
+      "status": "approved",
+      "asset": "skills/article-visual-director/assets/style-anchors/dense-technical-infographic/golden-cover.png",
+      "artifact_sha256": "127d0560842f6d1d929555d49fe2bdbc5105e2d039bb1a54c76f6d1281e3badd",
+      "dimensions": "1672x941",
+      "opaque": true,
+      "semantic_review": "passed",
+      "copy_ledger_review": "passed",
+      "layout_review": "passed",
+      "user_approval": "approved",
+      "approval_evidence": "The user replied '继续' after the validated cover candidate was presented for explicit approval."
+    },
+    {
+      "role": "concept",
+      "version": 1,
+      "status": "rejected",
+      "asset": "skills/article-visual-director/assets/style-anchors/dense-technical-infographic/candidates/rejected-concept-v1-extra-copy-and-node.png",
+      "reason": "The image introduced two explanatory prose strips outside the frozen copy ledger and an unlabeled intermediate chip node inside the feedback topology.",
+      "semantic_review": "failed",
+      "copy_ledger_review": "failed",
+      "topology_review": "failed"
+    },
+    {
+      "role": "concept",
+      "version": 2,
+      "status": "approved",
+      "asset": "skills/article-visual-director/assets/style-anchors/dense-technical-infographic/golden-concept.png",
+      "artifact_sha256": "bf4d162eacabf089d143b525580a5d759688c3db9b3833154952b0a0d9f46432",
+      "dimensions": "1672x941",
+      "opaque": true,
+      "semantic_review": "passed",
+      "copy_ledger_review": "passed",
+      "topology_review": "passed",
+      "layout_review": "passed",
+      "user_approval": "approved",
+      "approval_evidence": "The user replied '可以' after the validated concept candidate was presented for explicit approval."
+    },
+    {
+      "role": "diagram",
+      "version": 1,
+      "status": "approved",
+      "asset": "skills/article-visual-director/assets/style-anchors/dense-technical-infographic/golden-diagram.png",
+      "artifact_sha256": "0fba507537591049949525e8aaad34d8f58a1f12ba2dc82a8757b763a22dba38",
+      "dimensions": "1672x941",
+      "opaque": true,
+      "semantic_review": "passed",
+      "copy_ledger_review": "passed",
+      "topology_review": {
+        "status": "exact-match",
+        "node_count": 8,
+        "edge_count": 8,
+        "primary_edges": 5,
+        "exception_edges": 2,
+        "return_edges": 1,
+        "result_archive_source": "execution",
+        "failure_archive_source": "retry-decision",
+        "retry_return_destination": "queue",
+        "failure_to_result_direct_edge": false
+      },
+      "layout_review": "passed",
+      "user_approval": "approved",
+      "approval_evidence": "The user replied '可以' after the topology-validated diagram candidate was presented for explicit approval."
+    }
+  ]
+}

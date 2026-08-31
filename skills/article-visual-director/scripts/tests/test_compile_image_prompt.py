@@ -221,6 +221,175 @@ class CompileImagePromptTests(unittest.TestCase):
         with self.assertRaisesRegex(PromptCompileError, "STYLE_IDENTITY_DRIFT"):
             compile_prompt_ir(self.skill_root, request)
 
+    def test_non_style_9_exact_text_keeps_deterministic_overlay(self) -> None:
+        request = self.valid_request("cover")
+        request["text_policy"]["exact_text"] = ["Exact title"]
+
+        prompt_ir = compile_prompt_ir(self.skill_root, request)
+
+        self.assertEqual([], lint_prompt_ir(prompt_ir))
+
+
+class Style9NativeCopyPolicyTests(unittest.TestCase):
+    def style_9_cover_request(self) -> dict:
+        return {
+            "profile_id": "dense-technical-infographic",
+            "asset_role": "cover",
+            "objective": "Explain how a high-concurrency service handles one request reliably",
+            "semantics": {
+                "confirmed": [
+                    "A generic request enters a processing core and passes through four supported responsibility zones"
+                ],
+                "simplifications": [
+                    "Show rate limiting isolation caching and degradation as generic capabilities"
+                ],
+                "blocked": [
+                    "Do not add vendors protocols benchmark numbers or performance guarantees"
+                ],
+            },
+            "composition": {
+                "family": "mechanism-poster",
+                "structure": "one central core four numbered zones and one bottom rail",
+                "human_elements": "none",
+            },
+            "model_policy": {
+                "alias": "gpt-image-2",
+                "selection": "latest-alias",
+                "runtime_identity": "record-if-returned",
+            },
+            "text_policy": {
+                "mode": "native-generated-copy-with-validation",
+                "exact_text": [
+                    "高并发服务：一次请求如何被稳定处理",
+                    "流量入口",
+                    "任务调度",
+                ],
+                "copy_ledger_status": "frozen",
+                "native_text_generation": True,
+                "post_generation_validation": "exact",
+                "deterministic_overlay": False,
+                "fallback_policy": "correct-one-isolated-copy-defect-otherwise-regenerate",
+            },
+            "platform": {
+                "name": "wechat",
+                "aspect_ratio": "16:9",
+                "occupancy": "eighty-five to ninety-two percent",
+                "crop_rules": "preserve title central core numbered zones and bottom rail",
+                "output_count": 1,
+            },
+            "golden_reference_ids": [
+                "dense-technical-infographic-cover-v1"
+            ],
+            "article_anchor_reference_ids": [],
+        }
+
+    def test_style_9_native_copy_with_latest_model_policy_lints_cleanly(self) -> None:
+        prompt_ir = compile_prompt_ir(
+            SCRIPT_DIR.parent, self.style_9_cover_request()
+        )
+
+        self.assertEqual([], lint_prompt_ir(prompt_ir))
+        self.assertEqual(
+            "gpt-image-2",
+            prompt_ir["output_contract"]["model_policy"]["alias"],
+        )
+
+    def test_other_profile_cannot_reuse_style_9_native_copy_policy(self) -> None:
+        prompt_ir = compile_prompt_ir(
+            SCRIPT_DIR.parent, self.style_9_cover_request()
+        )
+        prompt_ir["profile_id"] = "blueprint-linework"
+
+        errors = lint_prompt_ir(prompt_ir)
+
+        self.assertTrue(
+            any(error["code"] == "TEXT_POLICY_VIOLATION" for error in errors)
+        )
+
+    def test_style_9_rejects_previous_image_model_alias(self) -> None:
+        request = self.style_9_cover_request()
+        request["model_policy"]["alias"] = "chatgpt-image-latest"
+
+        with self.assertRaisesRegex(PromptCompileError, "STYLE_IDENTITY_DRIFT"):
+            compile_prompt_ir(SCRIPT_DIR.parent, request)
+
+    def test_style_9_requires_frozen_copy_ledger(self) -> None:
+        request = self.style_9_cover_request()
+        request["text_policy"].pop("copy_ledger_status")
+
+        with self.assertRaisesRegex(PromptCompileError, "TEXT_POLICY_VIOLATION"):
+            compile_prompt_ir(SCRIPT_DIR.parent, request)
+
+    def test_style_9_requires_exact_post_generation_validation(self) -> None:
+        request = self.style_9_cover_request()
+        request["text_policy"].pop("post_generation_validation")
+
+        with self.assertRaisesRegex(PromptCompileError, "TEXT_POLICY_VIOLATION"):
+            compile_prompt_ir(SCRIPT_DIR.parent, request)
+
+
+class Style9ProbeSuiteTests(unittest.TestCase):
+    def test_all_style_9_probes_compile_lint_and_discriminate_neighbors(self) -> None:
+        skill_root = SCRIPT_DIR.parent
+        suite_path = (
+            skill_root.parents[1]
+            / "evals"
+            / "style-pack-probes"
+            / "09-dense-technical-infographic.json"
+        )
+        suite = json.loads(suite_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(3, len(suite["probes"]))
+        self.assertEqual(
+            {"cover", "concept", "diagram"},
+            {probe["request"]["asset_role"] for probe in suite["probes"]},
+        )
+        for probe in suite["probes"]:
+            with self.subTest(probe=probe["id"]):
+                request = probe["request"]
+                self.assertNotIn("publication_theme", request)
+                self.assertEqual("gpt-image-2", request["model_policy"]["alias"])
+                self.assertEqual("latest-alias", request["model_policy"]["selection"])
+                self.assertTrue(request["text_policy"]["exact_text"])
+                self.assertEqual(
+                    "frozen", request["text_policy"]["copy_ledger_status"]
+                )
+                self.assertTrue(request["text_policy"]["native_text_generation"])
+                self.assertEqual(
+                    "exact",
+                    request["text_policy"]["post_generation_validation"],
+                )
+                self.assertFalse(request["text_policy"]["deterministic_overlay"])
+
+                prompt_ir = compile_prompt_ir(skill_root, request)
+                self.assertEqual([], lint_prompt_ir(prompt_ir))
+                self.assertEqual(
+                    "gpt-image-2",
+                    prompt_ir["output_contract"]["model_policy"]["alias"],
+                )
+                rendered = render_gpt_image_prompt(prompt_ir)
+                for block in REQUIRED_PROMPT_BLOCKS:
+                    self.assertEqual(1, rendered.count(f"[{block}]"))
+                self.assertTrue(
+                    {"labels", "numbers", "nodes", "topology", "example_story"}
+                    <= set(prompt_ir["reference_contract"]["must_not_copy"])
+                )
+
+        discrimination = suite["neighbor_discrimination"]
+        self.assertEqual(
+            {
+                "technical-editorial-minimal",
+                "blueprint-linework",
+                "isometric-infrastructure",
+                "handwritten-systems-explainer",
+            },
+            set(discrimination["compare_profile_ids"]),
+        )
+        self.assertIn(
+            "dense front-facing technical poster",
+            " ".join(discrimination["style_9_expected"]),
+        )
+
 
 class Style8ProbeSuiteTests(unittest.TestCase):
     def test_all_style_8_probes_compile_and_lint(self) -> None:

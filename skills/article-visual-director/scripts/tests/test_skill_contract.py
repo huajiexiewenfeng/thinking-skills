@@ -31,6 +31,7 @@ EXPECTED_PROFILES = [
         "Handwritten Systems Explainer",
         "手写系统解释图",
     ),
+    (9, "dense-technical-infographic", "Dense Technical Infographic", "高密度技术信息图"),
 ]
 REQUIRED_PROTOCOL_HEADINGS = [
     "Identity",
@@ -92,7 +93,7 @@ class SkillContractTests(unittest.TestCase):
         ]
         self.assertEqual(1, registry["registry_version"])
         self.assertEqual(EXPECTED_PROFILES, actual)
-        self.assertEqual(8, len({item["profile_id"] for item in registry["profiles"]}))
+        self.assertEqual(9, len({item["profile_id"] for item in registry["profiles"]}))
 
         for item in registry["profiles"]:
             ordinal = item["ordinal"]
@@ -105,7 +106,7 @@ class SkillContractTests(unittest.TestCase):
                 item["golden_set_path"],
             )
 
-    def test_style_gate_and_catalog_expose_the_same_eight_profiles(self) -> None:
+    def test_style_gate_and_catalog_expose_the_same_nine_profiles(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         catalog_text = (SKILL_ROOT / "references" / "style-catalog.md").read_text(
             encoding="utf-8"
@@ -124,14 +125,17 @@ class SkillContractTests(unittest.TestCase):
         )
         registry_profiles = [item["name_en"] for item in registry["profiles"]]
 
-        self.assertEqual(8, len(menu_profiles))
-        self.assertEqual(8, len(catalog_profiles))
+        self.assertEqual(9, len(menu_profiles))
+        self.assertEqual(9, len(catalog_profiles))
         self.assertEqual(
             {profile.split("（", 1)[0] for profile in menu_profiles},
             set(catalog_profiles),
         )
         self.assertEqual(registry_profiles, catalog_profiles)
         self.assertIn("Handwritten Systems Explainer", catalog_profiles)
+        self.assertIn("9. **Dense Technical Infographic（高密度技术信息图）**", skill_text)
+        self.assertIn("高密度技术信息图", catalog_text)
+        self.assertEqual(9, len(EXPECTED_PROFILES))
 
     def test_skill_routes_x_article_as_a_first_class_platform(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -257,6 +261,45 @@ class SkillContractTests(unittest.TestCase):
                 for phrase in phrases:
                     self.assertIn(phrase, text)
 
+    def test_style_9_native_copy_exception_is_documented(self) -> None:
+        expected = {
+            "references/prompt-ir-schema.md": [
+                "native-generated-copy-with-validation",
+                "copy_ledger_status",
+                "gpt-image-2",
+                "latest-alias",
+                "frozen_graph",
+            ],
+            "references/style-pack-schema.md": [
+                "dense-technical-infographic",
+                "native generated copy",
+                "validation failure",
+            ],
+            "references/adapters/gpt-image.md": [
+                "gpt-image-2",
+                "latest-alias",
+                "correct-one-isolated-copy-defect-otherwise-regenerate",
+                "wrong text",
+            ],
+            "references/manifest-schema.md": [
+                "native_text_validation",
+                "native-generated",
+                "dense-technical-infographic",
+                "semantic_graph_status",
+                "renderer exception",
+            ],
+            "SKILL.md": [
+                "dense-technical-infographic",
+                "copy ledger",
+                "validation failure never",
+            ],
+        }
+        for relative, phrases in expected.items():
+            with self.subTest(relative=relative):
+                text = (SKILL_ROOT / relative).read_text(encoding="utf-8")
+                for phrase in phrases:
+                    self.assertIn(phrase, text)
+
     def test_style_8_v3_preserves_approved_identity(self) -> None:
         root = (
             SKILL_ROOT
@@ -283,6 +326,39 @@ class SkillContractTests(unittest.TestCase):
         )
         for reference in matrix["references"]:
             self.assertIn("topology", reference["must_not_copy"])
+
+    def test_style_9_v3_preserves_dense_technical_infographic_identity(self) -> None:
+        root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "dense-technical-infographic"
+        )
+        visual = json.loads((root / "visual-dna.json").read_text(encoding="utf-8"))
+        roles = json.loads(
+            (root / "role-contracts.json").read_text(encoding="utf-8")
+        )
+        references = json.loads(
+            (root / "reference-matrix.json").read_text(encoding="utf-8")
+        )
+        combined = json.dumps([visual, roles, references], ensure_ascii=False)
+        for phrase in (
+            "fully opaque pure white",
+            "oversized deep navy title",
+            "flat vector-like",
+            "eighty-five to ninety-two percent",
+            "bottom takeaway rail",
+            "native generated copy",
+            "mechanism-poster",
+            "architecture-flow",
+            "layered-comparison",
+            "no people",
+            "Style 4",
+            "Style 8",
+        ):
+            self.assertIn(phrase, combined)
+        self.assertEqual({"cover", "concept", "diagram"}, set(roles["roles"]))
+        self.assertEqual(3, len(references["references"]))
 
     def test_v3_workflow_compiles_and_fails_closed(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
