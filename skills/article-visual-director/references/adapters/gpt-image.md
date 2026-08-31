@@ -2,11 +2,9 @@
 
 Use this adapter only after a valid Prompt IR exists. It translates model-neutral facts into a GPT Image prompt without adding article facts or weakening the selected Style Pack.
 
-## Execution Mode
+## Runtime Boundary
 
-The default adapter path is the Codex built-in `image_gen` capability. Record `mode: built-in-image-gen`, `model_selection: host-managed`, `api_key_required: false`, and `fallback_approval: not-required`. When the built-in schema exposes no model parameter, call it without one; do not switch runtimes to force a model alias. Built-in execution never needs `OPENAI_API_KEY`.
-
-The CLI/API path is a fallback, not a model-selection convenience. Use it only after the user explicitly requests or approves fallback, then record `mode: cli-api-fallback`, `model_selection: gpt-image-2`, `api_key_required: true`, and `fallback_approval: explicit-user-approved`. If built-in generation fails or is unavailable, explain the fallback and stop for approval before any CLI/API call. Record the exact runtime identity returned by the host when available; record `null` when none is returned and never invent an identity.
+The adapter does not select or encode an image runtime. Follow the runtime's image-generation skill and the tool schema actually exposed by the host. In particular, `dense-technical-infographic` must not add a model selector to Prompt IR merely because it uses native generated copy.
 
 ## Reference Selection
 

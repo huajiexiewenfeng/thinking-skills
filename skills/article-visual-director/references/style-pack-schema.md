@@ -38,7 +38,7 @@ Every role declares non-empty `must_preserve`, `may_vary`, `must_not_include`, a
 
 ## Native Generated Copy Exception
 
-Exact copy uses deterministic typography by default. Only the registered `dense-technical-infographic` profile may declare native generated copy. Its copy ledger must be frozen before generation, and exact post-generation text validation is mandatory. This exception governs visible text, not runtime selection: image generation still defaults to the built-in host-managed `image_gen` capability, with no API key and no forced model alias. A `gpt-image-2` CLI/API fallback is permitted only after explicit user approval. Technical diagrams additionally retain the frozen semantic graph requirement.
+Exact copy uses deterministic typography by default. Only the registered `dense-technical-infographic` profile may declare native generated copy. Its copy ledger must be frozen before generation, and exact post-generation text validation is mandatory. This exception governs visible text only and never selects a model or execution path. Technical diagrams additionally retain the frozen semantic graph requirement.
 
 Correct native copy is preserved. One isolated copy defect may use a deterministic local correction; multiple-copy, numeric, grouping, direction, or topology defects require regeneration or deterministic rebuild. A validation failure never authorizes accepting wrong copy or weakening the graph.
 

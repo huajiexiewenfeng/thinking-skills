@@ -730,13 +730,6 @@ class ValidateManifestV2Tests(unittest.TestCase):
     def test_valid_v3_traceability_passes(self) -> None:
         data = self.make_v2_manifest()
         self.enable_v3_manifest(data)
-        data["assets"][0]["generation_execution"] = {
-            "mode": "built-in-image-gen",
-            "model_selection": "host-managed",
-            "fallback_approval": "not-required",
-            "api_key_required": False,
-            "runtime_identity": None,
-        }
         self.assertEqual(
             [],
             validate_manifest(
@@ -744,53 +737,9 @@ class ValidateManifestV2Tests(unittest.TestCase):
             ),
         )
 
-    def test_v3_imagegen_requires_generation_execution_record(self) -> None:
+    def test_v3_imagegen_does_not_require_generation_execution_record(self) -> None:
         data = self.make_v2_manifest(renderer="imagegen")
         self.enable_v3_manifest(data)
-
-        self.assert_error(data, "missing_generation_execution")
-
-    def test_v3_builtin_host_managed_execution_passes(self) -> None:
-        data = self.make_v2_manifest(renderer="imagegen")
-        self.enable_v3_manifest(data)
-        data["assets"][0]["generation_execution"] = {
-            "mode": "built-in-image-gen",
-            "model_selection": "host-managed",
-            "fallback_approval": "not-required",
-            "api_key_required": False,
-            "runtime_identity": None,
-        }
-
-        self.assertEqual(
-            [],
-            validate_manifest(
-                data, self.manifest_path, "plan", skill_root=self.skill_root
-            ),
-        )
-
-    def test_v3_unapproved_cli_api_fallback_is_rejected(self) -> None:
-        data = self.make_v2_manifest(renderer="imagegen")
-        self.enable_v3_manifest(data)
-        data["assets"][0]["generation_execution"] = {
-            "mode": "cli-api-fallback",
-            "model_selection": "gpt-image-2",
-            "fallback_approval": "pending",
-            "api_key_required": True,
-            "runtime_identity": None,
-        }
-
-        self.assert_error(data, "unapproved_imagegen_fallback")
-
-    def test_v3_explicitly_approved_gpt_image_2_fallback_passes(self) -> None:
-        data = self.make_v2_manifest(renderer="imagegen")
-        self.enable_v3_manifest(data)
-        data["assets"][0]["generation_execution"] = {
-            "mode": "cli-api-fallback",
-            "model_selection": "gpt-image-2",
-            "fallback_approval": "explicit-user-approved",
-            "api_key_required": True,
-            "runtime_identity": None,
-        }
 
         self.assertEqual(
             [],

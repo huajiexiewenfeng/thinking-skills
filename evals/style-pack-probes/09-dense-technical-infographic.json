@@ -31,13 +31,6 @@
           "hierarchy": "royal-blue read and write routes organize the central mechanism; engineering green marks supported read service; orange marks bounded failover attention",
           "human_elements": "none"
         },
-        "execution_policy": {
-          "mode": "built-in-image-gen",
-          "model_selection": "host-managed",
-          "runtime_identity": "record-if-returned",
-          "api_key_required": false,
-          "fallback_approval": "not-required"
-        },
         "text_policy": {
           "mode": "native-generated-copy-with-validation",
           "exact_text": [
@@ -113,13 +106,6 @@
           "structure": "pure-white dense teaching poster with an oversized navy title, an upper royal-blue first-request route, a lower green repeated-request reuse route, and one orange caution cell",
           "hierarchy": "the shared idempotency-key record is the central comparison anchor; the two routes remain distinct and terminate in one existing-result state",
           "human_elements": "none"
-        },
-        "execution_policy": {
-          "mode": "built-in-image-gen",
-          "model_selection": "host-managed",
-          "runtime_identity": "record-if-returned",
-          "api_key_required": false,
-          "fallback_approval": "not-required"
         },
         "text_policy": {
           "mode": "native-generated-copy-with-validation",
@@ -257,13 +243,6 @@
           "structure": "pure-white strict seven-node architecture with one royal-blue primary row, one orange-to-red dead-letter branch, one dashed royal-blue replay return, compact legend, and four-cell invariant rail",
           "hierarchy": "oversized navy Chinese title, numbered groups, exact arrowheads, green audit terminal, red dead-letter state, and orange replay-approval gate",
           "human_elements": "none"
-        },
-        "execution_policy": {
-          "mode": "built-in-image-gen",
-          "model_selection": "host-managed",
-          "runtime_identity": "record-if-returned",
-          "api_key_required": false,
-          "fallback_approval": "not-required"
         },
         "text_policy": {
           "mode": "native-generated-copy-with-validation",
