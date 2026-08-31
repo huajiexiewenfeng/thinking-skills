@@ -7,13 +7,13 @@
   "role_contracts_sha256": "71699d0312216ffcf8c31c6b258bbd59795be431da3bb92a25a66816fe2e5941",
   "reference_matrix_sha256": "21293698fc040b0e8cd535bb6245252dd374ca04e871ddd0e99e4b9f945440ce",
   "qualification": {
-    "prompt_compile_status": "pending",
-    "cross_topic_probe_status": "pending",
-    "neighbor_discrimination_status": "pending"
+    "prompt_compile_status": "passed",
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed"
   },
-  "status": "candidate",
+  "status": "approved",
   "user_approval": {
-    "status": "pending",
+    "status": "approved",
     "revision_notes": [
       "Style 9 cover golden approved when the user replied '继续': oversized deep-navy Chinese title, four numbered responsibility zones, central request-processing core, full-width four-capability rail, exact frozen native copy, fully opaque 16:9 canvas, and no unsupported vendors, metrics, or extra systems. Example content, labels, icons, and topology remain non-authoritative.",
       "Style 9 concept golden approved when the user replied '可以': distinct upper/lower layered comparison, orange uncontrolled accumulation path, royal-blue controlled path, direct engineering-green feedback return, three supported benefit cells, exact frozen native copy, fully opaque 16:9 canvas, and no extra prose or intermediate topology. Example content, labels, icons, topology, and story remain non-authoritative.",

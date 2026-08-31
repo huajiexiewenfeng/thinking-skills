@@ -277,13 +277,10 @@ class Style9NativeCopyPolicyTests(unittest.TestCase):
                 "crop_rules": "preserve title central core numbered zones and bottom rail",
                 "output_count": 1,
             },
-            "golden_reference_ids": [],
+            "golden_reference_ids": [
+                "dense-technical-infographic-cover-v1"
+            ],
             "article_anchor_reference_ids": [],
-            "golden_production": {
-                "stage": "cover",
-                "bootstrap_references": [],
-                "semantic_authority": False,
-            },
         }
 
     def test_style_9_native_copy_with_latest_model_policy_lints_cleanly(self) -> None:
@@ -329,6 +326,69 @@ class Style9NativeCopyPolicyTests(unittest.TestCase):
 
         with self.assertRaisesRegex(PromptCompileError, "TEXT_POLICY_VIOLATION"):
             compile_prompt_ir(SCRIPT_DIR.parent, request)
+
+
+class Style9ProbeSuiteTests(unittest.TestCase):
+    def test_all_style_9_probes_compile_lint_and_discriminate_neighbors(self) -> None:
+        skill_root = SCRIPT_DIR.parent
+        suite_path = (
+            skill_root.parents[1]
+            / "evals"
+            / "style-pack-probes"
+            / "09-dense-technical-infographic.json"
+        )
+        suite = json.loads(suite_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(3, len(suite["probes"]))
+        self.assertEqual(
+            {"cover", "concept", "diagram"},
+            {probe["request"]["asset_role"] for probe in suite["probes"]},
+        )
+        for probe in suite["probes"]:
+            with self.subTest(probe=probe["id"]):
+                request = probe["request"]
+                self.assertNotIn("publication_theme", request)
+                self.assertEqual("gpt-image-2", request["model_policy"]["alias"])
+                self.assertEqual("latest-alias", request["model_policy"]["selection"])
+                self.assertTrue(request["text_policy"]["exact_text"])
+                self.assertEqual(
+                    "frozen", request["text_policy"]["copy_ledger_status"]
+                )
+                self.assertTrue(request["text_policy"]["native_text_generation"])
+                self.assertEqual(
+                    "exact",
+                    request["text_policy"]["post_generation_validation"],
+                )
+                self.assertFalse(request["text_policy"]["deterministic_overlay"])
+
+                prompt_ir = compile_prompt_ir(skill_root, request)
+                self.assertEqual([], lint_prompt_ir(prompt_ir))
+                self.assertEqual(
+                    "gpt-image-2",
+                    prompt_ir["output_contract"]["model_policy"]["alias"],
+                )
+                rendered = render_gpt_image_prompt(prompt_ir)
+                for block in REQUIRED_PROMPT_BLOCKS:
+                    self.assertEqual(1, rendered.count(f"[{block}]"))
+                self.assertTrue(
+                    {"labels", "numbers", "nodes", "topology", "example_story"}
+                    <= set(prompt_ir["reference_contract"]["must_not_copy"])
+                )
+
+        discrimination = suite["neighbor_discrimination"]
+        self.assertEqual(
+            {
+                "technical-editorial-minimal",
+                "blueprint-linework",
+                "isometric-infrastructure",
+                "handwritten-systems-explainer",
+            },
+            set(discrimination["compare_profile_ids"]),
+        )
+        self.assertIn(
+            "dense front-facing technical poster",
+            " ".join(discrimination["style_9_expected"]),
+        )
 
 
 class Style8ProbeSuiteTests(unittest.TestCase):
