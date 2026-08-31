@@ -150,7 +150,8 @@ Paths reject absolute paths, `..`, control characters, colons, trailing dots/spa
 | `dimensions` | Positive integer `width` and `height` |
 | `aspect_ratio` | Numeric `width:height`, for example `16:9` or `2.35:1` |
 | `safe_area` | Explicit crop and margin rule |
-| `title` | Required for a WeChat `cover`, optional for CSDN/X covers; records deterministic text delivery or an explicit text-free choice |
+| `title` | Required for a WeChat `cover`, optional for CSDN/X covers; records deterministic text delivery, the Style 9 native-generated exception, or an explicit text-free choice |
+| `native_text_validation` | Required for Style 9 native-copy assets; freezes copy and semantic review evidence |
 | `anchor` | Exact heading, one-based occurrence, placement, and section hash |
 | `prompt` | Required for `imagegen`; freeze after approval |
 | `diagram_spec` | Required for deterministic assets |
@@ -169,6 +170,26 @@ Renderer/role contracts are strict:
 - `cover`, `concept` → `imagegen`;
 - `process`, `architecture`, `comparison`, `timeline` → `deterministic-diagram`;
 - `chart` → `deterministic-chart`.
+
+The only renderer exception is `style.profile_id=dense-technical-infographic`: its `process`, `architecture`, `comparison`, and `timeline` assets may use `imagegen` when the exact native-copy validation record passes. All other profiles retain the deterministic diagram mapping.
+
+### Style 9 Native Text Validation
+
+Every Style 9 asset that relies on native generated copy records exactly:
+
+```json
+{
+  "native_text_validation": {
+    "status": "passed",
+    "copy_ledger_status": "frozen",
+    "visible_copy_status": "exact-match",
+    "semantic_graph_status": "exact-match",
+    "review_notes": "Every visible label, node, edge, direction, group, and invariant matches the approved ledgers."
+  }
+}
+```
+
+At integration, `status` is `passed`, `copy_ledger_status` is `frozen`, and `visible_copy_status` is `exact-match`. Use `semantic_graph_status=exact-match` for `process`, `architecture`, `comparison`, and `timeline`; use `semantic_graph_status=not-required` for cover and concept. The object contains no undeclared keys. Missing, invented, reversed, duplicated, or mismatched copy or topology fails validation.
 
 A deterministic `diagram_spec` includes `nodes`, `edges`, and `blocked_unconfirmed_edges` arrays. Preserve editable SVG, Mermaid, Graphviz, HTML, or equivalent source under `visual-sources/`.
 
@@ -199,6 +220,20 @@ Deterministic title delivery is the default:
 - `background_artifact_path` must be a safe relative PNG or JPEG path for the text-free image-generation result. It must exist before integration and must differ from the final `artifact_path`.
 - `wide_crop_checked` remains `false` during planning and must be `true` before integration for every deterministic cover. `square_crop_checked` must additionally be `true` for WeChat.
 - The image-generation prompt may request a text-free background; the final published artifact still includes the deterministic title layer.
+
+Only `dense-technical-infographic` may preserve an exact title generated natively:
+
+```json
+{
+  "mode": "native-generated",
+  "text_lines": ["高并发服务：一次请求如何被稳定处理"],
+  "supporting_points": ["限流", "隔离", "缓存", "降级"],
+  "wide_crop_checked": true,
+  "square_crop_checked": true
+}
+```
+
+This mode does not require `editable_source_path` or `background_artifact_path`; the final raster is the generated artifact. It does require the exact `native_text_validation` object with `semantic_graph_status=not-required`. Wide-crop verification is required before integration, and WeChat additionally requires square-crop verification. The same title mode fails for every other profile.
 
 A text-free final cover is allowed only after an explicit user choice:
 
@@ -232,7 +267,7 @@ python -c "from pathlib import Path; import sys; sys.path.insert(0, 'skills/arti
 - In v1, fewer than three `imagegen` assets may use `style_anchor=not_required`; three or more require `style_anchor=approved` for integration.
 - In v2, follow the article-style-anchor decision table; the single deterministic asset case is the only `not_required` exception.
 - Generation does not imply validation. Inspect the artifact before `validation_status=passed`.
-- WeChat cover integration requires a valid `title` contract. Any deterministic cover text requires an existing text-free background, an existing editable source, and a completed wide-crop check; WeChat additionally requires the square-crop check. A declared text-free title contract requires `user_opt_out=true`.
+- WeChat cover integration requires a valid `title` contract. Any deterministic cover text requires an existing text-free background, an existing editable source, and a completed wide-crop check. A Style 9 `native-generated` title instead requires passed native-copy validation. WeChat additionally requires the square-crop check. A declared text-free title contract requires `user_opt_out=true`.
 - Only successful Markdown insertion sets every asset to `inserted`, `integration.status=complete`, and `integration.verification_status=passed`.
 
 ## Legacy Version 1 Single-Asset Example

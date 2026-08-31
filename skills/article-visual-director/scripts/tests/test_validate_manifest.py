@@ -213,6 +213,68 @@ class ValidateManifestTests(unittest.TestCase):
         error = matching_error(errors, "missing_editable_source")
         self.assertEqual("assets[0].editable_source_path", error["path"])
 
+    def test_style_9_imagegen_architecture_passes_exact_native_validation(self) -> None:
+        data = make_manifest()
+        data["style"]["profile_id"] = "dense-technical-infographic"
+        asset = data["assets"][0]
+        asset["role"] = "architecture"
+        asset["renderer"] = "imagegen"
+        asset["native_text_validation"] = {
+            "status": "passed",
+            "copy_ledger_status": "frozen",
+            "visible_copy_status": "exact-match",
+            "semantic_graph_status": "exact-match",
+            "review_notes": "Every visible label, node, edge, direction, group, and invariant matches the approved ledgers.",
+        }
+        artifact = self.root / asset["artifact_path"]
+        artifact.parent.mkdir(parents=True)
+        artifact.write_bytes(b"verified-image")
+
+        self.assertEqual(
+            [], validate_manifest(data, self.manifest_path, "integration")
+        )
+
+    def test_other_profile_cannot_use_imagegen_architecture_exception(self) -> None:
+        data = make_manifest()
+        data["style"]["profile_id"] = "blueprint-linework"
+        asset = data["assets"][0]
+        asset["role"] = "architecture"
+        asset["renderer"] = "imagegen"
+        asset["native_text_validation"] = {
+            "status": "passed",
+            "copy_ledger_status": "frozen",
+            "visible_copy_status": "exact-match",
+            "semantic_graph_status": "exact-match",
+            "review_notes": "Every visible semantic element was reviewed.",
+        }
+
+        errors = validate_manifest(data, self.manifest_path, "plan")
+
+        self.assertEqual(
+            "assets[0].renderer",
+            matching_error(errors, "renderer_role_mismatch")["path"],
+        )
+
+    def test_style_9_imagegen_architecture_requires_semantic_graph_validation(self) -> None:
+        data = make_manifest()
+        data["style"]["profile_id"] = "dense-technical-infographic"
+        asset = data["assets"][0]
+        asset["role"] = "architecture"
+        asset["renderer"] = "imagegen"
+        asset["native_text_validation"] = {
+            "status": "passed",
+            "copy_ledger_status": "frozen",
+            "visible_copy_status": "exact-match",
+            "review_notes": "Copy was reviewed but semantic graph evidence is missing.",
+        }
+
+        errors = validate_manifest(data, self.manifest_path, "plan")
+
+        self.assertEqual(
+            "assets[0].native_text_validation",
+            matching_error(errors, "native_text_validation_invalid")["path"],
+        )
+
     def test_wechat_cover_requires_title_contract(self) -> None:
         data = make_wechat_cover_manifest()
         del data["assets"][0]["title"]
@@ -297,6 +359,50 @@ class ValidateManifestTests(unittest.TestCase):
         data = make_wechat_cover_manifest()
 
         self.assertEqual([], validate_manifest(data, self.manifest_path, "plan"))
+
+    def test_style_9_native_generated_wechat_cover_passes_integration(self) -> None:
+        data = make_wechat_cover_manifest()
+        data["style"]["profile_id"] = "dense-technical-infographic"
+        asset = data["assets"][0]
+        asset["title"] = {
+            "mode": "native-generated",
+            "text_lines": ["高并发服务：一次请求如何被稳定处理"],
+            "supporting_points": ["限流", "隔离", "缓存", "降级"],
+            "wide_crop_checked": True,
+            "square_crop_checked": True,
+        }
+        asset["native_text_validation"] = {
+            "status": "passed",
+            "copy_ledger_status": "frozen",
+            "visible_copy_status": "exact-match",
+            "semantic_graph_status": "not-required",
+            "review_notes": "Exact title and supporting copy verified at full resolution.",
+        }
+        artifact = self.root / asset["artifact_path"]
+        artifact.parent.mkdir(parents=True)
+        artifact.write_bytes(b"verified-image")
+
+        self.assertEqual(
+            [], validate_manifest(data, self.manifest_path, "integration")
+        )
+
+    def test_other_profile_rejects_native_generated_cover_title(self) -> None:
+        data = make_wechat_cover_manifest()
+        asset = data["assets"][0]
+        asset["title"] = {
+            "mode": "native-generated",
+            "text_lines": ["Exact title"],
+            "supporting_points": ["One"],
+            "wide_crop_checked": True,
+            "square_crop_checked": True,
+        }
+
+        errors = validate_manifest(data, self.manifest_path, "plan")
+
+        self.assertEqual(
+            "assets[0].title.mode",
+            matching_error(errors, "invalid_cover_title_mode")["path"],
+        )
 
     def test_explicit_text_free_wechat_cover_passes_plan(self) -> None:
         data = make_wechat_cover_manifest()

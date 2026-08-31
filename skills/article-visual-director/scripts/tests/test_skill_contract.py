@@ -281,6 +281,13 @@ class SkillContractTests(unittest.TestCase):
                 "correct-one-isolated-copy-defect-otherwise-regenerate",
                 "wrong text",
             ],
+            "references/manifest-schema.md": [
+                "native_text_validation",
+                "native-generated",
+                "dense-technical-infographic",
+                "semantic_graph_status",
+                "renderer exception",
+            ],
             "SKILL.md": [
                 "dense-technical-infographic",
                 "copy ledger",
