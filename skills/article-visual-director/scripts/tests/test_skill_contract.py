@@ -266,21 +266,19 @@ class SkillContractTests(unittest.TestCase):
             "references/prompt-ir-schema.md": [
                 "native-generated-copy-with-validation",
                 "copy_ledger_status",
-                "built-in-image-gen",
-                "host-managed",
+                "does not add an execution policy",
+                "omits `model_policy`",
                 "frozen_graph",
             ],
             "references/style-pack-schema.md": [
                 "dense-technical-infographic",
                 "native generated copy",
                 "validation failure",
-                "built-in host-managed",
+                "never selects a model or execution path",
             ],
             "references/adapters/gpt-image.md": [
-                "built-in-image-gen",
-                "host-managed",
-                "gpt-image-2",
-                "explicit-user-approved",
+                "does not select or encode an image runtime",
+                "runtime's image-generation skill",
                 "correct-one-isolated-copy-defect-otherwise-regenerate",
                 "wrong text",
             ],
@@ -290,15 +288,11 @@ class SkillContractTests(unittest.TestCase):
                 "dense-technical-infographic",
                 "semantic_graph_status",
                 "renderer exception",
-                "generation_execution",
-                "runtime_identity",
             ],
             "SKILL.md": [
                 "dense-technical-infographic",
                 "copy ledger",
                 "validation failure never",
-                "built-in-image-gen",
-                "OPENAI_API_KEY",
             ],
         }
         for relative, phrases in expected.items():
@@ -306,6 +300,16 @@ class SkillContractTests(unittest.TestCase):
                 text = (SKILL_ROOT / relative).read_text(encoding="utf-8")
                 for phrase in phrases:
                     self.assertIn(phrase, text)
+
+        for relative in (
+            "SKILL.md",
+            "references/prompt-ir-schema.md",
+            "references/style-pack-schema.md",
+            "references/adapters/gpt-image.md",
+            "references/styles/09-dense-technical-infographic.md",
+        ):
+            text = (SKILL_ROOT / relative).read_text(encoding="utf-8")
+            self.assertNotIn("gpt-image-2", text)
 
     def test_style_8_v3_preserves_approved_identity(self) -> None:
         root = (

@@ -9,13 +9,6 @@ from typing import Any
 STYLE_PACK_VERSION = 3
 NATIVE_TEXT_PROFILE_ID = "dense-technical-infographic"
 VALID_ASSET_ROLES = {"cover", "concept", "diagram"}
-DEFAULT_EXECUTION_POLICY = {
-    "mode": "built-in-image-gen",
-    "model_selection": "host-managed",
-    "runtime_identity": "record-if-returned",
-    "api_key_required": False,
-    "fallback_approval": "not-required",
-}
 REQUIRED_NON_COPY_FIELDS = {"labels", "numbers", "nodes", "topology", "example_story"}
 REQUIRED_PROMPT_BLOCKS = (
     "OUTPUT CONTRACT",
@@ -182,52 +175,6 @@ def _valid_frozen_graph(value: object) -> bool:
     )
 
 
-def _valid_execution_policy(value: object) -> bool:
-    if not isinstance(value, dict):
-        return False
-    required_keys = {
-        "mode",
-        "model_selection",
-        "runtime_identity",
-        "api_key_required",
-        "fallback_approval",
-    }
-    if set(value) != required_keys or value.get("runtime_identity") != "record-if-returned":
-        return False
-    if value.get("mode") == "built-in-image-gen":
-        return (
-            value.get("model_selection") == "host-managed"
-            and value.get("api_key_required") is False
-            and value.get("fallback_approval") == "not-required"
-        )
-    if value.get("mode") == "cli-api-fallback":
-        return (
-            value.get("model_selection") == "gpt-image-2"
-            and value.get("api_key_required") is True
-            and value.get("fallback_approval") == "explicit-user-approved"
-        )
-    return False
-
-
-def _normalize_execution_policy(request: dict[str, Any]) -> dict[str, Any]:
-    if request.get("model_policy") is not None:
-        _raise_compile_error(
-            "STYLE_IDENTITY_DRIFT",
-            "model_policy",
-            "model_policy cannot choose the image runtime. Use execution_policy; built-in image_gen is the default.",
-        )
-    value = request.get("execution_policy")
-    if value is None:
-        return dict(DEFAULT_EXECUTION_POLICY)
-    if not _valid_execution_policy(value):
-        _raise_compile_error(
-            "STYLE_IDENTITY_DRIFT",
-            "execution_policy",
-            "Use built-in host-managed image_gen, or an explicitly user-approved gpt-image-2 CLI/API fallback.",
-        )
-    return dict(value)
-
-
 def _valid_native_text_policy(profile_id: object, value: object) -> bool:
     return (
         profile_id == NATIVE_TEXT_PROFILE_ID
@@ -291,12 +238,14 @@ def lint_prompt_ir(prompt_ir: dict[str, Any]) -> list[dict[str, str]]:
                         "Output contract is incomplete.",
                     )
                 )
-        if not _valid_execution_policy(output.get("execution_policy")):
+        if prompt_ir.get("profile_id") == NATIVE_TEXT_PROFILE_ID and (
+            output.get("model_policy") is not None or "execution_policy" in output
+        ):
             errors.append(
                 _error(
                     "STYLE_IDENTITY_DRIFT",
-                    "output_contract.execution_policy",
-                    "Imagegen execution must be built-in and host-managed by default, or an explicitly user-approved gpt-image-2 CLI/API fallback.",
+                    "output_contract",
+                    "Style 9 must not select or encode an image runtime in Prompt IR.",
                 )
             )
 
@@ -543,7 +492,15 @@ def compile_prompt_ir(skill_root: Path, request: dict[str, Any]) -> dict[str, An
         _raise_compile_error(
             "ROLE_LAYOUT_DRIFT", "platform", "A complete platform contract is required."
         )
-    execution_policy = _normalize_execution_policy(request)
+    if (
+        profile["profile_id"] == NATIVE_TEXT_PROFILE_ID
+        and request.get("model_policy") is not None
+    ):
+        _raise_compile_error(
+            "STYLE_IDENTITY_DRIFT",
+            "model_policy",
+            "Style 9 uses the host-provided image generation capability and must not select a model.",
+        )
     anchors = request.get("article_anchor_reference_ids", [])
     if not isinstance(anchors, list) or not all(
         isinstance(anchor, str) and anchor.strip() for anchor in anchors
@@ -564,6 +521,16 @@ def compile_prompt_ir(skill_root: Path, request: dict[str, Any]) -> dict[str, An
         {"id": anchor, "kind": "article_anchor", "role": role}
         for anchor in anchors
     )
+    output_contract = {
+        "platform": platform.get("name"),
+        "aspect_ratio": platform.get("aspect_ratio"),
+        "occupancy": platform.get("occupancy"),
+        "crop_rules": platform.get("crop_rules"),
+        "output_count": platform.get("output_count"),
+    }
+    if profile["profile_id"] != NATIVE_TEXT_PROFILE_ID:
+        output_contract["model_policy"] = request.get("model_policy")
+
     prompt_ir = {
         "profile_id": profile["profile_id"],
         "profile_status": profile.get("style_pack_status", "approved"),
@@ -572,14 +539,7 @@ def compile_prompt_ir(skill_root: Path, request: dict[str, Any]) -> dict[str, An
         "adapter_version": 1,
         "asset_role": role,
         "objective": request.get("objective"),
-        "output_contract": {
-            "platform": platform.get("name"),
-            "aspect_ratio": platform.get("aspect_ratio"),
-            "occupancy": platform.get("occupancy"),
-            "crop_rules": platform.get("crop_rules"),
-            "output_count": platform.get("output_count"),
-            "execution_policy": execution_policy,
-        },
+        "output_contract": output_contract,
         "semantics": semantics,
         "role_composition": {
             "stability": role_contract.get("stability"),
