@@ -1,0 +1,235 @@
+{
+  "profile_id": "dense-technical-infographic",
+  "profile_status": "candidate",
+  "style_pack_version": 3,
+  "adapter_id": "gpt-image",
+  "adapter_version": 1,
+  "asset_role": "concept",
+  "objective": "Create the Style 9 golden concept as a dense layered-comparison poster explaining how backpressure makes production respond to actual processing capacity.",
+  "output_contract": {
+    "platform": "cross-platform-article-body",
+    "aspect_ratio": "16:9",
+    "occupancy": "eighty-five to ninety-two percent intentional foreground occupancy",
+    "crop_rules": "preserve the full title, complete upper comparison, complete lower feedback loop including its upstream return arrow, and all three benefit cells; keep critical copy outside the outer five percent",
+    "output_count": 1,
+    "model_policy": {
+      "alias": "gpt-image-2",
+      "selection": "latest-alias",
+      "runtime_identity": "record-if-returned"
+    }
+  },
+  "semantics": {
+    "confirmed": [
+      "Without backpressure, continued production can outpace consumption, grow queued work, and increase processing delay.",
+      "With backpressure, consumer capacity and buffer-watermark state produce a feedback signal that regulates upstream production.",
+      "Memory protection, more stable latency, and lower cascading-failure risk are presented as intended benefits rather than absolute guarantees."
+    ],
+    "simplifications": [
+      "Use one upper comparison band for the no-backpressure condition and one lower band for the feedback-controlled condition.",
+      "Represent production, buffering, consumption, and feedback as generic technical modules without vendor-specific protocols or deployment details."
+    ],
+    "blocked": [
+      "Do not claim zero delay, perfect stability, guaranteed safety, benchmark values, queue sizes, rates, protocols, vendors, or implementation-specific behavior.",
+      "Do not copy the approved cover's central request-processing core, four numbered responsibility-zone topology, bottom four-capability rail, example icons, or semantic story.",
+      "Do not add people, robots, AI brains, dashboards, glass devices, isometric scenes, decorative code, extra stages, or any text outside the frozen copy ledger.",
+      "Do not add an explanatory paragraph, caption strip, footer sentence, takeaway rail, legend, slogan, prose annotation, or unlabeled module."
+    ]
+  },
+  "role_composition": {
+    "stability": "family",
+    "instructions": {
+      "family": "layered-comparison",
+      "canvas": "fully opaque 16:9 pure white or slightly cool-white technical poster",
+      "hierarchy": "one oversized deep navy Chinese title across the upper band; one compact orange-accented upper comparison row for the uncontrolled condition; one larger royal-blue and engineering-green lower feedback loop; one right-side benefit summary stack",
+      "upper_band": "没有背压 leads from 持续生产 to 队列积压 to 处理延迟上升 using a clear left-to-right orange exception path",
+      "lower_band": "引入背压 organizes exactly three named modules—消费能力, 缓冲水位, and 反馈信号—into one explicit closed feedback loop; the green return arrow travels directly from 反馈信号 back to 消费能力 with no intermediate node, chip, box, caption, or label",
+      "benefit_stack": "three distinct supported benefit cells for 保护内存, 稳定延迟, and 降低级联故障风险",
+      "paths": "royal blue for primary controlled flow, engineering green for supported feedback and benefit states, orange for the uncontrolled accumulation path",
+      "density": "body-infographic density with eighty-five to ninety-two percent intentional occupancy, clear grouping, and no empty decorative dashboard panels",
+      "reading_order": "title, upper uncontrolled comparison, lower feedback loop, benefit summary; terminate the composition after the three benefit cells with no footer or explanatory strip",
+      "human_elements": "none"
+    },
+    "must_preserve": [
+      "preserve exactly one mechanism design principle transformation or performance reason",
+      "preserve a mechanism-poster or layered-comparison with three to five explanatory sections and one explicit bottom takeaway rail",
+      "preserve high organized density crisp vector-like geometry semantic palette and clean technical sans-serif copy",
+      "preserve native generated copy only after exact post-generation validation"
+    ],
+    "may_vary": [
+      "article-supported causal comparison or transformation structure may vary",
+      "the central technical icon set and section arrangement may vary without copying the cover topology",
+      "the reading path may be stacked two-lane or centered around one supported mechanism"
+    ]
+  },
+  "visual_dna": {
+    "profile_id": "dense-technical-infographic",
+    "style_pack_version": 3,
+    "identity": {
+      "name_en": "Dense Technical Infographic",
+      "name_zh": "高密度技术信息图",
+      "promise": "turn verified technical content into a high-density text-bearing engineering teaching poster"
+    },
+    "surface": {
+      "background": "fully opaque pure white or slightly cool-white canvas",
+      "panels": "pale blue or white rounded information regions",
+      "finish": "clean flat technical poster without grid paper or environmental scene"
+    },
+    "palette_roles": {
+      "ink": "deep navy carries the oversized title",
+      "primary": "royal blue carries normal structure and the main path",
+      "success": "engineering green carries supported success and benefit",
+      "attention": "orange carries conclusions and explicit attention",
+      "extension": "purple carries supported configuration or modularity",
+      "failure": "red carries supported failure or danger",
+      "neutral": "cool gray carries secondary copy"
+    },
+    "line_language": {
+      "primary": "crisp two-pixel direct arrows",
+      "secondary": "one-pixel separators and dashed group boundaries",
+      "icons": "flat vector-like technical icons with consistent stroke and fill"
+    },
+    "material_and_texture": {
+      "material": "flat vector-like cards and icons",
+      "shadow": "minimal soft separation only",
+      "forbidden_depth": "no glass acrylic chrome 3D isometric or environmental depth"
+    },
+    "geometry": {
+      "families": [
+        "mechanism-poster",
+        "architecture-flow",
+        "layered-comparison"
+      ],
+      "zones": "three to six numbered explanatory zones",
+      "nucleus": "one central mechanism or architecture",
+      "summary": "one full-width bottom takeaway rail"
+    },
+    "depth_and_camera": {
+      "camera": "strict front-facing flat composition",
+      "perspective": "none",
+      "lighting": "neutral white with no dramatic glow"
+    },
+    "typography": {
+      "title": "oversized deep navy title",
+      "copy": "clean technical sans-serif Chinese and English",
+      "workflow": "native generated copy is preserved only after exact validation"
+    },
+    "density_and_spacing": {
+      "occupancy": "eighty-five to ninety-two percent",
+      "density": "high but organized",
+      "reading_order": "title then central mechanism then numbered zones then bottom takeaway rail"
+    },
+    "required_traits": [
+      "fully opaque pure white technical poster",
+      "oversized deep navy title and clear central mechanism",
+      "flat vector-like icons and rounded numbered zones",
+      "high organized density with a bottom takeaway rail",
+      "native generated copy receives exact post-generation validation"
+    ],
+    "forbidden_traits": [
+      "no people mascots narrators or hands",
+      "no glass acrylic chrome 3D or isometric depth",
+      "no handwritten paper watercolor sketch or comic treatment",
+      "no cyberpunk HUD code rain hologram or decorative AI brain",
+      "no unsupported text numbers nodes arrows states metrics or topology"
+    ],
+    "neighbor_boundaries": [
+      {
+        "profile_id": "technical-editorial-minimal",
+        "difference": "Style 9 is a dense numbered teaching poster; Style 1 is sparse technical editorial illustration."
+      },
+      {
+        "profile_id": "blueprint-linework",
+        "difference": "Style 9 is flat and text-forward; Style 4 uses polished product depth for covers and concepts."
+      },
+      {
+        "profile_id": "isometric-infrastructure",
+        "difference": "Style 9 is front-facing and flat; Style 5 is a fixed-isometric matte world."
+      },
+      {
+        "profile_id": "handwritten-systems-explainer",
+        "difference": "Style 9 uses crisp vector-like geometry and sans-serif copy; Style 8 uses warm paper and lively handwritten annotation."
+      }
+    ]
+  },
+  "reference_contract": {
+    "required_references": [
+      {
+        "id": "dense-technical-infographic-cover-v1",
+        "kind": "bootstrap_candidate",
+        "profile_id": "dense-technical-infographic",
+        "role": "cover",
+        "approval": "approved",
+        "bootstrap_reference": true,
+        "semantic_authority": false
+      }
+    ],
+    "bootstrap_reference": true,
+    "semantic_authority": false,
+    "target_golden_asset_id": "dense-technical-infographic-concept-v1",
+    "must_preserve": [
+      "preserve the high-density single-lesson teaching rhythm and clean technical sans-serif hierarchy",
+      "preserve flat vector-like explanatory regions semantic color discipline and explicit bottom conclusion rail"
+    ],
+    "may_vary": [
+      "replace the complete mechanism comparison and copy with independently confirmed article semantics",
+      "vary between mechanism-poster and layered-comparison without copying the reference layout"
+    ],
+    "must_not_copy": [
+      "labels",
+      "numbers",
+      "nodes",
+      "topology",
+      "icons",
+      "example_story"
+    ],
+    "example_content_authoritative": false
+  },
+  "text_policy": {
+    "mode": "native-generated-copy-with-validation",
+    "exact_text": [
+      "背压机制：让生产速度服从处理能力",
+      "没有背压",
+      "持续生产",
+      "队列积压",
+      "处理延迟上升",
+      "引入背压",
+      "消费能力",
+      "缓冲水位",
+      "反馈信号",
+      "保护内存",
+      "稳定延迟",
+      "降低级联故障风险"
+    ],
+    "copy_ledger_status": "frozen",
+    "native_text_generation": true,
+    "post_generation_validation": "exact",
+    "deterministic_overlay": false,
+    "fallback_policy": "correct-one-isolated-copy-defect-otherwise-regenerate"
+  },
+  "negative_constraints": [
+    "no people mascots narrators or hands",
+    "no glass acrylic chrome 3D or isometric depth",
+    "no handwritten paper watercolor sketch or comic treatment",
+    "no cyberpunk HUD code rain hologram or decorative AI brain",
+    "no unsupported text numbers nodes arrows states metrics or topology",
+    "no people mascots narrators hands decorative AI brains vendor marks or unsupported guarantees",
+    "do not expand one concept into an unsupported complete-system topology",
+    "do not use glass acrylic chrome 3D isometric handwritten cyberpunk or meaningless dashboard styling",
+    "do not copy golden labels numbers nodes topology icons or example story",
+    "Do not claim zero delay, perfect stability, guaranteed safety, benchmark values, queue sizes, rates, protocols, vendors, or implementation-specific behavior.",
+    "Do not copy the approved cover's central request-processing core, four numbered responsibility-zone topology, bottom four-capability rail, example icons, or semantic story.",
+    "Do not add people, robots, AI brains, dashboards, glass devices, isometric scenes, decorative code, extra stages, or any text outside the frozen copy ledger.",
+    "Do not add an explanatory paragraph, caption strip, footer sentence, takeaway rail, legend, slogan, prose annotation, or unlabeled module."
+  ],
+  "acceptance_checks": [
+    "every visible native generated copy string matches the frozen exact-copy ledger",
+    "one causal or comparative lesson is understandable without decorative filler",
+    "semantic colors map only to confirmed meanings",
+    "the result belongs to the same Style 9 family while using a composition distinct from the cover",
+    "fully opaque pure white technical poster",
+    "oversized deep navy title and clear central mechanism",
+    "flat vector-like icons and rounded numbered zones",
+    "high organized density with a bottom takeaway rail",
+    "native generated copy receives exact post-generation validation"
+  ]
+}

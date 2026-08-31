@@ -3,7 +3,7 @@
   "profile_id": "dense-technical-infographic",
   "style_pack_version": 3,
   "status": "in_progress",
-  "program_outcome": "Candidate contract registered; the cover candidate is awaiting explicit user approval and all three GPT Image 2 goldens remain subject to qualification.",
+  "program_outcome": "The cover and concept are approved; the diagram remains to be produced and the three-image Style 9 set remains subject to qualification.",
   "candidates": [
     {
       "role": "cover",
@@ -27,6 +27,31 @@
       "layout_review": "passed",
       "user_approval": "approved",
       "approval_evidence": "The user replied '继续' after the validated cover candidate was presented for explicit approval."
+    },
+    {
+      "role": "concept",
+      "version": 1,
+      "status": "rejected",
+      "asset": "skills/article-visual-director/assets/style-anchors/dense-technical-infographic/candidates/rejected-concept-v1-extra-copy-and-node.png",
+      "reason": "The image introduced two explanatory prose strips outside the frozen copy ledger and an unlabeled intermediate chip node inside the feedback topology.",
+      "semantic_review": "failed",
+      "copy_ledger_review": "failed",
+      "topology_review": "failed"
+    },
+    {
+      "role": "concept",
+      "version": 2,
+      "status": "approved",
+      "asset": "skills/article-visual-director/assets/style-anchors/dense-technical-infographic/golden-concept.png",
+      "artifact_sha256": "bf4d162eacabf089d143b525580a5d759688c3db9b3833154952b0a0d9f46432",
+      "dimensions": "1672x941",
+      "opaque": true,
+      "semantic_review": "passed",
+      "copy_ledger_review": "passed",
+      "topology_review": "passed",
+      "layout_review": "passed",
+      "user_approval": "approved",
+      "approval_evidence": "The user replied '可以' after the validated concept candidate was presented for explicit approval."
     }
   ]
 }
