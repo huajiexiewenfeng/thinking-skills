@@ -19,7 +19,9 @@ Prompt IR is the model-neutral, auditable input to an image-model adapter. It is
 
 `semantics` contains `confirmed`, `simplifications`, and `blocked`. A diagram additionally contains a validated `frozen_graph`. Adapters may rephrase this structure but may not add facts.
 
-`output_contract.model_policy` records model selection when a profile constrains it. For `dense-technical-infographic`, it is exactly `{"alias":"gpt-image-2","selection":"latest-alias","runtime_identity":"record-if-returned"}`. The runtime-reported identity is recorded when available; no snapshot identifier is invented.
+`output_contract.execution_policy` records how image generation is executed; visual profiles never select the runtime. When a request omits the field, the compiler inserts the built-in default exactly as `{"mode":"built-in-image-gen","model_selection":"host-managed","runtime_identity":"record-if-returned","api_key_required":false,"fallback_approval":"not-required"}`. Call the host-provided `image_gen` capability without inventing a model argument when its schema exposes none. Built-in execution never requires `OPENAI_API_KEY`.
+
+The only permitted alternative is an explicitly user-approved CLI/API fallback: `{"mode":"cli-api-fallback","model_selection":"gpt-image-2","runtime_identity":"record-if-returned","api_key_required":true,"fallback_approval":"explicit-user-approved"}`. If built-in generation is unavailable or fails, explain this fallback and wait for explicit approval; never switch automatically. Prompt IR records the policy, while the manifest records the actual execution mode and the exact runtime identity returned by the host when available. Record `null` when none is returned; never infer or fabricate an identity.
 
 ## Required Prompt Blocks
 

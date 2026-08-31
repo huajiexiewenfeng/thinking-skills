@@ -29,7 +29,7 @@
       "artifact_path": "golden-cover.png",
       "artifact_sha256": "127d0560842f6d1d929555d49fe2bdbc5105e2d039bb1a54c76f6d1281e3badd",
       "prompt_path": "golden-cover.prompt.md",
-      "prompt_sha256": "af3422e0c474935429406d3ad229900cf80d9b39d02f4e5460709522ee43130a"
+      "prompt_sha256": "cb4ce97a2a40cc1e5e402e3dc075e4592fa9629c76acbadb660359b130a6ca9e"
     },
     {
       "id": "dense-technical-infographic-concept-v1",
@@ -39,7 +39,7 @@
       "artifact_path": "golden-concept.png",
       "artifact_sha256": "bf4d162eacabf089d143b525580a5d759688c3db9b3833154952b0a0d9f46432",
       "prompt_path": "golden-concept.prompt.md",
-      "prompt_sha256": "22f99df7981b915cf351af3da28c5744211f90952ac449fefeb3153263324a2f"
+      "prompt_sha256": "8067ad88b89b8ad94d0e9fa834e31d1d1074224b16f95b54dff5f3daf58eb1c9"
     },
     {
       "id": "dense-technical-infographic-diagram-v1",
@@ -49,7 +49,7 @@
       "artifact_path": "golden-diagram.png",
       "artifact_sha256": "0fba507537591049949525e8aaad34d8f58a1f12ba2dc82a8757b763a22dba38",
       "prompt_path": "golden-diagram.prompt.md",
-      "prompt_sha256": "38f780277ad041ebe59d7022bceb086eac6fbc655be1723e9959bf30182b1a08"
+      "prompt_sha256": "de5b9d2eb2dc20d1aa2e4f658e318007eb7b9b6fb50e2ed6f9b4a40fe4775773"
     }
   ]
 }

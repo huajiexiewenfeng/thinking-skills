@@ -148,7 +148,7 @@ Never send dense technical labels, source code, or a multi-step architecture to 
 
 ### Style 9 native-copy exception
 
-Only `dense-technical-infographic` may generate exact native copy. Freeze every intended visible string in the `text_policy.exact_text` copy ledger with `copy_ledger_status=frozen`, use model alias `gpt-image-2` with `selection=latest-alias`, and require exact post-generation text validation. A Style 9 diagram still requires `semantics.frozen_graph`, followed by node, label, edge, direction, group, and invariant equality review. Correct native copy stays native; one isolated copy defect may receive a deterministic local correction, while multiple-copy, numeric, grouping, direction, or topology defects require regeneration or deterministic rebuild. A validation failure never permits accepting wrong text.
+Only `dense-technical-infographic` may generate exact native copy. Freeze every intended visible string in the `text_policy.exact_text` copy ledger with `copy_ledger_status=frozen` and require exact post-generation text validation. This exception changes text handling only; it does not select an API model or authorize CLI/API execution. A Style 9 diagram still requires `semantics.frozen_graph`, followed by node, label, edge, direction, group, and invariant equality review. Correct native copy stays native; one isolated copy defect may receive a deterministic local correction, while multiple-copy, numeric, grouping, direction, or topology defects require regeneration or deterministic rebuild. A validation failure never permits accepting wrong text.
 
 ### Cover title and value-point contract
 
@@ -250,6 +250,10 @@ End the planning response with one compact approval request. Do not generate ima
 ### 6. Render through the correct capability
 
 For raster covers and concept illustrations, load and follow the runtime's image-generation skill. Use the approved prompt verbatim except for tool-required syntax. Record any necessary variation back into the manifest before using it.
+
+For every imagegen asset, the default execution policy is `built-in-image-gen` with `model_selection=host-managed`, `api_key_required=false`, and `fallback_approval=not-required`. Call the Codex built-in `image_gen` capability without inventing or passing a model selector when its schema does not expose one. Never switch to CLI/API merely to satisfy a model alias, file-path preference, size preference, batch request, or quality setting. Built-in execution never requires `OPENAI_API_KEY`.
+
+Use `cli-api-fallback` only after the user explicitly asks for or approves that fallback. Record `model_selection=gpt-image-2`, `api_key_required=true`, and `fallback_approval=explicit-user-approved`. If built-in `image_gen` is unavailable or fails, explain that the fallback requires a locally configured API key and stop for explicit approval; do not switch automatically. Record the execution policy in Prompt IR and record the actual execution mode plus the host-returned runtime identity in Manifest v2 when available. If the host returns no runtime identity, store `null`; never infer or fabricate one.
 
 An article style anchor is required for any imagegen asset, any article-specific reference image, or a plan containing more than one deterministic asset. The only `not_required` case is exactly one deterministic asset, no article references, and current matching protocol/golden versions and hashes.
 

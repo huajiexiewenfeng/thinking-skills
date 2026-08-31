@@ -229,6 +229,20 @@ class CompileImagePromptTests(unittest.TestCase):
 
         self.assertEqual([], lint_prompt_ir(prompt_ir))
 
+    def test_missing_execution_policy_defaults_to_builtin_host_managed(self) -> None:
+        prompt_ir = compile_prompt_ir(self.skill_root, self.valid_request("cover"))
+
+        self.assertEqual(
+            {
+                "mode": "built-in-image-gen",
+                "model_selection": "host-managed",
+                "runtime_identity": "record-if-returned",
+                "api_key_required": False,
+                "fallback_approval": "not-required",
+            },
+            prompt_ir["output_contract"]["execution_policy"],
+        )
+
 
 class Style9NativeCopyPolicyTests(unittest.TestCase):
     def style_9_cover_request(self) -> dict:
@@ -252,10 +266,12 @@ class Style9NativeCopyPolicyTests(unittest.TestCase):
                 "structure": "one central core four numbered zones and one bottom rail",
                 "human_elements": "none",
             },
-            "model_policy": {
-                "alias": "gpt-image-2",
-                "selection": "latest-alias",
+            "execution_policy": {
+                "mode": "built-in-image-gen",
+                "model_selection": "host-managed",
                 "runtime_identity": "record-if-returned",
+                "api_key_required": False,
+                "fallback_approval": "not-required",
             },
             "text_policy": {
                 "mode": "native-generated-copy-with-validation",
@@ -283,15 +299,19 @@ class Style9NativeCopyPolicyTests(unittest.TestCase):
             "article_anchor_reference_ids": [],
         }
 
-    def test_style_9_native_copy_with_latest_model_policy_lints_cleanly(self) -> None:
+    def test_style_9_native_copy_with_builtin_host_managed_policy_lints_cleanly(self) -> None:
         prompt_ir = compile_prompt_ir(
             SCRIPT_DIR.parent, self.style_9_cover_request()
         )
 
         self.assertEqual([], lint_prompt_ir(prompt_ir))
         self.assertEqual(
-            "gpt-image-2",
-            prompt_ir["output_contract"]["model_policy"]["alias"],
+            "built-in-image-gen",
+            prompt_ir["output_contract"]["execution_policy"]["mode"],
+        )
+        self.assertEqual(
+            "host-managed",
+            prompt_ir["output_contract"]["execution_policy"]["model_selection"],
         )
 
     def test_other_profile_cannot_reuse_style_9_native_copy_policy(self) -> None:
@@ -306,12 +326,36 @@ class Style9NativeCopyPolicyTests(unittest.TestCase):
             any(error["code"] == "TEXT_POLICY_VIOLATION" for error in errors)
         )
 
-    def test_style_9_rejects_previous_image_model_alias(self) -> None:
+    def test_unapproved_cli_api_fallback_is_rejected(self) -> None:
         request = self.style_9_cover_request()
-        request["model_policy"]["alias"] = "chatgpt-image-latest"
+        request["execution_policy"] = {
+            "mode": "cli-api-fallback",
+            "model_selection": "gpt-image-2",
+            "runtime_identity": "record-if-returned",
+            "api_key_required": True,
+            "fallback_approval": "pending",
+        }
 
         with self.assertRaisesRegex(PromptCompileError, "STYLE_IDENTITY_DRIFT"):
             compile_prompt_ir(SCRIPT_DIR.parent, request)
+
+    def test_explicitly_approved_gpt_image_2_cli_api_fallback_is_allowed(self) -> None:
+        request = self.style_9_cover_request()
+        request["execution_policy"] = {
+            "mode": "cli-api-fallback",
+            "model_selection": "gpt-image-2",
+            "runtime_identity": "record-if-returned",
+            "api_key_required": True,
+            "fallback_approval": "explicit-user-approved",
+        }
+
+        prompt_ir = compile_prompt_ir(SCRIPT_DIR.parent, request)
+
+        self.assertEqual([], lint_prompt_ir(prompt_ir))
+        self.assertEqual(
+            request["execution_policy"],
+            prompt_ir["output_contract"]["execution_policy"],
+        )
 
     def test_style_9_requires_frozen_copy_ledger(self) -> None:
         request = self.style_9_cover_request()
@@ -348,8 +392,18 @@ class Style9ProbeSuiteTests(unittest.TestCase):
             with self.subTest(probe=probe["id"]):
                 request = probe["request"]
                 self.assertNotIn("publication_theme", request)
-                self.assertEqual("gpt-image-2", request["model_policy"]["alias"])
-                self.assertEqual("latest-alias", request["model_policy"]["selection"])
+                self.assertEqual(
+                    "built-in-image-gen", request["execution_policy"]["mode"]
+                )
+                self.assertEqual(
+                    "host-managed",
+                    request["execution_policy"]["model_selection"],
+                )
+                self.assertFalse(request["execution_policy"]["api_key_required"])
+                self.assertEqual(
+                    "not-required",
+                    request["execution_policy"]["fallback_approval"],
+                )
                 self.assertTrue(request["text_policy"]["exact_text"])
                 self.assertEqual(
                     "frozen", request["text_policy"]["copy_ledger_status"]
@@ -364,8 +418,8 @@ class Style9ProbeSuiteTests(unittest.TestCase):
                 prompt_ir = compile_prompt_ir(skill_root, request)
                 self.assertEqual([], lint_prompt_ir(prompt_ir))
                 self.assertEqual(
-                    "gpt-image-2",
-                    prompt_ir["output_contract"]["model_policy"]["alias"],
+                    "built-in-image-gen",
+                    prompt_ir["output_contract"]["execution_policy"]["mode"],
                 )
                 rendered = render_gpt_image_prompt(prompt_ir)
                 for block in REQUIRED_PROMPT_BLOCKS:

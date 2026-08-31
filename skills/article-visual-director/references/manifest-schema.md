@@ -146,6 +146,7 @@ Paths reject absolute paths, `..`, control characters, colons, trailing dots/spa
 | `reader_takeaway` | What the reader should understand or remember |
 | `visual_purpose` | Why this visual earns its place in the article |
 | `renderer` | `imagegen`, `deterministic-diagram`, or `deterministic-chart` |
+| `generation_execution` | Required for Style Pack v3 `imagegen`; records the actual execution mode and returned runtime identity without inference |
 | `output_format` | `png`, `jpg`, `jpeg`, or `svg`; must match the artifact extension |
 | `dimensions` | Positive integer `width` and `height` |
 | `aspect_ratio` | Numeric `width:height`, for example `16:9` or `2.35:1` |
@@ -172,6 +173,40 @@ Renderer/role contracts are strict:
 - `chart` → `deterministic-chart`.
 
 The only renderer exception is `style.profile_id=dense-technical-infographic`: its `process`, `architecture`, `comparison`, and `timeline` assets may use `imagegen` when the exact native-copy validation record passes. All other profiles retain the deterministic diagram mapping.
+
+### Image Generation Execution Record
+
+Every Style Pack v3 asset with `renderer=imagegen` records the execution that actually produced the artifact. Built-in generation uses:
+
+```json
+{
+  "generation_execution": {
+    "mode": "built-in-image-gen",
+    "model_selection": "host-managed",
+    "fallback_approval": "not-required",
+    "api_key_required": false,
+    "runtime_identity": null
+  }
+}
+```
+
+The built-in path is the default and never requires `OPENAI_API_KEY`. If the host returns a runtime identity, replace `null` with that exact non-empty value. If no identity is returned, keep `null`; never infer a model name or snapshot.
+
+Only an explicitly user-approved CLI/API fallback may use:
+
+```json
+{
+  "generation_execution": {
+    "mode": "cli-api-fallback",
+    "model_selection": "gpt-image-2",
+    "fallback_approval": "explicit-user-approved",
+    "api_key_required": true,
+    "runtime_identity": null
+  }
+}
+```
+
+When built-in generation is unavailable or fails, explain that this fallback requires a locally configured API key and wait for explicit approval. Do not switch automatically. As with built-in execution, record only an identity actually returned by the runtime.
 
 ### Style 9 Native Text Validation
 

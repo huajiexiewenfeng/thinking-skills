@@ -31,10 +31,12 @@
     "reading_order": "title, upper uncontrolled comparison, lower feedback loop, benefit summary; terminate the composition after the three benefit cells with no footer or explanatory strip",
     "human_elements": "none"
   },
-  "model_policy": {
-    "alias": "gpt-image-2",
-    "selection": "latest-alias",
-    "runtime_identity": "record-if-returned"
+  "execution_policy": {
+    "mode": "built-in-image-gen",
+    "model_selection": "host-managed",
+    "runtime_identity": "record-if-returned",
+    "api_key_required": false,
+    "fallback_approval": "not-required"
   },
   "text_policy": {
     "mode": "native-generated-copy-with-validation",

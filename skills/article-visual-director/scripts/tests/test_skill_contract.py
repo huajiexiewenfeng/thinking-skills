@@ -266,18 +266,21 @@ class SkillContractTests(unittest.TestCase):
             "references/prompt-ir-schema.md": [
                 "native-generated-copy-with-validation",
                 "copy_ledger_status",
-                "gpt-image-2",
-                "latest-alias",
+                "built-in-image-gen",
+                "host-managed",
                 "frozen_graph",
             ],
             "references/style-pack-schema.md": [
                 "dense-technical-infographic",
                 "native generated copy",
                 "validation failure",
+                "built-in host-managed",
             ],
             "references/adapters/gpt-image.md": [
+                "built-in-image-gen",
+                "host-managed",
                 "gpt-image-2",
-                "latest-alias",
+                "explicit-user-approved",
                 "correct-one-isolated-copy-defect-otherwise-regenerate",
                 "wrong text",
             ],
@@ -287,11 +290,15 @@ class SkillContractTests(unittest.TestCase):
                 "dense-technical-infographic",
                 "semantic_graph_status",
                 "renderer exception",
+                "generation_execution",
+                "runtime_identity",
             ],
             "SKILL.md": [
                 "dense-technical-infographic",
                 "copy ledger",
                 "validation failure never",
+                "built-in-image-gen",
+                "OPENAI_API_KEY",
             ],
         }
         for relative, phrases in expected.items():

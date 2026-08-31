@@ -5,10 +5,12 @@
   "occupancy": "eighty-five to ninety-two percent intentional foreground occupancy",
   "crop_rules": "preserve the full title, complete upper comparison, complete lower feedback loop including its upstream return arrow, and all three benefit cells; keep critical copy outside the outer five percent",
   "output_count": 1,
-  "model_policy": {
-    "alias": "gpt-image-2",
-    "selection": "latest-alias",
-    "runtime_identity": "record-if-returned"
+  "execution_policy": {
+    "mode": "built-in-image-gen",
+    "model_selection": "host-managed",
+    "runtime_identity": "record-if-returned",
+    "api_key_required": false,
+    "fallback_approval": "not-required"
   }
 }
 
