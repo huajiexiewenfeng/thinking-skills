@@ -16,7 +16,8 @@
     "status": "pending",
     "revision_notes": [
       "Style 9 cover golden approved when the user replied '继续': oversized deep-navy Chinese title, four numbered responsibility zones, central request-processing core, full-width four-capability rail, exact frozen native copy, fully opaque 16:9 canvas, and no unsupported vendors, metrics, or extra systems. Example content, labels, icons, and topology remain non-authoritative.",
-      "Style 9 concept golden approved when the user replied '可以': distinct upper/lower layered comparison, orange uncontrolled accumulation path, royal-blue controlled path, direct engineering-green feedback return, three supported benefit cells, exact frozen native copy, fully opaque 16:9 canvas, and no extra prose or intermediate topology. Example content, labels, icons, topology, and story remain non-authoritative."
+      "Style 9 concept golden approved when the user replied '可以': distinct upper/lower layered comparison, orange uncontrolled accumulation path, royal-blue controlled path, direct engineering-green feedback return, three supported benefit cells, exact frozen native copy, fully opaque 16:9 canvas, and no extra prose or intermediate topology. Example content, labels, icons, topology, and story remain non-authoritative.",
+      "Style 9 diagram golden approved when the user replied '可以': exactly eight frozen lifecycle nodes and eight directed edges, five-edge royal-blue primary route, orange execution-to-retry edge, dashed royal-blue retry-to-queue return, red retry-to-failure edge, green result archive, exact native copy, numbered groups, compact legend, and four invariant cells. Example content, labels, icons, topology, and story remain non-authoritative."
     ]
   },
   "assets": [
@@ -39,6 +40,16 @@
       "artifact_sha256": "bf4d162eacabf089d143b525580a5d759688c3db9b3833154952b0a0d9f46432",
       "prompt_path": "golden-concept.prompt.md",
       "prompt_sha256": "22f99df7981b915cf351af3da28c5744211f90952ac449fefeb3153263324a2f"
+    },
+    {
+      "id": "dense-technical-infographic-diagram-v1",
+      "role": "diagram",
+      "renderer": "imagegen",
+      "reference_role": "Anchors strict frozen-graph presentation, oversized deep-navy Chinese title, numbered lifecycle groups, flat front-facing technical icons, royal-blue primary path, orange exception entry, dashed royal-blue return, green success terminal, red failure terminal, compact line legend, exact validated native copy, and bottom invariant rail only; example content, labels, icons, topology, and story are non-authoritative.",
+      "artifact_path": "golden-diagram.png",
+      "artifact_sha256": "0fba507537591049949525e8aaad34d8f58a1f12ba2dc82a8757b763a22dba38",
+      "prompt_path": "golden-diagram.prompt.md",
+      "prompt_sha256": "38f780277ad041ebe59d7022bceb086eac6fbc655be1723e9959bf30182b1a08"
     }
   ]
 }
