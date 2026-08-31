@@ -2,53 +2,123 @@
 {
   "platform": "golden-reference",
   "aspect_ratio": "16:9",
-  "occupancy": "input tiles glass hub platform flow bands and dominant display panel occupy roughly eighty-four percent while the upper-left title-safe field remains usable",
-  "crop_rules": "the complete glass hub at least two input tiles the main display panel and its core cobalt system path remain meaningful in the central square crop",
+  "occupancy": "the complete six-node six-edge diagram occupies roughly eighty-four percent inside a seventy-two-pixel safe margin",
+  "crop_rules": "all six modules all six directed edges every destination arrowhead the complete recovery loop and the teal stable-result state remain inside the frame and readable at article width",
   "output_count": 1
 }
 
 [ARTICLE SEMANTICS]
 {
   "confirmed": [
-    "Several incomplete input fragments can be gathered into one structured system representation.",
-    "One central orchestration and verification stage separates raw input from structured output.",
-    "The display panel and state colors are a generic style demonstration and do not describe a named product architecture workflow or guarantee."
+    "The primary route is intake to framing to execution to verification to stable result.",
+    "Only verification may enter recovery on a failed-check edge.",
+    "Recovery returns only to framing, and stable result is reachable only from verification."
   ],
   "simplifications": [
-    "Reserve the upper-left thirty-four percent as a calm deterministic title-safe field with only faint grid and soft ambient blue arcs.",
-    "Below the title field place three to five small translucent input tiles with abstract lines and shapes only; no paper sketch no question marks and no text.",
-    "Place one polished circular glass orchestration hub near center with a cobalt inner ring and three small blank geometric status tokens suspended inside.",
-    "Place one dominant wide white satin display panel across the center-right, slightly front-facing with shallow thickness; inside it show one clean generic six-module system diagram using cobalt paths, white rounded modules, one teal success state, one amber attention state, and one red blocked state.",
-    "Connect input tiles to the glass hub and the hub to the display panel using two broad restrained translucent cobalt flow bands; use no phone and no second large screen.",
-    "Add a low white-glass platform beneath the hub and display panel so soft shadows and blue ambient reflections create material quality."
+    "Use exactly six substantial rounded modules with blank deterministic label zones and exactly six visible directed connections.",
+    "Use cobalt for the four solid primary edges, amber for the dashed verification-to-recovery failed-check edge, and cool gray-blue for the dashed recovery-to-framing return edge.",
+    "Use cobalt or pale-blue styling for intake framing execution and verification, one teal success treatment only inside stable result, and one pale amber treatment only inside recovery.",
+    "Place five primary nodes in one horizontal row and recovery below the open gap between framing and verification so exception and return paths do not cross any primary edge.",
+    "Use simple blank icons only: input tray layered card cube magnifier check and circular rework arrow; leave all node names legends and captions blank for deterministic overlay."
   ],
   "blocked": [
-    "Do not copy either user reference's title text paper sketch central vertical capsule browser chrome phone exact icons graph topology node count or device arrangement.",
-    "Do not imply a named AI agent workflow software product protocol security mechanism compatibility guarantee or universal architecture.",
-    "Do not add generated Chinese English words letters numbers labels legends code interface copy dimensions watermarks logos people hands robots AI brains office props or stock photography.",
-    "Do not use dark cyanotype black dashboard neon cyberpunk hologram tunnel dramatic lens flare chrome overload heavy bloom harsh shadows dense UI controls or a generic app screenshot."
-  ]
+    "Do not add human judgment policy approval deployment monitoring database queue model agent tool notification score metric bypass or any undeclared node edge state group or shortcut.",
+    "Do not copy the cover devices circular hub input-card fan system-panel graph or the concept three-layer glass stack verification core source modules result-card layout.",
+    "Do not copy the user's reference labels wording exact node count topology lane titles orange three-card judgment lane or bottom explanatory sentence.",
+    "Do not add generated Chinese English words letters numbers labels legends code UI copy dimensions logos watermarks people hands robots AI brains browser chrome phones glass capsules or 3D device perspective.",
+    "Do not use dark cyanotype black dashboard neon cyberpunk decorative background arrows extra arrowheads topology-obscuring glow or heavy shadows."
+  ],
+  "frozen_graph": {
+    "nodes": [
+      "intake",
+      "framing",
+      "execution",
+      "verification",
+      "stable-result",
+      "recovery"
+    ],
+    "edges": [
+      {
+        "id": "edge-intake-framing",
+        "from": "intake",
+        "to": "framing",
+        "type": "primary"
+      },
+      {
+        "id": "edge-framing-execution",
+        "from": "framing",
+        "to": "execution",
+        "type": "primary"
+      },
+      {
+        "id": "edge-execution-verification",
+        "from": "execution",
+        "to": "verification",
+        "type": "primary"
+      },
+      {
+        "id": "edge-verification-result",
+        "from": "verification",
+        "to": "stable-result",
+        "type": "primary"
+      },
+      {
+        "id": "edge-verification-recovery",
+        "from": "verification",
+        "to": "recovery",
+        "type": "exception"
+      },
+      {
+        "id": "edge-recovery-framing",
+        "from": "recovery",
+        "to": "framing",
+        "type": "return"
+      }
+    ],
+    "groups": [
+      {
+        "id": "primary-delivery",
+        "members": [
+          "intake",
+          "framing",
+          "execution",
+          "verification",
+          "stable-result"
+        ]
+      },
+      {
+        "id": "recovery-loop",
+        "members": [
+          "recovery"
+        ]
+      }
+    ],
+    "invariants": [
+      "Stable result is reachable only from verification.",
+      "Recovery receives only from verification and returns only to framing.",
+      "No edge enters intake and no recovery edge reaches execution verification or stable result directly."
+    ]
+  }
 }
 
 [ROLE COMPOSITION]
 {
-  "stability": "family",
+  "stability": "strict",
   "instructions": {
-    "structure": "wide 16:9 fully opaque cool-white technology studio with a faint blue drafting grid on the wall and floor; upper-left title-safe field remains calm; three to five small translucent input tiles sit lower-left; one circular polished glass orchestration hub on a low white-glass platform anchors center; one dominant wide white satin display panel occupies center-right and contains a clean blank-label six-module system diagram; two translucent cobalt flow bands connect the three zones; all objects remain front-facing with shallow 2.5D thickness and complete-frame balance",
-    "hierarchy": "the display panel is the largest content-bearing object, the glass hub is the material focal object, and input tiles remain subordinate; deep navy and cobalt dominate, teal amber and red appear only as small evidence-bound states; polished glass-acrylic edges soft spatial shadow subtle blue ambient bounce and restrained highlights create premium technology product visual quality",
-    "human_elements": "none; no people faces hands characters instructors narrators mascots humanoid robots or stock imagery"
+    "structure": "strict wide 16:9 fully opaque flat infographic on a cool-white canvas with faint blue grid; one large rounded white primary container with pale-blue two-pixel boundary occupies the center; place intake framing execution verification and stable-result as five equal-width rounded modules in one horizontal row; place recovery as one equal-width pale-amber module below the open gap between framing and verification; render exactly four solid cobalt primary arrows left-to-right, one dashed amber arrow from verification down-left to recovery, and one dashed cool-gray-blue return arrow from recovery up-left to framing; exactly one destination arrowhead appears on each of the six connections; use blank navy title bars and blank gray caption rules only, never generated text",
+    "hierarchy": "the four-edge cobalt primary route is dominant, the dashed amber exception and gray-blue return form one clearly subordinate recovery loop, stable-result carries the only teal success state, and recovery carries the only amber node state; modules use white surfaces pale blue boundaries very subtle card shadows consistent rounded corners and generous spacing; grid remains faint and cannot resemble semantic edges",
+    "human_elements": "none; no people faces hands characters instructors narrators mascots robots or stock imagery"
   },
   "must_preserve": [
-    "preserve one content-rich hybrid 2.5D technology scene on a cool white grid with a dominant system panel or browser frame and one or two subordinate device or process objects",
-    "preserve cobalt-blue system logic deep navy hierarchy polished glass-acrylic or frosted glass material and soft spatial shadow",
-    "preserve a deterministic title-safe region while the technology scene occupies roughly seventy-eight to eighty-eight percent",
-    "preserve fully opaque output and a premium front-facing technology product visual rather than a flat poster of disconnected icons"
+    "preserve the frozen graph exactly including every node edge direction group invariant exception return and state",
+    "preserve a fully human-free flat infographic on a cool white grid with large rounded containers grid-aligned modules cobalt paths and deterministic text zones",
+    "preserve deep navy label hierarchy pale blue boundaries consistent two-pixel arrows subtle card shadows and semantic state colors only where validated",
+    "preserve generous spacing safe margins and complete topology visibility at article width"
   ],
   "may_vary": [
-    "the article-supported system panel devices process objects arrows and visual thesis may change completely",
-    "the scene may combine browser monitor tablet phone glass capsule service pillar or modular console when each object supports the thesis",
-    "title-safe side object order and shallow depth may vary while hierarchy and crop remain clear",
-    "validated semantic state colors may appear on small modules while cobalt remains dominant"
+    "node count exact labels groups lanes and edge types may vary only as the validated frozen graph requires",
+    "teal amber red or purple states may appear only when the graph explicitly assigns their success judgment failure or service meaning",
+    "container layout may use horizontal stages vertical lanes or grouped regions while every semantic element remains inside the safe area"
   ]
 }
 
@@ -151,19 +221,28 @@
 
 [REFERENCE CONTRACT]
 {
-  "required_references": [],
+  "required_references": [
+    {
+      "id": "blueprint-linework-concept-v1",
+      "kind": "bootstrap_candidate",
+      "profile_id": "blueprint-linework",
+      "role": "concept",
+      "approval": "approved",
+      "bootstrap_reference": true,
+      "semantic_authority": false
+    }
+  ],
   "bootstrap_reference": true,
   "semantic_authority": false,
-  "target_golden_asset_id": "blueprint-linework-cover-v1",
+  "target_golden_asset_id": "blueprint-linework-diagram-v1",
   "must_preserve": [
-    "preserve cool white grid surface cobalt-blue logic navy hierarchy and premium glass-acrylic device material",
-    "preserve one dominant system panel plus one or two subordinate technology objects in a coherent front-facing shallow 2.5D scene",
-    "preserve soft spatial shadow luminous blue edge restraint content-rich occupancy and deterministic title-safe behavior"
+    "preserve strict human-free frozen-graph rendering as a crisp flat infographic on a cool white grid",
+    "preserve large rounded containers grid-aligned modules cobalt paths navy hierarchy pale blue boundaries and subtle card shadows",
+    "preserve semantic state colors only when validated plus deterministic text zones safe margins and complete topology visibility"
   ],
   "may_vary": [
-    "replace the complete system panel device family process objects title-safe side and visual thesis with article-confirmed content",
-    "vary browser monitor tablet phone glass capsule service pillar or modular console when the object supports the article",
-    "vary supported semantic accent colors while cobalt remains dominant"
+    "replace the complete example graph nodes edges labels devices groups states and story with the validated article-specific frozen graph",
+    "vary horizontal stages vertical lanes and grouped regions only as frozen semantics requires"
   ],
   "must_not_copy": [
     "labels",
@@ -178,7 +257,7 @@
 
 [TEXT POLICY]
 {
-  "mode": "text-free generated technology cover with deterministic title subtitle and compact labels added later",
+  "mode": "blank deterministic title node-label caption and legend zones with validated text added after topology review",
   "exact_text": [],
   "deterministic_overlay": true
 }
@@ -191,22 +270,23 @@
   "no photoreal product advertisement chrome overload dramatic lens flare heavy bloom harsh cast shadow or candy-plastic toy rendering",
   "no generated Chinese English labels titles legends node names dimensions or pseudo-technical text",
   "no unsupported nodes edges devices states colors branches exceptions returns or topology",
-  "do not generate title subtitle labels legends interface copy code or pseudo-technical text",
-  "do not copy reference devices graph topology labels icons paper sketch story or exact layout",
-  "do not use dark cyanotype neon cyberpunk black dashboards photoreal people humanoid robots floating AI brains or generic stock-office scenes",
-  "do not create excessive glass blur chrome overload harsh shadows giant empty UI frames meaningless app screens or decorative device collections",
-  "Do not copy either user reference's title text paper sketch central vertical capsule browser chrome phone exact icons graph topology node count or device arrangement.",
-  "Do not imply a named AI agent workflow software product protocol security mechanism compatibility guarantee or universal architecture.",
-  "Do not add generated Chinese English words letters numbers labels legends code interface copy dimensions watermarks logos people hands robots AI brains office props or stock photography.",
-  "Do not use dark cyanotype black dashboard neon cyberpunk hologram tunnel dramatic lens flare chrome overload heavy bloom harsh shadows dense UI controls or a generic app screenshot."
+  "no people faces hands characters instructors narrators mascots robots or stock imagery",
+  "do not invent omit reverse merge split reroute decorate or hide any frozen semantic relationship",
+  "do not copy golden labels numbers nodes topology devices states groups or example story",
+  "no generated text dark dashboard neon cyberpunk 3D device perspective glass capsule decorative browser chrome or ornamental illustration",
+  "Do not add human judgment policy approval deployment monitoring database queue model agent tool notification score metric bypass or any undeclared node edge state group or shortcut.",
+  "Do not copy the cover devices circular hub input-card fan system-panel graph or the concept three-layer glass stack verification core source modules result-card layout.",
+  "Do not copy the user's reference labels wording exact node count topology lane titles orange three-card judgment lane or bottom explanatory sentence.",
+  "Do not add generated Chinese English words letters numbers labels legends code UI copy dimensions logos watermarks people hands robots AI brains browser chrome phones glass capsules or 3D device perspective.",
+  "Do not use dark cyanotype black dashboard neon cyberpunk decorative background arrows extra arrowheads topology-obscuring glow or heavy shadows."
 ]
 
 [ACCEPTANCE CHECK]
 [
-  "the cover reads as one premium technology launch visual with a clear article thesis at thumbnail size",
-  "glass-acrylic depth white device frames cobalt logic and soft shadow create visible material quality without photoreal-advertising excess",
-  "the dominant panel contains meaningful blank diagram structure ready for deterministic overlay rather than invented interface text",
-  "title-safe region central crop opacity and distinction from Styles 1 2 and 5 remain coherent",
+  "every visible node edge direction group exception return state and semantic color matches the frozen graph",
+  "the diagram remains a crisp flat infographic with deterministic labels and no image-model text",
+  "normal flow warning human judgment failure success and fallback remain visually distinguishable only when supported",
+  "the golden diagram contributes only white-grid surface modular geometry path styling container hierarchy spacing state-color grammar and typography zones",
   "cool white technology canvas faint blue drafting grid and navy information hierarchy establish a clean technical atmosphere",
   "cobalt blue system logic polished glass-acrylic material and soft spatial shadow create premium technology product visual quality",
   "cover and concept roles use deliberate shallow 2.5D depth while the diagram role remains a precise flat infographic",
@@ -214,12 +294,3 @@
   "deterministic text overlay and deterministic annotation overlay preserve exact Chinese English labels titles legends and states",
   "the visual remains content-rich polished and legible at article width"
 ]
-
-[DETERMINISTIC FINAL OVERLAY]
-
-- Eyebrow: `ARTICLE VISUAL DIRECTOR · STYLE 4`
-- Headline line 1: `一个 Skill，`
-- Headline line 2: `让复杂技术拥有一整套质感配图`
-- Cobalt keyword emphasis: `一整套质感配图`
-- English subtitle: `POLISHED TECH EXPLAINER`
-- Renderer: SVG overlay using Microsoft YaHei / PingFang SC fallback; never ask the image model to generate this copy.

@@ -1,0 +1,58 @@
+{
+  "profile_id": "blueprint-linework",
+  "asset_role": "concept",
+  "objective": "Create one text-free wide cyanotype editorial illustration called Confluence Field: two large asymmetric nested contour fields approach from opposite corners and partially overlap near the center, where exactly one cyan lens-shaped shared zone makes their supported relationship visible.",
+  "semantics": {
+    "confirmed": [
+      "Two distinct domains can retain separate layered identities while sharing one limited region.",
+      "The cyan overlap is the only confirmed shared region between the two domains.",
+      "The contour fields are an abstract editorial metaphor and do not represent real geography topology hardware architecture or data flow."
+    ],
+    "simplifications": [
+      "Use one cohesive hero composition with no supporting view: one broad irregular contour field grows from lower-left and a different narrower contour field descends from upper-right.",
+      "Build each field from four to six nested opaque ivory terrace masses separated by thin deep-indigo contour channels; vary their curvature spacing and silhouette so they do not become parallel pipes.",
+      "Let the fields overlap only near center and form exactly one compact cyan lens or saddle-shaped shared zone; cyan occupies roughly five to eight percent of the canvas.",
+      "Use a few incomplete muted grid fragments and two or three pale construction arcs behind the hero as print context, never as a frame or second semantic layer.",
+      "Keep the outer silhouette open irregular and poster-like with shaped negative space around and between the two fields."
+    ],
+    "blocked": [
+      "Do not imply a real map terrain watershed geology network architecture protocol compatibility rule physical law product or guarantee.",
+      "Do not copy the approved cover's radial quarter-cutaway concentric circular silhouette compact core two stacked supporting views or left title field.",
+      "Do not reuse any rejected concept's rectangular enclosure horizontal channels interface plate magnified component interwoven pipes or mechanical joint.",
+      "Do not draw a Venn diagram flowchart circuit cable pipe duct road ribbon bundle gasket seal connector hardware machine housing architectural floor plan or engineering component.",
+      "Do not add labels titles letters numbers dimensions arrows legends people hands borders shadows glow perspective isometric volume photorealistic texture or generated annotations."
+    ]
+  },
+  "composition": {
+    "structure": "wide 16:9 fully opaque premium cyanotype editorial poster on deep indigo paper; one irregular lower-left contour field and one different upper-right contour field together occupy roughly eighty percent of the frame; each field contains four to six nested opaque ivory terrace masses with crisp pale contour accents and deep-indigo channels; the two fields overlap at an off-center focal point to create exactly one compact cyan lens-shaped shared zone; use generous shaped negative space and only sparse incomplete grid fragments and construction arcs; no inset no panel no border and no title zone",
+    "hierarchy": "the two asymmetric ivory contour bodies form one dynamic diagonal hero silhouette; the compact cyan shared zone is the only saturated focal feature; strong outer contours quieter inner contours and faint background construction marks create three visible levels without literal pixel instructions; the image must read as an elegant finished editorial illustration at thumbnail size before it reads as technical",
+    "human_elements": "none; no people faces hands characters instructors narrators mascots or stock imagery"
+  },
+  "text_policy": {
+    "mode": "fully text-free generated cyanotype illustration with deterministic captions added outside the image if needed",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "the complete confluence-field hero occupies roughly eighty percent of the fully opaque canvas with intentionally shaped negative space",
+    "crop_rules": "both distinct contour fields and the complete cyan shared zone remain visible in the central square crop",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "concept",
+    "bootstrap_references": [
+      {
+        "id": "blueprint-linework-cover-v1",
+        "profile_id": "blueprint-linework",
+        "role": "cover",
+        "approval": "approved",
+        "semantic_authority": false
+      }
+    ],
+    "semantic_authority": false
+  }
+}

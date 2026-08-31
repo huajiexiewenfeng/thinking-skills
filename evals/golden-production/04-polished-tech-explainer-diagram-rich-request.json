@@ -1,0 +1,82 @@
+{
+  "profile_id": "blueprint-linework",
+  "asset_role": "diagram",
+  "objective": "Render a content-rich text-free human-free Polished Tech Explainer diagram with exactly six nodes and six directed edges: intake enters framing, framing enters execution, execution enters verification, verification enters stable result, failed verification enters recovery, and recovery returns only to framing.",
+  "semantics": {
+    "confirmed": [
+      "The primary route is intake to framing to execution to verification to stable result.",
+      "Only verification may enter recovery on a failed-check edge.",
+      "Recovery returns only to framing, and stable result is reachable only from verification."
+    ],
+    "simplifications": [
+      "Use exactly six substantial rounded modules and exactly six visible directed connections; add information-design layers only as blank non-semantic zones.",
+      "Use cobalt for the four solid primary edges, amber for the dashed verification-to-recovery failed-check edge, and cool gray-blue for the dashed recovery-to-framing return edge.",
+      "Use cobalt or pale-blue styling for intake framing execution and verification, one teal success treatment only inside stable result, and one pale amber treatment only inside recovery.",
+      "Place five primary nodes in one horizontal row inside a large rounded white main container and recovery in a smaller pale-amber recovery group below the gap between framing and verification.",
+      "Above the containers reserve one blank eyebrow rule, one long blank title bar, and one shorter blank subtitle bar at upper-left; place two large translucent blue-cyan decorative circles at upper-right.",
+      "Inside every node include one blank step-index disc, one simple icon, one blank navy title rail, and one blank gray caption rail; these blank shapes are typography placeholders rather than additional nodes.",
+      "Add one blank cobalt-to-cyan group pill above the main row and one blank amber group pill above recovery; add one pale-blue blank explanatory strip along the bottom of the main container.",
+      "Use no generated glyphs anywhere; all exact wording and step numbers will be added deterministically after topology review."
+    ],
+    "blocked": [
+      "Do not add human judgment policy approval deployment monitoring database queue model agent tool notification score metric bypass or any undeclared node edge state group or shortcut.",
+      "Do not treat title bars subtitle bars index discs caption rails group pills decorative circles or explanatory strips as semantic nodes and do not connect arrows to them.",
+      "Do not copy the cover devices circular hub input-card fan system-panel graph or the concept three-layer glass stack verification core source modules result-card layout.",
+      "Do not copy the user's reference labels wording exact topology lane titles orange three-card judgment lane node content or explanatory sentence.",
+      "Do not add generated Chinese English words letters numbers pseudo-writing labels legends code UI copy dimensions logos watermarks people hands robots browser chrome phones glass capsules or 3D device perspective.",
+      "Do not use dark cyanotype black dashboard neon cyberpunk decorative arrows extra arrowheads topology-obscuring glow or heavy shadows."
+    ],
+    "frozen_graph": {
+      "nodes": ["intake", "framing", "execution", "verification", "stable-result", "recovery"],
+      "edges": [
+        {"id": "edge-intake-framing", "from": "intake", "to": "framing", "type": "primary"},
+        {"id": "edge-framing-execution", "from": "framing", "to": "execution", "type": "primary"},
+        {"id": "edge-execution-verification", "from": "execution", "to": "verification", "type": "primary"},
+        {"id": "edge-verification-result", "from": "verification", "to": "stable-result", "type": "primary"},
+        {"id": "edge-verification-recovery", "from": "verification", "to": "recovery", "type": "exception"},
+        {"id": "edge-recovery-framing", "from": "recovery", "to": "framing", "type": "return"}
+      ],
+      "groups": [
+        {"id": "primary-delivery", "members": ["intake", "framing", "execution", "verification", "stable-result"]},
+        {"id": "recovery-loop", "members": ["recovery"]}
+      ],
+      "invariants": [
+        "Stable result is reachable only from verification.",
+        "Recovery receives only from verification and returns only to framing.",
+        "No edge enters intake and no recovery edge reaches execution verification or stable result directly."
+      ]
+    }
+  },
+  "composition": {
+    "structure": "strict wide 16:9 fully opaque flat infographic on a cool-white canvas with faint blue grid; reserve a generous upper information header with blank eyebrow title and subtitle bars at left and two translucent decorative circles at right; below it use one large rounded white primary container with pale-blue boundary and one smaller pale-amber recovery group; inside the primary container place five equal rounded modules in one horizontal row and one pale-blue explanatory strip along the bottom; inside the recovery group place exactly one recovery module; render exactly four solid cobalt arrows across the main row one dashed amber verification-to-recovery arrow and one dashed cool-gray-blue recovery-to-framing return arrow; exactly one destination arrowhead appears on each of the six connections; every node contains a blank index disc simple icon blank navy title rail and blank gray caption rail; group pills and all typography zones remain blank",
+    "hierarchy": "the blank header creates editorial hierarchy, the large primary container and four-edge cobalt route remain dominant, the amber recovery group and two dashed edges form a clearly subordinate loop, stable-result carries the only teal state, and decorative circles grid title bars caption rails and explanatory strip add visual richness without resembling nodes or paths; use white surfaces pale-blue boundaries subtle card shadows consistent rounded corners and generous spacing",
+    "human_elements": "none; no people faces hands characters instructors narrators mascots robots or stock imagery"
+  },
+  "text_policy": {
+    "mode": "blank deterministic eyebrow title subtitle group node-label step-index caption explanatory-strip and legend zones with validated text added after topology review",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "header primary container recovery group complete six-node graph and non-semantic information layers occupy roughly eighty-eight percent inside a sixty-four-pixel safe margin",
+    "crop_rules": "all six modules all six edges every arrowhead the complete recovery loop and teal result remain visible; header elements may crop before any semantic graph element",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "diagram",
+    "bootstrap_references": [
+      {
+        "id": "blueprint-linework-concept-v1",
+        "profile_id": "blueprint-linework",
+        "role": "concept",
+        "approval": "approved",
+        "semantic_authority": false
+      }
+    ],
+    "semantic_authority": false
+  }
+}

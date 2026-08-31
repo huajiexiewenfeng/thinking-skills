@@ -1,0 +1,56 @@
+{
+  "profile_id": "blueprint-linework",
+  "asset_role": "concept",
+  "objective": "Create one text-free wide editorial blueprint atlas called Layered Threshold Section: a substantial horizontal orthographic section shows several broad internal passages converging on one controlled cyan diaphragm, then opening into one calm receiving region; one small matched detail inset clarifies that same boundary without adding a second story.",
+  "semantics": {
+    "confirmed": [
+      "Several structured passages can converge toward one shared boundary.",
+      "One controlled interface separates the converging structure from a broad receiving region.",
+      "The section is a generic explanatory metaphor and does not represent a named architecture device protocol or guarantee."
+    ],
+    "simplifications": [
+      "Use one wide front-orthographic hero section with substantial opaque ivory upper and lower structural masses.",
+      "In the left half, use four broad indigo channels separated by ivory ribs; taper the channels gently toward one central boundary without arrows.",
+      "Use exactly one cyan diaphragm at the central boundary, spanning the useful section height and occupying roughly four to six percent of canvas width.",
+      "Beyond the diaphragm, open the channels into one broad calm receiving region framed by substantial ivory structure.",
+      "Place exactly one small matched detail inset above the central boundary, enlarging the same cyan diaphragm and adjacent section edges; connect it with two muted construction leaders."
+    ],
+    "blocked": [
+      "Do not imply a real machine material network gateway funnel filter security mechanism throughput value physical law or product architecture.",
+      "Do not copy the approved cover's radial quarter-cutaway concentric arcs two right-side supporting views left title field compact inner core or radial silhouette.",
+      "Do not add labels titles numbers dimensions tolerances identifiers callout text arrows people hands rulers dashboards code screens perspective isometric depth glow shadows gloss decorative machinery repeated room cavities or uniform-weight wireframes."
+    ]
+  },
+  "composition": {
+    "structure": "wide 16:9 fully opaque editorial blueprint atlas on deep indigo cyanotype paper; one horizontal front-orthographic hero section spans roughly eighty-two percent of canvas width and fifty-eight percent of height; substantial opaque ivory upper and lower section masses enclose four broad left-side channels that converge on one central cyan diaphragm and open into one broad right-side receiving region; exactly one small matched detail inset floats above the central seam with two muted construction leaders; preserve measured outer margins and a low-intensity datum grid",
+    "hierarchy": "the complete horizontal section is the dominant mass, the single cyan diaphragm is the only saturated semantic focal feature, and the one detail inset remains subordinate; use four-pixel outer silhouette, two-pixel final internal anatomy, and one-pixel muted grid leaders and construction context; the anatomy must feel complete and information-bearing without pseudo-engineering detail",
+    "human_elements": "none; no people faces hands characters instructors narrators mascots or stock imagery"
+  },
+  "text_policy": {
+    "mode": "label-free generated cyanotype concept with deterministic captions added later",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "the complete horizontal threshold section and one matched detail inset occupy roughly eighty-two percent of the fully opaque canvas",
+    "crop_rules": "the converging left channels complete cyan diaphragm and opening right region remain understandable in the central square crop",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "concept",
+    "bootstrap_references": [
+      {
+        "id": "blueprint-linework-cover-v1",
+        "profile_id": "blueprint-linework",
+        "role": "cover",
+        "approval": "approved",
+        "semantic_authority": false
+      }
+    ],
+    "semantic_authority": false
+  }
+}

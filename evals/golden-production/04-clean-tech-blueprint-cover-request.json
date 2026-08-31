@@ -1,0 +1,50 @@
+{
+  "profile_id": "blueprint-linework",
+  "asset_role": "cover",
+  "objective": "Create one text-free wide Clean Tech Blueprint cover called Verified System Studio: scattered abstract input tiles enter one polished glass orchestration hub and emerge as a structured multi-module system inside a dominant white-blue display panel.",
+  "semantics": {
+    "confirmed": [
+      "Several incomplete input fragments can be gathered into one structured system representation.",
+      "One central orchestration and verification stage separates raw input from structured output.",
+      "The display panel and state colors are a generic style demonstration and do not describe a named product architecture workflow or guarantee."
+    ],
+    "simplifications": [
+      "Reserve the upper-left thirty-four percent as a calm deterministic title-safe field with only faint grid and soft ambient blue arcs.",
+      "Below the title field place three to five small translucent input tiles with abstract lines and shapes only; no paper sketch no question marks and no text.",
+      "Place one polished circular glass orchestration hub near center with a cobalt inner ring and three small blank geometric status tokens suspended inside.",
+      "Place one dominant wide white satin display panel across the center-right, slightly front-facing with shallow thickness; inside it show one clean generic six-module system diagram using cobalt paths, white rounded modules, one teal success state, one amber attention state, and one red blocked state.",
+      "Connect input tiles to the glass hub and the hub to the display panel using two broad restrained translucent cobalt flow bands; use no phone and no second large screen.",
+      "Add a low white-glass platform beneath the hub and display panel so soft shadows and blue ambient reflections create material quality."
+    ],
+    "blocked": [
+      "Do not copy either user reference's title text paper sketch central vertical capsule browser chrome phone exact icons graph topology node count or device arrangement.",
+      "Do not imply a named AI agent workflow software product protocol security mechanism compatibility guarantee or universal architecture.",
+      "Do not add generated Chinese English words letters numbers labels legends code interface copy dimensions watermarks logos people hands robots AI brains office props or stock photography.",
+      "Do not use dark cyanotype black dashboard neon cyberpunk hologram tunnel dramatic lens flare chrome overload heavy bloom harsh shadows dense UI controls or a generic app screenshot."
+    ]
+  },
+  "composition": {
+    "structure": "wide 16:9 fully opaque cool-white technology studio with a faint blue drafting grid on the wall and floor; upper-left title-safe field remains calm; three to five small translucent input tiles sit lower-left; one circular polished glass orchestration hub on a low white-glass platform anchors center; one dominant wide white satin display panel occupies center-right and contains a clean blank-label six-module system diagram; two translucent cobalt flow bands connect the three zones; all objects remain front-facing with shallow 2.5D thickness and complete-frame balance",
+    "hierarchy": "the display panel is the largest content-bearing object, the glass hub is the material focal object, and input tiles remain subordinate; deep navy and cobalt dominate, teal amber and red appear only as small evidence-bound states; polished glass-acrylic edges soft spatial shadow subtle blue ambient bounce and restrained highlights create premium technology product visual quality",
+    "human_elements": "none; no people faces hands characters instructors narrators mascots humanoid robots or stock imagery"
+  },
+  "text_policy": {
+    "mode": "text-free generated technology cover with deterministic title subtitle and compact labels added later",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "input tiles glass hub platform flow bands and dominant display panel occupy roughly eighty-four percent while the upper-left title-safe field remains usable",
+    "crop_rules": "the complete glass hub at least two input tiles the main display panel and its core cobalt system path remain meaningful in the central square crop",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "cover",
+    "bootstrap_references": [],
+    "semantic_authority": false
+  }
+}

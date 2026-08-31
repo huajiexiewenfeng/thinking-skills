@@ -1,0 +1,271 @@
+{
+  "probe_suite_version": 1,
+  "profile_id": "blueprint-linework",
+  "style_pack_version": 3,
+  "purpose": "Cross-topic stability and Polished Tech Explainer discrimination from editorial minimal and isometric infrastructure without copying golden example content.",
+  "probes": [
+    {
+      "id": "style4-cover-policy-to-release",
+      "request": {
+        "profile_id": "blueprint-linework",
+        "asset_role": "cover",
+        "objective": "Create a premium technology cover showing scattered policy fragments becoming one auditable release gate, with a deterministic headline area and no claim that automation removes human responsibility.",
+        "semantics": {
+          "confirmed": [
+            "Unstructured policy material can be organized into explicit release constraints.",
+            "A release gate can make checks visible and auditable without guaranteeing correctness."
+          ],
+          "simplifications": [
+            "Use a few abstract source cards, one polished central rule engine, and one substantial release console as the visual thesis.",
+            "Use cobalt for the main transformation and one restrained teal state only for a validated outcome."
+          ],
+          "blocked": [
+            "Do not imply perfect compliance, autonomous legal judgment, zero-risk release, named vendors, or universal workflow guarantees.",
+            "Do not copy the golden cover input tiles, orchestration hub silhouette, browser panel, device arrangement, labels, topology, or example story."
+          ]
+        },
+        "composition": {
+          "structure": "wide cool-white technology canvas with a faint blue drafting grid, a large calm deterministic headline and subtitle zone in the upper-left, an asymmetric polished glass-acrylic rule engine near center, source fragments entering from the lower-left, and a substantial release console on the right",
+          "hierarchy": "deep navy information hierarchy and cobalt system logic dominate; frosted white device frames, polished edges, soft spatial shadows, restrained semantic teal, and generous white breathing room keep the cover premium and legible",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free image-generation background with blank title and subtitle zones; deterministic final overlay added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the visual system occupies roughly seventy-eight percent while preserving a generous upper-left headline zone",
+          "crop_rules": "the central rule engine, representative source fragment, and release console remain legible in a central square crop",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "blueprint-linework-cover-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "cool white grid surface, cobalt system logic, deep navy information hierarchy, polished glass-acrylic technology material, and soft spatial shadow",
+        "content-rich technology product visual with a blank deterministic title zone and restrained semantic state colors"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "The policy-to-release thesis reads at thumbnail size while remaining a generic teaching metaphor.",
+        "The image reads as a premium white-blue technology explainer rather than a dark blueprint, neon dashboard, stock-office scene, or isometric diorama."
+      ]
+    },
+    {
+      "id": "style4-concept-evidence-ladder",
+      "request": {
+        "profile_id": "blueprint-linework",
+        "asset_role": "concept",
+        "objective": "Explain how an uncertain claim becomes progressively more trustworthy when source context, constraints, and independent evidence converge, without implying certainty from presentation alone.",
+        "semantics": {
+          "confirmed": [
+            "A claim becomes more trustworthy when multiple relevant forms of support agree.",
+            "Visual organization communicates the relation but does not itself prove the claim."
+          ],
+          "simplifications": [
+            "Use one left-to-right three-stage progression from raw claim to constrained claim to evidence-backed conclusion.",
+            "Use one cobalt alignment rail and one restrained teal verified state; keep all other context cool white, navy, and pale blue."
+          ],
+          "blocked": [
+            "Do not invent confidence scores, citations, guarantees, named research methods, or universal truth criteria.",
+            "Do not copy the golden concept's vertical three-layer stack, central verification column, source-module positions, labels, topology, or example story."
+          ]
+        },
+        "composition": {
+          "structure": "wide front-facing polished modular technology explainer on a cool-white faint-grid canvas; three substantial frosted-glass stages progress left to right along one cobalt alignment rail, with small supporting evidence chips below and a clear deterministic eyebrow headline and subtitle zone above",
+          "hierarchy": "one visual thesis, deep navy heading region, cobalt progression, shallow polished device depth, soft spatial shadows, and one teal conclusion state; supporting evidence chips remain secondary and do not become a dashboard",
+          "human_elements": "none"
+        },
+        "text_policy": {
+          "mode": "text-free image-generation background with blank eyebrow title subtitle and caption zones; deterministic final overlay added later",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete three-stage relation occupies roughly seventy-six percent with a calm title band and readable caption rails",
+          "crop_rules": "all three stages and the cobalt alignment rail remain together in the central safe region",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "blueprint-linework-concept-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "polished modular technology explainer, cool white faint grid, cobalt logic, frosted-glass material, soft spatial shadow, and one restrained semantic state",
+        "one visual thesis with blank deterministic eyebrow headline subtitle and caption regions"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "The left-to-right evidence progression is understandable without generated copy or unsupported certainty claims.",
+        "The image remains a polished concept explainer rather than the golden vertical layer stack, a flat green editorial card, or an app dashboard."
+      ]
+    },
+    {
+      "id": "style4-diagram-policy-hold-loop",
+      "request": {
+        "profile_id": "blueprint-linework",
+        "asset_role": "diagram",
+        "objective": "Render a strict human-free policy-release architecture in which an unresolved policy check enters a two-stage evidence hold and returns only to the policy gate.",
+        "semantics": {
+          "confirmed": [
+            "Submission is normalized before policy evaluation.",
+            "A passed policy evaluation may proceed to publication.",
+            "An unresolved policy evaluation enters hold, gathers an evidence pack, and returns to the policy gate."
+          ],
+          "simplifications": [
+            "Use cobalt only for the primary route, amber only for entry into hold, and muted slate-blue only for the return route.",
+            "Use rich but flat deterministic infographic geometry with blank text zones for the eyebrow, title, subtitle, six labels, six captions, group pills, and one explanatory strip."
+          ],
+          "blocked": [
+            "Do not add users, approvers, tools, scores, databases, vendors, notifications, bypasses, or undeclared nodes and edges.",
+            "Do not copy the golden diagram's intake-framing-execution-verification-result-recovery nodes, five-stage primary route, single recovery node, positions, labels, topology, or example story."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "submission",
+              "normalization",
+              "policy-gate",
+              "publication",
+              "hold",
+              "evidence-pack"
+            ],
+            "edges": [
+              {
+                "id": "edge-submission-normalization",
+                "from": "submission",
+                "to": "normalization",
+                "type": "primary"
+              },
+              {
+                "id": "edge-normalization-policy",
+                "from": "normalization",
+                "to": "policy-gate",
+                "type": "primary"
+              },
+              {
+                "id": "edge-policy-publication",
+                "from": "policy-gate",
+                "to": "publication",
+                "type": "primary"
+              },
+              {
+                "id": "edge-policy-hold",
+                "from": "policy-gate",
+                "to": "hold",
+                "type": "exception"
+              },
+              {
+                "id": "edge-hold-evidence",
+                "from": "hold",
+                "to": "evidence-pack",
+                "type": "exception"
+              },
+              {
+                "id": "edge-evidence-policy",
+                "from": "evidence-pack",
+                "to": "policy-gate",
+                "type": "return"
+              }
+            ],
+            "groups": [
+              {
+                "id": "primary-release",
+                "members": [
+                  "submission",
+                  "normalization",
+                  "policy-gate",
+                  "publication"
+                ]
+              },
+              {
+                "id": "evidence-hold",
+                "members": [
+                  "hold",
+                  "evidence-pack"
+                ]
+              }
+            ],
+            "invariants": [
+              "Publication is reachable only from the policy gate.",
+              "Evidence pack returns only to the policy gate and never directly to publication or submission."
+            ]
+          }
+        },
+        "composition": {
+          "structure": "strict human-free flat infographic on a cool-white faint-grid canvas; four primary nodes run across the upper field, hold and evidence-pack occupy a distinct lower recovery band, and every frozen edge and arrowhead remains explicit without crossings",
+          "hierarchy": "large blank navy title zone, cobalt primary path, amber hold path, muted slate-blue return, white rounded modules with blue outlines, blank step-index discs and caption rails, group pills, decorative corner geometry, and one blank explanatory strip",
+          "human_elements": "none; no people, faces, hands, characters, instructors, narrators, mascots, vehicles, or stock imagery"
+        },
+        "text_policy": {
+          "mode": "blank deterministic annotation overlay zones; exact validated text is added after frozen-graph rendering",
+          "exact_text": [],
+          "deterministic_overlay": true
+        },
+        "platform": {
+          "name": "wechat",
+          "aspect_ratio": "16:9",
+          "occupancy": "the complete six-node frozen graph occupies roughly eighty percent with the title band and explanatory strip remaining readable",
+          "crop_rules": "all six nodes, six arrowheads, two groups, and the complete recovery loop remain inside the outer eight percent safe area",
+          "output_count": 1
+        },
+        "golden_reference_ids": [
+          "blueprint-linework-diagram-v1"
+        ],
+        "article_anchor_reference_ids": []
+      },
+      "must_preserve": [
+        "strict frozen-graph rendering as a rich but flat white-blue infographic with exact arrows, restrained semantic edge colors, and no people",
+        "blank eyebrow title subtitle label caption step-index group-pill and explanatory-strip regions for deterministic validated copy"
+      ],
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "example_story"
+      ],
+      "acceptance_checks": [
+        "Exactly six declared nodes and six declared directed edges appear with correct type and direction.",
+        "The diagram reads as a content-rich Polished Tech Explainer infographic and does not become a glassy scene, dark blueprint, green editorial card, or isometric architecture."
+      ]
+    }
+  ],
+  "neighbor_discrimination": {
+    "compare_profile_ids": [
+      "technical-editorial-minimal",
+      "white-green-editorial-minimal",
+      "isometric-infrastructure"
+    ],
+    "style_4_expected": [
+      "cool white technology canvas with faint blue drafting grid and cobalt system logic",
+      "deep navy information hierarchy with polished glass-acrylic device depth for covers and concepts",
+      "content-rich flat deterministic infographics with readable validated overlay copy for strict diagrams",
+      "restrained blue-to-teal semantic state colors and soft spatial shadow"
+    ],
+    "neighbor_expected": [
+      "Style 1 is warmer ink-blue editorial minimal with fewer product-device materials and lower information density",
+      "Style 2 is emerald-led quiet editorial minimal rather than cobalt technology product language",
+      "Style 5 uses fixed isometric matte architectural worlds with meaningful elevation and one amber journey"
+    ]
+  }
+}

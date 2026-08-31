@@ -17,7 +17,7 @@ Do not use for calm tutorials, human-centered reflection, architectural document
 
 ## Mode Boundary
 
-The nearest neighbor is Blueprint Linework. Neon Systems uses layered dark modules, limited depth, and luminous signal paths; Blueprint Linework is orthographic, thin, flat, and construction-led with no glow.
+The nearest neighbor is Polished Tech Explainer. Neon Systems uses layered dark modules, deeper contrast, and luminous signal paths; Polished Tech Explainer uses a cool white grid, cobalt logic, restrained glass material, rich information layers, and bright enterprise-technology framing.
 
 ## Required Visual Traits
 

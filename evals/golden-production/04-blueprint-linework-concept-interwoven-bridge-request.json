@@ -1,0 +1,57 @@
+{
+  "profile_id": "blueprint-linework",
+  "asset_role": "concept",
+  "objective": "Create one text-free wide editorial blueprint atlas called Interwoven Bridge: two asymmetric families of substantial ivory sectional ribbons sweep diagonally across the canvas, interleave around one controlled cyan bridge, and continue as one coherent layered passage; a compact unboxed companion section clarifies the same bridge without turning the image into a machine drawing.",
+  "semantics": {
+    "confirmed": [
+      "Two distinct layered structures can meet through one shared interface.",
+      "One controlled bridge relates the two structures while preserving their separate layered identities.",
+      "The interwoven section is a generic explanatory metaphor and does not represent a named architecture device protocol material or guarantee."
+    ],
+    "simplifications": [
+      "Build the hero as two broad asymmetric ribbon families: three ivory-filled curved bands enter from lower-left and three different ivory-filled curved bands enter from upper-right.",
+      "Let the six bands interleave near the center without becoming a knot, then align through exactly one compact cyan bridge plate at the shared boundary.",
+      "Use deep indigo negative channels between the ivory bands so the layered anatomy remains legible and visually substantial.",
+      "Add exactly one small unboxed companion section in the lower-right, showing the same cyan bridge between two ivory section edges; connect it to the hero with two quiet one-pixel construction leaders.",
+      "Allow two or three short blank annotation rules near the companion section for later deterministic text, but generate no characters."
+    ],
+    "blocked": [
+      "Do not imply cables pipes roads airflow data flow weaving machinery filters seals gaskets connectors bandwidth security or a real physical assembly.",
+      "Do not copy the approved cover's radial quarter-cutaway concentric arcs two stacked right-side views left title field compact inner core or circular silhouette.",
+      "Do not reuse the rejected concept's long rectangular shell giant empty right cavity horizontal gasket profile boxed magnifier inset or symmetrical mechanical interface.",
+      "Do not add labels titles numbers dimensions tolerances identifiers callout text arrows people hands rulers dashboards screens perspective isometric depth glow shadows gloss decorative machinery repeated room cavities uniform-weight wireframes or a border around the full canvas."
+    ]
+  },
+  "composition": {
+    "structure": "wide 16:9 fully opaque premium editorial blueprint plate on deep indigo cyanotype paper; one large diagonal interwoven hero section sweeps from lower-left through center toward upper-right and occupies roughly seventy-eight percent of canvas width and sixty-eight percent of height; six broad curved opaque ivory bands form two visibly different three-layer families separated by deep indigo channels; the families overlap in a controlled central weaving zone and meet at exactly one compact cyan bridge plate; one small unboxed matched companion section rests in the lower-right with two muted projection leaders; leave measured breathing room around the silhouette without enclosing it in a giant rectangle",
+    "hierarchy": "the asymmetric flowing ivory sectional silhouette is the dominant graphic mass, one compact cyan bridge is the only saturated semantic feature, and the lower-right companion section is clearly subordinate; use a four-pixel hero silhouette, two-pixel internal structure, and one-pixel construction leaders grid and blank annotation rules; produce a rich but disciplined atlas composition with no large dead cavity",
+    "human_elements": "none; no people faces hands characters instructors narrators mascots or stock imagery"
+  },
+  "text_policy": {
+    "mode": "text-free generated cyanotype concept with deterministic captions added later",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "the diagonal hero section and one unboxed companion section form a complete editorial plate across roughly eighty-two percent of the fully opaque canvas",
+    "crop_rules": "both ribbon families their interwoven center and the complete cyan bridge remain meaningful in the central square crop",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "concept",
+    "bootstrap_references": [
+      {
+        "id": "blueprint-linework-cover-v1",
+        "profile_id": "blueprint-linework",
+        "role": "cover",
+        "approval": "approved",
+        "semantic_authority": false
+      }
+    ],
+    "semantic_authority": false
+  }
+}

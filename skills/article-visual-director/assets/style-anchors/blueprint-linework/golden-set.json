@@ -3,21 +3,64 @@
   "profile_id": "blueprint-linework",
   "protocol_version": 2,
   "style_pack_version": 3,
-  "visual_dna_sha256": "4fbad1df23c80b80637ab1be381cfc13e7f1f162c29b84511a39debc5ae0502b",
-  "role_contracts_sha256": "9acf098e894bea2f0050183ca23cfe446e0e7e678ea54b92bef56e0820c483a0",
-  "reference_matrix_sha256": "dd7f841ef3ab07c51eb365cca7831c46c8eead349a987d1102f878ceef91ccf1",
+  "visual_dna_sha256": "ca01d41ab360ba104b927ecfe23344ea325af458e838186103658becd4290987",
+  "role_contracts_sha256": "ccb7fa9b4c80375d3c91d0424c43854d989e723f4e2ac0ab463912397591322f",
+  "reference_matrix_sha256": "9840499b91148b978cb84a0e85980a4fc777365c8335afb3b0fef73d4534be76",
   "qualification": {
-    "prompt_compile_status": "pending",
-    "cross_topic_probe_status": "pending",
-    "neighbor_discrimination_status": "pending"
+    "prompt_compile_status": "passed",
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed"
   },
-  "status": "candidate",
+  "status": "approved",
   "user_approval": {
-    "status": "rejected",
+    "status": "approved",
     "revision_notes": [
       "The user rejected the first symmetric empty CAD-room cover as ugly, then provisionally advanced the asymmetric revision.",
-      "After reviewing multiple cover and concept variants, the user rejected Style 4 overall as aesthetically unattractive and asked to move to the next style. No asset remains approved as a golden reference."
+      "After reviewing multiple cover and concept variants, the user rejected Style 4 overall as aesthetically unattractive and asked to move to the next style. No asset from that direction remains approved as a golden reference.",
+      "Redesign reopened at the user's request before public promotion. The new candidate replaces uniform two-pixel empty-outline CAD grammar with an editorial blueprint atlas: deep indigo cyanotype ground, opaque ivory section mass, three-level 4/2/1 line hierarchy, one hero orthographic cutaway, up to two synchronized supporting views, and one cyan semantic feature.",
+      "Cover golden approved: editorial blueprint atlas, radial hero cutaway, two synchronized supporting views, deep indigo cyanotype, opaque ivory section mass, 4/2/1 line hierarchy, one cyan interface, fully opaque, and no generated text. Example content and topology remain non-authoritative.",
+      "Concept revision 3 proved that forcing orthographic section, matched detail view, interface language, and projection leaders still produced mechanical CAD. The Style 4 contract then prioritized cyanotype editorial illustration, but the user still found that direction insufficiently textured and technological.",
+      "The user explicitly replaced Style 4 with Clean Tech Blueprint using two supplied visual references: a cool-white cobalt technology cover with polished glass devices, and a precise white-blue flat process infographic. The approved cyanotype cover is now preserved only as superseded audit history and is not a current golden reference."
+      ,"Clean Tech Blueprint cover approved when the user asked to continue: cool-white grid studio, cobalt flow, polished glass orchestration hub, white satin system panel, restrained semantic state colors, soft spatial shadows, fully opaque, and no generated text. Example devices and topology remain non-authoritative.",
+      "Clean Tech Blueprint concept approved when the user asked to continue: exactly three frosted-glass information layers, one vertical cobalt verification core, two source modules, one teal trusted-result module, soft spatial shadow, fully opaque, and no generated text. Example icons and relation remain non-authoritative.",
+      "The user approved the strict diagram logic but requested richer visual information and allowed the Style 4 title and description to change. The public identity is now Polished Tech Explainer (质感科技图解); diagram richness may add blank eyebrow/title/subtitle zones, step-index discs, caption rails, group bands, decorative corner geometry, and one explanatory strip without altering frozen semantics.",
+      "A third user reference confirmed that readable copy is part of the finished Style 4 identity: large navy headlines with cobalt keyword emphasis, compact English subtitle, section pills, node labels, comparison layouts, blue-to-green transitions, circular technology icons, and faint network ornaments. Production therefore preserves text-free imagegen backgrounds but ships deterministic validated text overlays in the golden images.",
+      "The user approved all three text-bearing Polished Tech Explainer goldens by asking to continue. The strict diagram is rendered deterministically from SVG: exactly six nodes, four cobalt primary edges, one amber verification-to-recovery edge, one gray-blue recovery-to-framing return, validated Chinese copy, and no topology drift."
+      ,"The user explicitly confirmed the displayed cover, concept, and diagram as the final Style 4 golden set and authorized release promotion."
     ]
   },
-  "assets": []
+  "assets": [
+    {
+      "id": "blueprint-linework-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "reference_role": "Anchors cool-white grid surface, cobalt logic, navy hierarchy, polished glass-acrylic material, white device framing, soft spatial shadow, large deterministic headline, cobalt keyword emphasis, compact English subtitle, and premium technology finish only; devices, states, topology, copy, and example story are non-authoritative.",
+      "artifact_path": "golden-cover.png",
+      "artifact_sha256": "2c80719deede1d3bc86bb3949676900a8aaf06b9984ba7be97a763fc415073c6",
+      "prompt_path": "golden-cover.prompt.md",
+      "prompt_sha256": "8fa48ec9c5af20dc1d2178cce957507f806f780cfc9a5ddf8173ad1635705f5a"
+    },
+    {
+      "id": "blueprint-linework-concept-v1",
+      "role": "concept",
+      "renderer": "imagegen",
+      "reference_role": "Anchors cool-white grid surface, frosted-glass layer material, cobalt verification core, restrained shallow depth, sparse connection logic, soft spatial shadow, single semantic success state, and deterministic eyebrow/headline/subtitle hierarchy only; icons, relation, copy, layer meaning, and example story are non-authoritative.",
+      "artifact_path": "golden-concept.png",
+      "artifact_sha256": "0a966080c3ebcc9218b28ebc1a1a7497badd1a3c86022cd3edead71153f15094",
+      "prompt_path": "golden-concept.prompt.md",
+      "prompt_sha256": "99ee846fe4c4af0c6f61ac33c07fd9e18b02b84597dd136259dcd07b922df7f6"
+    },
+    {
+      "id": "blueprint-linework-diagram-v1",
+      "role": "diagram",
+      "renderer": "deterministic-diagram",
+      "reference_role": "Anchors strict frozen-graph rendering, cool-white grid, rich deterministic information hierarchy, large navy headline, cobalt primary route, semantic exception and return colors, rounded modules, step indices, exact readable labels, group pills, and explanatory strip only; example copy, nodes, topology, and story are non-authoritative.",
+      "artifact_path": "golden-diagram.png",
+      "artifact_sha256": "28c714fbc251bd1a9238a0132d6d62349af635e0ea0185bd30f1cd8b87911ce9",
+      "editable_source_path": "golden-diagram.svg",
+      "editable_source_sha256": "aa00924700bb251be71cb601862de87ec5a1eee25c42600c3d167023d9e3ffb3",
+      "prompt_path": "golden-diagram.prompt.md",
+      "prompt_sha256": "1ba751ae6e6d3c93831a75b38cde307e771f7a83ecf5449f3c99a72cedee674e"
+    }
+  ]
 }

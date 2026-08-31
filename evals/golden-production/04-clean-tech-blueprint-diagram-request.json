@@ -1,0 +1,85 @@
+{
+  "profile_id": "blueprint-linework",
+  "asset_role": "diagram",
+  "objective": "Render one text-free human-free Clean Tech Blueprint process diagram with exactly six nodes and six directed edges: intake enters framing, framing enters execution, execution enters verification, verification enters stable result, failed verification enters recovery, and recovery returns only to framing.",
+  "semantics": {
+    "confirmed": [
+      "The primary route is intake to framing to execution to verification to stable result.",
+      "Only verification may enter recovery on a failed-check edge.",
+      "Recovery returns only to framing, and stable result is reachable only from verification."
+    ],
+    "simplifications": [
+      "Use exactly six substantial rounded modules with blank deterministic label zones and exactly six visible directed connections.",
+      "Use cobalt for the four solid primary edges, amber for the dashed verification-to-recovery failed-check edge, and cool gray-blue for the dashed recovery-to-framing return edge.",
+      "Use cobalt or pale-blue styling for intake framing execution and verification, one teal success treatment only inside stable result, and one pale amber treatment only inside recovery.",
+      "Place five primary nodes in one horizontal row and recovery below the open gap between framing and verification so exception and return paths do not cross any primary edge.",
+      "Use simple blank icons only: input tray layered card cube magnifier check and circular rework arrow; leave all node names legends and captions blank for deterministic overlay."
+    ],
+    "blocked": [
+      "Do not add human judgment policy approval deployment monitoring database queue model agent tool notification score metric bypass or any undeclared node edge state group or shortcut.",
+      "Do not copy the cover devices circular hub input-card fan system-panel graph or the concept three-layer glass stack verification core source modules result-card layout.",
+      "Do not copy the user's reference labels wording exact node count topology lane titles orange three-card judgment lane or bottom explanatory sentence.",
+      "Do not add generated Chinese English words letters numbers labels legends code UI copy dimensions logos watermarks people hands robots AI brains browser chrome phones glass capsules or 3D device perspective.",
+      "Do not use dark cyanotype black dashboard neon cyberpunk decorative background arrows extra arrowheads topology-obscuring glow or heavy shadows."
+    ],
+    "frozen_graph": {
+      "nodes": [
+        "intake",
+        "framing",
+        "execution",
+        "verification",
+        "stable-result",
+        "recovery"
+      ],
+      "edges": [
+        {"id": "edge-intake-framing", "from": "intake", "to": "framing", "type": "primary"},
+        {"id": "edge-framing-execution", "from": "framing", "to": "execution", "type": "primary"},
+        {"id": "edge-execution-verification", "from": "execution", "to": "verification", "type": "primary"},
+        {"id": "edge-verification-result", "from": "verification", "to": "stable-result", "type": "primary"},
+        {"id": "edge-verification-recovery", "from": "verification", "to": "recovery", "type": "exception"},
+        {"id": "edge-recovery-framing", "from": "recovery", "to": "framing", "type": "return"}
+      ],
+      "groups": [
+        {"id": "primary-delivery", "members": ["intake", "framing", "execution", "verification", "stable-result"]},
+        {"id": "recovery-loop", "members": ["recovery"]}
+      ],
+      "invariants": [
+        "Stable result is reachable only from verification.",
+        "Recovery receives only from verification and returns only to framing.",
+        "No edge enters intake and no recovery edge reaches execution verification or stable result directly."
+      ]
+    }
+  },
+  "composition": {
+    "structure": "strict wide 16:9 fully opaque flat infographic on a cool-white canvas with faint blue grid; one large rounded white primary container with pale-blue two-pixel boundary occupies the center; place intake framing execution verification and stable-result as five equal-width rounded modules in one horizontal row; place recovery as one equal-width pale-amber module below the open gap between framing and verification; render exactly four solid cobalt primary arrows left-to-right, one dashed amber arrow from verification down-left to recovery, and one dashed cool-gray-blue return arrow from recovery up-left to framing; exactly one destination arrowhead appears on each of the six connections; use blank navy title bars and blank gray caption rules only, never generated text",
+    "hierarchy": "the four-edge cobalt primary route is dominant, the dashed amber exception and gray-blue return form one clearly subordinate recovery loop, stable-result carries the only teal success state, and recovery carries the only amber node state; modules use white surfaces pale blue boundaries very subtle card shadows consistent rounded corners and generous spacing; grid remains faint and cannot resemble semantic edges",
+    "human_elements": "none; no people faces hands characters instructors narrators mascots robots or stock imagery"
+  },
+  "text_policy": {
+    "mode": "blank deterministic title node-label caption and legend zones with validated text added after topology review",
+    "exact_text": [],
+    "deterministic_overlay": true
+  },
+  "platform": {
+    "name": "golden-reference",
+    "aspect_ratio": "16:9",
+    "occupancy": "the complete six-node six-edge diagram occupies roughly eighty-four percent inside a seventy-two-pixel safe margin",
+    "crop_rules": "all six modules all six directed edges every destination arrowhead the complete recovery loop and the teal stable-result state remain inside the frame and readable at article width",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "diagram",
+    "bootstrap_references": [
+      {
+        "id": "blueprint-linework-concept-v1",
+        "profile_id": "blueprint-linework",
+        "role": "concept",
+        "approval": "approved",
+        "semantic_authority": false
+      }
+    ],
+    "semantic_authority": false
+  }
+}

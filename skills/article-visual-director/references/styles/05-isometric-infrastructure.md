@@ -17,7 +17,7 @@ Do not use for strict architecture boundaries, emotional metaphor, flat comparis
 
 ## Mode Boundary
 
-The nearest neighbor is Blueprint Linework. This mode requires a fixed 30-degree isometric camera, matte solid modules, consistent scale, and directional light; Blueprint is flat, orthographic, thin-line construction.
+The nearest neighbor is Polished Tech Explainer. This mode requires a fixed 30-degree isometric camera, matte infrastructure solids, consistent environmental scale, and directional light; Polished Tech Explainer is front-facing white-blue interface and device composition with shallow glass depth or flat infographic geometry.
 
 ## Required Visual Traits
 
