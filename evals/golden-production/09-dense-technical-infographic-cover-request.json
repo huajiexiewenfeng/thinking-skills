@@ -1,0 +1,99 @@
+{
+  "profile_id": "dense-technical-infographic",
+  "asset_role": "cover",
+  "objective": "Create the Style 9 golden cover as a condensed mechanism-poster explaining how one generic request is handled reliably by a high-concurrency service.",
+  "semantics": {
+    "confirmed": [
+      "The visual subject is a generic high-concurrency service request-processing mechanism.",
+      "The four supported responsibility zones are traffic intake, task scheduling, service execution, and exception protection.",
+      "Rate limiting, isolation, caching, and degradation are presented only as distinct generic capabilities without performance guarantees."
+    ],
+    "simplifications": [
+      "Represent the service as one central request-processing core rather than a vendor-specific deployment.",
+      "Use one compact technical icon per supported zone and keep the cover approximately thirty percent less dense than a body infographic."
+    ],
+    "blocked": [
+      "Do not add vendor names, product logos, protocols, benchmark values, latency numbers, throughput numbers, guarantees, databases, queues, user figures, robots, or extra processing stages.",
+      "Do not copy the titles, topology, icons, node count, or layout from any temporary user reference."
+    ]
+  },
+  "composition": {
+    "family": "mechanism-poster",
+    "canvas": "fully opaque 16:9 pure white or slightly cool-white technical poster",
+    "hierarchy": "one oversized deep navy Chinese title across the upper band; one central generic request-processing core; four numbered explanatory zones; one full-width bottom takeaway rail",
+    "zones": [
+      "01 流量入口",
+      "02 任务调度",
+      "03 服务执行",
+      "04 异常保护"
+    ],
+    "paths": "royal-blue primary request logic, engineering-green supported output state, orange exception-protection emphasis",
+    "bottom_rail": "four balanced capability cells for 限流, 隔离, 缓存, 降级",
+    "density": "condensed cover density, about thirty percent lighter than a body infographic while keeping eighty-five to ninety-two percent intentional occupancy",
+    "reading_order": "title, central mechanism, numbered zones, bottom rail",
+    "human_elements": "none"
+  },
+  "model_policy": {
+    "alias": "gpt-image-2",
+    "selection": "latest-alias",
+    "runtime_identity": "record-if-returned"
+  },
+  "text_policy": {
+    "mode": "native-generated-copy-with-validation",
+    "exact_text": [
+      "高并发服务：一次请求如何被稳定处理",
+      "请求处理核心",
+      "01",
+      "流量入口",
+      "接收外部请求",
+      "统一接入与校验",
+      "路由到处理核心",
+      "02",
+      "任务调度",
+      "任务排队与分配",
+      "均衡调度负载",
+      "合理使用资源",
+      "03",
+      "服务执行",
+      "执行业务逻辑",
+      "保持处理正确",
+      "输出处理结果",
+      "04",
+      "异常保护",
+      "识别异常与超时",
+      "阻断故障扩散",
+      "保障核心稳定",
+      "限流",
+      "控制进入速率",
+      "避免过载冲击",
+      "隔离",
+      "隔开故障影响",
+      "保护核心能力",
+      "缓存",
+      "复用热点结果",
+      "减少重复处理",
+      "降级",
+      "收缩非核心功能",
+      "保障核心可用"
+    ],
+    "copy_ledger_status": "frozen",
+    "native_text_generation": true,
+    "post_generation_validation": "exact",
+    "deterministic_overlay": false,
+    "fallback_policy": "correct-one-isolated-copy-defect-otherwise-regenerate"
+  },
+  "platform": {
+    "name": "cross-platform-article-cover",
+    "aspect_ratio": "16:9",
+    "occupancy": "eighty-five to ninety-two percent intentional foreground occupancy",
+    "crop_rules": "preserve the full title, central request-processing core, four numbered zones, and complete bottom rail; keep critical copy outside the outer five percent",
+    "output_count": 1
+  },
+  "golden_reference_ids": [],
+  "article_anchor_reference_ids": [],
+  "golden_production": {
+    "stage": "cover",
+    "bootstrap_references": [],
+    "semantic_authority": false
+  }
+}

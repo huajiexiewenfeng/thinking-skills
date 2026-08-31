@@ -3,6 +3,30 @@
   "profile_id": "dense-technical-infographic",
   "style_pack_version": 3,
   "status": "in_progress",
-  "program_outcome": "Candidate contract registered; three GPT Image 2 goldens remain subject to explicit user approval and qualification.",
-  "candidates": []
+  "program_outcome": "Candidate contract registered; the cover candidate is awaiting explicit user approval and all three GPT Image 2 goldens remain subject to qualification.",
+  "candidates": [
+    {
+      "role": "cover",
+      "version": 1,
+      "status": "rejected",
+      "asset": "skills/article-visual-director/assets/style-anchors/dense-technical-infographic/candidates/rejected-cover-v1-unfrozen-copy.png",
+      "reason": "The visual direction passed, but the image introduced explanatory copy that was not present in the pre-generation frozen copy ledger.",
+      "semantic_review": "passed",
+      "copy_ledger_review": "failed"
+    },
+    {
+      "role": "cover",
+      "version": 2,
+      "status": "approved",
+      "asset": "skills/article-visual-director/assets/style-anchors/dense-technical-infographic/golden-cover.png",
+      "artifact_sha256": "127d0560842f6d1d929555d49fe2bdbc5105e2d039bb1a54c76f6d1281e3badd",
+      "dimensions": "1672x941",
+      "opaque": true,
+      "semantic_review": "passed",
+      "copy_ledger_review": "passed",
+      "layout_review": "passed",
+      "user_approval": "approved",
+      "approval_evidence": "The user replied '继续' after the validated cover candidate was presented for explicit approval."
+    }
+  ]
 }

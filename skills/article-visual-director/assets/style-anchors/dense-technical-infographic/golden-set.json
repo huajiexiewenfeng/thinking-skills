@@ -14,7 +14,20 @@
   "status": "candidate",
   "user_approval": {
     "status": "pending",
-    "revision_notes": []
+    "revision_notes": [
+      "Style 9 cover golden approved when the user replied '继续': oversized deep-navy Chinese title, four numbered responsibility zones, central request-processing core, full-width four-capability rail, exact frozen native copy, fully opaque 16:9 canvas, and no unsupported vendors, metrics, or extra systems. Example content, labels, icons, and topology remain non-authoritative."
+    ]
   },
-  "assets": []
+  "assets": [
+    {
+      "id": "dense-technical-infographic-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "reference_role": "Anchors pure-white dense technical poster composition, oversized deep-navy Chinese title, royal-blue main structure, numbered responsibility zones, one central mechanism, a full-width takeaway rail, restrained green-orange-purple-red semantic accents, exact validated native copy, high intentional occupancy, and flat front-facing iconography only; example content, labels, icons, topology, and story are non-authoritative.",
+      "artifact_path": "golden-cover.png",
+      "artifact_sha256": "127d0560842f6d1d929555d49fe2bdbc5105e2d039bb1a54c76f6d1281e3badd",
+      "prompt_path": "golden-cover.prompt.md",
+      "prompt_sha256": "af3422e0c474935429406d3ad229900cf80d9b39d02f4e5460709522ee43130a"
+    }
+  ]
 }
