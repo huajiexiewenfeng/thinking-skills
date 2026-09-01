@@ -63,6 +63,8 @@ For a standalone technical diagram unrelated to an article, use the environment'
 inspect article
   -> present the existing nine bilingual modes
   -> wait for explicit style selection
+  -> select Sparse, Balanced, or Chapter-led density
+  -> audit every substantive section and derive the asset count
   -> load selected protocol and approved golden set
   -> separate publication theme, visual profile, and asset semantics
   -> propose complete visual plan
@@ -112,9 +114,10 @@ Read the Markdown and record:
 - UTF-8 versus UTF-8 BOM;
 - LF versus CRLF;
 - frontmatter boundaries;
-- heading hierarchy, existing images, tables, and fenced code blocks;
+- heading hierarchy and existing images;
+- existing tables, formulas, fenced code blocks, quotations, and other reading aids, recorded separately from image coverage;
 - target platform: `csdn`, `wechat`, `x-article`, or a combination;
-- article thesis, audience, tone, and the few sections where a visual materially improves comprehension.
+- article thesis, audience, tone, and the role and visual need of every substantive section.
 
 If the source file or target platform is missing and cannot be discovered, ask one short question. Otherwise recommend a default and continue.
 
@@ -128,13 +131,44 @@ For technical content, create a compact semantic ledger:
 
 Apply the Mandatory Style Selection Gate. Present the complete bilingual menu and stop until the user explicitly selects one submode. No visual-rhythm decisions or other plan work begin before this selection.
 
-### 3. Choose a sparse visual rhythm
+### 3. Choose a coverage-aware visual rhythm
 
-Do not make one image for every heading by default. Prefer:
+Select a visual-density mode before proposing an asset count. Use this selection priority:
 
-1. one cover;
-2. concept illustrations at the highest-value summaries or mental-model transitions;
-3. deterministic diagrams only where exact structure, sequence, comparison, or boundaries matter.
+1. a user-explicit density or coverage requirement;
+2. an approved reference, platform convention, or visual direction;
+3. article type, length, section structure, and comprehension difficulty;
+4. when no stronger signal exists, Balanced is the default.
+
+Use one of these modes:
+
+- **Sparse** — For short articles, announcements, compact opinion pieces, or a tightly concentrated argument. Audit every substantive section, but allow short adjacent sections to share an asset or use `none` when the rationale is explicit.
+- **Balanced** — The default. Evaluate every substantive section and give important concepts, comparisons, processes, and structural turns visual support. It need not produce one image per section, but it must not leave several consecutive important sections without visual support and an explicit reason.
+- **Chapter-led** — For long-form teaching, explanatory, or research-oriented articles whose major sections carry distinct conceptual jobs; for image-dense references the user explicitly approves; or whenever the user asks for section-level image coverage. Give every major substantive section a visual entry by default. Adjacent sections may share only when they express one clear visual proposition; a section may use `none` only when an image would add no understanding or would duplicate another asset. This is not a mechanical image for every minor heading, transition, or CTA.
+
+Before proposing an asset count, audit every substantive section. Use this table in the visual plan:
+
+| Section | Role | Visual need | Coverage | Asset role | Rationale |
+|---|---|---|---|---|---|
+| Stable heading or section ID | Conflict, distinction, model, evidence, transition, or another argument role | What a visual helps the reader understand or remember | One coverage state below | Comparison, process, concept, diagnosis, bridge, or another semantic job | Why this coverage is sufficient |
+
+Coverage states have these exact meanings:
+
+- `dedicated`: the section has its own image.
+- `shared`: the section shares an image with an adjacent section that expresses the same visual proposition; name the paired sections and that shared proposition.
+- `existing-aid`: the section already has a table, formula, code block, screenshot, or other non-image reading aid.
+- `none`: no image is planned; explain why an image would not improve understanding or would be repetitive.
+
+Re-audit the rhythm when two or more consecutive important sections are `none` or only `existing-aid`, and flag that long text-only run explicitly in the plan. In Chapter-led, `existing-aid` does not satisfy a user-explicit request for a section image.
+
+The asset count is an output of the coverage audit, not an input to it:
+
+- There is no hard maximum image count.
+- Do not use a fixed images-per-word ratio or another numeric quota in place of editorial judgment.
+- Count the cover separately; it does not replace a body section's visual entry.
+- Tables, formulas, and code blocks are reading aids, but they do not automatically satisfy an explicit request for section images.
+- One asset may cover multiple adjacent sections only when it has one coherent shared visual proposition.
+- Merge or remove assets that merely repeat the same conclusion.
 
 Use this renderer rule:
 
@@ -208,12 +242,15 @@ Read [references/platform-profiles.md](references/platform-profiles.md) before s
 Before generating anything, present:
 
 1. visual thesis, selected `visual_profile`, and separate `publication_theme`;
-2. visual rhythm map;
-3. one brief per asset;
-4. exact image-generation prompt or deterministic diagram specification;
-5. intended heading anchor and placement;
-6. known semantic uncertainties;
-7. proposed filenames and Markdown paths.
+2. selected visual-density mode and the evidence for that choice;
+3. the complete section coverage table;
+4. separate cover and body-image totals derived from the audit;
+5. visual rhythm map, including shared-section propositions, `none` rationales, and any long text-only-run warning;
+6. one brief per asset;
+7. exact image-generation prompt or deterministic diagram specification;
+8. intended heading anchor and placement;
+9. known semantic uncertainties;
+10. proposed filenames and Markdown paths.
 
 For any cover with deterministic text, also present the final title lines, optional supporting points, text-free background path, and deterministic SVG/HTML source. For a WeChat cover that would be text-free, ask for that choice explicitly before approving the plan.
 

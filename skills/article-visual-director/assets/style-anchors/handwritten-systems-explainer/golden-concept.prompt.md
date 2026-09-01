@@ -1,9 +1,9 @@
-# Style 8 Golden Concept Candidate Prompt — Communication Relay
+# Style 8 Golden Concept Prompt — Human-Free Coordination Relay
 
-Use case: WeChat article body concept illustration and permanent Style 8 reference candidate.
-Lesson objective: show how human collaboration adds translation, waiting, context loss, and rework at every handoff, while one person with AI can keep a compact direct feedback loop.
-Composition: one continuous diagonal communication relay across the page, not a split-screen or two equal panels. A complete blue idea begins at left and is passed through four people as speech bubbles and document fragments. Each handoff adds an orange wait clock and loses one fragment. A coral dashed rework path loops backward. The final message is visibly smaller and incomplete. A compact lower-corner vignette shows one person in a direct AI loop reaching a coherent green output.
-Style grammar: warm ivory paper, fine lively handwritten ink, pastel-to-medium marker fills, small instructor reactions, blank annotation swatches, clocks, speech bubbles, dashed paths, irregular underlines, organized density, and generous internal whitespace.
+Use case: permanent Style 8 concept reference for article visual production.
+Lesson objective: show how a multi-stage coordination pipeline adds translation, waiting, context loss, and rework at every handoff, while a compact direct AI loop preserves context and produces a coherent output.
+Composition: one continuous diagonal document-and-message relay across the page, not a split-screen or two equal panels. A complete blue source brief begins at left and passes through four non-human technical nodes: intake document, translation/normalization, waiting queue, and context/review gate. Each handoff adds an orange wait clock and loses one document fragment. A coral dashed rework path loops backward. The final message is visibly smaller and incomplete. A compact lower-corner vignette connects the same source brief directly through an AI transform node to a coherent green output.
+Style grammar: warm ivory paper, fine lively handwritten ink, pastel-to-medium marker fills, compact non-human technical icons, blank annotation swatches, clocks, document fragments, dashed paths, irregular underlines, organized density, and generous internal whitespace.
 Color mapping: blue for context/message, orange for coordination cost, green for coherent output, coral for context loss and rework, lavender/yellow/mint for notes.
 Text plan: exact Chinese labels will be overlaid in article production. Golden candidate may contain concise handwritten reference annotations, but no gibberish, logos, or watermark.
-Avoid: two-column symmetry, rows of corporate cards, generic process flowchart, thick cartoon outline, every-node black tabs, 3D/isometric, gradients, glass, photorealism, and dense UI.
+Avoid: no people, faces, hands, instructors, narrators, mascots, characters, anthropomorphic robots, or face-like AI icons; two-column symmetry, rows of corporate cards, generic process flowchart, thick cartoon outline, every-node black tabs, 3D/isometric, gradients, glass, photorealism, and dense UI.

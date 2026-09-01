@@ -11,10 +11,13 @@
       ],
       "may_vary": [
         "article-specific subject geometry and group arrangement may vary",
-        "a miniature instructor may appear only when it clarifies the lesson",
+        "a generic human symbol may appear only when article semantics explicitly require a human actor and the approved brief explains why non-human primitives lose meaning",
         "the nucleus may use comparison radial or left-to-right composition"
       ],
       "must_not_include": [
+        "no unapproved people faces hands or human characters",
+        "no recurring instructor narrator or mascot",
+        "no inherited character identity face pose silhouette or people count",
         "do not invent unsupported article facts formulas labels or causal relationships",
         "do not turn the cover into generic corporate cards or an atmospheric poster",
         "do not let publication-theme colors replace the registered semantic palette"
@@ -34,18 +37,21 @@
       ],
       "may_vary": [
         "article-specific mechanisms analogies and object placement may vary",
-        "one miniature narrator may point compare question or react when useful",
+        "a generic human symbol may appear only when article semantics explicitly require a human actor and the approved brief explains why non-human primitives lose meaning",
         "the reading path may be diagonal radial two-lane or left-to-right"
       ],
       "must_not_include": [
+        "no unapproved people faces hands or human characters",
+        "no recurring instructor narrator or mascot",
+        "no inherited character identity face pose silhouette or people count",
         "do not invent unsupported article facts numbers mechanisms or relationships",
         "do not use a generic row of corporate process cards",
-        "do not copy the golden communication relay story or its people count"
+        "do not copy the golden communication relay story"
       ],
       "acceptance_checks": [
         "one real technical mechanism is understandable without decorative filler",
         "the result reads as the same handwritten systems visual family",
-        "any narrator supports explanation and never becomes a decorative mascot"
+        "non-human technical subjects carry the explanation unless the approved semantic exception applies"
       ]
     },
     "diagram": {

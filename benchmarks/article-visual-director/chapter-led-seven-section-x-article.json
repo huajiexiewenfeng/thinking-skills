@@ -1,0 +1,26 @@
+{
+  "id": "article-visual-chapter-led-seven-section-001",
+  "kind": "response",
+  "skill": "article-visual-director",
+  "prompt": "你上一轮已经展示完整九种风格菜单，我现在明确确认 Style 8：Handwritten Systems Explainer。长篇 X Article 正文已经定稿，七个主要章节分别是：1. 开篇冲突；2. Repository Context 与 Project Knowledge；3. Project Knowledge Lifecycle；4. Lifecycle Contract；5. Agent Runtime；6. Failure Diagnosis；7. 开放问题。文中有一张表格和一个代码块，但我明确要求每个主要章节都有对应的视觉入口。请先完成逐章覆盖审计并给出生成前方案，不要现在生成图片。",
+  "expected": [
+    "Chapter-led",
+    "Coverage"
+  ],
+  "must_not": [
+    "每千字 1 张",
+    "最多 8 张图"
+  ],
+  "quality": {
+    "max_words": 1400,
+    "asks_at_most_questions": 1
+  },
+  "human_rubric": [
+    "Selects Chapter-led because the user explicitly requested section-level coverage for a long explanatory X Article.",
+    "Provides a coverage audit that accounts for all seven substantive sections before proposing an asset count.",
+    "Counts the cover separately from body-section visual entries.",
+    "Derives the proposed quantity from the coverage audit; the result may be one cover plus seven section entries for this article, but it is not a universal fixed eight-image rule.",
+    "Does not treat the existing table or code block as an automatic substitute for the explicitly requested section images.",
+    "Preserves the visual-plan approval and applicable article style-anchor gates, and does not claim that generation has started."
+  ]
+}

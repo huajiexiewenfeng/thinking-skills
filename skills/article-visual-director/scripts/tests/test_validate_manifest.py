@@ -748,6 +748,57 @@ class ValidateManifestV2Tests(unittest.TestCase):
             ),
         )
 
+    def test_v3_text_hashes_treat_lf_and_crlf_as_equivalent(self) -> None:
+        data = self.make_v2_manifest()
+        self.enable_v3_manifest(data)
+
+        text_contracts = (
+            ("protocol_sha256", self.protocol_path, False),
+            ("golden_set_sha256", self.golden_path, True),
+            (
+                "visual_dna_sha256",
+                self.skill_root / data["style"]["visual_dna_path"],
+                True,
+            ),
+            (
+                "role_contracts_sha256",
+                self.skill_root / data["style"]["role_contracts_path"],
+                True,
+            ),
+            (
+                "reference_matrix_sha256",
+                self.skill_root / data["style"]["reference_matrix_path"],
+                True,
+            ),
+            (
+                "prompt_ir_sha256",
+                self.manifest_path.parent / data["style"]["prompt_ir_path"],
+                True,
+            ),
+            (
+                "compiled_prompt_sha256",
+                self.manifest_path.parent / data["style"]["compiled_prompt_path"],
+                False,
+            ),
+        )
+        for hash_field, path, is_json in text_contracts:
+            if is_json:
+                value = json.loads(path.read_text(encoding="utf-8"))
+                lf_text = json.dumps(value, ensure_ascii=False, indent=2) + "\n"
+            else:
+                lf_text = path.read_text(encoding="utf-8").replace("\r\n", "\n")
+            path.write_bytes(lf_text.replace("\n", "\r\n").encode("utf-8"))
+            data["style"][hash_field] = hashlib.sha256(
+                lf_text.encode("utf-8")
+            ).hexdigest()
+
+        self.assertEqual(
+            [],
+            validate_manifest(
+                data, self.manifest_path, "plan", skill_root=self.skill_root
+            ),
+        )
+
     def test_v3_rejects_unknown_drift_code(self) -> None:
         data = self.make_v2_manifest()
         self.enable_v3_manifest(data)

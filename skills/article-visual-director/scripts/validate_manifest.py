@@ -4,12 +4,13 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import re
 import sys
 from pathlib import Path, PurePosixPath
 from typing import Any
+
+from portable_hash import sha256_matches_file
 
 
 VALID_PLATFORMS = {"csdn", "wechat", "x-article"}
@@ -344,14 +345,6 @@ def _validate_top_level_v1(data: dict[str, Any], errors: list[dict[str, str]]) -
         )
 
 
-def _sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def _resolve_skill_file(
     skill_root: Path,
     value: Any,
@@ -480,7 +473,11 @@ def _validate_style_v2(
         skill_root, style.get("protocol_path"), "style.protocol_path", errors
     )
     if protocol is not None and _is_sha256(style.get("protocol_sha256")):
-        if _sha256_file(protocol) != style["protocol_sha256"].lower():
+        if not sha256_matches_file(
+            protocol,
+            style["protocol_sha256"],
+            normalize_line_endings=True,
+        ):
             contract_drift = True
             _add_error(
                 errors,
@@ -492,7 +489,11 @@ def _validate_style_v2(
         skill_root, style.get("golden_set_path"), "style.golden_set_path", errors
     )
     if golden_path is not None and _is_sha256(style.get("golden_set_sha256")):
-        if _sha256_file(golden_path) != style["golden_set_sha256"].lower():
+        if not sha256_matches_file(
+            golden_path,
+            style["golden_set_sha256"],
+            normalize_line_endings=True,
+        ):
             contract_drift = True
             _add_error(
                 errors,
@@ -579,7 +580,11 @@ def _validate_trace_file(
         )
         return
     expected = style.get(hash_field)
-    if _is_sha256(expected) and _sha256_file(target) != expected.lower():
+    if _is_sha256(expected) and not sha256_matches_file(
+        target,
+        expected,
+        normalize_line_endings=True,
+    ):
         code = (
             "prompt_trace_hash_mismatch"
             if field in {"prompt_ir_path", "compiled_prompt_path"}

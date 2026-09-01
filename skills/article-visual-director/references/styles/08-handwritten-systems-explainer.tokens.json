@@ -1,6 +1,6 @@
 {
   "profile_id": "handwritten-systems-explainer",
-  "protocol_version": 2,
+  "protocol_version": 3,
   "surface": {"background": "#F7F2E7", "alternate": "#EEE8DA", "finish": "warm-technical-whiteboard"},
   "palette": {"ink": "#242321", "orange": "#F2A13A", "blue": "#6CAFE0", "green": "#65BD82", "red": "#DF6657", "lavender": "#D9C8EA", "yellow": "#F4E59C", "pastel_orange": "#F3D39A", "pastel_blue": "#BFDDEE", "pastel_green": "#CFE8C7", "saturation": "controlled-variable"},
   "line": {"primary": "#242321", "width_px": 2, "weight_class": "fine-variable", "behavior": "lively-handwritten-ink"},
