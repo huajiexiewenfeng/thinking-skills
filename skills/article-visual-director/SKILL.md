@@ -82,6 +82,14 @@ Do not collapse these gates. A user asking to "do it all" authorizes the workflo
 
 Every invocation that will generate article images must present this complete menu before producing the visual plan or calling an image-generation capability:
 
+Before rendering the menu, resolve the loaded Skill's absolute root and run its read-only preview resolver:
+
+```powershell
+python <loaded-skill-root>/scripts/list_style_previews.py --skill-root <loaded-skill-root>
+```
+
+This is a narrow pre-selection exception: load the registry and golden cover metadata only. Do not load any profile protocol, token file, Visual DNA, role contract, reference matrix, adapter contract, or non-cover golden asset before selection. Render one verified golden cover immediately after each Style using the resolver record with the matching ordinal. Use a host-native Markdown image whose target is the returned absolute local filesystem path. If that record has `status=unavailable`, render `黄金图暂不可用` below the Style instead. Do not substitute another role, another Style, a candidate, an unverified file, or a newly generated image.
+
 1. **Technical Editorial Minimal（技术编辑简约）** — 适合技术教程和解释型文章，几何清晰、留白克制。
 2. **White-Green Editorial Minimal（白底绿色编辑简约）** — 适合微信公众号 AI 与产业分析，白底绿色、明亮理性。
 3. **Neon Systems（霓虹系统科技）** — 深色底配青绿霓虹，适合 Agent、基础设施和高能科技主题。
@@ -96,9 +104,15 @@ Use this response shape:
 
 ```text
 请选择本次配图风格（回复序号、英文名或中文名均可）：
-[the complete nine-item menu]
+[Style 1 bilingual description]
+![1. English Name 黄金图](<absolute local filesystem path>)
+...
+[Style 9 bilingual description]
+![9. English Name 黄金图](<absolute local filesystem path>)
 推荐：N. English Name（中文名）— one sentence tied to this article.
 ```
+
+For an unavailable record, replace only that Style's image line with `黄金图暂不可用`. Keep the Style in the complete nine-item menu and continue rendering the remaining previews in ordinal order.
 
 After inspecting an available article, mark one item as the recommendation but still show all nine. If the article is not yet available, show the menu without a recommendation. If the user named a style in the invoking message, show all nine, mark that item as their current choice, and ask them to confirm it or select another. Do not infer approval from a past invocation or a previous article.
 

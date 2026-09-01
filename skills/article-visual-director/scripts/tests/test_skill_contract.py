@@ -137,6 +137,21 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("高密度技术信息图", catalog_text)
         self.assertEqual(9, len(EXPECTED_PROFILES))
 
+    def test_style_selection_gate_renders_verified_golden_cover_for_each_option(
+        self,
+    ) -> None:
+        skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn("scripts/list_style_previews.py", skill_text)
+        self.assertIn(
+            "one verified golden cover immediately after each Style",
+            skill_text,
+        )
+        self.assertIn("黄金图暂不可用", skill_text)
+        self.assertIn("absolute local filesystem path", skill_text)
+        self.assertIn("Do not substitute", skill_text)
+        self.assertIn("registry and golden cover metadata only", skill_text)
+
     def test_skill_routes_x_article_as_a_first_class_platform(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         platform_text = (
