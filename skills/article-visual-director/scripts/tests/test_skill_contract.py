@@ -137,6 +137,21 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("高密度技术信息图", catalog_text)
         self.assertEqual(9, len(EXPECTED_PROFILES))
 
+    def test_style_selection_gate_renders_verified_golden_cover_for_each_option(
+        self,
+    ) -> None:
+        skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn("scripts/list_style_previews.py", skill_text)
+        self.assertIn(
+            "one verified golden cover immediately after each Style",
+            skill_text,
+        )
+        self.assertIn("黄金图暂不可用", skill_text)
+        self.assertIn("absolute local filesystem path", skill_text)
+        self.assertIn("Do not substitute", skill_text)
+        self.assertIn("registry and golden cover metadata only", skill_text)
+
     def test_skill_routes_x_article_as_a_first_class_platform(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         platform_text = (
@@ -196,12 +211,142 @@ class SkillContractTests(unittest.TestCase):
             / "styles"
             / "08-handwritten-systems-explainer.md"
         ).read_text(encoding="utf-8")
-        self.assertIn("miniature instructor figures", protocol)
+        self.assertIn("non-human explanatory primitives", protocol)
         self.assertIn("handwritten formulas", protocol)
         self.assertIn("annotation-led technical whiteboard", protocol)
         self.assertIn("black section tabs", protocol)
         self.assertIn("pastel-to-medium", protocol)
         self.assertIn("Architecture diagrams contain no people", protocol)
+
+    def test_style_8_defaults_to_non_human_explanatory_subjects(self) -> None:
+        protocol = (
+            SKILL_ROOT
+            / "references"
+            / "styles"
+            / "08-handwritten-systems-explainer.md"
+        ).read_text(encoding="utf-8").lower()
+        anchor_root = (
+            SKILL_ROOT
+            / "assets"
+            / "style-anchors"
+            / "handwritten-systems-explainer"
+        )
+        roles = json.loads(
+            (anchor_root / "role-contracts.json").read_text(encoding="utf-8")
+        )["roles"]
+        references = json.loads(
+            (anchor_root / "reference-matrix.json").read_text(encoding="utf-8")
+        )["references"]
+        visual_dna = json.loads(
+            (anchor_root / "visual-dna.json").read_text(encoding="utf-8")
+        )
+
+        self.assertIn("human-free by default", protocol)
+        self.assertIn("non-human explanatory primitives", protocol)
+        self.assertIn("article semantics explicitly require a human actor", protocol)
+        self.assertIn("approved asset brief", protocol)
+
+        for role_name in ("cover", "concept"):
+            forbidden = " ".join(roles[role_name]["must_not_include"]).lower()
+            allowed = " ".join(roles[role_name]["may_vary"]).lower()
+            self.assertIn("no unapproved people", forbidden)
+            self.assertIn("no recurring instructor narrator or mascot", forbidden)
+            self.assertIn("no inherited character identity", forbidden)
+            self.assertIn("article semantics explicitly require a human actor", allowed)
+            self.assertIn("approved brief", allowed)
+
+        diagram_forbidden = " ".join(roles["diagram"]["must_not_include"]).lower()
+        self.assertIn("no people", diagram_forbidden)
+
+        protected_character_traits = {
+            "character_identity",
+            "face",
+            "pose",
+            "silhouette",
+            "people_count",
+        }
+        for reference in references:
+            if reference["role"] in {"cover", "concept"}:
+                self.assertTrue(
+                    protected_character_traits.issubset(reference["must_not_copy"])
+                )
+
+        required_traits = " ".join(visual_dna["required_traits"]).lower()
+        forbidden_traits = " ".join(visual_dna["forbidden_traits"]).lower()
+        self.assertIn("non-human explanatory subjects", required_traits)
+        self.assertIn("recurring instructor narrator mascot", forbidden_traits)
+
+        cover_prompt = (anchor_root / "golden-cover.prompt.md").read_text(
+            encoding="utf-8"
+        ).lower()
+        concept_prompt = (anchor_root / "golden-concept.prompt.md").read_text(
+            encoding="utf-8"
+        ).lower()
+        self.assertIn("non-human annotation key", cover_prompt)
+        self.assertIn("document-and-message relay", concept_prompt)
+        for prompt in (cover_prompt, concept_prompt):
+            for forbidden_subject in (
+                "people",
+                "faces",
+                "hands",
+                "instructors",
+                "narrators",
+                "mascots",
+                "characters",
+                "anthropomorphic robots",
+                "face-like ai icons",
+            ):
+                self.assertIn(forbidden_subject, prompt)
+
+    def test_style_8_human_free_golden_migration_is_versioned_and_approved(self) -> None:
+        registry_item = next(
+            item
+            for item in self.load_registry()["profiles"]
+            if item["profile_id"] == "handwritten-systems-explainer"
+        )
+        protocol = (
+            SKILL_ROOT
+            / registry_item["protocol_path"]
+        ).read_text(encoding="utf-8")
+        tokens = json.loads(
+            (SKILL_ROOT / registry_item["tokens_path"]).read_text(encoding="utf-8")
+        )
+        golden = json.loads(
+            (SKILL_ROOT / registry_item["golden_set_path"]).read_text(
+                encoding="utf-8"
+            )
+        )
+        references = json.loads(
+            (SKILL_ROOT / registry_item["reference_matrix_path"]).read_text(
+                encoding="utf-8"
+            )
+        )["references"]
+
+        self.assertEqual(3, registry_item["protocol_version"])
+        self.assertEqual(3, tokens["protocol_version"])
+        self.assertIn("Protocol version: `3`", protocol)
+        self.assertEqual(2, golden["golden_set_version"])
+        self.assertEqual(3, golden["protocol_version"])
+        self.assertEqual("approved", golden["status"])
+        self.assertEqual("approved", golden["user_approval"]["status"])
+        approval_notes = " ".join(golden["user_approval"]["revision_notes"]).lower()
+        self.assertIn("human-free", approval_notes)
+
+        golden_ids = {asset["role"]: asset["id"] for asset in golden["assets"]}
+        self.assertEqual(
+            "handwritten-systems-explainer-cover-v2",
+            golden_ids["cover"],
+        )
+        self.assertEqual(
+            "handwritten-systems-explainer-concept-v2",
+            golden_ids["concept"],
+        )
+        self.assertEqual(
+            "handwritten-systems-explainer-diagram-v1",
+            golden_ids["diagram"],
+        )
+        reference_ids = {item["role"]: item["golden_asset_id"] for item in references}
+        self.assertEqual(golden_ids, reference_ids)
 
     def test_workflow_loads_protocol_and_separates_style_responsibilities(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -212,6 +357,89 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("asset_semantics", skill_text)
         self.assertIn("any imagegen asset", skill_text)
         self.assertNotIn("when 3+ imagegen assets", skill_text)
+
+    def test_visual_density_modes_require_section_coverage_before_asset_count(self) -> None:
+        skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
+
+        self.assertIn("### 3. Choose a coverage-aware visual rhythm", skill_text)
+        self.assertNotIn("### 3. Choose a sparse visual rhythm", skill_text)
+        for mode in ("Sparse", "Balanced", "Chapter-led"):
+            self.assertIn(f"**{mode}**", skill_text)
+
+        self.assertIn("Balanced is the default", skill_text)
+        self.assertIn("Use this selection priority", skill_text)
+        self.assertIn("user-explicit density or coverage requirement", skill_text)
+        self.assertIn(
+            "approved reference, platform convention, or visual direction",
+            skill_text,
+        )
+        self.assertIn(
+            "article type, length, section structure, and comprehension difficulty",
+            skill_text,
+        )
+        self.assertIn("major sections carry distinct conceptual jobs", skill_text)
+
+        self.assertIn(
+            "Before proposing an asset count, audit every substantive section",
+            skill_text,
+        )
+        self.assertIn(
+            "| Section | Role | Visual need | Coverage | Asset role | Rationale |",
+            skill_text,
+        )
+        coverage_states = set(
+            re.findall(
+                r"^- `(?P<state>dedicated|shared|existing-aid|none)`: ",
+                skill_text,
+                flags=re.MULTILINE,
+            )
+        )
+        self.assertEqual(
+            {"dedicated", "shared", "existing-aid", "none"},
+            coverage_states,
+        )
+
+        self.assertIn("There is no hard maximum image count", skill_text)
+        self.assertIn("Do not use a fixed images-per-word ratio", skill_text)
+        self.assertIn("The asset count is an output of the coverage audit", skill_text)
+        self.assertIn(
+            "Tables, formulas, and code blocks are reading aids, but they do not automatically satisfy an explicit request for section images",
+            skill_text,
+        )
+
+    def test_chapter_led_benchmark_covers_seven_sections_without_fixed_total(self) -> None:
+        case_path = (
+            SKILL_ROOT.parents[1]
+            / "benchmarks"
+            / "article-visual-director"
+            / "chapter-led-seven-section-x-article.json"
+        )
+        benchmark = json.loads(case_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(
+            "article-visual-chapter-led-seven-section-001",
+            benchmark["id"],
+        )
+        self.assertEqual("response", benchmark["kind"])
+        self.assertEqual("article-visual-director", benchmark["skill"])
+        self.assertIn("Chapter-led", benchmark["expected"])
+        self.assertIn("Coverage", benchmark["expected"])
+        for section in (
+            "开篇冲突",
+            "Repository Context 与 Project Knowledge",
+            "Project Knowledge Lifecycle",
+            "Lifecycle Contract",
+            "Agent Runtime",
+            "Failure Diagnosis",
+            "开放问题",
+        ):
+            self.assertIn(section, benchmark["prompt"])
+
+        rubric = " ".join(benchmark["human_rubric"])
+        self.assertIn("all seven substantive sections", rubric)
+        self.assertIn("cover separately", rubric)
+        self.assertIn("not a universal fixed eight-image rule", rubric)
+        self.assertIn("coverage audit", rubric)
 
     def test_golden_diagram_style_never_supplies_article_topology(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")

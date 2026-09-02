@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 from typing import Any
+
+from portable_hash import sha256_matches_file
 
 
 VALID_PHASES = {"protocol", "release"}
@@ -62,14 +63,6 @@ def load_json(path: Path) -> dict[str, Any]:
     return data
 
 
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def _add_error(
     errors: list[dict[str, str]], code: str, path: str, message: str
 ) -> None:
@@ -115,8 +108,12 @@ def _validate_hashed_file(
         )
         return
     expected = asset.get(hash_field)
-    actual = sha256_file(target)
-    if not isinstance(expected, str) or expected.lower() != actual:
+    normalize_line_endings = field in {"prompt_path", "editable_source_path"}
+    if not isinstance(expected, str) or not sha256_matches_file(
+        target,
+        expected,
+        normalize_line_endings=normalize_line_endings,
+    ):
         _add_error(
             errors,
             "golden_asset_hash_mismatch",
@@ -459,7 +456,11 @@ def _validate_style_pack_v3(
         target, _ = loaded[field]
         if target is not None and target.is_file():
             expected_hash = golden.get(hash_field)
-            if not isinstance(expected_hash, str) or expected_hash.lower() != sha256_file(target):
+            if not isinstance(expected_hash, str) or not sha256_matches_file(
+                target,
+                expected_hash,
+                normalize_line_endings=True,
+            ):
                 _add_error(
                     errors,
                     "style_pack_hash_mismatch",

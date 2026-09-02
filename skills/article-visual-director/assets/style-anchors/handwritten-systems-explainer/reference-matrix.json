@@ -3,7 +3,7 @@
   "style_pack_version": 3,
   "references": [
     {
-      "golden_asset_id": "handwritten-systems-explainer-cover-v1",
+      "golden_asset_id": "handwritten-systems-explainer-cover-v2",
       "role": "cover",
       "must_preserve": [
         "preserve the wide teaching-whiteboard composition and disciplined outer annotations",
@@ -12,34 +12,44 @@
       ],
       "may_vary": [
         "replace all subject matter with independently confirmed article semantics",
-        "vary comparison groups technical objects and instructor pose when useful"
+        "vary comparison groups and non-human technical objects when useful"
       ],
       "must_not_copy": [
         "labels",
         "numbers",
         "nodes",
         "topology",
-        "example_story"
+        "example_story",
+        "character_identity",
+        "face",
+        "pose",
+        "silhouette",
+        "people_count"
       ]
     },
     {
-      "golden_asset_id": "handwritten-systems-explainer-concept-v1",
+      "golden_asset_id": "handwritten-systems-explainer-concept-v2",
       "role": "concept",
       "must_preserve": [
-        "preserve the causal narrative rhythm compact annotations and restrained reaction figures",
+        "preserve the causal narrative rhythm compact annotations and non-human technical subjects",
         "preserve fine lively ink pastel-to-medium semantic color and underlined takeaway",
         "preserve organized density with generous whitespace inside the teaching sequence"
       ],
       "may_vary": [
         "replace the relay mechanism with the current article mechanism",
-        "vary technical objects narrator presence and path direction as the mechanism requires"
+        "vary technical objects and path direction as the mechanism requires"
       ],
       "must_not_copy": [
         "labels",
         "numbers",
         "nodes",
         "topology",
-        "example_story"
+        "example_story",
+        "character_identity",
+        "face",
+        "pose",
+        "silhouette",
+        "people_count"
       ]
     },
     {

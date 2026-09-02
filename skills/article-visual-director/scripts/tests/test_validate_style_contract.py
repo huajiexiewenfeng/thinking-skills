@@ -84,6 +84,11 @@ class ValidateStyleContractTests(unittest.TestCase):
     def _write_registry(self, data: dict) -> None:
         self.registry_path.write_text(json.dumps(data), encoding="utf-8")
 
+    def _write_crlf_json_with_lf_hash(self, path: Path, data: dict) -> str:
+        lf_text = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+        path.write_bytes(lf_text.replace("\n", "\r\n").encode("utf-8"))
+        return hashlib.sha256(lf_text.encode("utf-8")).hexdigest()
+
     def enable_v3_fixture(
         self, *, approved: bool = False, qualified: bool = False
     ) -> None:
@@ -330,6 +335,35 @@ class ValidateStyleContractTests(unittest.TestCase):
 
         self.assertEqual([], validate_style_contract(self.skill_root, "protocol"))
         self.assertEqual([], validate_style_contract(self.skill_root, "release"))
+
+    def test_v3_contract_hashes_treat_lf_and_crlf_as_equivalent(self) -> None:
+        self.enable_v3_fixture(approved=True, qualified=True)
+        golden_path = self.profile_root / "golden-set.json"
+        golden = json.loads(golden_path.read_text(encoding="utf-8"))
+        contracts = {
+            "visual_dna_sha256": self.profile_root / "visual-dna.json",
+            "role_contracts_sha256": self.profile_root / "role-contracts.json",
+            "reference_matrix_sha256": self.profile_root / "reference-matrix.json",
+        }
+        for hash_field, path in contracts.items():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            golden[hash_field] = self._write_crlf_json_with_lf_hash(path, data)
+        self._write_golden_set(golden)
+
+        self.assertEqual([], validate_style_contract(self.skill_root, "release"))
+
+    def test_v3_contract_hashes_still_reject_content_changes(self) -> None:
+        self.enable_v3_fixture(approved=True, qualified=True)
+        visual_dna_path = self.profile_root / "visual-dna.json"
+        visual_dna = json.loads(visual_dna_path.read_text(encoding="utf-8"))
+        visual_dna["surface"]["background"] = "changed semantic content"
+        visual_dna_path.write_text(json.dumps(visual_dna), encoding="utf-8")
+
+        errors = validate_style_contract(self.skill_root, "release")
+
+        self.assertTrue(
+            any(error["code"] == "style_pack_hash_mismatch" for error in errors)
+        )
 
 
 if __name__ == "__main__":

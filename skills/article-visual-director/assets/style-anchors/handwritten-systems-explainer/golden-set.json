@@ -1,11 +1,11 @@
 {
-  "golden_set_version": 1,
+  "golden_set_version": 2,
   "profile_id": "handwritten-systems-explainer",
-  "protocol_version": 2,
+  "protocol_version": 3,
   "style_pack_version": 3,
-  "visual_dna_sha256": "48b8f28ef43e1cfd01cf483969c66c54985560ba86b8e53c6de298db9687a6f1",
-  "role_contracts_sha256": "1734787b3e5c3bdc6adbcb14e08bf58d7e2628d63f6ebb6a7923a59843f8d0a0",
-  "reference_matrix_sha256": "2e8bea4e99b5593202943507ec50d32fb07b95642f465b2706b84c3742325b56",
+  "visual_dna_sha256": "22178024b0acb3fa3fb06e7020edc86113fdb07b41cc21ee276391056fac2ad0",
+  "role_contracts_sha256": "72d099a482b4baa2193cd8dc9fbe0a3abdd7a8cf9798a85b36842b768fca9e6e",
+  "reference_matrix_sha256": "d55bd017eaba5415a98c1ca183c8c76b0dbffc04ddc53db91786f3730f352e81",
   "qualification": {
     "prompt_compile_status": "passed",
     "cross_topic_probe_status": "passed",
@@ -15,32 +15,33 @@
   "user_approval": {
     "status": "approved",
     "revision_notes": [
-      "User approved the capability-gap cover and communication-relay concept anchors.",
-      "User approved the third anchor as a human-free architecture/process diagram.",
-      "User explicitly replaced the third anchor with the richer two-level architecture image and declared its example content non-authoritative; future AI must derive and validate article-specific topology before rendering.",
-      "User confirmed the cross-topic context-budget result as Style 8 and declared Style 8 complete; remaining golden-production work moves to Styles 1 through 7."
+      "The earlier v1 cover and concept anchors used narrator figures that caused unrelated article images to repeat one character.",
+      "On 2026-09-01 the user approved the human-free v2 capability-gap cover built from technical nodes and an abstract multiplier.",
+      "On 2026-09-01 the user approved the human-free v2 coordination-relay concept built from documents queues clocks loss fragments and an abstract AI transform.",
+      "The user kept the approved human-free v1 architecture/process diagram unchanged and reaffirmed that all golden example content is non-authoritative.",
+      "Style 8 protocol v3 is human-free by default and permits a generic human symbol only when article semantics and the approved brief explicitly require it."
     ]
   },
   "assets": [
     {
-      "id": "handwritten-systems-explainer-cover-v1",
+      "id": "handwritten-systems-explainer-cover-v2",
       "role": "cover",
       "renderer": "imagegen",
       "artifact_path": "golden-cover.png",
-      "artifact_sha256": "0cb0eb428922d292c2f9cf5820226bad37a9cc0521b773459d93788b0642cd27",
+      "artifact_sha256": "3b972d81e12a91f237579670a5318ffeca491fab84e8a67c1a4a76e6661ebaa8",
       "prompt_path": "golden-cover.prompt.md",
-      "prompt_sha256": "d954bbc68cd241c665af8e04037b9efdd9f3c1be47b0c08d68ec3fb6ad9eae59",
-      "reference_role": "wide-composition-and-capability-gap-anchor"
+      "prompt_sha256": "7fbdb24fd48938d628b0ccf19cfacde47453bc318b0c4b4e06dd8127b56a52bb",
+      "reference_role": "human-free-wide-composition-and-capability-gap-anchor"
     },
     {
-      "id": "handwritten-systems-explainer-concept-v1",
+      "id": "handwritten-systems-explainer-concept-v2",
       "role": "concept",
       "renderer": "imagegen",
       "artifact_path": "golden-concept.png",
-      "artifact_sha256": "9449c9f9583d6b65cbcc65d1204f9eeba544d0764e371304af2fc4dc5c4530e0",
+      "artifact_sha256": "da8149f8792b6b3496f49eace8b26b6d5164dc17853d9d7bdf38ebf80bdfc0f3",
       "prompt_path": "golden-concept.prompt.md",
-      "prompt_sha256": "dcca0d8f5cfa5663885cbac84916f725e5da3b08db026adb680c11381417b7c9",
-      "reference_role": "narrative-relay-and-annotation-anchor"
+      "prompt_sha256": "2ebde0f61f333afe5ae99ac7d3f88d78dd7c9e10336f6e79f534a55ee24c6f8c",
+      "reference_role": "human-free-coordination-relay-and-annotation-anchor"
     },
     {
       "id": "handwritten-systems-explainer-diagram-v1",

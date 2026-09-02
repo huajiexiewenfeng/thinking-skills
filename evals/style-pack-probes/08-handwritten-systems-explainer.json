@@ -42,7 +42,7 @@
           "output_count": 1
         },
         "golden_reference_ids": [
-          "handwritten-systems-explainer-cover-v1"
+          "handwritten-systems-explainer-cover-v2"
         ],
         "article_anchor_reference_ids": []
       },
@@ -101,7 +101,7 @@
           "output_count": 1
         },
         "golden_reference_ids": [
-          "handwritten-systems-explainer-concept-v1"
+          "handwritten-systems-explainer-concept-v2"
         ],
         "article_anchor_reference_ids": []
       },
