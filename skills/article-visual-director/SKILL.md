@@ -184,6 +184,12 @@ The asset count is an output of the coverage audit, not an input to it:
 - One asset may cover multiple adjacent sections only when it has one coherent shared visual proposition.
 - Merge or remove assets that merely repeat the same conclusion.
 
+### Default image placement
+
+For each image selected for a new plan, default `anchor.placement` to `after_heading`: **heading -> image -> optional caption -> body prose**. This applies across density modes and language editions; it does not require an image for every heading. Place a cover after the article title and a body image after its corresponding section heading.
+
+If the user specifies another position, preserve that choice. A proposed `section_end` placement must have an explicit rationale in the visual plan and be approved as an exception. Keep already approved placements when reusing an existing plan; move them only when the user requests or approves the change.
+
 Use this renderer rule:
 
 | Need | Renderer | Reason |
@@ -364,6 +370,8 @@ The integration script:
 - is idempotent on repeated execution.
 
 The skill workflow must always use a new illustrated copy. The low-level `--allow-source-overwrite` escape hatch exists for explicit operator-controlled recovery and must never be inferred from a general request to insert images.
+
+After integration, verify each image block's actual position against its approved anchor and placement. For `after_heading`, the image and optional caption must precede the section's first body paragraph. Existing markers or a valid placement value alone do not prove correct placement.
 
 ### 9. Hand off the result
 
