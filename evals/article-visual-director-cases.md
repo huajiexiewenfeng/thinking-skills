@@ -11,6 +11,9 @@ Use these cases to test whether `article-visual-director` behaves like an articl
 | “同一篇文章要发公众号和 CSDN。” | Generate separate platform cover specifications while reusing only body assets that pass both layout profiles. |
 | “这篇文章包含请求时序和三层系统边界。” | Use deterministic diagrams for exact labels and relationships; block facts that the article does not confirm. |
 | “文章已经有两张截图，只补几个真正需要的图。” | Preserve existing images and select only sections where a new visual improves comprehension or pacing. |
+| “这篇技术文章已定稿，请给重要章节配图；图片位置没有特别要求。” | Default each selected image to `after_heading`: heading, image, optional caption, then body prose. The default does not add images to sections that do not need them. |
+| “这一节的图用于读完后的总结，请放在章节末尾。” | Preserve the explicit `section_end` exception and verify it in the rendered output; keep other new placements at the default. |
+| “复用已经批准的配图计划，不改变位置。” | Preserve existing approved placements, including `section_end`; do not silently migrate them to the new default. |
 
 ## Negative Cases
 
@@ -37,6 +40,8 @@ Use these cases to test whether `article-visual-director` behaves like an articl
 - Require style-anchor approval when the plan has at least three raster assets.
 - Preserve the source article and version output paths by default.
 - Save final Prompts, alt text, editable sources, approval states, and validation states.
+- Default new placements to `after_heading`; explain and obtain plan approval for proposed exceptions.
+- Verify the actual image/caption order relative to the heading and first body paragraph, not only marker existence.
 - Treat unconfirmed technical details as blocked facts, not creative freedom.
 
 ## Failure Checks
@@ -45,6 +50,7 @@ Use these cases to test whether `article-visual-director` behaves like an articl
 - Presents inferred architecture as confirmed fact.
 - Uses raster image generation for dense exact technical labels.
 - Repeats the same decorative composition after every heading.
+- Mixes heading-after and section-end placement in a new plan without explicit user direction or approved exception rationale.
 - Claims safe insertion without source hashing, anchor validation, stable markers, or file checks.
 - Overwrites the source Markdown without explicit authorization.
 - Generates from a Style Pack v3 prompt that is missing `REFERENCE CONTRACT` or any other required Prompt IR block.

@@ -193,7 +193,7 @@ At integration, `status` is `passed`, `copy_ledger_status` is `frozen`, and `vis
 
 A deterministic `diagram_spec` includes `nodes`, `edges`, and `blocked_unconfirmed_edges` arrays. Preserve editable SVG, Mermaid, Graphviz, HTML, or equivalent source under `visual-sources/`.
 
-`anchor.placement` is `after_heading` or `section_end`. The latter inserts before the next heading of the same or higher level, or at end of file.
+`anchor.placement` is `after_heading` or `section_end`. New plans default to `after_heading`: heading -> image -> optional caption -> body prose. Write this value explicitly; an omitted placement remains invalid. Use `section_end` for a user-specified position or an explicitly justified and approved plan exception; it inserts before the next heading of the same or higher level, or at end of file. Do not silently migrate placements in already approved manifests.
 
 ### Cover Title Object
 
@@ -314,7 +314,7 @@ python -c "from pathlib import Path; import sys; sys.path.insert(0, 'skills/arti
       "anchor": {
         "heading": "## Runtime Loop",
         "occurrence": 1,
-        "placement": "section_end",
+        "placement": "after_heading",
         "context_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
       },
       "prompt": "A controlled runtime loop shown as one luminous signal circulating inside explicit modular boundaries; dark technical systems aesthetic; navy, cyan, and acid-green; generous negative space; 16:9; no text, logo, watermark, or HUD clutter",
@@ -389,7 +389,7 @@ The hashes below illustrate the required 64-character shape; a real plan stores 
       "anchor": {
         "heading": "## AI 放大的不只是效率",
         "occurrence": 1,
-        "placement": "section_end",
+        "placement": "after_heading",
         "context_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
       },
       "prompt": "Text-free handwritten systems explainer showing two starting capabilities amplified by the same AI multiplier, bold imperfect black ink, warm paper, saturated orange blue and green semantic roles, direct arrows, no pastel corporate cards or 3D",
@@ -426,7 +426,7 @@ The hashes below illustrate the required 64-character shape; a real plan stores 
       "anchor": {
         "heading": "## 为什么越来越多人更愿意和 AI 交流",
         "occurrence": 1,
-        "placement": "section_end",
+        "placement": "after_heading",
         "context_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
       },
       "prompt": null,

@@ -57,6 +57,22 @@ When another domain may own the request, return routing control to `thinking-rou
 
 For a standalone technical diagram unrelated to an article, use the environment's dedicated technical-visual or diagram capability instead.
 
+## Task continuity and requested scope
+
+For maintenance of this Skill, inspect and repair its instructions or scripts; do not start image production or show the style menu.
+
+Within the same ongoing article task, preserve explicit style selection, plan approval, and anchor approval across follow-up messages. A short reply such as “4”, “可以”, or “非常好” applies to the immediately preceding choice or review when unambiguous. Do not restart the menu or ask again for an unchanged approved step. A new article or a changed, unreviewed plan still needs its applicable gates.
+
+When the user requests only a cover, keep the plan to one cover. Read enough of the article to establish accurate semantics, but do not require a body-illustration density audit or propose additional assets. Preserve style, plan, and anchor review gates. The finished cover itself is the article anchor; approval does not require generating another image. Deliver the cover, editable source, prompt, and validation record. Markdown integration is outside this scope unless requested; do not describe it as unfinished work. Do not invent manifest enum values or claim integration passed when it was not run. The full article workflow below applies when body illustrations or integration are requested.
+
+## Portable command execution
+
+Resolve the loaded Skill root and an actual Python interpreter before running scripts. Prefer the host's workspace-dependency discovery capability when available. Verify the returned executable with `--version`; a Windows `python` alias returning a nonzero exit code or no version is not a working runtime. Do not hardcode another machine's runtime path or install a runtime without first checking available interpreters.
+
+Use the resolved executable with `-B -X utf8` for every command below. In PowerShell use `& $visualPython -B -X utf8 <script> <arguments>`, where `$visualPython` is the verified absolute executable path. Set the command's output decoding to UTF-8 where supported. Write Chinese prompts and structured requests directly to UTF-8 files; avoid embedding article wording, typographic quotes, or multiline JSON in shell command strings. Do not change global console or system encoding.
+
+After style selection, use `scripts/validate_style_contract.py --phase release --profile <selected-profile> --skill-root <loaded-skill-root>` as the contract check. Its `portable_hash.py` helper already handles permitted text LF/CRLF differences. Do not replace it with raw-hash-only comparisons, create a normalized copy of the Skill to bypass it, or rewrite expected hashes to make validation pass. Binary assets and source-integrity checks retain their strict hashing rules. If the validator still reports content drift, report the specific files and stop the affected generation step.
+
 ## Non-Negotiable State Machine
 
 ```text
@@ -80,7 +96,7 @@ Do not collapse these gates. A user asking to "do it all" authorizes the workflo
 
 ## Mandatory Style Selection Gate
 
-Every invocation that will generate article images must present this complete menu before producing the visual plan or calling an image-generation capability:
+Every new article-image task must present this complete menu before producing the visual plan or calling an image-generation capability:
 
 Before rendering the menu, resolve the loaded Skill's absolute root and run its read-only preview resolver:
 
@@ -183,6 +199,12 @@ The asset count is an output of the coverage audit, not an input to it:
 - Tables, formulas, and code blocks are reading aids, but they do not automatically satisfy an explicit request for section images.
 - One asset may cover multiple adjacent sections only when it has one coherent shared visual proposition.
 - Merge or remove assets that merely repeat the same conclusion.
+
+### Default image placement
+
+For each image selected for a new plan, default `anchor.placement` to `after_heading`: **heading -> image -> optional caption -> body prose**. This applies across density modes and language editions; it does not require an image for every heading. Place a cover after the article title and a body image after its corresponding section heading.
+
+If the user specifies another position, preserve that choice. A proposed `section_end` placement must have an explicit rationale in the visual plan and be approved as an exception. Keep already approved placements when reusing an existing plan; move them only when the user requests or approves the change.
 
 Use this renderer rule:
 
@@ -314,6 +336,8 @@ When an article anchor is required:
 
 Every remaining imagegen asset must receive the approved golden cover/concept/diagram references that are relevant to its semantic job plus the article anchor. The prompt states which visible properties are invariant: surface, palette roles, stroke/material behavior, geometry, depth, spacing, and forbidden traits. It must also state that any visible example content in a golden reference is non-authoritative and must not be copied. Do not rely on a profile name alone.
 
+Read the actual generated pixel dimensions before preparing an export. A requested aspect ratio is not proof of the returned ratio. Preserve proportions when fitting the target canvas: use a reviewed crop or padding, or use the image tool for outpainting where needed. Never force a mismatched background to the target dimensions with non-uniform scaling or SVG `preserveAspectRatio="none"`. Recheck title and subject survival in the wide and central-square crops after fitting. Prefer exporting the final PNG from the editable typography source so the delivered source and raster agree.
+
 For deterministic assets, load the matching token JSON and use an available SVG, HTML, Mermaid, Graphviz, or visualization renderer. Map semantic roles to tokens rather than sampling colors by eye. Export a platform-compatible PNG when SVG support is uncertain, preserve the editable source, and visually compare the result with both the permanent diagram anchor and the approved article anchor.
 
 ### 7. Validate every artifact
@@ -339,6 +363,8 @@ Record the result in Manifest v2 `style_validation`: `status`, cited golden IDs,
 
 ### 8. Integrate non-destructively
 
+Skip this step for a cover-only delivery unless the user also requested insertion.
+
 Run the validator before applying the plan:
 
 ```powershell
@@ -363,13 +389,17 @@ The integration script:
 - defaults to `{source-stem}-illustrated.md`;
 - is idempotent on repeated execution.
 
-The skill workflow must always use a new illustrated copy. The low-level `--allow-source-overwrite` escape hatch exists for explicit operator-controlled recovery and must never be inferred from a general request to insert images.
+When Markdown integration is requested, the skill workflow must always use a new illustrated copy. The low-level `--allow-source-overwrite` escape hatch exists for explicit operator-controlled recovery and must never be inferred from a general request to insert images.
+
+After integration, verify each image block's actual position against its approved anchor and placement. For `after_heading`, the image and optional caption must precede the section's first body paragraph. Existing markers or a valid placement value alone do not prove correct placement.
 
 ### 9. Hand off the result
 
+For cover-only delivery, inspect the actual exported cover and record the applicable checks from step 7 before handing it off. Do not mark visual checks passed merely because rendering exited successfully.
+
 Report:
 
-- illustrated Markdown path;
+- illustrated Markdown path when integration was requested; otherwise the final cover path;
 - manifest path;
 - generated and deterministic source asset paths;
 - which assets passed validation;
