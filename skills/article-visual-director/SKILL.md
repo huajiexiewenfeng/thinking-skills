@@ -114,7 +114,7 @@ This is a narrow pre-selection exception: load the registry and golden cover met
 6. **Cinematic Conceptual（电影感概念视觉）** — 单一强隐喻配合克制的戏剧光影，适合战略与哲学议题。
 7. **Soft Technical Sketch（柔和技术手绘）** — 纸张、墨线和淡彩质感，适合教程、入门内容和亲和解释。
 8. **Handwritten Systems Explainer（手写系统解释图）** — 米白纸面、手绘框线和少量高亮色，适合解释 Agent、Runtime、检索边界与前后对比。
-9. **Dense Technical Infographic（高密度技术信息图）** — 白底、深海军蓝标题、扁平矢量图标、高密度分区与底部总结栏，适合框架原理、中间件、网络协议、并发模型和系统架构教程。
+9. **Technical Explainer Infographic（技术原理图解）** — 白底蓝绿、清晰文字与技术图标，按内容采用分层机制、多列架构或阶段流程；允许克制的局部图标质感，适合技术原理、系统架构和工程交付说明。
 
 Use this response shape:
 

@@ -3,43 +3,64 @@
   "style_pack_version": 3,
   "references": [
     {
-      "golden_asset_id": "dense-technical-infographic-cover-v1",
+      "golden_asset_id": "dense-technical-infographic-cover-v2",
       "role": "cover",
       "must_preserve": [
-        "preserve the fully opaque pure white condensed technical-poster surface and oversized deep navy title hierarchy",
-        "preserve the flat vector-like central mechanism numbered zones controlled semantic palette and bottom takeaway rail"
+        "readable title-body balance, consistent panel spacing, and restrained local icon relief",
+        "white surface, quiet gaps, dark text, blue-green organizing accents"
       ],
       "may_vary": [
-        "replace the complete subject and copy with independently confirmed article semantics",
-        "vary central mechanism zone count and technical icons within the cover role contract"
+        "replace all example content with verified article-specific text and relationships",
+        "choose panel number layout icons colors and optional summary by content; reference topology is not a template"
       ],
-      "must_not_copy": ["labels", "numbers", "nodes", "topology", "icons", "example_story"]
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "specific_icon_arrangements",
+        "example_story"
+      ]
     },
     {
-      "golden_asset_id": "dense-technical-infographic-concept-v1",
+      "golden_asset_id": "dense-technical-infographic-concept-v2",
       "role": "concept",
       "must_preserve": [
-        "preserve the high-density single-lesson teaching rhythm and clean technical sans-serif hierarchy",
-        "preserve flat vector-like explanatory regions semantic color discipline and explicit bottom conclusion rail"
+        "clear region hierarchy and icon-label-explanation rhythm with crisp technical linework",
+        "fine borders, related color families, readable spacing; emphasized detail remains subordinate to the overall explanation"
       ],
       "may_vary": [
-        "replace the complete mechanism comparison and copy with independently confirmed article semantics",
-        "vary between mechanism-poster and layered-comparison without copying the reference layout"
+        "replace all example content with verified article-specific text and relationships",
+        "choose panel number layout icons colors and optional summary by content; reference topology is not a template"
       ],
-      "must_not_copy": ["labels", "numbers", "nodes", "topology", "icons", "example_story"]
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "specific_icon_arrangements",
+        "example_story"
+      ]
     },
     {
-      "golden_asset_id": "dense-technical-infographic-diagram-v1",
+      "golden_asset_id": "dense-technical-infographic-diagram-v2",
       "role": "diagram",
       "must_preserve": [
-        "preserve strict front-facing flat diagram geometry crisp arrows rounded regions legend and bottom invariant rail",
-        "preserve controlled blue green orange purple and red semantic roles only where the frozen graph supports them"
+        "distinguishable main reading order and supporting detail through typography spacing and line weight",
+        "white surface, light tints, blue-green category distinction and compact readable annotations"
       ],
       "may_vary": [
-        "replace the complete graph with the validated article-specific frozen graph",
-        "vary node count group size and path placement only as the frozen graph requires"
+        "replace all example content with verified article-specific text and relationships",
+        "choose panel number layout icons colors and optional summary by content; reference topology is not a template"
       ],
-      "must_not_copy": ["labels", "numbers", "nodes", "topology", "icons", "example_story"]
+      "must_not_copy": [
+        "labels",
+        "numbers",
+        "nodes",
+        "topology",
+        "specific_icon_arrangements",
+        "example_story"
+      ]
     }
   ]
 }

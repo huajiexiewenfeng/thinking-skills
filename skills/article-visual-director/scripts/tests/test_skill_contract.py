@@ -31,7 +31,7 @@ EXPECTED_PROFILES = [
         "Handwritten Systems Explainer",
         "手写系统解释图",
     ),
-    (9, "dense-technical-infographic", "Dense Technical Infographic", "高密度技术信息图"),
+    (9, "dense-technical-infographic", "Technical Explainer Infographic", "技术原理图解"),
 ]
 REQUIRED_PROTOCOL_HEADINGS = [
     "Identity",
@@ -133,8 +133,8 @@ class SkillContractTests(unittest.TestCase):
         )
         self.assertEqual(registry_profiles, catalog_profiles)
         self.assertIn("Handwritten Systems Explainer", catalog_profiles)
-        self.assertIn("9. **Dense Technical Infographic（高密度技术信息图）**", skill_text)
-        self.assertIn("高密度技术信息图", catalog_text)
+        self.assertIn("9. **Technical Explainer Infographic（技术原理图解）**", skill_text)
+        self.assertIn("技术原理图解", catalog_text)
         self.assertEqual(9, len(EXPECTED_PROFILES))
 
     def test_style_selection_gate_renders_verified_golden_cover_for_each_option(
@@ -566,7 +566,7 @@ class SkillContractTests(unittest.TestCase):
         for reference in matrix["references"]:
             self.assertIn("topology", reference["must_not_copy"])
 
-    def test_style_9_v3_preserves_dense_technical_infographic_identity(self) -> None:
+    def test_style_9_v3_preserves_content_led_technical_explainer_identity(self) -> None:
         root = (
             SKILL_ROOT
             / "assets"
@@ -582,16 +582,16 @@ class SkillContractTests(unittest.TestCase):
         )
         combined = json.dumps([visual, roles, references], ensure_ascii=False)
         for phrase in (
-            "fully opaque pure white",
-            "oversized deep navy title",
-            "flat vector-like",
-            "eighty-five to ninety-two percent",
-            "bottom takeaway rail",
+            "fully opaque white",
+            "content-led",
+            "restrained local",
+            "optional-by-content",
+            "per-diagram-consistent",
             "native generated copy",
-            "mechanism-poster",
-            "architecture-flow",
-            "layered-comparison",
-            "no people",
+            "layered-mechanism",
+            "multi-column-architecture",
+            "staged-overview",
+            "no invented text",
             "Style 4",
             "Style 8",
         ):

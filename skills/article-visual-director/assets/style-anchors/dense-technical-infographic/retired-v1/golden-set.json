@@ -1,0 +1,55 @@
+{
+  "golden_set_version": 1,
+  "profile_id": "dense-technical-infographic",
+  "protocol_version": 2,
+  "style_pack_version": 3,
+  "visual_dna_sha256": "0d1b474a5e6bcfeca86bd194fd4c6d54b5bb2fddab9459ee0dbf03de0e278ab5",
+  "role_contracts_sha256": "71699d0312216ffcf8c31c6b258bbd59795be431da3bb92a25a66816fe2e5941",
+  "reference_matrix_sha256": "21293698fc040b0e8cd535bb6245252dd374ca04e871ddd0e99e4b9f945440ce",
+  "qualification": {
+    "prompt_compile_status": "passed",
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed"
+  },
+  "status": "approved",
+  "user_approval": {
+    "status": "approved",
+    "revision_notes": [
+      "Style 9 cover golden approved when the user replied '继续': oversized deep-navy Chinese title, four numbered responsibility zones, central request-processing core, full-width four-capability rail, exact frozen native copy, fully opaque 16:9 canvas, and no unsupported vendors, metrics, or extra systems. Example content, labels, icons, and topology remain non-authoritative.",
+      "Style 9 concept golden approved when the user replied '可以': distinct upper/lower layered comparison, orange uncontrolled accumulation path, royal-blue controlled path, direct engineering-green feedback return, three supported benefit cells, exact frozen native copy, fully opaque 16:9 canvas, and no extra prose or intermediate topology. Example content, labels, icons, topology, and story remain non-authoritative.",
+      "Style 9 diagram golden approved when the user replied '可以': exactly eight frozen lifecycle nodes and eight directed edges, five-edge royal-blue primary route, orange execution-to-retry edge, dashed royal-blue retry-to-queue return, red retry-to-failure edge, green result archive, exact native copy, numbered groups, compact legend, and four invariant cells. Example content, labels, icons, topology, and story remain non-authoritative."
+    ]
+  },
+  "assets": [
+    {
+      "id": "dense-technical-infographic-cover-v1",
+      "role": "cover",
+      "renderer": "imagegen",
+      "reference_role": "Anchors pure-white dense technical poster composition, oversized deep-navy Chinese title, royal-blue main structure, numbered responsibility zones, one central mechanism, a full-width takeaway rail, restrained green-orange-purple-red semantic accents, exact validated native copy, high intentional occupancy, and flat front-facing iconography only; example content, labels, icons, topology, and story are non-authoritative.",
+      "artifact_path": "golden-cover.png",
+      "artifact_sha256": "127d0560842f6d1d929555d49fe2bdbc5105e2d039bb1a54c76f6d1281e3badd",
+      "prompt_path": "golden-cover.prompt.md",
+      "prompt_sha256": "10c33634488a64a615f36e61358b7560244c39676340b3097ab9193b7d784b18"
+    },
+    {
+      "id": "dense-technical-infographic-concept-v1",
+      "role": "concept",
+      "renderer": "imagegen",
+      "reference_role": "Anchors dense upper/lower comparison grammar, oversized deep-navy Chinese title, orange uncontrolled progression, royal-blue controlled flow, engineering-green direct feedback return, right-side benefit stack, exact validated native copy, high intentional occupancy, and flat front-facing iconography only; example content, labels, icons, topology, and story are non-authoritative.",
+      "artifact_path": "golden-concept.png",
+      "artifact_sha256": "bf4d162eacabf089d143b525580a5d759688c3db9b3833154952b0a0d9f46432",
+      "prompt_path": "golden-concept.prompt.md",
+      "prompt_sha256": "7fcd712ffeb543a6ff30bf2e75e8f84a101e3bfab7801f7e2c0fbc932639cd57"
+    },
+    {
+      "id": "dense-technical-infographic-diagram-v1",
+      "role": "diagram",
+      "renderer": "imagegen",
+      "reference_role": "Anchors strict frozen-graph presentation, oversized deep-navy Chinese title, numbered lifecycle groups, flat front-facing technical icons, royal-blue primary path, orange exception entry, dashed royal-blue return, green success terminal, red failure terminal, compact line legend, exact validated native copy, and bottom invariant rail only; example content, labels, icons, topology, and story are non-authoritative.",
+      "artifact_path": "golden-diagram.png",
+      "artifact_sha256": "0fba507537591049949525e8aaad34d8f58a1f12ba2dc82a8757b763a22dba38",
+      "prompt_path": "golden-diagram.prompt.md",
+      "prompt_sha256": "1c00c90a4b79b9df375ad95451f97fd18f4a78c146d816e5eaa5c26071fdccfd"
+    }
+  ]
+}

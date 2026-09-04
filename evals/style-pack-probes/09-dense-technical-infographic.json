@@ -2,7 +2,7 @@
   "probe_suite_version": 1,
   "profile_id": "dense-technical-infographic",
   "style_pack_version": 3,
-  "purpose": "Cross-topic stability and discrimination from Styles 1, 4, 5, and 8 without copying golden example content or topology.",
+  "purpose": "Verify content-led Style 9 prompts on three non-reference topics; compilation is not evidence of generated-image visual quality.",
   "probes": [
     {
       "id": "style9-cover-database-read-write-separation",
@@ -26,9 +26,9 @@
           ]
         },
         "composition": {
-          "family": "mechanism-poster",
-          "structure": "pure-white dense technical cover with an oversized navy title, a central primary-role mechanism, four numbered responsibility zones, and one bottom three-invariant rail",
-          "hierarchy": "royal-blue read and write routes organize the central mechanism; engineering green marks supported read service; orange marks bounded failover attention",
+          "family": "staged-overview",
+          "structure": "white-background overview with readable dark title and distinct write primary read-replica regions; arrange supporting failover context separately",
+          "hierarchy": "blue write category and green read category; green denotes read responsibility, not a success guarantee; bounded failover caution in orange",
           "human_elements": "none"
         },
         "text_policy": {
@@ -54,18 +54,18 @@
         "platform": {
           "name": "wechat",
           "aspect_ratio": "16:9",
-          "occupancy": "eighty-five to ninety-two percent intentional occupancy",
-          "crop_rules": "preserve title central role all four zones and the complete invariant rail",
+          "occupancy": "content-led spacing; readable labels with no fixed fill quota",
+          "crop_rules": "preserve all approved copy and semantic relationships within the requested export; do not shrink labels to fill a crop",
           "output_count": 1
         },
         "golden_reference_ids": [
-          "dense-technical-infographic-cover-v1"
+          "dense-technical-infographic-cover-v2"
         ],
         "article_anchor_reference_ids": []
       },
       "must_preserve": [
-        "dense front-facing pure-white technical poster and oversized navy Chinese headline",
-        "numbered zones, controlled semantic colors, compact mechanism core, and exact native copy"
+        "opaque white front-facing technical explanation with readable title labels and supporting notes",
+        "content-led spacing, consistent per-image blue-green categories or declared states, exact copy and graph"
       ],
       "must_not_copy": [
         "labels",
@@ -77,7 +77,7 @@
       ],
       "acceptance_checks": [
         "Read and write responsibilities are distinct without promising perfect consistency.",
-        "The result remains a dense Style 9 mechanism poster rather than a sparse editorial cover or spatial device scene."
+        "The result remains a content-led Style 9 technical explanation rather than a sparse editorial cover or spatial device scene."
       ]
     },
     {
@@ -102,9 +102,9 @@
           ]
         },
         "composition": {
-          "family": "layered-comparison",
-          "structure": "pure-white dense teaching poster with an oversized navy title, an upper royal-blue first-request route, a lower green repeated-request reuse route, and one orange caution cell",
-          "hierarchy": "the shared idempotency-key record is the central comparison anchor; the two routes remain distinct and terminate in one existing-result state",
+          "family": "layered-mechanism",
+          "structure": "two quiet horizontal request lanes with one shared key record and a small caution note; no forced numbered zones or bottom rail",
+          "hierarchy": "first request and reuse distinguishable by labels and blue-green grouping, main relation ahead of supporting explanation",
           "human_elements": "none"
         },
         "text_policy": {
@@ -130,18 +130,18 @@
         "platform": {
           "name": "wechat",
           "aspect_ratio": "16:9",
-          "occupancy": "eighty-five to ninety-two percent intentional occupancy",
-          "crop_rules": "preserve title both request routes the shared key record result state and caution cell",
+          "occupancy": "content-led spacing; readable labels with no fixed fill quota",
+          "crop_rules": "preserve all approved copy and semantic relationships within the requested export; do not shrink labels to fill a crop",
           "output_count": 1
         },
         "golden_reference_ids": [
-          "dense-technical-infographic-concept-v1"
+          "dense-technical-infographic-concept-v2"
         ],
         "article_anchor_reference_ids": []
       },
       "must_preserve": [
-        "dense front-facing layered comparison on pure white with oversized navy Chinese headline",
-        "royal-blue primary logic, engineering-green reuse state, orange caution, and exact native copy"
+        "opaque white front-facing technical explanation with readable title labels and supporting notes",
+        "content-led spacing, consistent per-image blue-green categories or declared states, exact copy and graph"
       ],
       "must_not_copy": [
         "labels",
@@ -239,9 +239,9 @@
           }
         },
         "composition": {
-          "family": "architecture-flow",
-          "structure": "pure-white strict seven-node architecture with one royal-blue primary row, one orange-to-red dead-letter branch, one dashed royal-blue replay return, compact legend, and four-cell invariant rail",
-          "hierarchy": "oversized navy Chinese title, numbered groups, exact arrowheads, green audit terminal, red dead-letter state, and orange replay-approval gate",
+          "family": "multi-column-architecture",
+          "structure": "seven frozen nodes arranged by responsibility with subordinate dead-letter and replay areas; small legible labels and a compact line legend where needed",
+          "hierarchy": "direct primary paths and lighter return; approved invariants appear as nearby notes rather than a compulsory bottom rail",
           "human_elements": "none"
         },
         "text_policy": {
@@ -272,18 +272,18 @@
         "platform": {
           "name": "wechat",
           "aspect_ratio": "16:9",
-          "occupancy": "eighty-five to ninety-two percent intentional occupancy",
-          "crop_rules": "preserve all seven nodes all seven arrowheads complete replay return legend and invariant rail",
+          "occupancy": "content-led spacing; readable labels with no fixed fill quota",
+          "crop_rules": "preserve all approved copy and semantic relationships within the requested export; do not shrink labels to fill a crop",
           "output_count": 1
         },
         "golden_reference_ids": [
-          "dense-technical-infographic-diagram-v1"
+          "dense-technical-infographic-diagram-v2"
         ],
         "article_anchor_reference_ids": []
       },
       "must_preserve": [
-        "strict front-facing dense technical architecture, oversized navy title, numbered grouping, compact legend, and bottom invariant rail",
-        "royal-blue primary route, orange exception gate, red dead-letter state, green audit state, dashed return, and exact native copy"
+        "opaque white front-facing technical explanation with readable title labels and supporting notes",
+        "content-led spacing, consistent per-image blue-green categories or declared states, exact copy and graph"
       ],
       "must_not_copy": [
         "labels",
@@ -307,10 +307,10 @@
       "handwritten-systems-explainer"
     ],
     "style_9_expected": [
-      "dense front-facing technical poster on a pure-white canvas",
-      "oversized deep-navy Chinese headline and compact readable native copy",
-      "numbered semantic zones, flat vector-like technical icons, legend, and takeaway or invariant rail",
-      "royal-blue main structure with restrained green orange purple and red semantic states"
+      "front-facing technical explanation on opaque white with content-led grouping and quiet margins",
+      "readable dark title and concise Chinese-English technical copy",
+      "technical line icons may include restrained local relief; no global scene perspective",
+      "blue-green regions represent explicitly named categories or states; numbering and summary rails are optional"
     ],
     "neighbor_expected": [
       "Style 1 uses sparse ink-blue editorial minimalism and far less information density",

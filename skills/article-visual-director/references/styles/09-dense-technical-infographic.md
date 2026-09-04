@@ -1,61 +1,67 @@
-# Dense Technical Infographic
+# Technical Explainer Infographic
 
 ## Identity
 
-- `profile_id`: `dense-technical-infographic`
-- Protocol version: `2`
-- 中文名: 高密度技术信息图
-- Promise: turn verified technical content into a high-density, text-bearing engineering teaching poster with exact post-generation validation.
+- `profile_id`: `dense-technical-infographic` (stable legacy ID)
+- Protocol version: `3`
+- 中文名: 技术原理图解
+- Former display name: Dense Technical Infographic / 高密度技术信息图.
+- Promise: explain article-specific engineering content through readable text, meaningful technical icons, and content-led white-background layouts.
 
 ## Use When
 
-Use for framework internals, middleware, network protocols, concurrency models, performance mechanisms, architecture tutorials, lifecycle explanations, and other verified topics that benefit from dense labels, numbered regions, directed arrows, and a visible takeaway rail.
+Use for technical principles, framework internals, system architectures, engineering delivery, comparisons, and processing pipelines whose copy and relationships can be verified.
 
 ## Do Not Use When
 
-Do not use for atmospheric essays, sparse editorial metaphors, product-launch scenes, warm handwritten teaching, isometric infrastructure worlds, or technical content whose copy and semantic relationships cannot be frozen before generation.
+Do not use for atmospheric essays, decorative product scenes, or content whose technical claims and relationships remain unresolved.
 
 ## Mode Boundary
 
-Style 9 is a flat, front-facing, text-bearing engineering poster. It is denser and more explicitly instructional than Style 1, avoids Style 4's polished glass-acrylic product depth, avoids Style 5's isometric spatial world, and uses crisp sans-serif vector-like geometry instead of Style 8's warm handwritten paper language.
+A front-facing technical explanation, not a fixed poster template. Keep a white canvas, blue-green organizing colors, dark readable titles, fine boundaries, and coherent icon treatment. Local icon relief distinguishes a server or package without turning the whole composition into Style 4's glass product scene or Style 5's isometric world. Style 8's paper and handwriting are not part of this profile.
 
 ## Required Visual Traits
 
-- Fully opaque pure white or slightly cool-white canvas with pale-blue or white rounded information regions.
-- One oversized deep-navy title, one central mechanism or architecture, three to six numbered explanatory zones, and one full-width bottom takeaway rail.
-- Flat vector-like technical icons, crisp two-pixel primary arrows, one-pixel separators, restrained dashed boundaries, compact copy blocks, and direct reading order.
-- Intentional occupancy between 85% and 92%, while preserving clear hierarchy and article-width legibility.
-- Deep navy for the highest hierarchy, royal blue for normal structure, engineering green for confirmed success, orange for conclusions or attention, purple for supported configuration, red for supported failure, and cool gray for secondary copy.
-- Native generated copy appears only through the profile-scoped frozen-ledger workflow and must pass exact post-generation validation.
+- Fully opaque white or cool-white background; lightly tinted panels and quiet margins.
+- Readable Chinese/English sans-serif title, section heading, label, and short explanation hierarchy. The title can use blue or green emphasis; it does not crowd the body.
+- Blue and green organize regions or paths. Define their meaning per image and keep it consistent; green does not automatically mean success. Gray may identify a past or secondary workflow. Orange/purple/red are optional accents for supported distinctions or states.
+- Consistent line icons or simple technical pictograms. Restrained local gradients, soft shadows, and shallow relief may clarify an object; detailed environmental rendering is out of scope.
+- Content determines grouping, panel width, spacing, and information density. Use legibility at article width as the constraint, not a fixed occupancy percentage.
+- Every visible string follows the frozen copy ledger and exact post-generation review.
 
 ## Allowed Variation
 
-Use `mechanism-poster` for one central mechanism with three to five surrounding explanation zones, `architecture-flow` for exact sources, processing, destinations, boundaries, and directed paths, or `layered-comparison` for two lanes, two stacked systems, or before/after regions. These are composition families, never reusable topology. Cover density is approximately 30% lower than body-infographic density.
+Three reference families guide composition, without fixing topology:
+- Layered mechanism explanation: stacked source/mechanism/implication regions; enlarge a meaningful local subsystem.
+- Multi-column architecture: sources, processing, generation, or output regions with subordinate storage/configuration/observability areas only when supported.
+- Staged overview or comparison: a short historical lane and a prominent present-day process, or a single stage flow.
+
+Select the family closest to the article's semantic job. Numbering is useful for steps or named sections; omit it when it adds no meaning. A conclusion rail, legend, or subtitle is optional and must contain approved content. Do not add a central hub simply to satisfy a composition template.
 
 ## Forbidden Traits
 
-No people, mascots, narrators, hands, decorative AI brains, vendor branding, fabricated metrics, glass, acrylic, chrome, 3D, isometric depth, handwritten paper, watercolor, comic styling, cyberpunk, HUD walls, code rain, holograms, meaningless dashboards, arbitrary icon collages, decorative arrows, unsupported states, or unsupported topology.
+No transparent canvas, page-sized 3D scenes, glass-device showcases, chrome, isometric worlds, handwritten paper, cyberpunk, decorative mascots, or unreadable filler. Do not inflate icons, frames, or copy merely to fill space. No unsupported facts, metrics, labels, nodes, or relationships. A technical symbol such as a network-brain may represent an explicitly confirmed LLM node, not generic AI decoration.
 
 ## Cover Contract
 
-Use a condensed `mechanism-poster` with one oversized title, one central mechanism, three to four numbered explanation zones, and one bottom value rail. Preserve the thumbnail hierarchy of title first, mechanism second, supporting zones third. Do not reduce the cover to a generic title card or overload it with body-level copy. Validate every visible native string against the frozen copy ledger.
+Use a readable overview with a clear title and a meaningful mechanism, architecture, or sequence. Select detail for the intended display size rather than reducing every cover by a fixed percentage. The golden cover supplies title/body balance and restrained icon relief; its five-step structure, historic lane, filenames, and bottom benefits are not mandatory.
 
 ## Concept Contract
 
-Explain exactly one mechanism, principle, transformation, or performance reason. Prefer `mechanism-poster` or `layered-comparison`, three to five compact sections, supported technical icons, and one explicit conclusion rail. The relation must be article-supported, semantic colors must retain their declared meaning, and every visible string must match the frozen copy ledger.
+Explain one coherent question using a mechanism, comparison, or related independent considerations. Use icon + label + short explanation where helpful. Parallel considerations remain independent panels or bullets; arrows are reserved for confirmed sequence, dependency, data flow, or causality. Do not turn a row of benefits into a processing pipeline.
 
 ## Deterministic Diagram Contract
 
-Style 9 may render process, architecture, comparison, or timeline content through image generation under its registered native-copy exception. The exception does not select a model or execution path; follow the runtime's image-generation skill. Before any image call, freeze exact nodes, stable IDs, labels, groups, directed edges, edge types, invariants, and blocked relationships. After rendering, compare every visible node, label, arrowhead, direction, boundary, number, and state with that graph. Any mismatch fails. Deterministic rebuilding remains the safe fallback when generation cannot preserve exact topology.
+Keep the article-specific frozen graph exact, including nodes, labels, groups, edge types, arrowheads, and direction. Main paths are visually stronger than supporting paths; crossing avoidance must not change the graph. Style 9's existing native-copy image-generation exception remains available, subject to exact copy and graph review. A deterministic rebuild is the fallback when those checks fail. This profile does not choose a model or execution route.
 
 ## Imagegen Prompt Contract
 
-Compile the approved brief through the Style Pack v3 Prompt IR without `model_policy` or `execution_policy`. Require the exact frozen copy ledger, the applicable composition family, semantic palette roles, strict front-facing flat geometry, 85% to 92% occupancy, fully opaque white output, reference non-authority, and all forbidden traits. Correct native text is preserved; one isolated copy defect may be corrected locally, while multiple-copy, numeric, grouping, direction, or topology defects require regeneration or deterministic rebuild.
+Compile the approved brief through Style Pack v3. Include the chosen content-led family, frozen copy, graph when applicable, per-image color mapping, foreground hierarchy, and same-role reference contract. Preserve native text that passes review. One isolated copy defect may be corrected locally; multiple-copy, numerical, grouping, or topology errors require regeneration or deterministic rebuild. Do not inject the retired occupancy quota, compulsory numbered zones, compulsory rail, or blanket ban on local icon depth.
 
 ## Reference Use Contract
 
-Golden assets provide visual evidence for surface, hierarchy, vector-like geometry, density, spacing, line language, semantic palette, title treatment, and takeaway-rail grammar. Their labels, numbers, nodes, topology, icons, layout, and example story are non-authoritative. For candidate bootstrap, use no image reference for the cover, then at most one explicitly approved same-profile candidate for concept and diagram with `semantic_authority=false`.
+The three user-supplied v2 images are approved visual anchors, not technical evidence. Cover: CI/CD overview. Concept: writeAndFlush layered explanation. Diagram: RAG runtime columns. Inherit hierarchy, spacing, panel treatment, line/icon language, and material restraint; reconstruct all content from the current article. Generic server/document/database symbols may be reused when their role matches. Never copy example text, vendor names, specific icon arrangements, node counts, or topology. Their original prompts and generation runtime are unknown; accompanying prompt files document future reference use, not original generation history. Retired v1 files are archival and must not be selected by production.
 
 ## Validation Rubric
 
-Pass only if the image is fully opaque, reads immediately as a dense engineering teaching poster, preserves the oversized title, central mechanism, numbered regions, controlled semantic colors, and bottom takeaway rail, matches the frozen copy ledger exactly, matches the frozen graph exactly when applicable, remains legible at article width, contains no unsupported content, and stays visibly distinct from Styles 1, 4, 5, and 8.
+Check whether the image explains its subject at article width, has a clear reading order and subordinate details, matches the approved reference treatment, and obeys the frozen copy/graph. Reading order does not require connected paths: independent considerations remain unconnected. Do not grade density, numbered regions, central hubs, or summary rails as universal requirements. Reference appearance approval is separate from technical correctness and cross-topic generation qualification; do not carry v1 qualification forward.
