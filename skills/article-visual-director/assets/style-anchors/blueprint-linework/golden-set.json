@@ -38,7 +38,7 @@
       "artifact_path": "golden-cover.png",
       "artifact_sha256": "2c80719deede1d3bc86bb3949676900a8aaf06b9984ba7be97a763fc415073c6",
       "prompt_path": "golden-cover.prompt.md",
-      "prompt_sha256": "8fa48ec9c5af20dc1d2178cce957507f806f780cfc9a5ddf8173ad1635705f5a"
+      "prompt_sha256": "d687e97825ff9f4179c95401be8997d7d9575ae0b3ff8f9f5743c58cb8c7e656"
     },
     {
       "id": "blueprint-linework-concept-v1",
@@ -48,7 +48,7 @@
       "artifact_path": "golden-concept.png",
       "artifact_sha256": "0a966080c3ebcc9218b28ebc1a1a7497badd1a3c86022cd3edead71153f15094",
       "prompt_path": "golden-concept.prompt.md",
-      "prompt_sha256": "99ee846fe4c4af0c6f61ac33c07fd9e18b02b84597dd136259dcd07b922df7f6"
+      "prompt_sha256": "00ce37eefa46b0343599c6d2eab4f3fd65818c3bf709b4e76539cfc5ae88be03"
     },
     {
       "id": "blueprint-linework-diagram-v1",

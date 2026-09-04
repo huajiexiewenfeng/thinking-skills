@@ -6,6 +6,8 @@ Use this adapter only after a valid Prompt IR exists. It translates model-neutra
 
 The adapter does not select or encode an image runtime. Follow the runtime's image-generation skill and the tool schema actually exposed by the host. In particular, `dense-technical-infographic` must not add a model selector to Prompt IR merely because it uses native generated copy.
 
+When the host returns inline image data, forward it through the host's native image-result helper (for example `generatedImage(result)` when that helper is exposed). Never print or JSON-serialize the entire image result into textual tool output: it may contain a very large base64 payload. Log only the output path, dimensions, and concise status. Follow the exposed tool schema for reference attachment and waiting; do not assume a result shape or runtime API from another host.
+
 ## Reference Selection
 
 Attach the permanent same-role golden image by default. Attach the approved article anchor when required by the article workflow. A cross-role reference is exceptional and must have a recorded property-specific reason.
