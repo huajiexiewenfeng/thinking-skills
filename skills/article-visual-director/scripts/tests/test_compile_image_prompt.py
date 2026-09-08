@@ -291,7 +291,7 @@ class Style9NativeCopyPolicyTests(unittest.TestCase):
                 "output_count": 1,
             },
             "golden_reference_ids": [
-                "dense-technical-infographic-cover-v1"
+                "dense-technical-infographic-cover-v2"
             ],
             "article_anchor_reference_ids": [],
         }
@@ -398,7 +398,7 @@ class Style9ProbeSuiteTests(unittest.TestCase):
             set(discrimination["compare_profile_ids"]),
         )
         self.assertIn(
-            "dense front-facing technical poster",
+            "front-facing technical explanation",
             " ".join(discrimination["style_9_expected"]),
         )
 
