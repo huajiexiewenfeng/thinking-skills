@@ -16,6 +16,16 @@ from portable_hash import sha256_matches_file
 
 UNAVAILABLE = "unavailable"
 
+FREEFORM_ART_DIRECTION = {
+    "ordinal": 10,
+    "selection_mode": "freeform",
+    "profile_id": "article-local-freeform",
+    "name_en": "Freeform Art Direction",
+    "name_zh": "自由定调",
+    "status": "dynamic",
+    "preview_note": "每篇文章动态生成，不设固定黄金图",
+}
+
 
 def _base_result(profile: dict[str, Any]) -> dict[str, object]:
     return {
@@ -94,8 +104,15 @@ def _resolve_profile_preview(
     if not matches:
         return _unavailable(profile, "artifact_hash_mismatch")
 
+    qualification = golden_set.get("qualification")
+    keys = ("prompt_compile_status", "cross_topic_probe_status", "neighbor_discrimination_status")
+    pending = [key for key in keys if not isinstance(qualification, dict) or qualification.get(key) != "passed"]
+    # Metadata only: pre-selection must not load non-cover assets or protocols.
     return {
         **_base_result(profile),
+        "qualification_status": "pending" if pending else "recorded_passed",
+        "qualification_pending": pending,
+        "release_validation_performed": False,
         "status": "available",
         "absolute_path": artifact_path.as_posix(),
     }
@@ -110,10 +127,11 @@ def collect_style_previews(skill_root: Path) -> list[dict[str, object]]:
     profiles = registry["profiles"]
     if not all(isinstance(profile, dict) for profile in profiles):
         raise ValueError("style registry profiles must be objects")
-    return [
+    permanent_previews = [
         _resolve_profile_preview(skill_root, profile)
         for profile in sorted(profiles, key=lambda item: item["ordinal"])
     ]
+    return [*permanent_previews, dict(FREEFORM_ART_DIRECTION)]
 
 
 def main() -> int:

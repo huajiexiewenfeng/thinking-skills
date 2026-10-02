@@ -22,12 +22,70 @@
           ],
           "blocked": [
             "Do not claim zero data loss, instant failover, perfect consistency, unlimited reads, or automatic correctness.",
-            "Do not add vendor names, protocols, latency numbers, throughput numbers, regions, consensus nodes, or extra storage roles."
-          ]
+            "Do not add vendor names, protocols, latency numbers, throughput numbers, regions, consensus nodes, or extra storage roles.",
+            "Do not connect the failover note to any node. Do not draw replica-to-query arrows. No extra copy beyond exact_text."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "write",
+              "primary",
+              "replica-a",
+              "replica-b",
+              "query"
+            ],
+            "labels": {
+              "write": "01 写入入口",
+              "primary": "02 主节点",
+              "replica-a": "03 只读副本",
+              "replica-b": "03 只读副本",
+              "query": "查询入口"
+            },
+            "edges": [
+              {
+                "id": "write-primary",
+                "from": "write",
+                "to": "primary",
+                "type": "primary",
+                "meaning": "write request"
+              },
+              {
+                "id": "primary-a",
+                "from": "primary",
+                "to": "replica-a",
+                "type": "primary",
+                "meaning": "变更同步"
+              },
+              {
+                "id": "primary-b",
+                "from": "primary",
+                "to": "replica-b",
+                "type": "primary",
+                "meaning": "变更同步"
+              },
+              {
+                "id": "query-a",
+                "from": "query",
+                "to": "replica-a",
+                "type": "primary",
+                "meaning": "read request"
+              },
+              {
+                "id": "query-b",
+                "from": "query",
+                "to": "replica-b",
+                "type": "primary",
+                "meaning": "read request"
+              }
+            ],
+            "invariants": [
+              "No response arrows are shown. Query arrows point FROM query TO replicas.",
+              "Failover is an unconnected explanatory note, not a topology transition."
+            ]
+          }
         },
         "composition": {
           "family": "staged-overview",
-          "structure": "white-background overview with readable dark title and distinct write primary read-replica regions; arrange supporting failover context separately",
+          "structure": "Five-node front-facing overview: blue write entrance points to primary, primary synchronizes to two replicas; green query entrance points toward both replicas. Below it, an orange failover note with NO arrows. Only exact_text may appear; omit automatic panel captions.",
           "hierarchy": "blue write category and green read category; green denotes read responsibility, not a success guarantee; bounded failover caution in orange",
           "human_elements": "none"
         },
@@ -98,12 +156,68 @@
           ],
           "blocked": [
             "Do not claim that an idempotency key makes all business logic correct or prevents every duplicate effect.",
-            "Do not add payment vendors, databases, time-to-live numbers, globally unique guarantees, locks, queues, or extra decision stages."
-          ]
+            "Do not add payment vendors, databases, time-to-live numbers, globally unique guarantees, locks, queues, or extra decision stages.",
+            "Do not turn 减少重复执行风险 or 不代表业务自动正确 into a node or connect either note with arrows. No extra copy beyond exact_text."
+          ],
+          "frozen_graph": {
+            "nodes": [
+              "first",
+              "execute",
+              "record",
+              "repeat",
+              "lookup",
+              "return"
+            ],
+            "labels": {
+              "first": "首次请求",
+              "execute": "执行操作",
+              "record": "记录结果",
+              "repeat": "重复请求",
+              "lookup": "命中记录",
+              "return": "返回既有结果"
+            },
+            "edges": [
+              {
+                "id": "first-execute",
+                "from": "first",
+                "to": "execute",
+                "type": "primary"
+              },
+              {
+                "id": "execute-record",
+                "from": "execute",
+                "to": "record",
+                "type": "primary"
+              },
+              {
+                "id": "repeat-lookup",
+                "from": "repeat",
+                "to": "lookup",
+                "type": "primary"
+              },
+              {
+                "id": "record-lookup",
+                "from": "record",
+                "to": "lookup",
+                "type": "primary",
+                "meaning": "existing saved result supplies lookup"
+              },
+              {
+                "id": "lookup-return",
+                "from": "lookup",
+                "to": "return",
+                "type": "primary"
+              }
+            ],
+            "invariants": [
+              "Repeated requests never point to execute or record.",
+              "The effect and limitation are unconnected notes, never nodes."
+            ]
+          }
         },
         "composition": {
           "family": "layered-mechanism",
-          "structure": "two quiet horizontal request lanes with one shared key record and a small caution note; no forced numbered zones or bottom rail",
+          "structure": "Upper blue lane first -> execute -> record. Lower green lane repeat -> lookup -> return. One separate connector record -> lookup supplies the existing record; never draw lookup -> record. Put 幂等键 below each request icon. Put the two effect/limitation statements in a separate note region with no arrows.",
           "hierarchy": "first request and reuse distinguishable by labels and blue-green grouping, main relation ahead of supporting explanation",
           "human_elements": "none"
         },
@@ -174,7 +288,8 @@
           ],
           "blocked": [
             "Do not add brokers, databases, consumers, notification nodes, vendors, protocols, batch sizes, timing, or automatic replay guarantees.",
-            "Do not omit, duplicate, reverse, merge, or invent any frozen node or edge."
+            "Do not omit, duplicate, reverse, merge, or invent any frozen node or edge.",
+            "Do not add a successful-only condition to audit records. No subtitle or node descriptions. Only exact_text is visible; no extra 路径说明 or 关键约束 headings."
           ],
           "frozen_graph": {
             "nodes": [
@@ -235,7 +350,16 @@
               "dead-letter is reachable only from validation",
               "replay-approval may return only to intake",
               "dead-letter never reaches processing directly"
-            ]
+            ],
+            "labels": {
+              "source": "事件源",
+              "intake": "接入入口",
+              "validation": "格式校验",
+              "processing": "事件处理",
+              "audit-record": "审计记录",
+              "dead-letter": "死信队列",
+              "replay-approval": "重放审批"
+            }
           }
         },
         "composition": {

@@ -42,3 +42,11 @@ With user approval, render the three current non-reference-topic probes. Review
 the resulting copy/graph, spacing, icon scale, reference continuity and boundaries
 against Styles 1, 4, 5 and 8. Record actual outputs and user decisions before
 changing the two pending flags. Do not regenerate the three supplied goldens.
+
+## Subsequent generated-output retest
+
+The content-contract repair and three generated probe outputs are recorded in `evals/style-pack-probes/results/style9-content-contract-repair/review.md` (repository-relative). Final assistant review passed with documented corrections: one deterministic caption correction and one generated line-style correction. This is not a claim of one-shot native-copy reliability. User review remains pending, so the two qualification flags have NOT been advanced. Existing permanent references are unchanged.
+
+## Retest acceptance
+
+The user explicitly accepted all three linked corrected retest outputs by replying “可以” to the acceptance request. Cross-topic and neighbor-discrimination qualification are now passed for this bounded three-probe review, with the recorded correction workflow. This is not a claim that all future raw image outputs are correct. The previous pending entries above are historical. The article plan and article anchor remain separately reviewable.

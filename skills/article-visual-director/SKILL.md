@@ -71,17 +71,17 @@ Resolve the loaded Skill root and an actual Python interpreter before running sc
 
 Use the resolved executable with `-B -X utf8` for every command below. In PowerShell use `& $visualPython -B -X utf8 <script> <arguments>`, where `$visualPython` is the verified absolute executable path. Set the command's output decoding to UTF-8 where supported. Write Chinese prompts and structured requests directly to UTF-8 files; avoid embedding article wording, typographic quotes, or multiline JSON in shell command strings. Do not change global console or system encoding.
 
-After style selection, use `scripts/validate_style_contract.py --phase release --profile <selected-profile> --skill-root <loaded-skill-root>` as the contract check. Its `portable_hash.py` helper already handles permitted text LF/CRLF differences. Do not replace it with raw-hash-only comparisons, create a normalized copy of the Skill to bypass it, or rewrite expected hashes to make validation pass. Binary assets and source-integrity checks retain their strict hashing rules. If the validator still reports content drift, report the specific files and stop the affected generation step.
+After selecting a registered Style 1–9, use `scripts/validate_style_contract.py --phase release --profile <selected-profile> --skill-root <loaded-skill-root>` as the contract check. Style 10 is not a registered profile: do not call this validator for `article-local-freeform`; validate its exploring/locked state through `scripts/validate_manifest.py` and the article-local brief instead. The registered-style validator's `portable_hash.py` helper already handles permitted text LF/CRLF differences. Do not replace it with raw-hash-only comparisons, create a normalized copy of the Skill to bypass it, or rewrite expected hashes to make validation pass. Binary assets and source-integrity checks retain their strict hashing rules. If the applicable validator still reports content drift, report the specific files and stop the affected generation step.
 
 ## Non-Negotiable State Machine
 
 ```text
 inspect article
-  -> present the existing nine bilingual modes
+  -> present the nine registered bilingual profiles plus the article-local freeform mode
   -> wait for explicit style selection
   -> select Sparse, Balanced, or Chapter-led density
   -> audit every substantive section and derive the asset count
-  -> load selected protocol and approved golden set
+  -> branch: for Styles 1–9, load selected protocol and approved golden set; for Style 10, establish its article-local direction
   -> separate publication theme, visual profile, and asset semantics
   -> propose complete visual plan
   -> wait for plan approval
@@ -104,7 +104,7 @@ Before rendering the menu, resolve the loaded Skill's absolute root and run its 
 python <loaded-skill-root>/scripts/list_style_previews.py --skill-root <loaded-skill-root>
 ```
 
-This is a narrow pre-selection exception: load the registry and golden cover metadata only. Do not load any profile protocol, token file, Visual DNA, role contract, reference matrix, adapter contract, or non-cover golden asset before selection. Render one verified golden cover immediately after each Style using the resolver record with the matching ordinal. Use a host-native Markdown image whose target is the returned absolute local filesystem path. If that record has `status=unavailable`, render `黄金图暂不可用` below the Style instead. Do not substitute another role, another Style, a candidate, an unverified file, or a newly generated image.
+This is a narrow pre-selection exception: load the registry and golden cover metadata only. Do not load any profile protocol, token file, Visual DNA, role contract, reference matrix, adapter contract, or non-cover golden asset before selection. Render one verified golden cover immediately after each registered Style 1–9 using the resolver record with the matching ordinal. Use a host-native Markdown image whose target is the returned absolute local filesystem path. If that record has `status=unavailable`, render `黄金图暂不可用` below the Style instead. For Style 10, render only its dynamic preview note. Do not substitute another role, another Style, a candidate, an unverified file, or a newly generated image.
 
 1. **Technical Editorial Minimal（技术编辑简约）** — 适合技术教程和解释型文章，几何清晰、留白克制。
 2. **White-Green Editorial Minimal（白底绿色编辑简约）** — 适合微信公众号 AI 与产业分析，白底绿色、明亮理性。
@@ -115,6 +115,7 @@ This is a narrow pre-selection exception: load the registry and golden cover met
 7. **Soft Technical Sketch（柔和技术手绘）** — 纸张、墨线和淡彩质感，适合教程、入门内容和亲和解释。
 8. **Handwritten Systems Explainer（手写系统解释图）** — 米白纸面、手绘框线和少量高亮色，适合解释 Agent、Runtime、检索边界与前后对比。
 9. **Technical Explainer Infographic（技术原理图解）** — 白底蓝绿、清晰文字与技术图标，按内容采用分层机制、多列架构或阶段流程；允许克制的局部图标质感，适合技术原理、系统架构和工程交付说明。
+10. **Freeform Art Direction（自由定调）** — 不使用固定黄金图；AI 根据当前文章自由创造视觉方向，首张确认后锁定为整篇文章的临时风格。选择此项后必须读取 [references/freeform-art-direction.md](references/freeform-art-direction.md)。
 
 Use this response shape:
 
@@ -125,12 +126,16 @@ Use this response shape:
 ...
 [Style 9 bilingual description]
 ![9. English Name 黄金图](<absolute local filesystem path>)
+[Style 10 bilingual description]
+每篇文章动态生成，不设固定黄金图
 推荐：N. English Name（中文名）— one sentence tied to this article.
 ```
 
-For an unavailable record, replace only that Style's image line with `黄金图暂不可用`. Keep the Style in the complete nine-item menu and continue rendering the remaining previews in ordinal order.
+For an unavailable registered record, replace only that Style's image line with `黄金图暂不可用`. For the dynamic record, render its `preview_note` and never invent an image path or permanent golden. Keep all ten choices in ordinal order.
 
-After inspecting an available article, mark one item as the recommendation but still show all nine. If the article is not yet available, show the menu without a recommendation. If the user named a style in the invoking message, show all nine, mark that item as their current choice, and ask them to confirm it or select another. Do not infer approval from a past invocation or a previous article.
+When a preview record has `qualification_status=pending`, retain the verified cover but append `参考图已确认；制作验证待完成` and name the pending checks. `recorded_passed` means metadata records passed checks, not that a fresh release validation ran. Do not label a style production-ready from the cover preview alone. Explain this state before the user selects, and keep the existing post-selection release validator.
+
+After inspecting an available article, mark one item as the recommendation but still show all ten. If the article is not yet available, show the menu without a recommendation. If the user named a style in the invoking message, show all ten, mark that item as their current choice, and ask them to confirm it or select another. Do not infer approval from a past invocation or a previous article.
 
 Stop after the menu and wait for an explicit selection. Do not produce the visual plan, freeze prompts, create a manifest, or call image generation before the selection arrives. Style selection approves only the visual submode; the later plan and style-anchor gates still apply.
 
@@ -216,6 +221,10 @@ Use this renderer rule:
 
 Never send dense technical labels, source code, or a multi-step architecture to an image model by default. If a cover needs an exact title, generate the background without text and add title typography with a deterministic SVG/HTML layer.
 
+### Closed copy and explicit relations
+
+For native-copy generation, `exact_text` is the complete allowed visible inventory. Prompt explanations, reference captions, automatically added subtitles, legends and node descriptions must not become visible copy. Keep notes distinct from graph nodes. A cover or concept containing directed technical relationships needs a frozen graph too; role names do not exempt arrows from semantic review. Compiler success validates the request, not the generated output. Preserve failed outputs and use targeted regeneration or the allowed deterministic rebuild when native copy or topology fails; never update qualification flags from compilation alone.
+
 ### Style 9 native-copy exception
 
 Only `dense-technical-infographic` may generate exact native copy. Freeze every intended visible string in the `text_policy.exact_text` copy ledger with `copy_ledger_status=frozen` and require exact post-generation text validation. This exception changes text handling only; it does not select an API model or authorize CLI/API execution. A Style 9 diagram still requires `semantics.frozen_graph`, followed by node, label, edge, direction, group, and invariant equality review. Correct native copy stays native; one isolated copy defect may receive a deterministic local correction, while multiple-copy, numeric, grouping, direction, or topology defects require regeneration or deterministic rebuild. A validation failure never permits accepting wrong text.
@@ -235,9 +244,11 @@ When a cross-platform article has separate cover exports, record asset-level `pl
 
 ### 4. Establish the selected visual direction
 
-Read [references/style-registry.json](references/style-registry.json), locate the exact selected profile, then read only that entry's protocol, token file, and golden-set metadata. If that entry declares `style_pack_version=3`, also load its Visual DNA, role contracts, reference matrix, and registered adapter contract. Do not load or blend the other eight protocols. Explain the selected mode's fit in terms of audience, article tone, technical density, and platform—not taste alone.
+For Styles 1–9, read [references/style-registry.json](references/style-registry.json), locate the exact selected profile, then read only that entry's protocol, token file, and golden-set metadata. If that entry declares `style_pack_version=3`, also load its Visual DNA, role contracts, reference matrix, and registered adapter contract. Do not load or blend the other eight registered protocols. Explain the selected mode's fit in terms of audience, article tone, technical density, and platform—not taste alone.
 
-The selected golden set must have `status=approved`, explicit user approval, and exactly three verified anchors: cover, concept, and diagram style anchor. If it is missing or still `candidate`, stop article production with `golden_set_pending`. Explain that this visual mode has no approved permanent style anchors yet and enter the golden-production flow only after the user agrees. Golden-production order is cover, concept, then architecture/process style anchor; candidates become golden only after explicit user approval and release validation.
+For `article-local-freeform`, follow [references/freeform-art-direction.md](references/freeform-art-direction.md). It is an article-scoped mode, not a registered profile: it has no permanent golden, global protocol, qualification state, or cross-article inheritance. The first approved anchor freezes an article-local visual brief for all remaining assets. Visual freedom never authorizes invented article facts, copy, nodes, arrows, numbers, boundaries, sequences, or causal relationships.
+
+For Styles 1–9, the selected golden set must have `status=approved`, explicit user approval, and exactly three verified anchors: cover, concept, and diagram style anchor. If it is missing or still `candidate`, stop article production with `golden_set_pending`. Explain that this registered visual mode has no approved permanent style anchors yet and enter the golden-production flow only after the user agrees. Golden-production order is cover, concept, then architecture/process style anchor; candidates become golden only after explicit user approval and release validation. This permanent-golden gate does not apply to Style 10.
 
 In golden production for a registered candidate profile, compile the first cover from that profile's Visual DNA and cover role contract without an image reference. After explicit cover approval, the concept may use exactly that same-profile approved candidate as a temporary `bootstrap_reference`; after concept approval, the diagram may use exactly the latest same-profile approved candidate. Every bootstrap reference has `semantic_authority=false`. Never bootstrap from another profile, an article anchor, or unapproved candidate content.
 
@@ -246,16 +257,16 @@ For Style Pack v3, release production additionally requires `prompt_compile_stat
 Keep three responsibilities separate in the plan and Manifest v2:
 
 - `publication_theme`: page/channel context such as green, dark, or festive; it may influence deterministic page/title layers only;
-- `visual_profile`: the selected registered protocol, permanent golden references, and token invariants;
+- `visual_profile`: either the selected registered protocol/permanent anchors/token invariants, or Style 10's frozen article-local visual brief and approved anchor;
 - `asset_semantics`: the article-specific entities, relations, numbers, metaphors, reading order, and claims shown by each asset.
 
-Golden references are visual evidence only. Their example titles, labels, nodes, arrows, numbers, group membership, and fallback paths are never semantic source material. Never infer article-specific nodes or edges from a golden image, even when its subject appears similar to the current article.
+Registered golden references and Style 10 article references are visual evidence only. Their example titles, labels, nodes, arrows, numbers, group membership, and fallback paths are never semantic source material. Never infer article-specific nodes or edges from a reference image, even when its subject appears similar to the current article.
 
-For every process, architecture, boundary, comparison, or timeline diagram, the AI must first build an `article-specific semantic graph` from the current article and confirmed sources. Freeze that graph before rendering; the golden diagram may influence only surface, palette, stroke, node geometry, spacing, annotation density, and arrow appearance.
+For every process, architecture, boundary, comparison, or timeline diagram, the AI must first build an `article-specific semantic graph` from the current article and confirmed sources. Freeze that graph before rendering; a registered golden diagram or Style 10's approved article anchor may influence only surface, palette, stroke, node geometry, spacing, annotation density, and arrow appearance.
 
 A page theme must not recolor the profile palette, replace its line language, alter its geometry/depth, or turn Style 8 into a green corporate flowchart. Any approved theme override must be listed explicitly in the visual plan and `style.approved_overrides` of Manifest v2. With `theme_override_policy=title-layer-only`, only deterministic `title.*` fields may be overridden.
 
-The selected protocol—not a free-form fingerprint—is the normative source for:
+For Styles 1–9, the selected protocol—not a free-form fingerprint—is the normative source for the following properties. For Style 10, the locked article-local visual brief is the normative source for the same properties:
 
 - palette and semantic color roles;
 - lighting, contrast, and depth;
@@ -295,13 +306,13 @@ Each image-generation prompt must specify:
 - communicative objective;
 - subject and visual metaphor;
 - composition and hierarchy;
-- selected protocol and approved golden-reference IDs;
-- required line/material behavior and semantic palette roles from the protocol;
+- the applicable visual contract: selected protocol and approved golden-reference IDs for Styles 1–9; for Style 10's first asset, the approved proposed direction and candidate anchor ID; after anchor approval, the frozen article-local brief and approved anchor ID;
+- required line/material behavior and semantic palette roles from that contract;
 - aspect ratio and platform safe zone;
 - full-width occupancy target and crop-survival contract for wide covers;
 - exclusions such as no logos, no watermarks, and no UI gibberish; use `no text` for an image-generated cover background, then deliver approved cover wording through the deterministic layer;
-- exact forbidden traits from the selected protocol;
-- continuity cues shared with the permanent golden set and planned article anchor.
+- exact forbidden traits from the applicable contract;
+- continuity cues shared with the registered golden set plus article anchor, or with Style 10's article-local anchor alone.
 
 Each deterministic diagram specification must list:
 
@@ -314,7 +325,7 @@ Each deterministic diagram specification must list:
 
 Treat this specification as the semantic graph and source of truth. Assign every node and directed edge a stable ID; record edge type (`primary`, `fallback`, `exception`, or `return`), direction, group membership, and evidence status. Before rendering, reject dangling edges, contradictory directions, invalid shortcuts, and any path that violates a stated invariant. After rendering, compare every visible node, label, boundary, and arrow against the frozen graph. A visually attractive diagram with a topology mismatch fails validation and must be corrected before insertion.
 
-Create Manifest v2 as described in [references/manifest-schema.md](references/manifest-schema.md). Treat it as the source of truth. Record the selected profile/version, Skill-relative protocol and golden-set paths, their current SHA-256 values, the three golden reference IDs, `publication_theme`, override policy, article-specific references, and per-asset `style_validation`. Set approvals to `pending` until the user confirms the plan. After confirmation, freeze prompts/specifications and set the relevant approvals to `approved`.
+Create Manifest v2 as described in [references/manifest-schema.md](references/manifest-schema.md) and treat it as the source of truth. For Styles 1–9, record the selected profile/version, Skill-relative protocol/golden paths and hashes, and three golden IDs. For Style 10, record `selection_mode=freeform`, `freeform_state=exploring`, the article-bound direction identity, candidate anchor ID, and no permanent contract fields; after the first artifact is explicitly approved, freeze the article-local brief and anchor hashes and change the state to `locked`. In both branches, record `publication_theme`, override policy, article-specific references, and per-asset validation. Plan approval and rendered-anchor approval are separate: approving the plan does not lock an unseen Style 10 anchor.
 
 For a Style Pack v3 imagegen asset, compile the approved brief through `scripts/compile_image_prompt.py` after plan approval and before generating the article style anchor. The model-neutral Prompt IR must contain, in order, `OUTPUT CONTRACT`, `ARTICLE SEMANTICS`, `ROLE COMPOSITION`, `VISUAL DNA`, `REFERENCE CONTRACT`, `TEXT POLICY`, `NEGATIVE CONSTRAINTS`, and `ACCEPTANCE CHECK`. Run preflight lint, store the Prompt IR and GPT Image prompt as UTF-8 files, and record their paths and SHA-256 values together with the three Style Pack contract paths and hashes in Manifest v2. Any lint error stops generation; never delete a failing block, weaken the same-role golden contract, or fall back to a free-form prompt.
 
@@ -324,7 +335,7 @@ End the planning response with one compact approval request. Do not generate ima
 
 For raster covers and concept illustrations, load and follow the runtime's image-generation skill. Use the approved prompt verbatim except for tool-required syntax. Record any necessary variation back into the manifest before using it.
 
-An article style anchor is required for any imagegen asset, any article-specific reference image, or a plan containing more than one deterministic asset. The only `not_required` case is exactly one deterministic asset, no article references, and current matching protocol/golden versions and hashes.
+For Styles 1–9, an article style anchor is required for any imagegen asset, any article-specific reference image, or a plan containing more than one deterministic asset. Their only `not_required` case is exactly one deterministic asset, no article references, and current matching protocol/golden versions and hashes. Style 10 always names its first representative asset as the candidate anchor, including a one-asset deterministic plan; it cannot integrate until that artifact is approved and the article-local direction is locked.
 
 When an article anchor is required:
 
@@ -332,20 +343,20 @@ When an article anchor is required:
 2. show it to the user;
 3. wait for approval or correction;
 4. record its asset ID and set `approvals.article_style_anchor` to `approved`;
-5. use the approved article anchor together with the permanent golden references for the remaining assets.
+5. for Styles 1–9, use the approved article anchor together with relevant permanent goldens; for Style 10, use the approved article anchor together with the frozen article-local brief and no permanent goldens.
 
-Every remaining imagegen asset must receive the approved golden cover/concept/diagram references that are relevant to its semantic job plus the article anchor. The prompt states which visible properties are invariant: surface, palette roles, stroke/material behavior, geometry, depth, spacing, and forbidden traits. It must also state that any visible example content in a golden reference is non-authoritative and must not be copied. Do not rely on a profile name alone.
+For Styles 1–9, every remaining imagegen asset must receive the approved same-profile golden references relevant to its semantic job plus the article anchor. For Style 10, every remaining imagegen asset must receive the approved article anchor and frozen article-local brief; it must not cite permanent golden IDs. In both branches, the prompt states which visible properties are invariant: surface, palette roles, stroke/material behavior, geometry, depth, spacing, and forbidden traits. It must also state that visible example content is non-authoritative and must not be copied. Do not rely on a profile or direction name alone.
 
 Read the actual generated pixel dimensions before preparing an export. A requested aspect ratio is not proof of the returned ratio. Preserve proportions when fitting the target canvas: use a reviewed crop or padding, or use the image tool for outpainting where needed. Never force a mismatched background to the target dimensions with non-uniform scaling or SVG `preserveAspectRatio="none"`. Recheck title and subject survival in the wide and central-square crops after fitting. Prefer exporting the final PNG from the editable typography source so the delivered source and raster agree.
 
-For deterministic assets, load the matching token JSON and use an available SVG, HTML, Mermaid, Graphviz, or visualization renderer. Map semantic roles to tokens rather than sampling colors by eye. Export a platform-compatible PNG when SVG support is uncertain, preserve the editable source, and visually compare the result with both the permanent diagram anchor and the approved article anchor.
+For deterministic assets, use an available SVG, HTML, Mermaid, Graphviz, or visualization renderer. Styles 1–9 load the matching token JSON and compare against the permanent diagram anchor plus article anchor. Style 10 derives deterministic tokens from the locked article-local brief and compares only against its approved article anchor. Map semantic roles to the applicable tokens rather than sampling colors by eye. Export a platform-compatible PNG when SVG support is uncertain and preserve the editable source.
 
 ### 7. Validate every artifact
 
 Inspect each rendered artifact before integration. Mark `validation_status=passed` only if it satisfies all applicable checks:
 
-- matches the approved brief, selected protocol, cited golden references, and article anchor;
-- passes every required visual trait and contains none of the protocol's forbidden traits;
+- matches the approved asset brief and applicable visual contract: registered protocol/goldens/article anchor, or Style 10 article-local brief/anchor;
+- passes every required visual trait and contains none of the applicable contract's forbidden traits;
 - preserves `visual_profile` invariants without `publication_theme` bleed;
 - remains visibly continuous with earlier assets in the series across surface, color roles, line/material behavior, geometry, depth, and spacing;
 - contains no invented technical relationships;
@@ -359,7 +370,7 @@ Inspect each rendered artifact before integration. Mark `validation_status=passe
 - body illustrations remain legible at article column width;
 - alt text explains the information or purpose, not merely the appearance.
 
-Record the result in Manifest v2 `style_validation`: `status`, cited golden IDs, required-trait result, forbidden traits found, theme bleed, series continuity, v3 `drift_codes` when applicable, and review notes. If an asset fails, regenerate or revise only that asset and validate again. Do not insert a failed asset. For v3, map the failure to the responsible Prompt IR or Style Pack field and recompile; do not rewrite the whole prompt freely.
+Record the result in Manifest v2 `style_validation`: `status`, required-trait result, forbidden traits found, theme bleed, series continuity, v3 `drift_codes` when applicable, and review notes. Styles 1–9 record cited golden IDs; Style 10 records an empty continuity list for the anchor and exactly its approved anchor ID for every later asset. If an asset fails, regenerate or revise only that asset and validate again. Do not insert a failed asset. For v3, map the failure to the responsible Prompt IR or Style Pack field and recompile; do not rewrite the whole prompt freely.
 
 ### 8. Integrate non-destructively
 
@@ -410,8 +421,9 @@ Report:
 
 Stop and explain the blocking evidence when:
 
-- the selected profile's golden set is missing, candidate, hash-drifted, or not explicitly user-approved (`golden_set_pending`);
-- the stored protocol or golden-set identity/version/hash no longer matches the current Skill contract;
+- for Styles 1–9, the selected profile's golden set is missing, candidate, hash-drifted, or not explicitly user-approved (`golden_set_pending`);
+- for Styles 1–9, the stored protocol or golden-set identity/version/hash no longer matches the current Skill contract;
+- for Style 10, the first anchor is unapproved, the direction is not locked, the article-local brief is missing, or its brief/anchor/source hash has drifted;
 - the article changed after plan approval;
 - an exact heading or section context no longer matches;
 - a diagram depends on an unconfirmed relationship;

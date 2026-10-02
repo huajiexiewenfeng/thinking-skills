@@ -17,6 +17,11 @@ from validate_manifest import load_manifest, validate_manifest
 
 
 HEADING_RE = re.compile(r"^(#{1,6})[ \t]+.+?\s*$")
+HTML_HEADING_RE = re.compile(
+    r"^<h([1-6])(?:[ \t]+(?:[^<>\"']|\"[^\"]*\"|'[^']*')*)?>"
+    r"(?:(?!</?h[1-6]\b).)*</h\1>[ \t]*$",
+    re.IGNORECASE,
+)
 FENCE_RE = re.compile(r"^[ \t]*(`{3,}|~{3,})")
 START_MARKER_RE = re.compile(r"^<!-- article-visual:start ([a-z0-9]+(?:-[a-z0-9]+)*) -->$")
 END_MARKER_RE = re.compile(r"^<!-- article-visual:end ([a-z0-9]+(?:-[a-z0-9]+)*) -->$")
@@ -83,11 +88,15 @@ def _headings(text: str) -> list[tuple[int, int, str]]:
         heading_match = HEADING_RE.match(line)
         if heading_match:
             headings.append((index, len(heading_match.group(1)), line))
+        else:
+            html_match = HTML_HEADING_RE.fullmatch(line)
+            if html_match:
+                headings.append((index, int(html_match.group(1)), line))
     return headings
 
 
 def find_headings(lines: list[str]) -> list[tuple[int, str]]:
-    """Return ATX headings outside frontmatter and fenced code blocks."""
+    """Return ATX or standalone single-line HTML headings, preserving exact text."""
     return [(index, line) for index, _, line in _headings("\n".join(lines))]
 
 

@@ -56,9 +56,10 @@ class Style9ReferenceRefreshTests(unittest.TestCase):
             self.assertEqual('user-supplied', asset['provenance']['source_kind'])
             self.assertFalse(asset['provenance']['semantic_authority'])
             self.assertFalse(asset['provenance']['original_prompt_known'])
-        self.assertEqual('pending', golden['qualification']['cross_topic_probe_status'])
+        self.assertEqual('passed', golden['qualification']['cross_topic_probe_status'])
+        self.assertEqual('passed', golden['qualification']['neighbor_discrimination_status'])
         errors = validate_style_contract(ROOT, 'release', 'dense-technical-infographic')
-        self.assertEqual({'style_pack_not_qualified'}, {e['code'] for e in errors})
+        self.assertEqual([], errors)
 
 
 if __name__ == '__main__':
