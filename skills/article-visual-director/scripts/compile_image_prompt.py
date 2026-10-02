@@ -261,7 +261,7 @@ def lint_prompt_ir(prompt_ir: dict[str, Any]) -> list[dict[str, str]]:
                         "Semantic fact lists must be explicit arrays.",
                     )
                 )
-        if role == "diagram" and not _valid_frozen_graph(semantics.get("frozen_graph")):
+        if (role == "diagram" or "frozen_graph" in semantics) and not _valid_frozen_graph(semantics.get("frozen_graph")):
             errors.append(
                 _error(
                     "SEMANTIC_TOPOLOGY_DRIFT",
@@ -331,6 +331,11 @@ def lint_prompt_ir(prompt_ir: dict[str, Any]) -> list[dict[str, str]]:
     text_policy = prompt_ir.get("text_policy")
     if isinstance(text_policy, dict):
         exact_text = text_policy.get("exact_text")
+        if _valid_native_text_policy(prompt_ir.get("profile_id"), text_policy) and (
+            text_policy.get("inventory_mode") != "closed"
+            or not text_policy.get("rendering_rules")
+        ):
+            errors.append(_error("TEXT_POLICY_VIOLATION", "text_policy", "Native copy requires a closed visible-text inventory and explicit rendering rules."))
         if exact_text and not text_policy.get("deterministic_overlay"):
             if not _valid_native_text_policy(
                 prompt_ir.get("profile_id"), text_policy
@@ -480,7 +485,7 @@ def compile_prompt_ir(skill_root: Path, request: dict[str, Any]) -> dict[str, An
         _raise_compile_error(
             "SEMANTIC_TOPOLOGY_DRIFT", "semantics", "Confirmed article semantics are required."
         )
-    if role == "diagram" and not _valid_frozen_graph(semantics.get("frozen_graph")):
+    if (role == "diagram" or "frozen_graph" in semantics) and not _valid_frozen_graph(semantics.get("frozen_graph")):
         _raise_compile_error(
             "SEMANTIC_TOPOLOGY_DRIFT",
             "semantics.frozen_graph",
@@ -531,6 +536,19 @@ def compile_prompt_ir(skill_root: Path, request: dict[str, Any]) -> dict[str, An
     if profile["profile_id"] != NATIVE_TEXT_PROFILE_ID:
         output_contract["model_policy"] = request.get("model_policy")
 
+    text_policy = request.get("text_policy")
+    if _valid_native_text_policy(profile["profile_id"], text_policy):
+        # Keep the user's copy ledger intact; derive explicit rendering constraints.
+        text_policy = dict(text_policy)
+        text_policy["inventory_mode"] = "closed"
+        text_policy["rendering_rules"] = [
+            "exact_text is the COMPLETE allowed visible-copy inventory, not a minimum list.",
+            "Render every listed string exactly; add NO subtitles, explanations, legends, headings, translations or icon text absent from exact_text.",
+            "All other prompt prose, IDs and reference text are instructions only: never print them.",
+            "Keep explanatory notes outside the graph with NO arrows; an effect or benefit is not a process node.",
+            "Where a frozen_graph exists, draw only its declared nodes and directed edges; do not infer connections from layout proximity.",
+        ]
+
     prompt_ir = {
         "profile_id": profile["profile_id"],
         "profile_status": profile.get("style_pack_status", "approved"),
@@ -558,7 +576,7 @@ def compile_prompt_ir(skill_root: Path, request: dict[str, Any]) -> dict[str, An
             "must_not_copy": role_reference.get("must_not_copy"),
             "example_content_authoritative": False,
         },
-        "text_policy": request.get("text_policy"),
+        "text_policy": text_policy,
         "negative_constraints": _dedupe_strings(
             visual_dna.get("forbidden_traits"),
             role_contract.get("must_not_include"),

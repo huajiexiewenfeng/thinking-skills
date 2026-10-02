@@ -27,7 +27,7 @@ The scripts use JSON and the Python standard library only.
 | `article_slug` | string | Lowercase ASCII kebab-case |
 | `platforms` | array | One or more of `csdn`, `wechat`, `x-article` |
 | `outputs` | object | Illustrated Markdown path and published asset directory |
-| `style` | object | v1 fingerprint or v2 versioned protocol/golden-set contract |
+| `style` | object | v1 fingerprint, v2 registered contract, or v2 article-local freeform contract |
 | `approvals` | object | Plan and version-specific style-anchor gates |
 | `integration` | object | Final integration and verification state |
 | `assets` | array | Ordered visual plan; IDs and Markdown destinations must be unique |
@@ -93,6 +93,51 @@ Do not reinterpret an existing Manifest v2 automatically. When, and only when, `
 ```
 
 The three Style Pack paths are Skill-relative. Prompt IR and compiled-prompt paths are manifest-relative. Every path must remain inside its declared root, every file must exist, and every SHA-256 must match the exact bytes approved for generation. A v3 failure never falls back to a free-form prompt.
+
+### Article-Local Freeform Extension (Style 10)
+
+Style 10 is an explicit v2 alternative to the registered Style 1–9 contract. Set `selection_mode` to `freeform`; do not attach a permanent protocol, golden set, Style Pack v3, adapter, or prompt-trace contract. The mode resets for every article and never inherits the previous article's direction.
+
+The exploration plan identifies the first representative asset but leaves approval pending:
+
+```json
+{
+  "selection_mode": "freeform",
+  "freeform_state": "exploring",
+  "profile_id": "article-local-freeform",
+  "direction_id": "agent-runtime-r1",
+  "direction_revision": 1,
+  "source_article_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "publication_theme": "default",
+  "theme_override_policy": "title-layer-only",
+  "approved_overrides": [],
+  "article_reference_paths": [],
+  "article_style_anchor_asset_id": "asset-cover",
+  "article_style_brief_path": null,
+  "article_style_brief_sha256": null,
+  "anchor_artifact_sha256": null
+}
+```
+
+After the first asset is approved, change `freeform_state` to `locked`, set `approvals.article_style_anchor` to `approved`, and bind both the approved anchor artifact and `visual-sources/article-style-brief.json` by SHA-256. The article-local brief must preserve the direction identity, source hash, anchor ID/hash, complete `visual_dna`, `role_contracts`, `deterministic_tokens`, and `reference_policy.semantic_authority=false`. Any brief or anchor hash drift invalidates the lock.
+
+Freeform assets use article continuity references instead of permanent goldens:
+
+```json
+{
+  "style_validation": {
+    "status": "planned",
+    "continuity_reference_ids": ["asset-cover"],
+    "required_traits_passed": false,
+    "forbidden_traits_found": [],
+    "theme_bleed": false,
+    "series_continuity": "planned",
+    "review_notes": null
+  }
+}
+```
+
+The anchor asset uses an empty `continuity_reference_ids` array. Every later asset must cite exactly the approved anchor. Visual freedom covers art direction only: supplied copy, numbers, nodes, arrows, topology, and causal meaning remain deterministic inputs. An exploring plan may be reviewed, but integration is forbidden until its direction is locked.
 
 ### Article Style Anchor Decision Table
 
@@ -254,6 +299,8 @@ Plan approval alone does not count as a text-free opt-out when the choice was no
 
 `anchor.context_sha256` hashes the matched heading through the end of that section. Normalize newlines to LF and remove trailing newlines first. Frontmatter and fenced-code headings do not count.
 
+Anchors accept ATX Markdown headings and standalone single-line `<h1>` through `<h6>` elements, including inline styles and inline emphasis. For HTML, store the complete original line in `anchor.heading`, not only its visible text. Mixed Markdown/HTML headings use their numeric level to determine the section boundary. Multiline, mismatched, nested, or paragraph-embedded HTML headings are not supported; do not silently rewrite the source to create an anchor.
+
 Generate a context hash:
 
 ```powershell
@@ -265,7 +312,8 @@ python -c "from pathlib import Path; import sys; sys.path.insert(0, 'skills/arti
 - `approvals.plan` stays `pending` until the complete visual plan is approved.
 - Every asset stays `approval=pending` until its prompt or diagram specification is approved.
 - In v1, fewer than three `imagegen` assets may use `style_anchor=not_required`; three or more require `style_anchor=approved` for integration.
-- In v2, follow the article-style-anchor decision table; the single deterministic asset case is the only `not_required` exception.
+- In a registered v2 plan, follow the article-style-anchor decision table; the single deterministic asset case is the only `not_required` exception.
+- In Style 10 exploration, the named first anchor may stay `pending` during planning. Integration requires `freeform_state=locked`, an approved anchor, matching anchor/brief hashes, and continuity references from every later asset.
 - Generation does not imply validation. Inspect the artifact before `validation_status=passed`.
 - WeChat cover integration requires a valid `title` contract. Any deterministic cover text requires an existing text-free background, an existing editable source, and a completed wide-crop check. A Style 9 `native-generated` title instead requires passed native-copy validation. WeChat additionally requires the square-crop check. A declared text-free title contract requires `user_opt_out=true`.
 - Only successful Markdown insertion sets every asset to `inserted`, `integration.status=complete`, and `integration.verification_status=passed`.

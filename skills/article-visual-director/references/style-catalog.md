@@ -14,6 +14,14 @@ Use this catalog to choose a profile; use the linked protocol as the normative v
 | 8 | Handwritten Systems Explainer | 手写系统解释图 | Agent/runtime trade-offs, before/after systems, and compact operational ideas | [`08-handwritten-systems-explainer.md`](styles/08-handwritten-systems-explainer.md) |
 | 9 | Technical Explainer Infographic | 技术原理图解 | Text-bearing framework mechanisms, middleware internals, network protocols, concurrency models, and system architecture tutorials | [`09-dense-technical-infographic.md`](styles/09-dense-technical-infographic.md) |
 
+## Article-local Dynamic Mode
+
+| # | Mode | 中文名 | Best for | Contract |
+|---|---|---|---|---|
+| 10 | Freeform Art Direction | 自由定调 | Articles that benefit from a fresh visual language selected from their own thesis, audience, and platform | [`freeform-art-direction.md`](freeform-art-direction.md) |
+
+Style 10 is not a registered permanent profile. It has no permanent golden preview and resets for every new article.
+
 Technical Explainer Infographic is a white-background, blue-green technical explanation mode with readable text, content-led layouts, and restrained local icon relief. It explains mechanisms and relationships more explicitly than Style 1, without Style 4's glass product scenes, Style 5's isometric worlds, or Style 8's handwritten paper. Numbering, a central hub, and summary rails are optional.
 
 ## Selection Heuristic

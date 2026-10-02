@@ -543,6 +543,266 @@ def _validate_style_v2(
     return contract_drift
 
 
+FREEFORM_PROFILE_ID = "article-local-freeform"
+FREEFORM_STATES = {"exploring", "locked"}
+FREEFORM_FORBIDDEN_CONTRACT_FIELDS = {
+    "profile_version",
+    "protocol_path",
+    "protocol_sha256",
+    "golden_set_path",
+    "golden_set_sha256",
+    "golden_reference_ids",
+    "style_pack_version",
+    "visual_dna_path",
+    "visual_dna_sha256",
+    "role_contracts_path",
+    "role_contracts_sha256",
+    "reference_matrix_path",
+    "reference_matrix_sha256",
+    "prompt_ir_path",
+    "prompt_ir_sha256",
+    "compiled_prompt_path",
+    "compiled_prompt_sha256",
+    "adapter_id",
+    "adapter_version",
+}
+FREEFORM_VISUAL_DNA_KEYS = {
+    "surface",
+    "palette_roles",
+    "line_language",
+    "material_and_texture",
+    "geometry",
+    "depth_and_camera",
+    "typography",
+    "density_and_spacing",
+    "required_traits",
+    "forbidden_traits",
+    "allowed_variation",
+}
+
+
+def _validate_freeform_style_v2(
+    data: dict[str, Any], manifest_path: Path, errors: list[dict[str, str]]
+) -> bool:
+    """Validate the article-local Style 10 contract without a permanent style pack."""
+    style = _require_mapping(data, "style", errors, "style")
+    state = style.get("freeform_state")
+    if style.get("profile_id") != FREEFORM_PROFILE_ID:
+        _add_error(
+            errors,
+            "invalid_freeform_profile",
+            "style.profile_id",
+            f"Freeform selection requires profile_id={FREEFORM_PROFILE_ID}",
+        )
+    if state not in FREEFORM_STATES:
+        _add_error(
+            errors,
+            "invalid_freeform_state",
+            "style.freeform_state",
+            "freeform_state must be exploring or locked",
+        )
+    direction_id = style.get("direction_id")
+    if not isinstance(direction_id, str) or not SAFE_ID_RE.fullmatch(direction_id):
+        _add_error(
+            errors,
+            "invalid_freeform_direction",
+            "style.direction_id",
+            "direction_id must be lowercase kebab-case ASCII",
+        )
+    revision = style.get("direction_revision")
+    if not isinstance(revision, int) or isinstance(revision, bool) or revision <= 0:
+        _add_error(
+            errors,
+            "invalid_freeform_direction",
+            "style.direction_revision",
+            "direction_revision must be a positive integer",
+        )
+
+    source = data.get("source")
+    source_sha = source.get("sha256") if isinstance(source, dict) else None
+    if style.get("source_article_sha256") != source_sha:
+        _add_error(
+            errors,
+            "freeform_source_mismatch",
+            "style.source_article_sha256",
+            "The article-local direction must be bound to source.sha256",
+        )
+
+    for field in ("publication_theme", "theme_override_policy"):
+        if not _is_nonempty_string(style.get(field)):
+            _add_error(
+                errors,
+                "missing_style_field",
+                f"style.{field}",
+                f"style.{field} must be a non-empty string",
+            )
+    overrides = style.get("approved_overrides")
+    if not isinstance(overrides, list):
+        _add_error(
+            errors,
+            "theme_override_not_allowed",
+            "style.approved_overrides",
+            "approved_overrides must be an array",
+        )
+    elif style.get("theme_override_policy") == "title-layer-only":
+        for index, override in enumerate(overrides):
+            if not isinstance(override, str) or not override.startswith("title."):
+                _add_error(
+                    errors,
+                    "theme_override_not_allowed",
+                    f"style.approved_overrides[{index}]",
+                    "Publication theme may override deterministic title-layer fields only",
+                )
+    elif overrides:
+        _add_error(
+            errors,
+            "theme_override_not_allowed",
+            "style.approved_overrides",
+            "Selected theme policy does not allow overrides",
+        )
+    references = style.get("article_reference_paths")
+    if not isinstance(references, list) or any(
+        not _is_safe_relative_path(item) for item in references
+    ):
+        _add_error(
+            errors,
+            "invalid_article_references",
+            "style.article_reference_paths",
+            "article_reference_paths must be an array of safe relative paths",
+        )
+
+    for field in sorted(FREEFORM_FORBIDDEN_CONTRACT_FIELDS):
+        if style.get(field) not in (None, "", []):
+            _add_error(
+                errors,
+                "freeform_permanent_contract_forbidden",
+                f"style.{field}",
+                "Style 10 is article-local and cannot inherit a registered or permanent style contract",
+            )
+
+    brief_path = style.get("article_style_brief_path")
+    brief_sha = style.get("article_style_brief_sha256")
+    anchor_sha = style.get("anchor_artifact_sha256")
+    if state != "locked":
+        if any(value not in (None, "") for value in (brief_path, brief_sha, anchor_sha)):
+            _add_error(
+                errors,
+                "freeform_contract_before_lock",
+                "style.freeform_state",
+                "An exploring direction cannot claim a locked article-local contract",
+            )
+        return False
+
+    if not _is_safe_relative_path(brief_path) or not _is_sha256(brief_sha):
+        _add_error(
+            errors,
+            "freeform_brief_missing",
+            "style.article_style_brief_path",
+            "A locked freeform direction requires a safe brief path and SHA-256",
+        )
+        return False
+    manifest_root = manifest_path.parent.resolve()
+    brief_file = (manifest_root / brief_path).resolve()
+    if not _resolved_is_under(brief_file, manifest_root) or not brief_file.is_file():
+        _add_error(
+            errors,
+            "freeform_brief_missing",
+            "style.article_style_brief_path",
+            f"Article-local visual brief does not exist: {brief_path}",
+        )
+        return False
+    if not sha256_matches_file(brief_file, brief_sha, normalize_line_endings=True):
+        _add_error(
+            errors,
+            "freeform_brief_hash_mismatch",
+            "style.article_style_brief_sha256",
+            "Article-local visual brief changed after anchor approval",
+        )
+        return True
+
+    anchor_id = style.get("article_style_anchor_asset_id")
+    assets = data.get("assets")
+    anchor_asset = next(
+        (
+            item
+            for item in assets
+            if isinstance(item, dict) and item.get("id") == anchor_id
+        ),
+        None,
+    ) if isinstance(assets, list) else None
+    artifact_path = anchor_asset.get("artifact_path") if anchor_asset else None
+    if not _is_sha256(anchor_sha) or not _is_safe_relative_path(artifact_path):
+        _add_error(
+            errors,
+            "freeform_anchor_missing",
+            "style.anchor_artifact_sha256",
+            "A locked direction must bind an existing anchor artifact and its SHA-256",
+        )
+    else:
+        artifact_file = (manifest_root / artifact_path).resolve()
+        if not _resolved_is_under(artifact_file, manifest_root) or not artifact_file.is_file():
+            _add_error(
+                errors,
+                "freeform_anchor_missing",
+                "style.article_style_anchor_asset_id",
+                "The approved article anchor artifact does not exist",
+            )
+        elif not sha256_matches_file(artifact_file, anchor_sha):
+            _add_error(
+                errors,
+                "freeform_anchor_hash_mismatch",
+                "style.anchor_artifact_sha256",
+                "The approved article anchor changed after direction lock",
+            )
+    try:
+        brief = load_manifest(brief_file)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        _add_error(errors, "freeform_brief_invalid", "style.article_style_brief_path", str(exc))
+        return False
+
+    identity_pairs = {
+        "mode_id": FREEFORM_PROFILE_ID,
+        "direction_id": direction_id,
+        "direction_revision": revision,
+        "source_article_sha256": source_sha,
+        "anchor_asset_id": style.get("article_style_anchor_asset_id"),
+        "anchor_artifact_sha256": anchor_sha,
+    }
+    if any(brief.get(field) != expected for field, expected in identity_pairs.items()):
+        _add_error(
+            errors,
+            "freeform_brief_invalid",
+            "style.article_style_brief_path",
+            "Article-local visual brief identity does not match the locked manifest",
+        )
+    visual_dna = brief.get("visual_dna")
+    if not isinstance(visual_dna, dict) or not FREEFORM_VISUAL_DNA_KEYS.issubset(visual_dna):
+        _add_error(
+            errors,
+            "freeform_brief_invalid",
+            "style.article_style_brief_path",
+            "Article-local visual brief must contain the complete visual_dna contract",
+        )
+    if not isinstance(brief.get("role_contracts"), dict) or not isinstance(
+        brief.get("deterministic_tokens"), dict
+    ):
+        _add_error(
+            errors,
+            "freeform_brief_invalid",
+            "style.article_style_brief_path",
+            "Article-local visual brief must define role_contracts and deterministic_tokens",
+        )
+    policy = brief.get("reference_policy")
+    if not isinstance(policy, dict) or policy.get("semantic_authority") is not False:
+        _add_error(
+            errors,
+            "freeform_brief_invalid",
+            "style.article_style_brief_path",
+            "References may guide appearance but must not have semantic authority",
+        )
+    return False
+
+
 def _validate_trace_file(
     *,
     errors: list[dict[str, str]],
@@ -720,8 +980,17 @@ def _validate_top_level(
     compatibility_approvals.setdefault("style_anchor", "not_required")
     compatibility["approvals"] = compatibility_approvals
     _validate_top_level_v1(compatibility, errors)
-    contract_drift = _validate_style_v2(data, skill_root, errors)
-    _validate_style_pack_v3_manifest(data, skill_root, manifest_path, errors)
+    style = data.get("style")
+    selection_mode = (
+        style.get("selection_mode", "registered")
+        if isinstance(style, dict)
+        else "registered"
+    )
+    if selection_mode == "freeform":
+        contract_drift = _validate_freeform_style_v2(data, manifest_path, errors)
+    else:
+        contract_drift = _validate_style_v2(data, skill_root, errors)
+        _validate_style_pack_v3_manifest(data, skill_root, manifest_path, errors)
     return contract_drift
 
 
@@ -1273,6 +1542,8 @@ def _validate_asset_style_v2(
     phase: str,
     approved_reference_ids: set[str],
     style_pack_version: int | None,
+    selection_mode: str,
+    article_style_anchor_asset_id: object,
     errors: list[dict[str, str]],
 ) -> None:
     base = f"assets[{index}].style_validation"
@@ -1285,18 +1556,36 @@ def _validate_asset_style_v2(
             "Manifest v2 assets require a style_validation object",
         )
         return
-    references = validation.get("golden_reference_ids")
-    if (
-        not isinstance(references, list)
-        or not references
-        or any(item not in approved_reference_ids for item in references)
-    ):
-        _add_error(
-            errors,
-            "invalid_golden_references",
-            f"{base}.golden_reference_ids",
-            "Asset style validation must cite approved golden reference IDs",
-        )
+    if selection_mode == "freeform":
+        if validation.get("golden_reference_ids") not in (None, []):
+            _add_error(
+                errors,
+                "freeform_permanent_contract_forbidden",
+                f"{base}.golden_reference_ids",
+                "Style 10 assets cannot cite permanent golden references",
+            )
+        continuity = validation.get("continuity_reference_ids")
+        expected = [] if asset.get("id") == article_style_anchor_asset_id else [article_style_anchor_asset_id]
+        if not isinstance(continuity, list) or continuity != expected:
+            _add_error(
+                errors,
+                "freeform_anchor_reference_required",
+                f"{base}.continuity_reference_ids",
+                "The anchor cites no predecessor; every later asset must cite only the approved article anchor",
+            )
+    else:
+        references = validation.get("golden_reference_ids")
+        if (
+            not isinstance(references, list)
+            or not references
+            or any(item not in approved_reference_ids for item in references)
+        ):
+            _add_error(
+                errors,
+                "invalid_golden_references",
+                f"{base}.golden_reference_ids",
+                "Asset style validation must cite approved golden reference IDs",
+            )
     forbidden = validation.get("forbidden_traits_found")
     if not isinstance(forbidden, list):
         _add_error(
@@ -1473,6 +1762,16 @@ def validate_manifest(
     style_pack_version = (
         style.get("style_pack_version") if isinstance(style, dict) else None
     )
+    selection_mode = (
+        style.get("selection_mode", "registered")
+        if isinstance(style, dict)
+        else "registered"
+    )
+    article_style_anchor_asset_id = (
+        style.get("article_style_anchor_asset_id")
+        if isinstance(style, dict)
+        else None
+    )
     approved_reference_ids = (
         set(style.get("golden_reference_ids", []))
         if version == 2 and isinstance(style, dict)
@@ -1549,6 +1848,8 @@ def validate_manifest(
                 phase,
                 approved_reference_ids,
                 style_pack_version,
+                selection_mode,
+                article_style_anchor_asset_id,
                 errors,
             )
 
@@ -1568,8 +1869,11 @@ def validate_manifest(
             else None
         )
         references = style.get("article_reference_paths") if isinstance(style, dict) else []
+        is_freeform = selection_mode == "freeform"
+        freeform_state = style.get("freeform_state") if isinstance(style, dict) else None
         deterministic_exception = (
-            len(assets) == 1
+            not is_freeform
+            and len(assets) == 1
             and raster_count == 0
             and not references
             and not contract_drift
@@ -1581,19 +1885,31 @@ def validate_manifest(
             )
         )
         requires_anchor = not deterministic_exception
-        if article_approval not in {"approved", "not_required"}:
+        allowed_approvals = (
+            {"pending"} if is_freeform and freeform_state == "exploring" else {"approved"}
+        ) if is_freeform else {"approved", "not_required"}
+        if article_approval not in allowed_approvals:
             _add_error(
                 errors,
                 "invalid_approval_state",
                 "approvals.article_style_anchor",
-                "article_style_anchor must be approved or not_required",
+                "article_style_anchor does not match the current style selection state",
             )
-        if requires_anchor and article_approval != "approved":
+        if requires_anchor and article_approval != "approved" and not (
+            is_freeform and freeform_state == "exploring" and phase == "plan"
+        ):
             _add_error(
                 errors,
                 "article_style_anchor_required",
                 "approvals.article_style_anchor",
                 "Imagegen, article references, or contract drift require an approved article style anchor",
+            )
+        if is_freeform and freeform_state == "exploring" and phase == "integration":
+            _add_error(
+                errors,
+                "freeform_not_locked",
+                "style.freeform_state",
+                "Style 10 must lock its first approved anchor before integration",
             )
         anchor_id = (
             style.get("article_style_anchor_asset_id")

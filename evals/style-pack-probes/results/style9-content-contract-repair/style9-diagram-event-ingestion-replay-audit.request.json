@@ -1,0 +1,133 @@
+{
+  "profile_id": "dense-technical-infographic",
+  "asset_role": "diagram",
+  "objective": "Render a strict event-ingestion architecture with validation, dead-letter routing, approved replay, and audit recording.",
+  "semantics": {
+    "confirmed": [
+      "An event moves from a source through intake and validation before processing.",
+      "Accepted processing writes an audit record.",
+      "Rejected validation routes to a dead-letter state, which may pass through replay approval and return to intake."
+    ],
+    "simplifications": [
+      "Use exactly seven nodes and seven directed edges.",
+      "Represent replay approval as one bounded gate without retry counts, schedules, or operator identities."
+    ],
+    "blocked": [
+      "Do not add brokers, databases, consumers, notification nodes, vendors, protocols, batch sizes, timing, or automatic replay guarantees.",
+      "Do not omit, duplicate, reverse, merge, or invent any frozen node or edge.",
+      "Do not add a successful-only condition to audit records. No subtitle or node descriptions. Only exact_text is visible; no extra 路径说明 or 关键约束 headings."
+    ],
+    "frozen_graph": {
+      "nodes": [
+        "event-source",
+        "intake",
+        "validation",
+        "processing",
+        "audit-record",
+        "dead-letter",
+        "replay-approval"
+      ],
+      "edges": [
+        {
+          "id": "edge-source-intake",
+          "from": "event-source",
+          "to": "intake",
+          "type": "primary"
+        },
+        {
+          "id": "edge-intake-validation",
+          "from": "intake",
+          "to": "validation",
+          "type": "primary"
+        },
+        {
+          "id": "edge-validation-processing",
+          "from": "validation",
+          "to": "processing",
+          "type": "primary"
+        },
+        {
+          "id": "edge-processing-audit",
+          "from": "processing",
+          "to": "audit-record",
+          "type": "primary"
+        },
+        {
+          "id": "edge-validation-dead-letter",
+          "from": "validation",
+          "to": "dead-letter",
+          "type": "exception"
+        },
+        {
+          "id": "edge-dead-letter-replay",
+          "from": "dead-letter",
+          "to": "replay-approval",
+          "type": "exception"
+        },
+        {
+          "id": "edge-replay-intake",
+          "from": "replay-approval",
+          "to": "intake",
+          "type": "return"
+        }
+      ],
+      "invariants": [
+        "audit-record is reachable only from processing",
+        "dead-letter is reachable only from validation",
+        "replay-approval may return only to intake",
+        "dead-letter never reaches processing directly"
+      ],
+      "labels": {
+        "source": "事件源",
+        "intake": "接入入口",
+        "validation": "格式校验",
+        "processing": "事件处理",
+        "audit-record": "审计记录",
+        "dead-letter": "死信队列",
+        "replay-approval": "重放审批"
+      }
+    }
+  },
+  "composition": {
+    "family": "multi-column-architecture",
+    "structure": "seven frozen nodes arranged by responsibility with subordinate dead-letter and replay areas; small legible labels and a compact line legend where needed",
+    "hierarchy": "direct primary paths and lighter return; approved invariants appear as nearby notes rather than a compulsory bottom rail",
+    "human_elements": "none"
+  },
+  "text_policy": {
+    "mode": "native-generated-copy-with-validation",
+    "exact_text": [
+      "事件接入：校验、死信、重放与审计",
+      "事件源",
+      "接入入口",
+      "格式校验",
+      "事件处理",
+      "审计记录",
+      "死信队列",
+      "重放审批",
+      "主流程",
+      "异常路径",
+      "重放路径",
+      "审计记录仅来自事件处理",
+      "死信队列仅来自格式校验",
+      "重放审批只返回接入入口",
+      "死信不直达事件处理"
+    ],
+    "copy_ledger_status": "frozen",
+    "native_text_generation": true,
+    "post_generation_validation": "exact",
+    "deterministic_overlay": false,
+    "fallback_policy": "correct-one-isolated-copy-defect-otherwise-regenerate"
+  },
+  "platform": {
+    "name": "wechat",
+    "aspect_ratio": "16:9",
+    "occupancy": "content-led spacing; readable labels with no fixed fill quota",
+    "crop_rules": "preserve all approved copy and semantic relationships within the requested export; do not shrink labels to fill a crop",
+    "output_count": 1
+  },
+  "golden_reference_ids": [
+    "dense-technical-infographic-diagram-v2"
+  ],
+  "article_anchor_reference_ids": []
+}

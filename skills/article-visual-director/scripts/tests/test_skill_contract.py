@@ -106,7 +106,7 @@ class SkillContractTests(unittest.TestCase):
                 item["golden_set_path"],
             )
 
-    def test_style_gate_and_catalog_expose_the_same_nine_profiles(self) -> None:
+    def test_style_gate_and_catalog_expose_nine_profiles_plus_freeform(self) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         catalog_text = (SKILL_ROOT / "references" / "style-catalog.md").read_text(
             encoding="utf-8"
@@ -125,28 +125,30 @@ class SkillContractTests(unittest.TestCase):
         )
         registry_profiles = [item["name_en"] for item in registry["profiles"]]
 
-        self.assertEqual(9, len(menu_profiles))
-        self.assertEqual(9, len(catalog_profiles))
+        self.assertEqual(10, len(menu_profiles))
+        self.assertEqual(10, len(catalog_profiles))
         self.assertEqual(
-            {profile.split("（", 1)[0] for profile in menu_profiles},
-            set(catalog_profiles),
+            {profile.split("（", 1)[0] for profile in menu_profiles[:9]},
+            set(catalog_profiles[:9]),
         )
-        self.assertEqual(registry_profiles, catalog_profiles)
+        self.assertEqual(registry_profiles, catalog_profiles[:9])
+        self.assertEqual("Freeform Art Direction", catalog_profiles[9])
         self.assertIn("Handwritten Systems Explainer", catalog_profiles)
         self.assertIn("9. **Technical Explainer Infographic（技术原理图解）**", skill_text)
         self.assertIn("技术原理图解", catalog_text)
         self.assertEqual(9, len(EXPECTED_PROFILES))
 
-    def test_style_selection_gate_renders_verified_golden_cover_for_each_option(
+    def test_style_selection_gate_renders_goldens_for_registered_options_only(
         self,
     ) -> None:
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
 
         self.assertIn("scripts/list_style_previews.py", skill_text)
         self.assertIn(
-            "one verified golden cover immediately after each Style",
+            "one verified golden cover immediately after each registered Style 1–9",
             skill_text,
         )
+        self.assertIn("For Style 10, render only its dynamic preview note", skill_text)
         self.assertIn("黄金图暂不可用", skill_text)
         self.assertIn("absolute local filesystem path", skill_text)
         self.assertIn("Do not substitute", skill_text)

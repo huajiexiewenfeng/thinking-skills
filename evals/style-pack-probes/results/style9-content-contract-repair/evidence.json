@@ -1,0 +1,29 @@
+{
+  "assistant_review": "passed_with_documented_corrections",
+  "user_review": "approved",
+  "files": {
+    "01-cover-editable.svg": "3c7188b12099bb995e42f1d515e07fed8404dbcef9686e0e86ccb64ef83023c4",
+    "01-cover-final.png": "68ba94add75bd8568e0b89795af6f9a8bd9d455f14410624780b3863d3a1a02b",
+    "01-cover-probe.png": "2fb553049c6ffe8a7897e7939df5868d91e97869ea89b295482f19ee008bf4f1",
+    "01-cover-typography.svg": "22d902b89be7ff3332d30f85bf7635514e98738c5f471231932a50bcfce43698",
+    "02-concept-probe.png": "8a492888c5f66bcd8a819fd6baff22a400603dfa3e4cc65bb98024fc18c80bef",
+    "03-diagram-final.png": "17de5567440a6fa6bc28c00faababbdad624539c8fec49712bc0ed48d8e353fc",
+    "03-diagram-probe.png": "512aa1a0372d5c6f88b3d1f79bfa1313b7504c82d8d2f8461fe75e8726c9d06e",
+    "correct-cover.cjs": "65058b79fda7b9e16f997405614f92730cbc678c0cb6be5306eb89f38597d9f3",
+    "review.md": "fd960238751bac49c07863325e89074723a37bba49de2747f63a73a9dcb3be50",
+    "style9-concept-idempotency-key.ir.json": "1a13acf70fc613660fc42fa638a2fff5a30e98a7ed2f899fdc84f35831cac444",
+    "style9-concept-idempotency-key.prompt.md": "b42da79aa35f0c4f0431c084bcf8da35ed50da8416b9b7fbff464b48f0ad9c43",
+    "style9-concept-idempotency-key.request.json": "3748f6f0e9442db2ea8a46dd62159b9e96e9021eebbba54b5f0ebea091b0a915",
+    "style9-cover-database-read-write-separation.ir.json": "149c8ae7847d9c51ed9f6e8c1d3d41ad072d3cea14f8fd31cd19a0baa58ac569",
+    "style9-cover-database-read-write-separation.prompt.md": "dc541d38940e57f34568154bcea90f44001cdf10579aaeafada308307b932f8e",
+    "style9-cover-database-read-write-separation.request.json": "b6c09451aa5870b84227c093383c8ba57381c54d9c7f19e7fd497f48515d34d0",
+    "style9-diagram-event-ingestion-replay-audit.ir.json": "75f34095a9b5f41cbdc102186b285d255f98462bc26ba95e3b63f776d5e03454",
+    "style9-diagram-event-ingestion-replay-audit.prompt.md": "21eea9968f51042c3538930286717b8753a997cb4ccd1731ea34211cd1bdc1ba",
+    "style9-diagram-event-ingestion-replay-audit.request.json": "9ed02ec37e38d2daa6b829e368d04a646d272bc2ab675f2efc60d99d3afee53a"
+  },
+  "user_approval_evidence": {
+    "reply": "可以",
+    "context": "User accepted the three linked retest images after the assistant requested acceptance before advancing qualification flags.",
+    "scope": "Three corrected retest outputs and qualification, not the article visual plan or a guarantee of one-shot native-copy accuracy."
+  }
+}

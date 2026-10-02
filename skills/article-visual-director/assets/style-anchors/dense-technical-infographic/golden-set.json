@@ -8,8 +8,8 @@
   "reference_matrix_sha256": "7d9ad277d276b49a7d1ad6463685d2ece2e43521fae2630c65ab3838aafcc54a",
   "qualification": {
     "prompt_compile_status": "passed",
-    "cross_topic_probe_status": "pending",
-    "neighbor_discrimination_status": "pending",
+    "cross_topic_probe_status": "passed",
+    "neighbor_discrimination_status": "passed",
     "evidence_path": "validation-notes.md"
   },
   "status": "approved",

@@ -29,14 +29,17 @@ class StylePreviewResolverTests(unittest.TestCase):
 
         previews = module.collect_style_previews(SKILL_ROOT)
 
-        self.assertEqual(list(range(1, 10)), [item["ordinal"] for item in previews])
-        self.assertTrue(all(item["status"] == "available" for item in previews))
+        self.assertEqual(list(range(1, 11)), [item["ordinal"] for item in previews])
+        registered = previews[:9]
+        self.assertTrue(all(item["status"] == "available" for item in registered))
         self.assertTrue(
-            all(Path(item["absolute_path"]).is_absolute() for item in previews)
+            all(Path(item["absolute_path"]).is_absolute() for item in registered)
         )
         self.assertTrue(
-            all(Path(item["absolute_path"]).is_file() for item in previews)
+            all(Path(item["absolute_path"]).is_file() for item in registered)
         )
+        self.assertEqual("dynamic", previews[9]["status"])
+        self.assertNotIn("absolute_path", previews[9])
 
     def test_missing_cover_artifact_fails_closed_without_a_path(self) -> None:
         module = load_preview_module()
