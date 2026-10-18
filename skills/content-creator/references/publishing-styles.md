@@ -2,11 +2,55 @@
 
 Read this reference when preparing Chinese technical WeChat layouts or technical article covers. A direct user style request always overrides these defaults.
 
-## Technical Minimal Green
+## green2 (Default WeChat Layout)
 
-Use this as the default style for Chinese technical WeChat articles unless the user requests another style. Also use it when the user asks for a WeChat article similar to "技术极简", "绿色标题", or "一小段一小段但不要一句一行", or provides screenshots with lightweight green-underlined headings, green heading bars, left green rule headings, gray inline code pills, and compact technical prose.
+**Style ID: `green2`.** Use this for WeChat Official Account articles by default, including an unspecified WeChat layout or a generic `green` request. Follow another named style only when the user explicitly selects it. This is a publishing layout, not an illustration profile.
 
-If additional named WeChat styles are available and the requested style is not obvious, ask which style to use before drafting. Offer Technical Minimal Green as the recommended default for technical articles.
+### Appearance and Markdown boundaries
+
+- White background, dark gray body `#26332E`, muted green `#237A55`, and pale green `#F2F8F4`; keep the page clean with comfortable whitespace.
+- Body prose, `**bold**`, lists, `>` quotations, links, and images stay in ordinary Markdown. Do not add `<p>` to each paragraph, wrap the article in HTML, convert Markdown lists/quotes into HTML, or use `<br/>` for spacing.
+- Only level-two headings and a few necessary emphasis callouts may use inline HTML. Do not add callouts merely for decoration.
+- Keep the article title as Markdown `#` and level-three headings as Markdown `###`; do not make every heading level a colored block.
+
+### Exact level-two heading template
+
+Preserve the original heading text and numbering:
+
+```html
+<h2 style="margin:26px 0 16px;padding:8px 12px;border-left:4px solid #237A55;background:#F2F8F4;color:#237A55;font-size:22px;line-height:1.45;">01 章节标题</h2>
+```
+
+Use this left-rule, pale-green template, not the legacy centered underline or a solid-green title bar.
+
+### Reading rhythm, lists, and facts
+
+- Keep mobile paragraphs short, with one main idea and a blank line between them. Preserve complete sentences; do not fragment clauses just to create whitespace.
+- Use a little Markdown bold for key phrases. Narrow long full-paragraph emphasis rather than turning the screen green or bolding every conclusion.
+- Use bullets for genuinely parallel information and numbered lists for steps. Avoid deep nesting, wide tables, added emoji, decorative rules, and repeated cards.
+- Keep quotations as `>` Markdown.
+- Layout-only work does not authorize changing viewpoints, technical conclusions, facts, or adding unverified cases or numbers. Report source uncertainties separately.
+
+### Confirmed images
+
+- Preserve approved covers and body images, their visual style, content, proportions, and files. Never recolor them green, stretch, regenerate, or replace them because green2 is selected.
+- Use relative Markdown image paths and meaningful alt text. Put a short, accurate caption on its own line below the image; identify test data, redrawn/redacted material, and conceptual examples honestly.
+- New placements default to heading -> image -> caption -> prose. Preserve an already explicit or approved image position.
+- Keep the source article and existing user edits; create a separate formatted copy. A request to update this Skill does not start image production.
+
+### Deliverables and reading preview
+
+- The primary deliverable remains Markdown. Preserve the approved naming convention: `{source-stem}-green-illustrated.md` with images, or `{source-stem}-green.md` without images; the profile name is green2. If revising an existing formatted copy, keep its accepted name and preserve the source.
+- When a renderer is available, green2 permits a sibling `*-preview.html` reading preview. If unavailable, deliver the Markdown and state that the preview was not rendered; do not claim unrun checks passed.
+- Preview defaults: white background, body `#26332E`, `16px` font, line height `1.9`, maximum width `760px`, and `18px` left/right padding. The preview may apply page-level CSS without changing Markdown markup.
+- Check `390px` and `430px` widths for horizontal overflow, broken or distorted images, and cramped/cut-off headings. Confirm image positions and that layout-only edits preserved the visible wording and approved image files.
+- Preview HTML is for reading checks. Never paste the full HTML page, CSS, or paragraph tags back into the Markdown deliverable.
+
+## Technical Minimal Green (Legacy, Explicit Only)
+
+Use this legacy style only when the user explicitly selects **Technical Minimal Green** or its legacy centered-underlined design. Its full paragraph styling below applies only to that explicit mode. An unspecified WeChat layout, a generic green request, and green2 all use **green2** instead.
+
+Do not ask the user to choose a style again when green2 or the default WeChat layout already applies.
 
 - Use lightweight green-underlined section headings for major sections. The default `h2` is centered, with green text on white, regular-to-medium weight, and a short bottom rule that follows the title width. Use this exact mobile-safe baseline: `<h2 style="display:table;max-width:100%;box-sizing:border-box;color:#009b72;font-size:21px;line-height:1.5;font-weight:400;letter-spacing:0.02em;text-align:center;padding:0 0 7px;margin:30px auto 16px;border-bottom:2px solid #009b72;word-break:break-word;">...</h2>`.
 - Keep the heading only modestly larger than the `18px` body text: `21px` by default (about `1.17x` the body size). This lighter scale and `font-weight:400` match phone-first screenshots where the heading should orient the reader without dominating the screen.

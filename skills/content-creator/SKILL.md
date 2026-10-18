@@ -187,14 +187,14 @@ Goal: preserve the article's argument while making it stable, readable, and visu
 
 During revision and publishing turns, preserve the existing artifact type unless the user explicitly changes it. If the accepted source or current deliverable is Markdown, the revised deliverable remains a `.md` file.
 
-- Technical Minimal Green may use inline HTML styling inside Markdown, but the artifact is still Markdown and keeps the `.md` extension.
-- Create a standalone HTML document, browser copy page, or sibling `*-publish.html` only when the user explicitly asks for HTML, a browser preview, or a copy page. Naming a platform or asking for a final publishable version is not sufficient.
+- Use **green2** as the default WeChat article layout. Keep body text, emphasis, lists, blockquotes, links, and images in ordinary Markdown; inline HTML is limited to `h2` headings and a few necessary callouts. Never wrap every paragraph or the entire article in HTML. Read the [green2 contract](references/publishing-styles.md#green2-default-wechat-layout) for its exact heading template.
+- Create a standalone HTML document, browser copy page, or sibling `*-publish.html` only when the user explicitly asks for HTML, a browser preview, or a copy page. The configured **green2** contract separately permits an optional sibling reading preview when a renderer is available; this does not change the Markdown deliverable or authorize a copy page. Never copy preview HTML/CSS back into the Markdown body.
 - A layout-only or writing-style request does not authorize visual changes. When images are already confirmed, do not recolor, regenerate, or replace confirmed images unless the user explicitly asks to change the visuals.
-- In mixed article-and-visual workflows, interpret `green` as the article publishing style when the user refers to the article, WeChat layout, or Markdown. Treat it as a visual-profile request only when the user explicitly refers to images, illustrations, cover art, or the visual profile.
+- In mixed article-and-visual workflows, interpret `green` and `green2` as article publishing styles when the user refers to the article, WeChat layout, or Markdown. An unspecified WeChat style or a generic `green` request uses **green2**; an explicit request for another named style overrides it. Treat a style request as an image-profile change only when the user explicitly refers to images, illustrations, cover art, or the visual profile.
 
 Prefer:
 
-- Use short natural paragraphs, usually 1-3 sentences per paragraph.
+- Use short natural paragraphs, usually 1-3 sentences per paragraph. For layout-only work, preserve the wording, viewpoints, technical conclusions, facts, complete sentences, and approved image placements; flag uncertainties separately instead of silently rewriting them.
 - Prefer cohesive mobile paragraphs over one-sentence-per-line rhythm. For WeChat articles, most body paragraphs should combine 2-3 connected sentences into one paragraph; reserve single-sentence paragraphs for strong turns, scene beats, or thesis emphasis. When revising a draft that feels like "every small sentence is a line", merge adjacent sentences that develop the same idea and reduce repeated parallel phrasing.
 - Use visible micro-section headings every few screenfuls so the reader can re-orient while scrolling. Headings should be concrete, such as "以前的问题", "现在不一样了", "这不是远程桌面", or "一个真实场景", not generic labels like "背景" or "总结" unless they are genuinely useful.
 - Break long explanatory passages into a rhythm of small heading -> short setup -> emphasized takeaway -> bullets or scene beats when appropriate.
@@ -240,8 +240,8 @@ Image guidance:
 Publishing style references:
 
 - Read `references/publishing-styles.md` when drafting or revising a Chinese technical WeChat article, preparing publication-ready HTML-styled Markdown, or creating a technical article cover.
-- Use **Technical Minimal Green** as the default Chinese technical WeChat article style unless the user asks for another style.
-- Use **Knowledge Graph Neon Doctor** as the preferred cover direction for knowledge systems, RAG, AI Agents, diagnostics, and similar technical infrastructure. Adapt its central metaphor to the article instead of forcing a knowledge graph onto unrelated topics.
+- Use **green2** as the default WeChat article style. Its exact colors, left-rule `h2` template, Markdown boundaries, image rules, filenames, and optional reading-preview checks are defined in `references/publishing-styles.md`. **Technical Minimal Green** remains an explicit legacy choice, not the default.
+- When a new cover is actually requested, use **Knowledge Graph Neon Doctor** as the preferred direction for knowledge systems, RAG, AI Agents, diagnostics, and similar technical infrastructure. Adapt its central metaphor to the article. A green2 layout request does not select a cover style or change approved images.
 - A direct user style request overrides both defaults.
 
 Mobile publishing checklist before finalizing:
@@ -249,7 +249,7 @@ Mobile publishing checklist before finalizing:
 - Tables replaced or confirmed safe.
 - Paragraphs are not too fragmented or too dense.
 - Long idea blocks have micro-headings, bullets, bold anchor sentences, or scene beats.
-- Styling is applied beyond headings: body paragraphs, emphasis paragraphs, and left-rule comparison/list blocks are visibly styled.
+- green2 Markdown keeps ordinary paragraphs, emphasis, lists, quotations, links, and images editable in Markdown; only `h2` and necessary callouts use inline HTML. Preview styling stays in the separate preview.
 - No screenful reads as a flat wall of same-level paragraphs.
 - No `<br/>` used for spacing.
 - Images have safe margins, reasonable height, and no cropped core subject.

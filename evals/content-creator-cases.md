@@ -127,11 +127,11 @@ context:
   - "The user asks only to change the WeChat article style and does not request image changes or HTML."
 expected:
   - "Keep the output as a .md artifact."
-  - "Apply Technical Minimal Green to the Markdown article layout."
+  - "Apply default green2: ordinary Markdown body with only the specified left-rule pale-green h2 markup."
   - "Preserve the confirmed image files, image references, and image content."
-  - "Do not create additional artifact types without approval."
+  - "Keep the Markdown as the primary artifact; green2 permits an optional reading preview, not an unsolicited copy page."
 must_not:
-  - "Create a standalone .html or sibling *-publish.html file."
+  - "Replace the Markdown with standalone HTML or create an unsolicited *-publish.html copy page."
   - "Recolor, regenerate, replace, or reinterpret the confirmed images."
   - "Treat green as an image-generation profile when the request refers to article or WeChat layout."
 quality_checks:
@@ -189,6 +189,58 @@ must_not:
 quality_checks:
   - "Feels like an editorial collaboration."
   - "Preserves the user's project positioning and previously accepted decisions."
+```
+
+### content-wechat-green2-default-001
+
+```yaml
+id: content-wechat-green2-default-001
+skill: content-creator
+type:
+  - MODE_MISMATCH
+  - EVAL_GAP
+prompt: "把这篇现有配图文章排成适合微信公众号阅读的版本。"
+context:
+  - "The article is already approved Markdown with five confirmed images and meaningful relative image references."
+  - "The user names no publishing style and asks only for layout."
+expected:
+  - "Select green2 without restarting style selection."
+  - "Keep prose, selective bold, lists, quotations, links, and images in ordinary Markdown."
+  - "Use the exact #237A55 / #F2F8F4 left-rule h2 template while preserving heading text and numbering."
+  - "Keep the original source and deliver a separate *-green-illustrated.md copy."
+  - "Preserve complete sentences, viewpoints, facts, image bytes, proportions, paths, and approved positions."
+must_not:
+  - "Use centered underlined legacy headings by default."
+  - "Wrap every paragraph, list, quote, or the entire article in HTML."
+  - "Recolor the cover or body images green."
+  - "Invent examples, statistics, or evidence to improve the layout."
+quality_checks:
+  - "The final artifact remains easy to edit as Markdown and has only local heading HTML."
+  - "A user who explicitly selects a different style still overrides this default."
+```
+
+### content-wechat-green2-preview-boundary-001
+
+```yaml
+id: content-wechat-green2-preview-boundary-001
+skill: content-creator
+type:
+  - MODE_MISMATCH
+  - EVAL_GAP
+prompt: "按 green2 排版，能生成阅读预览就一并给我。"
+context:
+  - "The source is Markdown with confirmed image placements; a local browser renderer is available."
+expected:
+  - "Deliver Markdown as the primary article and a separate *-preview.html reading preview."
+  - "Use preview defaults of 16px body text, 1.9 line height, 760px maximum width, 18px horizontal padding, and #26332E body color."
+  - "Check 390px and 430px widths for horizontal overflow, broken or distorted images, and cramped headings."
+  - "Report only checks actually run and preserve visible wording and approved image files."
+must_not:
+  - "Paste preview HTML, page CSS, or per-paragraph p tags into the Markdown."
+  - "Change image topology, crop, palette, or title merely to match the page green."
+  - "Claim a preview passed if rendering was unavailable."
+quality_checks:
+  - "Preview styling and Markdown source markup are separate artifacts."
 ```
 
 ## Quality Checks
